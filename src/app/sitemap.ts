@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { industries, roles, tools, useCases, companySizes } from "@/data/seo-data";
 import { getAllCombinations } from "@/data/expanded-combinations";
 
-const BASE_URL = "https://aitestautomation.hub"; // Update with your real domain
+const BASE_URL = "https://ai-test-automation-seo-git-main-upwork-product.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];

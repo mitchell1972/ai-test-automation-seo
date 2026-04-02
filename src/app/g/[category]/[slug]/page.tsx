@@ -11,13 +11,18 @@ import CTASection from "@/components/CTASection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedPages from "@/components/RelatedPages";
 
+// Generate a subset at build time; the rest are generated on-demand via ISR
 export function generateStaticParams() {
   const combos = getAllCombinations();
-  return combos.map((c) => ({
+  // Build only first 200 pages statically; rest are ISR on first request
+  return combos.slice(0, 200).map((c) => ({
     category: c.category,
     slug: c.slug,
   }));
 }
+
+export const dynamicParams = true;
+export const revalidate = 86400; // revalidate every 24 hours
 
 export async function generateMetadata({
   params,

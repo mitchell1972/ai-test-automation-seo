@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://aitestautomation.hub/sitemap.xml", // Update with your real domain
+    sitemap: "https://ai-test-automation-seo-git-main-upwork-product.vercel.app/sitemap.xml",
   };
 }
