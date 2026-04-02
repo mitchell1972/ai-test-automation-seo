@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://ai-test-automation-seo-git-main-upwork-product.vercel.app/sitemap.xml",
+    sitemap: "https://www.aitestplaybook.com/sitemap.xml",
   };
 }
