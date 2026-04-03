@@ -3,8 +3,10 @@ import { industries, roles, tools, useCases, companySizes } from "@/data/seo-dat
 import { getAllCombinations } from "@/data/expanded-combinations";
 
 const BASE_URL = "https://www.aitestplaybook.com";
+const URLS_PER_SITEMAP = 5000;
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Build the full list of all sitemap entries
+function getAllEntries(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
   // Homepage
@@ -77,4 +79,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   return entries;
+}
+
+// Next.js uses this to create a sitemap index with multiple sitemaps
+// e.g. /sitemap/0.xml, /sitemap/1.xml, /sitemap/2.xml
+export async function generateSitemaps() {
+  const totalEntries = getAllEntries().length;
+  const numSitemaps = Math.ceil(totalEntries / URLS_PER_SITEMAP);
+
+  return Array.from({ length: numSitemaps }, (_, i) => ({ id: i }));
+}
+
+export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
+  const allEntries = getAllEntries();
+  const start = id * URLS_PER_SITEMAP;
+  const end = start + URLS_PER_SITEMAP;
+
+  return allEntries.slice(start, end);
 }
