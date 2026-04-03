@@ -90,7 +90,10 @@ export async function generateSitemaps() {
   return Array.from({ length: numSitemaps }, (_, i) => ({ id: i }));
 }
 
-export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
+export default async function sitemap(props: {
+  id: Promise<string>;
+}): Promise<MetadataRoute.Sitemap> {
+  const id = Number(await props.id);
   const allEntries = getAllEntries();
   const start = id * URLS_PER_SITEMAP;
   const end = start + URLS_PER_SITEMAP;
