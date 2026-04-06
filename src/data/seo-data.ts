@@ -5,7 +5,7 @@
 
 export const SITE_CONFIG = {
   name: "AI Test Automation Hub",
-  domain: "aitestautomation.hub", // Update with your real domain
+  domain: "https://www.aitestplaybook.com",
   ctaUrl: "https://stan.store/mitchellagoma/p/ai-test-automation-playbook",
   ctaText: "Get the AI Test Automation Playbook",
   price: "$49.99",
