@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { industries, roles, tools, useCases, companySizes } from "@/data/seo-data";
 import { getAllCombinations } from "@/data/expanded-combinations";
+import { BLOG_POSTS } from "@/data/blog-posts";
 
 const BASE_URL = "https://www.aitestplaybook.com";
 const URLS_PER_SITEMAP = 5000;
@@ -64,6 +65,24 @@ function getAllEntries(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
+    });
+  }
+
+  // Blog index
+  entries.push({
+    url: `${BASE_URL}/blog`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  });
+
+  // Blog posts
+  for (const post of BLOG_POSTS) {
+    entries.push({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly",
+      priority: 0.7,
     });
   }
 
