@@ -181,7 +181,7 @@ export const BLOG_POSTS: BlogPost[] = [
         a: "The SM-2 spaced repetition algorithm tracks which questions you answer confidently, partially, or not at all. Questions you struggle with reappear sooner, while mastered questions surface less frequently. This ensures you retain technical knowledge long-term rather than cramming the night before an interview and forgetting everything afterwards.",
       },
     ],
-    relatedSlugs: [],
+    relatedSlugs: ["manual-qa-to-sdet-career-change", "playwright-interview-questions-2026"],
   },
   {
     slug: "manual-qa-to-sdet-career-change",
@@ -316,7 +316,234 @@ export const BLOG_POSTS: BlogPost[] = [
         a: "Most career changers find the interview itself harder than learning the technical skills. You may know how to write Playwright tests, but if you can't articulate why you chose a particular locator strategy or explain your approach to reducing CI pipeline flakiness, the interviewer won't see your competence. This is why SDET Interview Coach emphasises mock interviews and AI-graded feedback on your communication, not just your technical accuracy.",
       },
     ],
-    relatedSlugs: ["sdet-interview-coach-app-guide"],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "playwright-interview-questions-2026"],
+  },
+  {
+    slug: "playwright-interview-questions-2026",
+    title: "Playwright Interview Questions — What SDET Interviewers Actually Ask in 2026",
+    description: "Real Playwright interview questions from actual SDET interview panels. Covers locator strategies, auto-waiting, CI/CD integration, API testing, trace viewer, and the Playwright vs Selenium decision that trips up most candidates.",
+    date: "2026-05-10",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Playwright interview questions",
+      "Playwright SDET interview",
+      "Playwright automation testing interview",
+      "Playwright interview questions 2026",
+      "Playwright interview prep",
+      "Playwright TypeScript interview",
+      "Playwright test automation framework",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's 11pm. You've got a Playwright SDET interview tomorrow morning. You've written tests with Playwright for a year. You know <code>page.locator()</code>, you can write a fixture in your sleep. But then the doubt creeps in: <em>what are they actually going to ask?</em></p>
+  <p>You open a search tab. "Playwright interview questions." 50 results. All different. Some say study locators. Some say understand the architecture. Some list 70 questions you won't have time to memorise. None of them tell you what interviewers at HMRC, Accenture, Nationwide, and the MoD <em>really</em> care about.</p>
+  <p>This guide is different. It's built from 20 years of sitting on both sides of the SDET interview table — asking the questions and answering them. It covers the <em>categories</em> interviewers probe, not just individual Q&As, so you can handle whatever variation comes your way. And it shows you exactly how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> can drill you on these topics until they're second nature.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Playwright Questions Keep Changing — and Why Most Candidates Are Stuck in 2023</h2>
+  <p>Three years ago, Playwright interview questions were straightforward: "What's a locator?" "How do you run tests in parallel?" "What's the difference between Playwright and Selenium?"</p>
+  <p>In 2026, that won't get you past the phone screen. Here's what's changed:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Playwright now dominates enterprise hiring.</strong> In panels I've sat on at HMRC and the MoD, Playwright has replaced Selenium as the default framework for new test architecture. Interviewers expect depth, not surface knowledge.</li>
+    <li><strong>AI testing questions are in the mix.</strong> Interviewers are adding questions about Playwright MCP (Model Context Protocol), AI-generated locators, and self-healing tests. If you can't speak to these, you'll look behind the curve.</li>
+    <li><strong>CI/CD integration is table stakes.</strong> Running <code>npx playwright test</code> locally isn't enough. You need to explain how tests fit into a GitHub Actions pipeline, how you handle flakiness at scale, and what retry + reporter strategy you'd implement.</li>
+  </ul>
+  <p>Are you prepared for the AI-testing questions that 40% of panels now ask? Most candidates aren't — which means those who <em>are</em> stand out immediately.</p>
+</section>
+
+<section class="content-section">
+  <h2>The 6 Categories Every Playwright Interview Tests</h2>
+  <p>After conducting and sitting in hundreds of SDET interviews across HMRC, Nationwide, Accenture, and the Ministry of Defence, I've noticed a pattern. Playwright questions cluster into six categories. Interviewers don't ask one from each — but they will probe at least three. Master all six, and you can handle any panel.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. Locator Strategy & Selector Hierarchy</h3>
+      <p>"How do you decide which locator to use?" The trap here is saying "I use CSS selectors." The right answer discusses the Playwright locator hierarchy: role-based → text-based → test IDs → CSS/XPath as last resort. Interviewers want to hear you prioritise accessibility-first, user-facing locators over brittle DOM selectors.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Auto-Waiting & Actionability</h3>
+      <p>"How does Playwright's auto-waiting work, and when does it fail?" Most candidates know Playwright auto-waits. Few can explain the actionability checks (visible, stable, enabled, receives events) or diagnose why a test that should pass is timing out. This is where mid-level candidates separate from senior.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. Fixtures, Hooks & Test Isolation</h3>
+      <p>"Walk me through your test setup pattern." Senior interviewers want to hear about custom fixtures, worker-scoped vs test-scoped setup, auth state reuse, and how you prevent test pollution. They'll push you on what happens when two tests share state and one fails.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. CI/CD Pipeline Integration</h3>
+      <p>"Your Playwright suite takes 20 minutes. How do you get it under 5?" This tests whether you understand sharding, parallel workers, retry strategy, failure triage with Trace Viewer, and how to balance coverage against pipeline speed. The most common trap candidates fall into: suggesting test deletion instead of intelligent parallelisation.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. API Testing with Playwright</h3>
+      <p>"When would you use <code>request</code> context instead of browser automation?" Playwright's API testing capabilities catch many candidates off-guard. If you don't know you can mock API responses, intercept network calls, and validate contract schemas without opening a browser, you're leaving capability on the table.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>6. Playwright vs Selenium — The Decision Framework</h3>
+      <p>"Why Playwright and not Selenium for this project?" Don't just list features. An interviewer testing for Lead SDET wants to hear a decision framework: when Playwright's auto-waiting and multi-browser support justify the migration cost, and when an existing Selenium suite with 5,000 tests should stay put. It's a tradeoffs question, not a features question.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>3 Playwright Interview Traps Most Candidates Fall Into</h2>
+  <p>These are the questions that make interviewers lean back in their chairs and wait. They're not trick questions — but they separate people who've only written tests from people who understand the engineering.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #1: "Playwright auto-waits, so I don't need to handle waiting."</h3>
+        <p>Auto-waiting covers actionability — but not data loading, API responses, or state changes from async operations. If you're testing a dashboard that fetches data after login, auto-waiting won't save you from a race condition. The winning answer discusses <code>waitForResponse</code>, <code>waitForURL</code>, and network idle strategies — and when <em>not</em> to use them (over-waiting bloats test time).</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #2: "I use the Trace Viewer to debug failures."</h3>
+        <p>Using Trace Viewer is table stakes. The question that follows is: "How do you use traces <em>at scale</em> across 200 tests in CI?" The answer isn't opening traces one by one — it's about integrating trace-on-failure into your <code>playwright.config.ts</code>, pushing traces to an artifact store, and building a triage workflow that lets you diagnose without downloading 50MB snapshots for every failure.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #3: "Playwright is better than Selenium, so we should migrate everything."</h3>
+        <p>A Lead-level interviewer will immediately push back: "What's the cost of migrating 5,000 Selenium tests? What happens to the test knowledge in those scripts? How do you validate migration accuracy?" The right answer weighs ROI, proposes a strangler-fig migration (new features in Playwright, legacy tests in Selenium until retired), and acknowledges that some test suites aren't worth the migration cost.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The AI-Testing Questions That 40% of Panels Now Ask</h2>
+  <p>By mid-2026, AI-in-testing questions have moved from "nice to have" to "expected." In recent interview panels at Accenture, I've watched candidates who aced the Playwright fundamentals lose offers because they couldn't discuss AI testing concepts. Here's what's coming:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Playwright MCP</h3>
+      <p>"How would you use Model Context Protocol with Playwright?" Interviewers want to know you understand that MCP lets Claude AI control a browser directly — navigating, asserting, and debugging autonomously. The follow-up question is always about the human-in-the-loop: "When would you let AI run tests unattended, and when would you require human review?"</p>
+    </div>
+    <div class="challenge-card">
+      <h3>AI-Generated Locators</h3>
+      <p>"Would you let an LLM write your locators?" The sophisticated answer isn't yes or no — it's about the review pipeline. AI can generate role-based locators from component code faster than a human, but they need validation against dynamic states, i18n variations, and accessibility tree changes. Describe the review process, not the generation.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Self-Healing Tests</h3>
+      <p>"Your locator breaks because a developer renamed a button. What's your strategy?" Traditional answer: fix the locator. 2026 answer: implement AI-powered self-healing that maps broken locators to the closest semantic match, flags the change for human review, and learns from corrections over time. The key phrase interviewers want to hear: "confidence threshold."</p>
+    </div>
+  </div>
+  <p style="margin-top: 1.5rem;">If your Playwright interview prep hasn't touched AI testing concepts, you're walking in with a gap that 4 in 10 panels will expose. <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> has a dedicated AI in Testing category that covers these exact topics — with the depth and follow-up questions you'd face in a real panel.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare: From Knowing to Performing Under Pressure</h2>
+  <p>Knowing the answers is half the battle. Delivering them under interview pressure — when you've got 45 minutes to impress a panel of three — is the other half. Here's what works:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Practice Out Loud, Not in Your Head</h3>
+        <p>Reading answers silently creates the illusion of mastery. Saying them out loud exposes gaps. You'll stumble on "auto-waiting actionability checks" the first five times. By the tenth, it'll roll off your tongue. SDET Interview Coach's mock interview mode forces this — 50-minute timed sessions with adaptive follow-ups that simulate the real thing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Use Spaced Repetition, Not Cramming</h3>
+        <p>If you cram Playwright concepts the night before, you might recall them in the interview. But you won't recall them on day one of the job — and interviewers can tell the difference between memorised answers and real understanding. The SM-2 spaced repetition system in SDET Interview Coach brings weak topics back at the right intervals so knowledge sticks.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📝</span>
+      <div>
+        <h3>Get AI Feedback on Your Answers</h3>
+        <p>You can't grade your own interview answers. AI-graded feedback scores your responses on technical accuracy, completeness, communication, and code quality — showing you not just what you got wrong, but how to phrase it the way interviewers expect. It's like having a coach who's sat on 200+ interview panels giving you notes after every mock.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real Playwright SDET Interview Looks Like — Timed Breakdown</h2>
+  <p>Here's how most 60-minute SDET interview slots actually flow, based on panels I've conducted at HMRC, Nationwide, and consulting for Accenture:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Warm-Up & Experience Probe</h3>
+        <p>"Tell us about a Playwright project you built." They're listening for framework ownership — did you set it up from scratch, or inherit an existing suite? Did you make architectural decisions? Expect follow-ups on why you chose specific patterns.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–30 min</div>
+      <div class="timeline-content">
+        <h3>Technical Deep-Dive</h3>
+        <p>Locator strategy, fixtures, parallel execution, CI/CD integration. You'll likely be asked to whiteboard a test for a given scenario. Don't just write the code — narrate your thinking. Interviewers are evaluating your engineering judgment, not your typing speed.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">30–45 min</div>
+      <div class="timeline-content">
+        <h3>System Design & Tradeoffs</h3>
+        <p>"Design a test framework for a microservices app with Playwright." This is where seniority is determined. Discuss fixture scoping, auth state management, test data strategy, reporting, and — importantly — what you'd do differently if the app had 50 services vs 5.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">45–55 min</div>
+      <div class="timeline-content">
+        <h3>Behavioural & Culture Fit</h3>
+        <p>STAR-format questions about flaky test incidents, disagreements with developers about test ownership, and how you mentor junior testers. The Playwright-specific angle: "Tell us about a time you had to convince a team to adopt Playwright."</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">55–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their current test infrastructure, their biggest testing pain point, and what success looks like in the first 90 days. This shows you're thinking like an engineer who'll solve their problems, not just someone who wants a job.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your Playwright Interview — Starting Tonight</h2>
+  <p>You don't need to memorise 70 answers. You need to understand the six categories, practice articulating your reasoning out loud, and get feedback on where your gaps are. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> and complete the 2-minute onboarding assessment. Select Playwright + TypeScript as your stack and your target seniority level. The app surfaces the questions that matter for <em>your</em> interview, not generic ones.</li>
+    <li><strong>Run one mock interview today.</strong> Pick the Playwright stack, set a 30-minute timer, and answer the questions out loud — even if you stumble. The AI feedback will show you exactly which of the six categories needs work.</li>
+    <li><strong>Use Job Match for your target role.</strong> Got a specific company in mind? Paste their job description into Job Match and get 50 questions tailored to their exact stack and seniority level. No more guessing what they'll ask.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The window for being early to AI-testing interview prep is closing. By late 2026, every SDET panel will expect Playwright candidates to discuss MCP, AI locator strategies, and self-healing tests. The candidates who prepare now will be the ones setting the curve — not chasing it.</p>
+
+  <p>If you're coming from a manual QA background, start with our guide on <a href="/blog/manual-qa-to-sdet-career-change">transitioning from manual QA to SDET</a> — it covers the full career-change roadmap, including which framework to learn first and how long the journey realistically takes.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What are the most important Playwright interview topics to study?",
+        a: "The six categories interviewers consistently probe are: locator strategy and selector hierarchy (prioritising role-based and accessible locators over CSS/XPath), auto-waiting and actionability checks, fixtures and test isolation patterns, CI/CD pipeline integration including sharding and retry strategies, API testing with Playwright's request context, and the Playwright vs Selenium decision framework. Additionally, by mid-2026, expect questions about Playwright MCP, AI-generated locators, and self-healing test strategies.",
+      },
+      {
+        q: "How should I answer 'Why Playwright over Selenium?' in an interview?",
+        a: "Don't just list features. For junior/mid-level roles, discuss auto-waiting (reducing flakiness), multi-browser support (Chromium, Firefox, WebKit from one API), and built-in trace viewer. For senior/lead roles, present a decision framework: evaluate existing suite size, team expertise, migration cost, CI/CD pipeline compatibility, and whether the project benefits from Playwright-specific capabilities like API testing within the same test run. Propose a strangler-fig migration pattern where appropriate rather than a big-bang rewrite.",
+      },
+      {
+        q: "Does the SDET Interview Coach app cover Playwright interview questions?",
+        a: "Yes. SDET Interview Coach includes Playwright-specific questions across all five seniority levels, from Junior to Lead. The Playwright + TypeScript stack is one of six supported tech stacks. Questions include short and long answers, code samples, interviewer follow-ups, and common mistakes to avoid. The app also offers timed Playwright mock interviews and AI-graded feedback on your responses. Use Job Match to generate 50 bespoke questions from any Playwright SDET job description.",
+      },
+      {
+        q: "What's the hardest Playwright interview question candidates get wrong?",
+        a: "The question that trips up most candidates isn't a technical one — it's a system-design question: 'Design a test framework for a microservices app using Playwright.' Candidates who've only written tests struggle with fixture scoping, auth state management across services, test data strategy, reporting architecture, and how to balance test coverage with pipeline execution time. Senior candidates are expected to discuss these tradeoffs, not just write passing tests.",
+      },
+      {
+        q: "How do I handle Playwright CI/CD questions in an interview?",
+        a: "Be prepared to discuss: (1) How you configure parallel workers and sharding in playwright.config.ts, (2) Your retry strategy — how many retries, when to retry vs fail fast, (3) Trace-on-failure configuration and how you triage failures at scale, (4) How you handle flaky tests — quarantine suites, automatic retry thresholds, and flakiness dashboards, (5) Integration with GitHub Actions, Jenkins, or GitLab CI, including artifact storage for traces and reports. Avoid suggesting you'd remove tests to speed up the pipeline — interviewers want to hear about intelligent parallelisation and sharding.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "manual-qa-to-sdet-career-change"],
   },
 ];
 
