@@ -545,6 +545,232 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     relatedSlugs: ["sdet-interview-coach-app-guide", "manual-qa-to-sdet-career-change"],
   },
+  {
+    slug: "test-automation-framework-design-interview",
+    title: "Test Automation Framework Design — SDET Interview Questions 2026",
+    description: "How to answer test automation framework design questions in SDET interviews. Covers Page Object Model, fixtures, test data strategy, CI/CD integration, scaling to 500+ engineers, and the architectural thinking that separates senior candidates from mid-level. Built from real interview panels at HMRC, Nationwide, and Accenture.",
+    date: "2026-05-10",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "test automation framework design",
+      "SDET system design interview",
+      "test architecture interview",
+      "Page Object Model interview questions",
+      "test framework architecture SDET",
+      "test automation strategy interview",
+      "scalable test framework design",
+      "SDET interview prep",
+    ],
+    content: `
+<section class="content-section">
+  <p>Here's a scenario that plays out in SDET interviews across the UK every single week. The candidate has aced the coding round. They've discussed Playwright locators and CI/CD pipelines with confidence. The interviewer leans forward and says: "<strong>Walk me through how you'd design a test automation framework for a microservices app with 20 engineering teams.</strong>"</p>
+  <p>And the candidate freezes. Not because they can't write tests — they absolutely can. But because nobody told them the framework design round isn't about writing tests. It's about <em>architecting</em> them. And the gap between "I can write a Playwright test" and "I can design a test framework for 500 engineers" is larger than most candidates realise.</p>
+  <p>This guide covers exactly what SDET interviewers expect when they ask about test automation framework design — from Page Object Model patterns to test data strategy, from CI/CD integration to scaling across entire organisations. It's built from 20 years of sitting on both sides of the SDET interview table at HMRC, Nationwide, the Ministry of Defence, and Accenture. And it shows you how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> prepares you for the framework design round so you're the candidate who leans <em>in</em> — not the one who freezes.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Framework Design Is the Round That Decides Your Offer</h2>
+  <p>Most SDET candidates prepare for coding questions and behavioural scenarios. They assume the framework design discussion is just a "tell us about your experience" conversation. It isn't. In the interview panels Mitchell has run at HMRC, Accenture, and Nationwide, the framework design round is where candidates are placed on the seniority ladder. Here's why:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>It tests architectural thinking, not tool proficiency.</strong> Anyone can learn Playwright's API in a weekend. Designing a framework that 200 engineers can use without breaking things takes years of deliberate practice and pattern recognition.</li>
+    <li><strong>It exposes whether you've actually owned a framework.</strong> Candidates who've only written tests talk about locators. Candidates who've built frameworks talk about fixture scoping, parallel execution, test data factories, and how to handle a test failure at 3 a.m.</li>
+    <li><strong>It predicts on-the-job performance.</strong> If you can articulate how you'd scale a test suite from 50 tests to 5,000, you're demonstrating the exact skill that separates a mid-level SDET (who maintains tests) from a senior SDET (who architects the system those tests live in).</li>
+  </ul>
+  <p>The framework design question isn't a pop quiz. It's a window into your seniority — and interviewers are watching closely.</p>
+</section>
+
+<section class="content-section">
+  <h2>The 5 Pillars Every Framework Design Answer Must Cover</h2>
+  <p>After hundreds of SDET interview panels, a clear pattern emerges. Strong framework design answers address five pillars. Weak answers address one or two and hope the interviewer doesn't notice. Guess which ones get the offer?</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. Layered Architecture & Design Patterns</h3>
+      <p>At minimum, your framework needs layers: test layer (the specs/scenarios), page/component layer (abstractions for the system under test), utility layer (helpers, data builders, config), and integration layer (CI hooks, reporting, notifications). The Page Object Model sits in the component layer — but in 2026, interviewers expect you to discuss <strong>component-based POM</strong> (small, reusable abstractions for shared elements like nav bars, modals, and form fields) rather than monolithic page objects with 200 methods. Mention the Screenplay pattern for complex workflows, and explain why tests should read like scenarios, not implementation details.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Test Data Strategy</h3>
+      <p>Test data is where most frameworks fail at scale. Strong candidates describe <strong>data factories</strong> — functions that generate valid test data with sensible defaults, allowing tests to override only what they care about. They discuss data isolation (each test creates fresh data with a unique run ID, cleaned up by a background job), and the trade-off between seeded data (fast but fragile) and API-created data (realistic but slower). The modern answer favours immutable test data with unique run identifiers and time-based cleanup — no tear-down scripts, no full database resets.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. Parallel Execution & Sharding</h3>
+      <p>A framework that runs tests sequentially isn't a framework — it's a script. Interviewers expect you to discuss: how Playwright or Selenium Grid handle parallelism (worker processes, test-file vs test-level parallelism), <strong>sharding strategies</strong> (splitting tests across CI nodes based on historical duration to minimise total run time), and the trade-offs of fully-parallel mode (faster but requires truly independent tests). Bonus points for discussing resource contention: database connections, external API rate limits, and how to configure parallelism per environment.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. CI/CD Integration</h3>
+      <p>A test framework lives or dies by its pipeline integration. You need to describe: triggering tests on PR creation, blocking merges on critical failures, surfacing results in the PR interface (not buried in a dashboard), and providing fast feedback — smoke tests under 5 minutes, full regression under 30. Discuss <strong>flaky test handling in CI</strong>: automatic retry with quarantine (a flaky test is retried; if it consistently fails only on retry, it's flagged but doesn't block the pipeline). Mention trace-on-failure with Playwright's Trace Viewer as an artifact, not a manual debugging step.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. Observability & Reporting</h3>
+      <p>Interviewers at senior level want to hear that your framework is <em>observable</em>. Test results should be queryable — "show me the last 10 runs of this test" or "which tests fail most often?" — not just a green/red blob. Discuss reporting architecture: how test results flow from CI to dashboards, how you integrate with tools like Grafana or Datadog, and how you use historical failure data to prioritise which flaky tests to fix. This is the pillar most candidates completely miss — and it's the one that signals you think about testing as an engineering system, not a checkbox.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Page Object Model — What Interviewers Actually Want to Hear in 2026</h2>
+  <p>The Page Object Model is the most-discussed design pattern in SDET interviews, and most candidates discuss it badly. Here's what interviewers are really listening for:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🏗️</span>
+      <div>
+        <h3>Component-Based POM, Not Page-Based</h3>
+        <p>Classical POM creates one class per page with every element and action on that page. Modern POM uses <strong>composable components</strong>: a NavBar component, a Modal component, a FormField component. These are shared across pages, reducing duplication and making tests resilient to UI changes. Interviewers at HMRC and Nationwide have told Mitchell they specifically listen for "component-based" vs "page-based" in framework design answers.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📐</span>
+      <div>
+        <h3>POM + Fixtures = Test Isolation</h3>
+        <p>Playwright's fixture system and POM are complementary, not competing. Fixtures handle test setup and teardown (browser context, auth state, test data). Page objects handle page interactions. The combination means tests are isolated (each gets a fresh fixture), and page objects are reusable across test files. The candidate who can explain how these two patterns work together signals mid-to-senior-level architectural understanding.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>The Anti-Patterns Interviewers Are Testing For</h3>
+        <p>Knowing what <em>not</em> to do is as important as knowing what to do. The "god page object" (one class with hundreds of methods), hard-coded test data, sleep-based waits, and test interdependency (Test B only works if Test A ran first) are anti-patterns that signal inexperience. Be ready to explain why each is harmful and what you'd do instead — interviewers will probe for this specifically.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Scaling to 500+ Engineers — The Lead/Principal-Level Question</h2>
+  <p>If you're interviewing for a senior SDET, lead, or principal role, expect this question: "<strong>How would you design a test framework for an organisation with 500 engineers across 20 teams?</strong>" This is not a hypothetical. It's testing whether you can think at the organisational level, not the project level.</p>
+  <p>A strong answer covers four things:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Framework as a shared library.</strong> The framework is versioned (semver) with breaking-change policies, a changelog, and a migration guide. Teams consume it as a dependency, not by copying code.</li>
+    <li><strong>Team autonomy within guardrails.</strong> Each team owns their tests but uses shared utilities, shared test data factories, and shared CI configuration. The framework enforces conventions without stifling teams.</li>
+    <li><strong>Test ownership and alerting.</strong> Every test has an owning team. When a test fails in CI, the owning team is paged — no orphan tests, no "someone else will fix it" culture.</li>
+    <li><strong>Centre-of-excellence model.</strong> A small platform team (2-3 SDETs) maintains the framework core, reviews contributions from feature teams, and runs the test infrastructure. Teams contribute via a well-defined RFC process, not by modifying the framework directly.</li>
+  </ul>
+  <p>Bonus points for discussing <strong>test pyramid enforcement at scale</strong>: how do you prevent 500 engineers from writing only end-to-end tests? The answer combines cultural levers (code review policies, test coverage dashboards) and technical levers (making lower-level tests easier to write than E2E tests).</p>
+</section>
+
+<section class="content-section">
+  <h2>4 Framework Design Traps That Cost Candidates Offers</h2>
+  <p>These are the moments where interviewers stop writing notes and start waiting. They're not trick questions — but they separate engineers who've built frameworks from engineers who've only used them.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #1: "I'd use the Page Object Model."</h3>
+        <p>Naming a pattern isn't answering the question. The interviewer wants to hear <em>how</em> you'd implement POM — component-based or page-based? How do you handle shared elements across pages? How does POM interact with fixtures? What happens when a page has 15 different states? A strong answer demonstrates implementation depth, not just pattern recognition.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #2: "Tests should be independent."</h3>
+        <p>This is table stakes. The follow-up question that trips candidates: "<em>How</em> do you make them independent when they share a database?" Now you need to discuss test data isolation strategies, unique identifiers per test run, API-driven state setup, and — for advanced candidates — contract testing with Pact as an alternative to end-to-end data coupling.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #3: "I'd remove slow tests to speed up CI."</h3>
+        <p>This signals that you solve problems by reducing coverage, not by engineering. The right answer discusses sharding, parallel workers, smoke-vs-regression test splitting, intelligent test selection (only run tests affected by the changed code), and using historical test duration data to balance shards. Removing tests is the last resort, not the first response.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #4: "We handle flaky tests by retrying them."</h3>
+        <p>Retries are a bandage, not a strategy. Senior candidates discuss: root-cause analysis of flakiness (is it timing? test data? environment? a real bug?), automatic quarantine of consistently flaky tests, a flakiness dashboard that tracks test reliability over time, and a defined SLA for fixing flaky tests (e.g., a test that fails 3 times in 5 runs is removed from the critical path and assigned to its owning team within 24 hours).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real Framework Design Interview Round Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels Mitchell has conducted at HMRC, Nationwide, and Accenture, here's how the framework design discussion typically flows in a 60-minute SDET interview:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–5 min</div>
+      <div class="timeline-content">
+        <h3>The Opener</h3>
+        <p>"Tell us about a test framework you designed or significantly contributed to." They're listening for ownership. Did you set it up from scratch, or inherit an existing one? Did you make architectural decisions, or just add tests to an existing structure? Be specific about what <em>you</em> did, not what your team did.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">5–20 min</div>
+      <div class="timeline-content">
+        <h3>Architecture Deep-Dive</h3>
+        <p>Expect to whiteboard or diagram your framework. They'll ask about layering (how many layers, what lives in each), design patterns (why POM over Screenplay? or vice versa?), test data (where does it come from, how is it cleaned up?), and configuration management (environment URLs, credentials, feature flags). Every layer you describe will generate a follow-up question.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">20–35 min</div>
+      <div class="timeline-content">
+        <h3>Scaling & Tradeoffs</h3>
+        <p>"Your test suite now has 5,000 tests and takes 45 minutes. What do you do?" This is where seniority is determined. They'll push you on parallelisation strategies, sharding, test selection, and — crucially — the tradeoffs. Faster CI means more infrastructure cost. More parallelism means more resource contention. Show that you can weigh these, not just list solutions.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">35–45 min</div>
+      <div class="timeline-content">
+        <h3>Operational Thinking</h3>
+        <p>"A test that passed yesterday is failing today. The application code hasn't changed. Walk me through your debugging process." This tests whether you think operationally: checking test data freshness, environment state, upstream service changes, network conditions, and whether the test itself is flaky. Candidates who can walk through a structured debugging process stand out dramatically.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">45–55 min</div>
+      <div class="timeline-content">
+        <h3>The Curveball</h3>
+        <p>"How would your framework design change if the application moved from a monolith to 50 microservices?" Or: "How would you integrate AI-powered test generation into your framework?" These test whether you can adapt your architecture to changing requirements — the hallmark of a senior engineer. The specific answer matters less than the structured reasoning you demonstrate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for the Framework Design Round — Starting Today</h2>
+  <p>You don't need to memorise a script. You need to internalise the five pillars, practise articulating your reasoning out loud, and get feedback on where your gaps are. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> and complete the 2-minute onboarding assessment. Select your target stack and seniority level. The app surfaces framework design questions calibrated to <em>your</em> interview — Junior candidates get foundational architecture questions; Lead candidates get the 500-engineer scaling discussion.</li>
+    <li><strong>Run a framework design mock interview today.</strong> Pick the framework design topic, set a 30-minute timer, and answer the questions out loud. The AI feedback scores you across technical accuracy, completeness, communication, and code quality — showing you exactly which pillar needs work.</li>
+    <li><strong>Use Job Match for your target role.</strong> Paste your target company's job description into Job Match and get 50 questions tailored to their exact stack and expectations. If the JD mentions "test framework architecture" or "scaling test automation," you'll get framework design questions specific to that role.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The framework design round is where SDET offers are won or lost. It's the round where you demonstrate that you're not just a tester who can code — you're an engineer who can architect systems. SDET Interview Coach's question bank includes framework design topics at all five seniority levels, from Junior to Lead, with model answers that demonstrate the depth interviewers expect. The spaced repetition system ensures concepts like fixture scoping, sharding strategies, and test data isolation are in your long-term memory — not forgotten by the time you sit down with the hiring manager.</p>
+
+  <p>If you're coming from a manual QA background, start with our guide on <a href="/blog/manual-qa-to-sdet-career-change">transitioning from manual QA to SDET</a> — it covers the full career-change roadmap. For Playwright-specific preparation, see our guide on <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a>, which covers the six categories every Playwright interview tests.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What is a test automation framework design question in an SDET interview?",
+        a: "A test automation framework design question asks you to architect a testing system rather than write a specific test. Typical prompts include: 'Design a test automation framework for a microservices application,' 'How would you structure testing across 20 engineering teams?,' or 'Walk me through the layers of a test framework you'd build from scratch.' Interviewers evaluate your understanding of design patterns (Page Object Model, Screenplay, component-based patterns), test data strategy, parallel execution, CI/CD integration, reporting, and how your architecture scales. This question typically appears at mid-level and above, and it's often the round that determines whether you're placed at mid, senior, or lead level.",
+      },
+      {
+        q: "Is the Page Object Model still relevant for SDET interviews in 2026?",
+        a: "Yes, but the expectation has evolved. Interviewers no longer accept 'I use the Page Object Model' as a complete answer. They expect you to discuss: component-based POM (small, reusable abstractions for shared UI elements like nav bars and modals) rather than monolithic page objects with hundreds of methods; how POM interacts with Playwright's fixture system for test isolation; the trade-offs between POM and the Screenplay pattern for complex workflows; and the anti-patterns to avoid, such as the 'god page object,' hard-coded test data, and sleep-based waits. Demonstrating this depth signals that you've actually designed frameworks, not just added tests to an existing one.",
+      },
+      {
+        q: "How do I answer 'Design a test framework that scales to 500 engineers'?",
+        a: "This is a lead/principal-level question that tests organisational thinking. A strong answer covers four areas: (1) Framework as a shared library — versioned with semver, changelog, migration guides, consumed as a dependency. (2) Team autonomy within guardrails — teams own their tests but use shared utilities, data factories, and CI config. (3) Test ownership and alerting — every test has an owning team, failures page the owner, no orphan tests. (4) Centre-of-excellence model — a small platform team maintains the framework core and reviews team contributions via an RFC process. Also discuss test pyramid enforcement at scale: how you prevent 500 engineers from writing only end-to-end tests through code review policies and making lower-level tests easier to write.",
+      },
+      {
+        q: "What's the difference between test data factories and seeded test data?",
+        a: "Seeded test data is pre-loaded into the database before tests run — it's fast but fragile because tests depend on specific data existing in specific states. Test data factories are functions that generate valid test data on demand with sensible defaults, allowing each test to create exactly what it needs and override only the fields it cares about. The modern approach favours immutable test data factories with unique run identifiers: each test run creates fresh data identified by a unique ID, and a background job cleans up data older than N hours. This eliminates tear-down scripts and the fragility of shared seeded data, while still being performant enough for CI. Strong candidates can discuss the trade-offs between both approaches and when each is appropriate.",
+      },
+      {
+        q: "Does SDET Interview Coach cover test automation framework design questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated test architecture and framework design topic area with questions spanning design patterns, test data strategy, parallel execution, CI/CD integration, reporting architecture, and scaling strategies. Questions are calibrated to five seniority levels — Junior candidates get foundational architecture questions, while Lead candidates face the full organisational-scale design discussion. The AI mock interviewer can run a dedicated framework design round, asking follow-up questions and scoring your answers on technical accuracy, completeness, communication, and code quality. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions framework architecture or test strategy.",
+      },
+      {
+        q: "How do I handle the 'design a framework' question if I've never built one from scratch?",
+        a: "Be honest about your experience level while demonstrating conceptual understanding. A good answer: 'I haven't built a framework from scratch, but I understand the architectural principles. I'd start with a layered architecture — test layer, page/component layer, utility layer, and integration layer. I'd use Playwright's fixture system for test isolation, implement component-based Page Object Model for maintainability, and design test data factories for data isolation. I'd integrate with GitHub Actions for CI/CD, configure parallel workers and sharding for fast execution, and use Playwright's Trace Viewer with trace-on-failure for debugging.' Then acknowledge what you'd need to learn: 'The areas I'd want to research further are scaling to multiple teams with a shared framework library and implementing contract testing to reduce end-to-end coupling.' This answer signals readiness to grow — which is what interviewers at mid-level are looking for.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "playwright-interview-questions-2026", "manual-qa-to-sdet-career-change"],
+  },
 ];
 
 export function getPost(slug: string): BlogPost | undefined {
