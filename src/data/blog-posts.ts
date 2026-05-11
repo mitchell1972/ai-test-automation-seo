@@ -14,6 +14,254 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "mobile-test-automation-interview-questions-2026",
+    title: "Mobile Test Automation Interview Questions — What SDET Interviewers Ask About Appium in 2026",
+    description: "Real mobile test automation interview questions from SDET panels. Covers Appium architecture, device fragmentation strategy, mobile CI/CD, touch gesture automation, and the behavioural questions that trip up candidates who've only tested on desktop. Built from real panels at HMRC, Nationwide, Accenture, and the MoD.",
+    date: "2026-05-11",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "mobile test automation interview questions",
+      "Appium interview questions 2026",
+      "mobile testing SDET interview",
+      "mobile automation testing interview",
+      "Appium SDET interview prep",
+      "mobile test framework interview",
+      "mobile testing interview questions and answers",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's 11pm. Your SDET interview is tomorrow morning. You've been drilling Playwright questions all week. You can discuss fixture scoping and CI/CD integration in your sleep. Then you re-read the job description and your stomach drops: <em>"Experience with mobile test automation — Appium or equivalent."</em></p>
+  <p>You haven't written a mobile test in your life. Or maybe you've dabbled — a few Appium scripts, an emulator you set up once and forgot about. But you have no idea what an interviewer will actually ask, how deep they'll go, or whether your desktop testing experience will carry over.</p>
+  <p>This guide is for that moment. Built from 20 years of sitting on both sides of the SDET interview table — at HMRC, the Ministry of Defence, Nationwide, and Accenture — it covers exactly what interviewers ask about mobile test automation, how they separate candidates who've actually done it from those who've read about it, and how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> prepares you for mobile-specific questions so you walk in confident — even if mobile testing isn't your primary stack.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Mobile Testing Questions Are Catching Candidates Off Guard in 2026</h2>
+  <p>Three years ago, mobile testing was a specialist niche. You either worked on a mobile app full-time or you never touched Appium. The interviewer either asked about it (because the role required it) or didn't (because it didn't).</p>
+  <p>That's changed. Here's what's happening in 2026:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Mobile is eating enterprise testing.</strong> In recent panels at Nationwide and Accenture, Mitchell has watched roles advertised as "SDET — Web Automation" suddenly include a mobile testing round. Organisations with customer-facing apps want SDETs who can think across platforms, not just browsers.</li>
+    <li><strong>Appium 2.0 changed the game.</strong> The Appium 2.0 architecture — with its plugin system, decoupled drivers, and independent release cycles — means interviewers now expect candidates to understand the <em>architecture</em>, not just the API. "I can write an Appium test" isn't enough when the follow-up is "How does the Appium server communicate with XCUITest?"</li>
+    <li><strong>Mobile CI/CD is the new differentiator.</strong> Running tests on a laptop emulator isn't production testing. Interviewers want to know you've thought about device farms, parallel execution across real devices, and how mobile tests integrate with the same CI/CD pipeline that handles web tests.</li>
+  </ul>
+  <p>If you're only prepared for Playwright or Selenium questions, a mobile testing round can feel like a different language. But the principles are the same — and the gap between web and mobile testing knowledge is smaller than most candidates think.</p>
+</section>
+
+<section class="content-section">
+  <h2>The 5 Categories Every Mobile Testing Interview Covers</h2>
+  <p>In panels Mitchell has conducted and observed across government and enterprise, mobile testing questions cluster into five categories. You won't get asked all five — but you'll get asked at least two. Master them all and you can handle any mobile curveball.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. Appium Architecture & Driver Model</h3>
+      <p>"Walk me through how Appium communicates with a device." This is the foundational question. Strong candidates explain the client-server architecture: your test code sends WebDriver protocol commands to the Appium server, which translates them into platform-specific automation commands via drivers (XCUITest for iOS, UIAutomator2/Espresso for Android). The follow-up is always about Appium 2.0: "Why did they decouple the drivers from the core server?" The answer — independent release cycles, smaller install footprint, plugin ecosystem — signals you follow the ecosystem, not just the syntax.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Locator Strategy for Mobile</h3>
+      <p>"How do you choose locators for a mobile app?" Mobile locators are fundamentally different from web locators. There's no CSS in native apps. You're working with accessibility IDs, XPath (slow — mention this), class names, and Android's resource IDs. The sophisticated answer prioritises accessibility IDs (fastest, most stable, doubles as accessibility testing), uses XPath only as a last resort, and discusses platform-specific strategies: resource-id on Android, accessibilityIdentifier on iOS. Bonus: mention how Appium 2.0's element finding plugins (like image-based location) fit into a locator strategy.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. Device & Platform Fragmentation Strategy</h3>
+      <p>"You have 50 Android devices and 20 iOS devices to test against. How do you choose?" This is the scaling question that separates seniors. The answer isn't "test on all of them" — it's about device coverage matrices, market-share-based prioritisation, OS version stratification, and using device farms (Sauce Labs, BrowserStack, AWS Device Farm) for breadth while keeping a small set of physical devices for debugging. Strong candidates discuss the trade-off between emulator speed and real-device fidelity, and when each is appropriate.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. Touch Gesture Automation</h3>
+      <p>"How do you automate a swipe-to-delete gesture?" Mobile testing involves gestures that don't exist on desktop: swipes, pinches, long-presses, scrolls, multi-touch. The candidate who can discuss the W3C Actions API for mobile — how to chain pointer down, move, and up actions with specific coordinates — demonstrates real mobile automation experience. The trap is saying "I'd use a swipe method from the framework." The interviewer wants to know you understand the <em>underlying action chain</em>, not just the convenience wrapper.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. Mobile CI/CD & Device Farm Integration</h3>
+      <p>"Walk me through how your mobile tests run in CI." This tests operational thinking. A strong answer covers: how device farm sessions are provisioned (on-demand vs. dedicated), how app binaries are built and uploaded (iOS .app/.ipa signing, Android .apk), how test results are collected and reported, and — critically — how you handle the flakiness that comes from network latency, device sleep states, and OS-level pop-ups. Mentioning Appium's new plugin for test distribution across device farms shows you're current with the ecosystem.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Appium Architecture Question — What Interviewers Actually Want to Hear</h2>
+  <p>In almost every mobile testing interview, the question comes: "Explain how Appium works." Most candidates describe the client-server model and stop. That's a mid-level answer. Here's what interviewers at senior level are listening for:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🏗️</span>
+      <div>
+        <h3>Appium 1.x vs 2.0: The Architecture Shift</h3>
+        <p>Appium 1.x bundled all drivers with the core server. You installed Appium and got everything — UIAutomator2, XCUITest, Espresso, Windows, Mac, you name it. Appium 2.0 decoupled drivers into independent packages. Now you install the Appium server, then install only the drivers you need. A senior candidate explains <em>why</em>: independent release cycles mean the XCUITest driver can ship updates without waiting for an Appium release. Plugins (execute scripts, element finders, test distribution) can be composed modularly. And the install footprint drops from hundreds of megabytes to just what you need.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📐</span>
+      <div>
+        <h3>The Session Lifecycle — Where Tests Fail Silently</h3>
+        <p>A strong candidate can walk through the full session lifecycle: client creates a session with desired capabilities → Appium server starts a session on the target device → driver establishes automation connection (XCTest session on iOS, ADB + UIAutomator2 on Android) → commands flow as HTTP requests → server translates to native automation calls → session ends. The "where things go wrong" part is what interviewers probe: ADB connection drops, XCTest runner crashes, device goes to sleep mid-test. Knowing the failure points in the lifecycle demonstrates operational experience, not just API knowledge.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Desired Capabilities — More Than Just a Config Block</h3>
+        <p>Every candidate knows about desired capabilities. Few can discuss them as a strategy. The sophisticated answer treats capabilities as the contract between your test and the test environment: platformName, platformVersion, deviceName, app (path to .apk/.app), automationName (which driver to use), and — increasingly important — Appium 2.0's new capabilities for plugin configuration, session timeouts, and event timings. If you can explain why you'd set <code>newCommandTimeout</code> differently for CI vs local runs, you've moved past API memorisation into operational thinking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Mobile vs Web Automation — The Framework Design Question That Trips Candidates</h2>
+  <p>Here's a question Mitchell has asked in SDET panels at the MoD and HMRC: "<strong>You've built a Playwright web test framework. Now we need mobile coverage. How do you extend your existing framework, or do you build a new one?</strong>"</p>
+  <p>This is not a trick. It's testing whether you think architecturally about testing across platforms. A weak answer says: "I'd add Appium to the existing framework." A strong answer discusses:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Shared test layer, platform-specific automation layer.</strong> The test scenarios (what to test) belong in a shared layer — they describe behaviour, not implementation. The automation layer (how to test) is platform-specific: Playwright for web, Appium for mobile, potentially shared Page Object patterns adapted for native screens rather than web pages.</li>
+    <li><strong>Unified reporting but separate execution.</strong> Both web and mobile tests should report to the same dashboard — but they shouldn't run in the same CI job. Mobile tests need device farm provisioning, which has different latency and cost characteristics than browser-based tests.</li>
+    <li><strong>Test data strategy across platforms.</strong> If a user journey spans web and mobile (e.g., register on web, verify on mobile app), your test data factory needs to support cross-platform state management. This is where most multi-platform frameworks fail — they test each platform in isolation and miss the cross-platform flows users actually experience.</li>
+  </ul>
+  <p>The candidate who can articulate these architectural decisions — who sees mobile testing as part of a testing <em>system</em>, not a separate island — walks out with the offer.</p>
+</section>
+
+<section class="content-section">
+  <h2>3 Mobile Testing Interview Traps That Cost Candidates Offers</h2>
+  <p>These are the moments where interviewers stop taking notes and start leaning back. They're not unfair — but they separate candidates who've actually tested on mobile devices from those who've only read the Appium documentation.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #1: "I test on emulators — they're fast and reliable."</h3>
+        <p>Emulators are fast. They're also wrong about critical things: Bluetooth state, battery optimisation, camera integration, push notifications, biometric authentication, and anything involving actual hardware sensors. A candidate who only mentions emulators signals they've never debugged a production issue that only reproduced on physical devices. The right answer: "Emulators for early-stage development and smoke tests — they're fast and catch obvious issues. Physical devices for regression and release validation — they catch hardware-specific bugs and performance issues that emulators mask. A tiered approach with emulators in the inner CI loop and real devices in the outer loop gives the best speed-to-confidence ratio."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #2: "I use XPath for all my mobile locators — it always works."</h3>
+        <p>XPath works on mobile. It's also the slowest locator strategy, the most brittle (one layout change breaks it), and the least accessible (you're ignoring accessibility IDs that help real users). On Android, XPath-based locators can be 10x slower than resource-id or accessibility ID lookups. On iOS, deep XPath queries on complex view hierarchies can cause timeout failures in CI. The winning answer: "I prioritise accessibility IDs first — they're fast, stable, and double as accessibility testing. I use resource-id on Android and accessibilityIdentifier on iOS. I use XPath only when there's genuinely no other way to locate an element, and I document why."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #3: "Flaky tests? Just add retries."</h3>
+        <p>Mobile test flakiness has specific, diagnosable causes that retries don't fix: device sleep states, OS-level permission pop-ups, network condition changes, app backgrounding, battery optimisation killing the automation server, and ADB connection drops. A candidate who jumps to retries hasn't done the root-cause work. The strong answer: "I first diagnose the category of flakiness. Device state issues get handled with pre-test health checks and wake-up commands. OS pop-ups get handled with auto-granting permissions via desired capabilities. Network flakiness gets handled with retry <em>with backoff</em> on setup, not on assertions. Only genuinely transient issues (rare race conditions) get assertion-level retries, and they're tracked in a flakiness dashboard with an SLA for fixing them."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Behavioural Questions — "Tell Us About a Mobile Testing Challenge"</h2>
+  <p>Every SDET interview has behavioural questions. But mobile testing behavioural questions have a specific flavour interviewers use to test whether you've actually been in the trenches. Here are the ones Mitchell has used in real panels:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"Tell us about a time a mobile test passed locally but failed in CI."</h3>
+      <p>This has happened to every mobile tester. The answer an interviewer wants to hear: you describe the specific investigation — checking device logcat/Console.app output, comparing emulator vs. real device behaviour, identifying that the device in CI had a different OS patch level, that the app took longer to launch on a cold-start, or that a system pop-up ("Allow notifications?") appeared in CI but not locally because you'd already dismissed it. The STAR-format answer should end with the fix you implemented (pre-launch health checks, capability-based permission handling, environment-specific timeouts) and what you changed to prevent it recurring.</p>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <h3>"How did you convince your team to invest in mobile testing?"</h3>
+      <p>Mobile testing infrastructure — device farms, Appium server maintenance, test device procurement — costs money and time. This question tests your ability to advocate for quality with business stakeholders. A strong answer uses data: "I tracked production defects that only reproduced on specific devices or OS versions. I showed that 40% of our crash reports came from Android 12 on Samsung devices — a combination our web-only test suite never covered. I presented the cost of those crashes (user churn, app store rating impact) against the cost of running a device farm (pennies per test minute). The business case made itself."</p>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <h3>"A developer says mobile test automation isn't worth it. What do you say?"</h3>
+      <p>This tests your ability to handle pushback without getting defensive. The wrong answer: "They don't understand testing." The right answer: "I'd ask what their specific concern is. If it's execution speed — mobile tests are slower than unit tests, but they catch cross-platform integration bugs unit tests miss. If it's flakiness — I'd show them our flakiness dashboard, which tracks test reliability and shows that properly architected mobile tests achieve 95%+ pass rates. If it's maintenance cost — I'd compare it to the cost of manual regression testing across 15 device/OS combinations, which is what they'd be doing without automation. The conversation isn't about whether mobile testing is 'worth it' — it's about which bugs are most expensive to fix in production, and whether mobile automation catches them sooner."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real Mobile SDET Interview Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels Mitchell has conducted at HMRC, Nationwide, and consulting for Accenture, here's how mobile testing questions typically appear in a 60-minute SDET interview:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Experience Probe</h3>
+        <p>"Tell us about a mobile automation project you've worked on." Even if you're mainly a web tester, be honest about your mobile experience level while demonstrating conceptual understanding. "I've primarily worked with Playwright for web, but I understand Appium's architecture, the driver model, and mobile locator strategies. I've set up Appium locally to experiment with iOS and Android testing." Honesty plus curiosity beats pretending you've led a mobile programme when you haven't.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>Technical Deep-Dive</h3>
+        <p>Expect Appium architecture questions, locator strategy, desired capabilities, and gesture automation. You may be asked to whiteboard a test for a mobile scenario ("Write a test that logs in, searches for a product, and adds it to a basket on a mobile app"). Focus on the test structure — setup, execution, assertions, teardown — rather than perfect syntax. Mention mobile-specific concerns: handling the keyboard dismissal, waiting for animations to complete, dealing with loading spinners.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>System Design & Scaling</h3>
+        <p>"How would you set up mobile test automation for a team shipping to both iOS and Android weekly?" This is where you discuss device farm strategy, CI/CD integration, parallel execution, and — for senior candidates — how you'd share test logic across platforms while handling platform-specific behaviours. Mention the trade-off between code-reuse (shared test layer) and platform-specific reliability (separate automation layers).</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–50 min</div>
+      <div class="timeline-content">
+        <h3>Behavioural & Operations</h3>
+        <p>STAR-format questions about mobile-specific challenges: dealing with OS updates breaking tests, debugging device-specific failures, managing a device lab, convincing a team to invest in mobile automation. This is where interviewers assess whether you've actually managed mobile testing in production — or just read about it.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">50–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their mobile testing infrastructure: "Do you use a device farm or physical devices? What's your biggest mobile testing pain point? How do you handle OS update testing?" Questions that probe their current setup show you're thinking about solving their problems, not just any hypothetical mobile testing scenario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Why Mobile Testing Knowledge Is Becoming Non-Negotiable for SDETs</h2>
+  <p>If you're thinking "I'll just stick to web testing," here's something to consider: the UK SDET job market is undergoing a quiet shift. Roles that were previously pure Playwright or Selenium are increasingly listing mobile testing as "desirable" or "nice to have." But here's what's actually happening — when two candidates have identical web testing skills and one can discuss Appium architecture, that candidate gets the offer. It's not in the job spec as essential, but it's the tiebreaker.</p>
+  <p>More importantly, the salary premium for mobile + web SDETs is growing. In panels at Accenture, Mitchell has watched compensation bands for multi-platform SDETs push 15–20% higher than web-only roles. The reason is simple: organisations with customer-facing apps need testing that spans browsers <em>and</em> devices. Someone who can design a testing strategy for both platforms saves the organisation from hiring two specialists — and that consolidation is worth a premium.</p>
+  <p>The window for being early to mobile testing expertise is still open. By late 2026, it won't be a differentiator — it'll be expected.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your Mobile Testing Interview — Starting Tonight</h2>
+  <p>You don't need to have built a mobile test framework from scratch to pass a mobile testing interview. You need to understand the five categories, be able to articulate mobile testing concepts clearly, and — most importantly — demonstrate that you can <em>think</em> about mobile testing even if you haven't done it at scale. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> and complete the 2-minute onboarding assessment. Select Appium as your target stack — even if it's not your primary stack, the app will surface mobile-specific questions at your seniority level. The 800+ question bank includes Appium architecture, mobile locator strategy, gesture automation, device farm integration, and behavioural questions about mobile testing challenges.</li>
+    <li><strong>Run a mobile testing mock interview today.</strong> Pick the Appium stack, set a 30-minute timer, and answer the questions out loud. The AI feedback scores you on technical accuracy, completeness, communication, and code quality — showing you exactly where your mobile testing knowledge gaps are before the real interview exposes them.</li>
+    <li><strong>Use Job Match for your target role.</strong> If the job description mentions "mobile testing," "Appium," "iOS/Android automation," or "cross-platform testing," paste it into Job Match. You'll get 50 questions tailored to that exact role's mobile testing expectations — no guessing whether they'll ask about device farms, gesture automation, or CI/CD integration.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The candidates who prepare for mobile testing questions now are the ones who'll walk into interviews in late 2026 with a skill most of their competition hasn't developed yet. Mobile testing isn't a separate discipline from SDET work — it's an extension of the same architectural thinking, the same testing principles, and the same engineering mindset. The frameworks are different. The thinking is the same. And with <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a>, you can build that mobile testing confidence before you ever sit down with an interviewer.</p>
+
+  <p>If you're coming from a manual QA background, start with our guide on <a href="/blog/manual-qa-to-sdet-career-change">transitioning from manual QA to SDET</a> — it covers the full career-change roadmap. For web automation interview preparation, see our guide on <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a> and our deep-dive on <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "Do I need mobile testing experience to pass an SDET interview that asks about Appium?",
+        a: "Not necessarily — but you do need conceptual understanding. Interviewers aren't looking for years of mobile testing experience unless the role is specifically a mobile SDET position. They're testing whether you understand mobile automation concepts: Appium's client-server architecture, how drivers work (XCUITest for iOS, UIAutomator2/Espresso for Android), mobile locator strategies (accessibility IDs vs XPath), and the operational challenges of mobile CI/CD (device farms, OS fragmentation, emulator vs real device tradeoffs). SDET Interview Coach's Appium question bank covers these at all five seniority levels, from foundational architecture questions for junior roles to device farm scaling strategies for lead positions.",
+      },
+      {
+        q: "What's the difference between Appium 1.x and Appium 2.0, and why do interviewers ask about it?",
+        a: "Appium 1.x bundled all drivers (XCUITest, UIAutomator2, Espresso, Windows, etc.) into a single installation. Appium 2.0 decoupled drivers into independent npm packages — you install what you need. The key changes interviewers care about: (1) Drivers now have independent release cycles, so iOS automation updates don't wait for an Appium server release. (2) A plugin system lets you compose functionality (custom element finders, test distribution, execution scripts) modularly. (3) The install footprint is dramatically smaller. Interviewers ask about this to test whether you follow the ecosystem or just use the API. Candidates who can explain the architectural rationale behind the 2.0 changes signal depth of understanding.",
+      },
+      {
+        q: "Should I test on emulators or real devices for mobile automation?",
+        a: "The correct interview answer is both, used strategically. Emulators are fast and reproducible — use them in the inner CI loop for smoke tests and early-stage development. They catch logical errors and obvious UI breaks. But emulators can't accurately simulate hardware sensors (camera, Bluetooth, GPS, biometrics), battery optimisation behaviours, push notifications, or real-world network conditions. Physical devices should be used for regression testing, release validation, and any feature involving hardware interaction. A tiered approach — emulators for speed in the PR pipeline, real devices in a device farm for nightly regression — gives the best balance of speed and production fidelity. Mentioning device farms like Sauce Labs, BrowserStack, or AWS Device Farm signals operational awareness.",
+      },
+      {
+        q: "How do I handle mobile test flakiness differently from web test flakiness?",
+        a: "Mobile test flakiness has distinct causes that web tests don't face: device sleep states (the device powers down mid-test), OS-level permission pop-ups (notifications, location, camera access), app backgrounding, ADB connection drops on Android, XCTest runner crashes on iOS, and network condition variability. A strong approach: (1) Pre-test health checks — verify the device is awake, ADB/XCTest is connected, and the app is in the foreground. (2) Auto-grant permissions via desired capabilities so pop-ups never appear. (3) Use explicit waits for app state transitions (cold start vs warm start have different launch times). (4) Retry on setup failures, not on assertions — if an assertion fails, the test should fail so the bug is investigated. (5) Track flakiness by root cause in a dashboard with SLAs for fixing each category. This operational approach demonstrates that you treat mobile testing as an engineering system, not a collection of scripts.",
+      },
+      {
+        q: "Which mobile locator strategy should I use for Appium tests?",
+        a: "The recommended locator priority order for Appium: (1) Accessibility ID — fastest, most stable, and doubles as accessibility validation. Use content-desc on Android and accessibilityIdentifier on iOS. (2) Resource ID (Android) or name (iOS) — fast lookups when accessibility IDs aren't available. (3) Class name — useful for iterating over lists of similar elements, but brittle if the UI framework changes. (4) XPath — use only as a last resort. XPath is significantly slower on mobile (10x+ on Android compared to resource-id lookups), brittle to layout changes, and indicates you haven't worked with developers to add proper accessibility identifiers. A strong answer also mentions that Appium 2.0 supports custom element-finding plugins (image-based location, AI-powered locators), which can supplement traditional strategies for complex scenarios like custom-drawn UI elements.",
+      },
+      {
+        q: "Does SDET Interview Coach cover mobile test automation questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated mobile testing topic area with questions covering Appium architecture, driver models (XCUITest, UIAutomator2, Espresso), mobile locator strategies, touch gesture automation, device farm integration, mobile CI/CD pipeline design, and behavioural questions about mobile testing challenges. Questions are calibrated to five seniority levels — Junior candidates get foundational Appium architecture questions, while Lead candidates face device farm scaling strategies and cross-platform framework design decisions. The app supports Appium as one of six tech stacks, alongside Playwright, Selenium, Cypress, and AI-native testing. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions mobile testing or Appium.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "playwright-interview-questions-2026", "test-automation-framework-design-interview", "manual-qa-to-sdet-career-change"],
+  },
+  {
     slug: "sdet-interview-coach-app-guide",
     title: "SDET Interview Coach — The Mobile App That Prepares You for Real SDET Interviews",
     description: "SDET Interview Coach is a mobile interview-prep app with 800+ questions, mock interviews, AI-graded feedback, and Job Match. Built for manual QAs transitioning to automation and experienced SDETs targeting senior roles.",
