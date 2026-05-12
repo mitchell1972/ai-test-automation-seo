@@ -14,6 +14,276 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "qa-career-change-to-sdet-interview-questions",
+    title: "QA Career Change to SDET — Interview Questions Manual Testers Face in 2026",
+    description: "The interview questions that manual testers face when transitioning to SDET roles. Covers the 'automation gap' questions, STAR-format behavioural traps, coding-round expectations for career changers, and how to articulate manual testing experience as a strength. Built from real panels at HMRC, Nationwide, Accenture, and the MoD.",
+    date: "2026-05-12",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "QA career change to SDET interview questions",
+      "manual tester to automation interview",
+      "manual QA to SDET interview questions 2026",
+      "career change to test automation interview",
+      "SDET career transition interview prep",
+      "how to become SDET interview questions",
+      "manual testing to automation testing interview",
+      "QA to SDET interview tips",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's midnight. You're a manual tester with five years of experience finding bugs that developers miss. You know the product better than anyone. But your salary hasn't moved in two years, and every job posting you see says <em>"SDET — must have automation experience."</em></p>
+  <p>You've been learning Playwright on weekends. You've written twenty test scripts. You can locate elements and write assertions. But then the doubt creeps in: <em>what if they ask me something I don't know? What if my manual testing background counts against me? What if I freeze when they ask me to explain a test framework I've only read about?</em></p>
+  <p>This guide is for that moment. Built from 20 years of sitting on both sides of the SDET interview table — at HMRC, the Ministry of Defence, Nationwide, and Accenture — it covers exactly what interviewers ask career changers, how they evaluate manual testing backgrounds, and the specific questions that separate the career changers who get offers from those who get "we'll keep your CV on file."</p>
+  <p>More importantly, it shows you how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> prepares you for these exact questions — including the dedicated QA→SDET career-change mock interview track that bridges your existing testing knowledge with the automation concepts interviewers expect.</p>
+</section>
+
+<section class="content-section">
+  <h2>The Midnight Thought Every Manual Tester Has — and Why It's Wrong</h2>
+  <p>Every manual tester who's ever Googled "how to become an SDET" has had this thought: <em>"I'm not a real engineer. I don't have a CS degree. They'll see right through me."</em></p>
+  <p>Here's what Mitchell has observed from 20 years of hiring SDETs across HMRC, the MoD, Nationwide, and Accenture: <strong>manual testers bring something that CS graduates and pure developers don't — and interviewers know it.</strong></p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>You can find bugs engineers miss.</strong> Years of exploratory testing give you an intuition for where software breaks. Developers test the happy path. You test the edge cases. That instinct is worth more than any framework knowledge in an interview — if you can articulate it.</li>
+    <li><strong>You understand the user.</strong> The fastest-growing SDET competency in 2026 isn't coding — it's understanding what to test. AI can write test scripts. AI can't decide which scenarios matter most. That judgement comes from manual testing experience, and interviewers at Nationwide have told Mitchell they specifically look for it in career changers.</li>
+    <li><strong>You've already passed the hardest test.</strong> Learning a new framework is pattern recognition. You've spent years recognising bug patterns, regression patterns, and workflow patterns. Playwright or Selenium is just a new set of patterns. The cognitive skill that made you a good manual tester — systematic observation, pattern recognition, attention to detail — is the same skill that makes a good automation engineer.</li>
+  </ul>
+  <p>The gap isn't intelligence or aptitude. It's knowing how to present your manual testing experience as a <em>strength</em> in an SDET interview — and knowing which automation gaps you genuinely need to close before you sit down with a panel.</p>
+</section>
+
+<section class="content-section">
+  <h2>The 5 Categories Every Career-Change SDET Interview Covers</h2>
+  <p>After conducting hundreds of SDET interviews and watching career changers navigate the process, a clear pattern emerges. Interviewers probe five categories when you're coming from a manual QA background. You won't get asked all five — but you'll get asked at least three. The career changers who prepare for all five walk out with offers.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. The Automation Gap Question</h3>
+      <p>"I see your background is mostly manual testing. What automation have you done?" This is the opener in 90% of career-change interviews. The trap is apologising for your manual background. The winning answer: "My primary experience is manual testing, which means I understand the product deeply and know where it breaks. Over the past [X] months, I've been building automation skills with [Playwright/Selenium]. I can write tests, design fixtures, and integrate with CI/CD. I've built [specific project]. I'm not pretending to be a senior automation architect — but I can contribute automation from day one and grow into framework ownership." Honesty about your level plus demonstrated self-initiative is the combination interviewers want.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. The "Talk Like an Engineer" Test</h3>
+      <p>Manual testers describe bugs. SDETs describe root causes, tradeoffs, and architectural implications. Interviewers probe this shift specifically with career changers. They'll ask: "Why did you choose that locator?" not "Does the test pass?" They want to hear you discuss the reasoning behind technical decisions — why explicit waits over implicit waits, why component-based Page Object Model over monolithic page objects, why test data factories over seeded databases. This language shift is as important as the technical skills, and it's the one most career changers underestimate. SDET Interview Coach's AI-graded feedback specifically scores you on communication — teaching you how to phrase answers the way interviewers expect.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. The Coding Round — Calibrated for Career Changers</h3>
+      <p>When you're coming from manual QA, the coding round is often adjusted. A mid-level SDET candidate might be asked to design a test framework from scratch. A career changer is more likely to be asked: "Write a Playwright test for this login form" or "Debug this failing test." The interviewer is testing whether you can read and write basic automation code — not whether you can architect a framework for 500 engineers. The trap is panicking and underperforming. The right preparation: practise writing tests under time pressure so the coding round feels familiar, not foreign. SDET Interview Coach's timed mock interviews simulate this exact pressure.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. The Behavioural STAR Questions — With an Automation Twist</h3>
+      <p>"Tell us about a time you found a bug that automation missed." "Describe a situation where you had to convince someone to test something differently." These are standard behavioural questions, but interviewers adapt them for career changers. They're testing whether your manual testing experience is a crutch or a foundation. The STAR-format answer that wins: Situation (a critical bug in production that regression tests didn't catch), Task (you needed to prevent this class of bug recurring), Action (you identified the gap in automation coverage and proposed a new test scenario — even if someone else wrote the automation), Result (the bug class was eliminated from subsequent releases). You don't need to have written the code. You need to demonstrate the <em>testing thinking</em> that drives automation decisions.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. The "Why Should We Hire a Career Changer?" Question</h3>
+      <p>This question sometimes comes explicitly. Sometimes it's implied in every other question. The interviewer is testing whether you see your manual background as a weakness to overcome or a strength to leverage. The weak answer: "I know I don't have as much automation experience, but I'm a fast learner." The strong answer: "I bring five years of domain expertise and bug-finding intuition that a fresh CS graduate can't match. I know this product's failure patterns. I know where the regressions hide. And I've spent the past six months building the automation skills to translate that knowledge into reliable test suites. I'll find bugs a pure automation engineer would miss because I think like a tester first and an engineer second." This reframe — manual testing as unique value, not a deficit — is what gets career changers hired.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Automation Gap Question — What Interviewers Actually Want to Hear</h2>
+  <p>This question appears in nearly every career-change SDET interview. It's the question that makes manual testers' stomachs drop, because it feels like the moment the interviewer realises you're not a "real" SDET. But here's what's actually happening: the interviewer already knows you're a career changer from your CV. They're not testing whether you're a senior automation architect. They're testing three things:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Self-Awareness (Not Self-Deprecation)</h3>
+        <p>Interviewers want to hear that you know where you are on the learning curve. A candidate who says "I know everything about automation" from a manual background loses credibility instantly. But a candidate who says "I'm just a manual tester, I don't really know automation" also loses — they've positioned themselves as a charity hire, not a value hire. The sweet spot: "I've been a manual tester for X years, which means I understand the product and its failure patterns deeply. I've been building automation skills for X months — I can write tests, use fixtures, and integrate with CI/CD. I'm ready to contribute from day one, and I'm actively closing the gap to framework ownership. Here's what I've built to prove it." Self-awareness plus demonstrated initiative is the combination that wins.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📋</span>
+      <div>
+        <h3>Concrete Evidence, Not Promises</h3>
+        <p>The interviewer's internal monologue when a career changer says "I'm a fast learner" is: <em>everyone says that.</em> What they're actually listening for is evidence. Have you built a GitHub repo with test scripts? Have you contributed to an open-source testing project? Have you automated a workflow at your current job, even if it wasn't your official role? The candidate who can point to a specific project — "here's a Playwright suite I built that tests our internal dashboard" — immediately separates from the candidate who can only talk about what they <em>plan</em> to learn. SDET Interview Coach's bootcamp tracks help you build exactly this kind of portfolio evidence, with AI mentors guiding you from zero automation knowledge to working test suites.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Realistic Timeline Expectations</h3>
+        <p>Career changers who say "I'll be architecting the test framework in three months" signal naivety. Those who say "it'll take me two years to be useful" signal low confidence. The answer that resonates with interviewers: "In the first month, I'll be writing tests and learning the framework conventions from the senior SDETs. By month three, I'll be contributing independently to test suites and reviewing peers' test code. Within six months, I expect to be contributing to framework design discussions, applying my product knowledge to improve test coverage and catch gaps that pure automation engineers might miss." This timeline is ambitious enough to show drive, realistic enough to show judgement, and specific enough to show you've thought about it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>3 Career-Change Interview Traps That Cost Manual Testers Offers</h2>
+  <p>These are the moments where interviewers stop writing and start waiting. They're not unfair — but they separate career changers who've prepared for the <em>interview</em> from those who've only prepared the <em>technical skills</em>.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #1: "I want to move into automation because manual testing is boring."</h3>
+        <p>This answer tells the interviewer you undervalue the very skill they might be hiring you for — deep product knowledge and bug-finding intuition. It also signals you might jump again when automation becomes "boring." The right answer: "I enjoy manual testing — it's made me excellent at finding bugs and understanding user behaviour. I want to add automation because it lets me apply that knowledge at scale. Instead of manually regressing ten scenarios per release, I can automate those ten and spend my time on the complex exploratory testing that automation can't replace. I'm not leaving manual testing behind — I'm amplifying it with automation." This reframe positions you as a tester who's levelling up, not a tester who's running away.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #2: "I've been learning Playwright for two weeks — I'm ready."</h3>
+        <p>Overconfidence from a career changer triggers immediate scepticism. The interviewer has seen hundreds of candidates — they know the difference between two weeks and two months of real practice. They'll probe with a follow-up: "What was the hardest bug your Playwright tests caught?" A candidate with two weeks of experience can't answer this. A candidate with two months can describe a specific race condition, a flaky locator they stabilised, or a CI/CD integration challenge they solved. The lesson: don't overstate your automation experience. Let the depth of your answers demonstrate your level. And if you're early in your journey, SDET Interview Coach can accelerate your learning with structured bootcamp tracks that compress months of trial-and-error into focused, guided practice.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #3: "I don't have any questions — you've covered everything."</h3>
+        <p>When a career changer doesn't ask questions, the interviewer assumes one of two things: you're not genuinely interested in the role, or you don't know enough to ask informed questions. Both are fatal. The winning approach: ask questions that demonstrate you're thinking about <em>their</em> problems. "How do you currently handle the handoff between manual and automated testing? What's your biggest testing pain point that you'd want me to focus on in the first 90 days? Do you have a mentoring structure in place — someone I could learn the framework conventions from while I contribute from day one?" These questions show you're thinking about how you'll fit into their team and solve their problems — which is exactly what a hiring manager wants to hear from any candidate, career changer or not.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>QA Roles Are Being Automated — The Ones Who Level Up Keep Their Seat</h2>
+  <p>There's an uncomfortable truth that most career-change guides won't tell you directly. Mitchell has watched it unfold across HMRC, Nationwide, and consulting engagements at Accenture: <strong>manual QA roles are shrinking, not growing.</strong></p>
+  <p>This isn't speculation. It's already happening. Here's what's driving it:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>AI-powered testing tools are automating the manual tester's workflow.</strong> In 2026, tools that generate test cases from requirements, self-heal broken locators, and triage test failures autonomously are reducing the need for large manual QA teams. The manual testers who remain are the ones who add value beyond what AI can do — and increasingly, that means understanding automation.</li>
+    <li><strong>Organisations are consolidating testing into SDET roles.</strong> Mitchell has watched organisations replace three manual testers with one SDET who can cover both manual and automated testing. The economics are brutal: an SDET earning £70,000 replaces three manual testers earning £45,000 each. The saving is £65,000 per year. Organisations aren't doing this because they dislike manual testers — they're doing it because the maths works.</li>
+    <li><strong>The window for transition is narrowing.</strong> Right now, in mid-2026, being a manual tester with automation skills is a differentiator. By late 2027, it'll be the minimum bar. The manual testers who make the transition in the next 12-18 months will have seats when the consolidation accelerates. Those who wait will be competing for a shrinking pool of pure manual testing roles against candidates who <em>did</em> make the transition.</li>
+  </ul>
+  <p>This isn't fear-mongering. It's market reality from someone who's watched the UK testing job market evolve over two decades. The good news is that manual testers have a head start — they understand testing in a way that pure developers don't. Adding automation skills to that foundation creates a testing professional who can think like a tester <em>and</em> build like an engineer. That combination is exactly what organisations are paying a premium for in 2026.</p>
+  <p style="margin-top: 1.5rem;"><strong>The question isn't whether to make the transition. It's whether you'll make it before the window closes.</strong></p>
+</section>
+
+<section class="content-section">
+  <h2>What a Real Career-Change SDET Interview Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels Mitchell has conducted and observed across HMRC, Nationwide, and Accenture, here's how career-change SDET interviews typically unfold. Notice the differences from a standard mid-level SDET interview — the panel is evaluating your potential and trajectory, not just your current technical depth.</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Warm-Up & Background Probe</h3>
+        <p>"Walk us through your testing background." This is your moment to frame your manual testing experience as a strength. Structure your answer as a journey: where you started, what you learned about the product and its failure patterns, what drove you to learn automation, and what you've built so far. Don't apologise for the manual testing years — they're your differentiator. This is also where the panel assesses whether you can "talk like an engineer" — using terms like test strategy, coverage, risk assessment, and root cause analysis rather than just describing what you clicked.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>The Automation Gap Assessment</h3>
+        <p>"What's the most complex automation you've written?" This is where the panel probes your actual technical depth. For a career changer targeting a junior or mid-level SDET role, they're looking for: working knowledge of one framework (Playwright, Selenium, or Cypress), understanding of basic test patterns (Arrange-Act-Assert, Page Object Model basics), ability to discuss a test you've written and why you made specific technical choices (locators, waits, assertions). They're <em>not</em> expecting framework architecture knowledge unless you've claimed it. Be honest about your level — overstatement gets exposed in follow-ups, and trust is harder to rebuild than technical gaps are to close.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>Coding or Whiteboard Exercise</h3>
+        <p>For career changers, this is usually a practical test-writing exercise, not a system-design question. "Write a Playwright test that logs in, navigates to the dashboard, and verifies the user's name appears." Or: "Here's some test code. Find the bugs and explain what you'd fix." The panel is testing: can you write syntactically correct automation code? Do you structure tests logically? Do you use appropriate waits and assertions? Can you explain your choices? The exercise is typically simpler than what a mid-level SDET would face — but still requires genuine hands-on practice, not just reading documentation.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–50 min</div>
+      <div class="timeline-content">
+        <h3>Behavioural & Cultural Fit</h3>
+        <p>STAR-format questions with a career-change adaptation: "Tell us about a time you identified a testing gap that others missed." "Describe when you had to learn a new technical skill quickly to solve a problem." "How do you handle feedback on your code from more experienced automation engineers?" The last question is critical — the panel is testing your coachability. Career changers who get defensive about code review feedback signal they'll be difficult to mentor. Those who demonstrate eagerness to learn and improve signal they'll grow quickly in the role.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">50–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their mentoring and onboarding: "How do you support career changers in their first six months? What's the team's approach to code review and knowledge sharing? What's the biggest gap between your current test coverage and where you want it to be?" Questions about growth and contribution show you're thinking about how you'll add value — which is exactly what a hiring manager weighing the risk of a career-changer hire wants to hear.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Real Career-Change Interview Scenarios — What Panels Actually Ask</h2>
+  <p>Drawing from panels Mitchell has conducted at HMRC, Nationwide, and consulting for Accenture, here are the specific scenarios that appear in career-change SDET interviews — and what a strong answer looks like.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"I see you've been a manual tester for five years. Why should we hire you for an SDET role instead of a CS graduate?"</h3>
+      <p>This is the direct version of the question that hovers over every career-change interview. The wrong answer compares yourself to the CS graduate. The right answer positions yourself as a different value proposition entirely: "A CS graduate can write code. I can find bugs. I've spent five years learning where this type of software breaks — in production, under real user behaviour, at scale. I know which scenarios matter because I've watched them fail. When I write an automation test, I'm not just checking that a button works — I'm checking all the edge cases I've seen cause production incidents. A pure CS graduate will take two years to develop that instinct. I bring it on day one. The automation skills I'm building make that instinct scalable. That's the combination I'm offering."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"Walk me through a test scenario you'd automate — from manual test case to automated script."</h3>
+      <p>This tests whether you can translate your manual testing knowledge into automation thinking. A strong answer: "Take a login feature. As a manual tester, I'd test: valid credentials, invalid password, locked account, password reset flow, session timeout, concurrent sessions, SQL injection attempts. To automate this, I'd create a test data factory that generates users with different states — active, locked, expired password, MFA-enabled. My test suite would: (1) Use the factory to create a fresh user per test, (2) Verify successful login returns the expected dashboard, (3) Test each error state verifies the correct error message and HTTP status code, (4) Test session expiry by setting a short timeout and verifying redirect to login, (5) Test SQL injection by sending malicious input and verifying the application rejects it without exposing database errors. The manual testing knowledge — knowing <em>what</em> to test — drives the automation. The automation skills — knowing <em>how</em> to test — make it repeatable."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"You've been learning Playwright for three months. What's the hardest thing you've had to debug?"</h3>
+      <p>This tests whether you've actually been writing automation code or just reading about it. A candidate who's genuinely been practising can describe a specific technical challenge: "I had a test that passed locally but failed in CI. The test verified a dashboard widget that loaded data from an API. Locally, the API responded in 200ms. In CI, it took 3-4 seconds because the CI environment's network was slower. My initial locator-based assertion was checking for the widget before the data had loaded. I fixed it by using Playwright's waitForResponse to wait for the specific API call to complete before asserting, rather than relying on the UI element appearing. I also added a timeout configuration that was environment-aware — longer in CI, shorter locally. The lesson: automation isn't just about writing tests. It's about understanding the environment and timing conditions that tests run under."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Why Career Changers Have an Advantage in 2026 — If They Position It Correctly</h2>
+  <p>Here's something that surprises most manual testers: <strong>in the 2026 job market, career changers have specific advantages that pure automation engineers don't.</strong> But these advantages only count if you can articulate them in an interview. Here's what they are and how to frame them:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>You Test Like a User, Not a Developer</h3>
+        <p>Automation engineers who come from development backgrounds often write tests that verify the code works as written — not as the user expects. They test the implementation, not the behaviour. Career changers from manual QA naturally test behaviour: "what happens if the user enters an invalid date? What if they double-click the submit button? What if they use the browser back button mid-flow?" This user-centric testing instinct is increasingly valuable as organisations shift from "does it work?" to "does it work for the user?" In interviews, frame this as your differentiator: "I think about testing from the user's perspective first, then automate that thinking — rather than automating the developer's assumptions about how the software should behave."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>You Understand Risk-Based Testing Intuitively</h3>
+        <p>Risk-based testing — prioritising tests based on the probability and impact of failure — is a senior SDET competency. Manual testers practise it daily without calling it that. When you decide which areas of the application to regression-test after a deployment, you're doing risk-based testing. When you focus exploratory testing on features that changed rather than features that stayed the same, you're doing risk-based testing. In interviews, use the terminology: "I'd prioritise test automation for the payment flow first — it's high-risk, high-impact, and manual regression takes the team two hours per release. After that, I'd target the user registration flow, then progressively expand to lower-risk areas." This demonstrates that you think strategically about testing, not just tactically.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>You're Coachable — and Interviewers Value That More Than You Think</h3>
+        <p>In panels at Accenture, Mitchell has watched hiring managers choose a career changer with three months of automation practice over a mid-level SDET with two years of experience. The reason: coachability. The career changer was hungry to learn, humble about their gaps, and demonstrably self-motivated (they'd learned Playwright on their own initiative). The mid-level SDET had plateaued — they could do the job but showed no drive to grow. In the long run, the career changer would outgrow the mid-level SDET within 12-18 months. When you frame your career change as evidence of self-initiative and learning velocity, you turn what feels like a weakness into your strongest selling point.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your Career-Change SDET Interview — Starting Tonight</h2>
+  <p>You don't need to become a senior automation architect before you interview. You need to close the gap between your manual testing knowledge and the automation concepts interviewers expect — and learn to present your experience the way SDET panels evaluate it. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> from the iOS App Store and complete the 2-minute onboarding assessment. When it asks about your background, select "Manual QA" or "Career Changer" — this activates the dedicated QA→SDET career-change track. The app reorganises around your level, surfacing junior-to-mid-level content and avoiding senior/lead questions that would overwhelm you. The 800+ question bank includes specific career-change interview scenarios, "automation gap" questions, and behavioural STAR questions adapted for manual testers transitioning to SDET.</li>
+    <li><strong>Run the QA→SDET Career-Change mock interview today.</strong> This is the dedicated 50-minute mock interview level built specifically for manual testers making the transition. It bridges your existing testing knowledge with automation concepts, so you learn to "talk like an SDET" before you're in the room. The AI mock interviewer asks adaptive follow-ups — just like a real panel — and scores your answers on technical accuracy, completeness, communication, and code quality. Run it once to identify your gaps, study those gaps, then run it again. Each iteration builds the interview muscle memory that turns anxiety into confidence.</li>
+    <li><strong>Use Job Match for your target role.</strong> Found a junior or mid-level SDET role that mentions "automation experience preferred" but doesn't require senior-level framework design? Paste the job description into Job Match and get 50 questions tailored to that exact role's expectations. No more guessing whether they'll test you on CI/CD integration (probably not at junior level) or Playwright fundamentals (almost certainly). Job Match calibrates to the role, not your fears.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The manual testers who make the transition in 2026 are the ones who'll be sitting in senior SDET roles by 2028 — while their peers are competing for a shrinking pool of manual testing positions. The skills gap is smaller than you think. The interview gap — knowing how to present your experience, which questions to prepare for, and how to answer them the way panels evaluate — is where most career changers stumble. <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> closes that gap with structured mock interviews, AI-graded feedback, and a question bank calibrated to exactly the level you're targeting.</p>
+
+  <p>If you're building your automation skills from scratch, start with our guide on <a href="/blog/manual-qa-to-sdet-career-change">transitioning from manual QA to SDET</a> — it covers the full career-change roadmap, including which framework to learn first and how long the journey realistically takes. For web automation interview preparation, see our guide on <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a>. For API testing — increasingly expected even at junior SDET level — see our guide on <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions</a>. And for the system-design round that can appear at mid-level and above, see <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview Questions</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "Can I become an SDET from a manual QA background without a computer science degree?",
+        a: "Yes — and in fact, manual testers bring specific advantages that CS graduates don't. Your years of bug-finding intuition, product knowledge, and user-centric testing perspective are precisely what organisations need in SDETs who can think about <em>what</em> to test, not just <em>how</em> to automate it. The key is learning to articulate your manual testing experience as a strength in SDET interviews — using engineering terminology, discussing test strategy and risk assessment, and demonstrating that you've built genuine automation skills through consistent practice. SDET Interview Coach has a dedicated QA→SDET career-change mock interview track that specifically helps you bridge this communication gap, teaching you to answer questions the way SDET panels evaluate them. The UK market in 2026 has specific demand for SDETs who combine testing instinct with automation capability — and that describes exactly what a career changer brings.",
+      },
+      {
+        q: "What automation skills do I actually need before applying for SDET roles as a career changer?",
+        a: "You need working knowledge of one automation framework — Playwright is the strongest choice for the 2026 market — at a level where you can: (1) write a test from scratch that locates elements, performs actions, and makes assertions, (2) explain your choice of locators and waits, (3) discuss basic test patterns like Arrange-Act-Assert and Page Object Model, and (4) describe how you'd structure a small test suite. You do NOT need to be a framework architect or CI/CD expert at the career-change level. What interviewers care about more than technical depth is evidence of self-initiative — a GitHub repo with your test scripts, a side project you automated, or a workflow you improved at work. SDET Interview Coach's bootcamp tracks (Playwright + TypeScript for QAs, Playwright + Python, and others) are designed to take you from zero automation knowledge to interview-ready in weeks, with AI mentors who explain concepts using language manual testers already understand.",
+      },
+      {
+        q: "How do I answer 'Why are you moving from manual testing to automation?' in an interview?",
+        a: "Never say manual testing is boring or that you want to leave it behind — this signals that you undervalue the very skill the interviewer might be hiring you for. Instead, frame your answer around amplification: 'I've spent X years becoming excellent at finding bugs and understanding how users interact with software. I want to add automation because it lets me apply that knowledge at scale — instead of manually regressing ten scenarios per release, I can automate those ten and spend my exploratory testing time on the complex, novel scenarios that automation can't replace. I'm not leaving manual testing behind — I'm amplifying it with automation.' This reframe positions you as a tester levelling up, not a tester running away, and it demonstrates the strategic thinking about testing that interviewers want to see at any level.",
+      },
+      {
+        q: "What's the difference between a junior SDET interview and a career-change SDET interview?",
+        a: "A junior SDET interview typically assumes the candidate has some formal automation training — a bootcamp, a CS degree, or an internship. The questions focus on foundational automation knowledge: framework basics, simple test writing, and basic coding. A career-change SDET interview is structurally different: the panel knows you're coming from manual QA, so they probe (1) how you'll translate manual testing experience into automation value, (2) what specific self-directed learning you've done, (3) your coachability and growth trajectory, and (4) your ability to 'talk like an engineer' — using the terminology and reasoning patterns of SDETs rather than manual testers. The technical bar is similar to junior level, but the behavioural and communication bar is higher because the panel is assessing your potential to grow, not just your current skill level. SDET Interview Coach's QA→SDET career-change mock interview level specifically prepares you for this adapted interview format.",
+      },
+      {
+        q: "How long does it realistically take to go from manual QA to SDET interview-ready?",
+        a: "With consistent daily practice of 30-60 minutes, most manual testers can be interview-ready for junior or career-change SDET roles in 3-4 months. The breakdown: Month 1 — learn one framework's core API, write your first 20-30 tests, understand locators, waits, and assertions. Month 2 — learn test design patterns, practise writing tests under time pressure, study behavioural STAR questions adapted for career changers. Month 3 — run mock interviews, identify weak areas from AI feedback, drill those areas, use Job Match to prepare for specific roles. Some people do it in 8 weeks with intensive study; some take 6 months. What makes the difference isn't intelligence — it's consistency and practising the right things. SDET Interview Coach removes the guesswork by structuring your preparation around the questions panels actually ask, not the ones listicles suggest.",
+      },
+      {
+        q: "Does SDET Interview Coach have a track specifically for manual QAs transitioning to SDET?",
+        a: "Yes. SDET Interview Coach includes a dedicated QA→SDET career-change mock interview level — a 50-minute timed session that bridges manual testing experience with automation concepts. The onboarding assessment lets you identify as a manual QA or career changer, and the app reorganises around your level: surfacing junior and mid-level content, providing bootcamp tracks (Playwright + TypeScript for QAs, Playwright + Python, and more) with AI mentors who explain concepts using language manual testers already understand, and avoiding senior/lead content that would overwhelm you. The AI-graded feedback specifically helps career changers learn to articulate answers the way SDET panels evaluate them — addressing the communication gap that's often the biggest barrier for manual testers transitioning to automation roles. Use Job Match to generate 50 bespoke questions from any junior or mid-level SDET job description you're targeting.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "manual-qa-to-sdet-career-change", "playwright-interview-questions-2026", "api-testing-interview-questions-2026", "test-automation-framework-design-interview"],
+  },
+  {
     slug: "api-testing-interview-questions-2026",
     title: "API Testing Interview Questions — What SDET Panels Ask About REST Assured, Postman, and HTTP in 2026",
     description: "Real API testing interview questions from SDET panels. Covers REST Assured, Postman, HTTP status codes, authentication testing, contract testing, and the behavioural questions that expose candidates who've only tested through the UI. Built from panels at HMRC, Nationwide, Accenture, and the MoD.",
