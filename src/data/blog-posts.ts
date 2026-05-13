@@ -14,6 +14,325 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "k6-performance-testing-interview-questions",
+    title: "K6 Performance Testing Interview Questions — What SDET Panels Ask About Load Testing, Stress Testing, and Grafana k6 in 2026",
+    description: "Real k6 performance testing interview questions from SDET panels. Covers k6 vs JMeter vs Gatling, JavaScript scripting, load/stress/soak/spike test types, metrics and thresholds, CI/CD integration, and the Grafana k6 questions that separate candidates who've run a performance test from those who understand performance engineering. Built from panels at HMRC, MoD, Nationwide, and Accenture.",
+    date: "2026-05-13",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "k6 performance testing interview questions",
+      "Grafana k6 SDET interview questions 2026",
+      "k6 load testing interview questions and answers",
+      "performance testing SDET interview",
+      "k6 vs JMeter interview questions",
+      "k6 JavaScript scripting interview",
+      "k6 metrics thresholds interview questions",
+      "k6 CI/CD integration interview",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's 11pm. Your SDET interview is in 10 hours. You've rehearsed your Playwright framework design answer until it flows like conversation. You can discuss CI/CD pipelines, API testing, and BDD scenarios without breaking stride. Then you re-read the job description one last time and your stomach drops: <em>"Experience with performance testing — k6, JMeter, or Gatling."</em></p>
+  <p>You've run JMeter once. You recorded a script, added some users, and watched green lines fill a dashboard. But k6? You've heard it's "developer-friendly" and "JavaScript-based" — and that's where your knowledge ends. Now you're picturing the panel asking you to explain the difference between a load test and a stress test, or describe how you'd set thresholds in k6, or — worst of all — defend why an SDET should care about performance testing when there's a dedicated performance engineering team. And you realise you've never had to <em>articulate</em> performance testing. You've only ever <em>acknowledged</em> it exists.</p>
+  <p>This guide is for that moment. Built from 20 years of sitting on both sides of the SDET interview table — at HMRC, the Ministry of Defence, Nationwide, and Accenture — it covers exactly what interviewers ask about k6 performance testing, how they separate candidates who've integrated performance testing into their SDET practice from those who've only run a script someone else wrote, and how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> prepares you for performance-specific questions so you walk into that room with answers that demonstrate performance engineering thinking, not performance testing buzzwords.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why k6 Questions Are Separating SDET Candidates in 2026</h2>
+  <p>Two years ago, performance testing in an SDET interview was a bonus question — mention JMeter and you'd get a nod. In 2026, k6 has disrupted the performance testing landscape, and candidates who can't discuss performance testing fluently are losing offers to those who can. Here's what's changed:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Grafana k6 has become the fastest-growing load testing tool — and interviewers have noticed.</strong> k6's developer-first approach — write tests in JavaScript, version them in Git, run them in CI/CD — has made it the default choice for organisations adopting DevTestOps. Unlike JMeter's XML-based test plans and GUI-driven workflow, k6 treats performance tests as code. Interviewers at Nationwide and Accenture have told Mitchell they now probe k6 knowledge specifically because it signals a candidate who thinks about performance testing as an engineering practice, not a separate testing phase.</li>
+    <li><strong>Performance testing has shifted left — into the SDET's territory.</strong> The "shift-left" movement that brought functional testing earlier in the development cycle has now pulled performance testing with it. Organisations that once ran performance tests weeks before release are now embedding performance checks into CI/CD pipelines — smoke tests on every PR, load tests on merge to main, and stress tests on a scheduled cadence. SDETs are being asked to own these performance gates alongside functional testing gates, and k6's CLI-first, code-first design makes it the natural tool for this integration.</li>
+    <li><strong>AI-driven traffic patterns are making performance testing more complex.</strong> As LLMs generate increasingly realistic user behaviour simulations and traffic patterns, the ability to script complex scenarios in k6 — multi-step user journeys with dynamic data, API chaining, and conditional branching — is becoming a differentiator. The 2026 SDET interview expects you to understand that performance testing isn't just about hitting an endpoint with 1,000 concurrent users; it's about modelling realistic user behaviour and interpreting the results to prevent production incidents.</li>
+  </ul>
+  <p>Performance testing isn't a separate discipline from quality assurance. It's quality assurance applied to the system under load. Interviewers who've been through a production outage know the difference between a tester who's run k6 and a tester who understands what the metrics mean — and they're probing for that distinction in every round.</p>
+</section>
+
+<section class="content-section">
+  <h2>k6 vs JMeter vs Gatling — The Comparison Question Every Interview Tests</h2>
+  <p>This is the question that appears in nearly every performance testing interview, in some form: "Why k6 instead of JMeter or Gatling?" The interviewer isn't looking for JMeter bashing — they're testing whether you understand the trade-offs between performance testing tools and can justify tool selection on engineering grounds, not personal preference. Here's what a strong answer covers for each tool:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Apache JMeter — The Legacy Workhorse</h3>
+      <p>JMeter has been the industry-standard load testing tool for over two decades. It's GUI-driven (though it has a CLI mode), Java-based, and supports virtually every protocol — HTTP, JDBC, FTP, LDAP, JMS, SOAP, and more through its massive plugin ecosystem. The strengths: mature, well-documented, enormous community, and its GUI makes it accessible to non-developers. The trade-offs: JMeter's thread-per-user model consumes significant memory (one virtual user = one thread), limiting it to thousands of concurrent users on a single machine without distributed testing. Its XML-based test plans are difficult to version-control and code-review. And its GUI-driven workflow makes CI/CD integration clunky — you typically record in GUI, export to XML, and run via CLI, creating a disconnect between authoring and execution. JMeter is a strong choice for: organisations with existing JMeter expertise, complex multi-protocol testing (beyond HTTP), and teams where non-developers need to create and modify performance tests through a GUI. It's less suited for: developer-owned performance testing in CI/CD, teams that treat tests as code, and organisations adopting DevTestOps practices.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Gatling — The Scala Power Tool</h3>
+      <p>Gatling is a developer-focused load testing tool written in Scala with a Scala DSL for test scripting. Its key innovation: an asynchronous, non-blocking engine based on Akka that can simulate tens of thousands of concurrent users on a single machine — dramatically more efficient than JMeter's thread-per-user model. The strengths: exceptional performance efficiency, a rich DSL for complex scenarios (loops, conditions, feeders for test data), and built-in HTML reports that are genuinely useful — response time percentiles, active users over time, and request distribution. The trade-offs: Gatling's Scala DSL has a learning curve. If your team doesn't know Scala, the onboarding cost is real. The XML-based Maven/Gradle integration is Java-ecosystem-centric. And while Gatling has an active community, it's smaller than JMeter's and k6's. Gatling is a strong choice for: Java/Scala shops that need high-throughput testing, teams that already have Scala expertise, and scenarios requiring complex virtual user logic with minimal resource consumption. It's less suited for: JavaScript/TypeScript teams, rapid prototyping of performance tests, and organisations where the test-as-code workflow benefits from a language the whole team already knows.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Grafana k6 — The DevTestOps Native</h3>
+      <p>k6 is the modern entrant that has reshaped the performance testing landscape. It's a Go-based engine with JavaScript test scripting — you write tests in ES6 JavaScript, the engine executes them with Go-level performance. The key innovations: (1) Code-first — tests are JavaScript files you version in Git, review in pull requests, and run in CI/CD, exactly like your functional tests. (2) Go-powered engine — k6 uses Go's goroutine model (not threads) for concurrency, enabling high virtual user counts with minimal resource consumption. (3) CLI-native — designed to run headless in CI/CD from day one, with JSON/CSV output for pipeline integration and native Grafana dashboard integration. (4) Built-in checks, thresholds, and metrics — you define pass/fail criteria in code, and k6 enforces them at runtime. The trade-offs: k6 is HTTP-first (HTTP/1.1, HTTP/2, WebSocket, gRPC) — it doesn't support the breadth of protocols JMeter does. It doesn't have a GUI recorder (though the browser extension and HAR converter help). And browser-based testing in k6 (k6 browser module) is still maturing compared to dedicated browser automation tools. k6 is the strongest choice for: DevTestOps teams, JavaScript/TypeScript shops, CI/CD-integrated performance testing, and organisations adopting shift-left performance engineering. It's the fastest-growing tool in the category for a reason — and that's exactly why interviewers are asking about it.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The senior-level answer acknowledges that tool choice is contextual. A startup shipping a Node.js API to AWS might choose k6 for developer alignment and CI/CD integration. A large enterprise with a decade of JMeter scripts, non-technical testers, and multi-protocol requirements might stay with JMeter. A Scala-based team doing microservice load testing at 50,000 RPS might choose Gatling for resource efficiency. The candidate who can discuss tool trade-offs without evangelising demonstrates engineering maturity — the kind interviewers specifically probe for at senior level and above.</p>
+</section>
+
+<section class="content-section">
+  <h2>k6 JavaScript Scripting Fundamentals — What Interviewers Expect You to Know</h2>
+  <p>k6's JavaScript scripting model is its defining feature — and the area where interviewers probe deepest. They're not testing whether you can memorise the k6 API. They're testing whether you understand the scripting model well enough to design realistic performance tests. Here's what they ask:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📜</span>
+      <div>
+        <h3>The Test Lifecycle — Four Stages</h3>
+        <p>Every k6 script has a lifecycle that interviewers expect you to understand: (1) <strong>Init stage</strong> — runs once, before the test starts. This is where you import modules (<code>import http from 'k6/http'</code>), define options (virtual users, duration, thresholds), and set up global configuration. No HTTP requests happen here — it's pure setup. (2) <strong>Setup stage</strong> — runs once, before VU (virtual user) iterations begin. Use <code>export function setup()</code> to perform one-time preparation: authenticate and get a token, create test data, or warm up caches. The return value is passed to every VU's default function. (3) <strong>VU stage</strong> — the default function (<code>export default function()</code>) runs repeatedly for each virtual user, for the duration of the test. This is where your performance test logic lives — HTTP requests, checks, sleep timers, and business-logic flows. (4) <strong>Teardown stage</strong> — runs once, after all VUs finish. Use <code>export function teardown(data)</code> to clean up: delete test data, revoke tokens, close connections. The candidate who can describe this lifecycle — and explain that the init stage runs in a different JavaScript runtime (Goja, not Node.js) and therefore doesn't have access to Node.js APIs — demonstrates genuine k6 experience, not just documentation reading.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Checks vs Thresholds — The Critical Distinction</h3>
+        <p>This is the k6 question that catches most candidates. <strong>Checks</strong> (<code>check(res, { 'status is 200': (r) => r.status === 200 })</code>) are per-request assertions — they verify that individual responses meet criteria. Checks don't fail the test; they report pass/fail rates. A test with 99% check pass rate still exits with code 0 (success). <strong>Thresholds</strong> are test-level pass/fail criteria — they define acceptable performance boundaries and cause the test to fail (exit code non-zero) when breached. Example: <code>thresholds: { http_req_duration: ['p(95)<500'] }</code> means "the 95th percentile response time must be under 500ms, or the test fails." The critical interview insight: checks validate functional correctness under load ("are my responses still 200?"), thresholds validate performance requirements ("are my responses still fast enough?"). Both are essential. Candidates who conflate them — or who only use checks without thresholds — demonstrate they've run k6 without understanding performance engineering. Bonus: mention that k6 supports custom metrics (<code>new Trend('my_metric')</code>) and that you can set thresholds on custom metrics, not just built-in ones.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Virtual Users, Iterations, and Ramping Patterns</h3>
+        <p>Interviewers probe your understanding of k6's execution model: virtual users (VUs) execute iterations of the default function concurrently. You control the test shape through the <code>options</code> object. The three parameters: <strong>vus</strong> — fixed number of concurrent VUs. <strong>iterations</strong> — total number of script executions to perform. <strong>duration</strong> — how long the test runs. You specify combinations: fixed VUs for a duration (<code>{ vus: 100, duration: '5m' }</code>), or a specific number of iterations (<code>{ vus: 10, iterations: 1000 }</code>). The advanced answer discusses <strong>stages</strong> — ramping patterns for realistic load profiles: <code>stages: [{ duration: '2m', target: 100 }, { duration: '5m', target: 100 }, { duration: '2m', target: 0 }]</code> — which ramps up to 100 VUs over 2 minutes, holds for 5 minutes, then ramps down. The candidate who can discuss stages and explain why a linear ramp-up (rather than an instant spike) produces more realistic load demonstrates understanding of production traffic patterns. Even better: mention the <code>scenarios</code> API for advanced executors — <code>constant-arrival-rate</code> (maintain a fixed request rate, regardless of response time) vs <code>ramping-arrival-rate</code> (gradually increase request rate), which model real-world API consumption more accurately than the basic VU model.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Performance Test Types — Load, Stress, Soak, and Spike Testing in k6</h2>
+  <p>Every performance testing interview probes your understanding of test types. The question comes in different forms: "What's the difference between a load test and a stress test?" or "When would you run a soak test?" or "Design a performance test strategy for a new feature launch." Here's what interviewers expect you to know — and how to implement each in k6:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Load Testing</h3>
+      <p><strong>What it is:</strong> Testing the system under expected normal and peak load conditions. The goal is to verify that the system meets performance requirements under realistic traffic. <strong>Interview question:</strong> "How would you design a load test for an e-commerce checkout API?" <strong>Strong answer:</strong> "First, I'd determine the expected load — the product team says peak traffic is 500 concurrent checkouts per minute. My k6 script would model a realistic checkout flow: add item to basket → apply discount code → calculate shipping → submit payment. I'd use the ramping-arrival-rate executor to simulate 500 iterations per minute, with stages to ramp up gradually (to avoid cold-start distortion) and hold at peak for 15 minutes. I'd set thresholds: p(95) response time under 2 seconds, error rate under 1%. I'd monitor server-side metrics (CPU, memory, database connections, connection pool utilisation) alongside k6 metrics. The key insight: a load test validates that the system performs under <em>expected</em> conditions. It doesn't find the breaking point — that's a stress test."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Stress Testing</h3>
+      <p><strong>What it is:</strong> Testing the system beyond normal capacity to find the breaking point and observe how it fails. The goal is to identify the maximum capacity and understand failure modes — does it degrade gracefully (slower responses) or catastrophically (crashes, data corruption)? <strong>Interview question:</strong> "How do you determine when to stop a stress test?" <strong>Strong answer:</strong> "I increase load in steps — 100% of expected peak, 150%, 200%, 250% — holding each level for 5-10 minutes. I stop when: (1) error rate exceeds 10%, (2) p(95) response time exceeds 5x the baseline, or (3) the application becomes unresponsive. But the real test is what happens <em>after</em> the stress is removed — does the system recover to normal performance, or does it require a restart? This recovery behaviour is what interviewers want to hear you discuss. In k6, I'd implement this with stages: ramp to expected load, then step up with hold periods. Thresholds would be set on error rate and response time to auto-fail when the system breaks. The operational insight: share the stress test schedule with the infrastructure team so they're not surprised by the load — and never run stress tests against production."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Soak Testing (Endurance Testing)</h3>
+      <p><strong>What it is:</strong> Testing the system under sustained load over an extended period (hours to days) to detect memory leaks, resource exhaustion, and degradation over time. <strong>Interview question:</strong> "You've passed load and stress tests. Why run a soak test?" <strong>Strong answer:</strong> "Load tests prove the system can handle peak traffic for minutes. Soak tests prove it can handle sustained traffic for hours. Problems that only surface over time: memory leaks (garbage collection can't keep up), connection pool exhaustion (connections aren't returned to the pool), log file growth (disk fills up), database connection leaks, thread pool starvation, and cache eviction policies that degrade over time. In k6, I'd run a soak test at 70-80% of peak load — enough to stress the system without triggering the failure modes a stress test would find. Duration: typically 4-24 hours, depending on the application's release cycle. The operational insight: schedule soak tests during low-traffic periods — they're resource-intensive and long-running. And monitor server-side metrics that trend over time (heap memory, thread count, file handles, database connections) — the k6 metrics might stay stable while the server slowly degrades."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Spike Testing</h3>
+      <p><strong>What it is:</strong> Testing the system's response to sudden, dramatic increases in load — simulating flash sales, breaking news traffic, or DDoS-like conditions. <strong>Interview question:</strong> "A marketing campaign goes viral. Your traffic jumps from 100 to 10,000 concurrent users in 30 seconds. How would you test for this?" <strong>Strong answer:</strong> "This is a spike test scenario. In k6, I'd use stages with a near-vertical ramp: hold at baseline (100 VUs) for 2 minutes to establish normal behaviour, then ramp to 10,000 VUs in 30 seconds, hold for 5 minutes, and ramp back down. The key metrics: can the auto-scaling infrastructure provision resources fast enough? Does the load balancer handle the connection surge? Do connection pools and thread pools expand quickly enough, or do requests queue and time out? The test also validates alerting — does the monitoring system detect the spike and alert within the defined SLA? The common mistake: running spike tests against a system without informing the infrastructure team — the auto-scaling can trigger cloud costs and alarm fatigue. The responsible approach: coordinate with operations, set spending limits on auto-scaling, and monitor the infrastructure's response alongside the application's response."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>k6 Metrics and Thresholds — The Numbers Interviewers Probe</h2>
+  <p>Performance testing without metrics is just load generation. Interviewers who've done real performance testing will probe your understanding of what to measure, what the numbers mean, and how to set thresholds that separate acceptable performance from unacceptable. Here's what matters:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>Response Time Metrics — Beyond the Average</h3>
+        <p>"What response time metrics do you monitor in k6?" The weak answer says "average response time." The strong answer covers <strong>percentiles</strong>: <code>http_req_duration</code> with p(50) (median), p(90), p(95), and p(99). The key insight: the average is misleading. If 99 users get 100ms responses and 1 user gets a 30-second timeout, the average looks fine (~400ms) while 1% of users have a terrible experience. p(95) under 500ms means "95% of users get sub-500ms responses" — a much more useful guarantee. The advanced candidate also mentions <code>http_req_waiting</code> (time spent waiting for the server to respond — isolates network latency from server processing time), <code>http_req_connecting</code> (TCP handshake time), and <code>http_req_tls_handshaking</code> (TLS negotiation time). These sub-metrics help diagnose whether the problem is network, TLS overhead, or server processing. A candidate who can discuss <strong>long-tail latency</strong> — the p(99) or even p(99.9) response times where the worst user experiences live — demonstrates exposure to production performance engineering, not just test execution.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Threshold Configuration — The Performance Contract</h3>
+        <p>"How do you decide what thresholds to set?" Thresholds are k6's pass/fail mechanism — they're the performance contract between the test and the deployment pipeline. The strong answer: "I start from the business's performance requirements, not from arbitrary numbers. If the product team says 'the checkout page must load in under 3 seconds,' that becomes a threshold: <code>http_req_duration: ['p(95)<3000']</code>. I set thresholds on: (1) response time — p(95) and p(99) for critical endpoints, (2) error rate — <code>http_req_failed: ['rate<0.01']</code> meaning under 1% failures, (3) iteration duration for end-to-end flows, and (4) custom metrics for business-specific checks (e.g., 'payment processing time under 5 seconds'). I also set different thresholds per endpoint — the health-check endpoint might have a p(95)<50ms threshold, while a report generation endpoint might have p(95)<10s. The key: thresholds gate deployments. If a load test fails its thresholds in CI, the deployment is blocked. This makes thresholds a product decision, not just a testing decision — and I involve product owners in defining what 'fast enough' means."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📈</span>
+      <div>
+        <h3>Custom Metrics — Measuring What Matters</h3>
+        <p>"How would you track a business-specific metric in k6 that isn't a built-in HTTP metric?" k6 supports four custom metric types: <strong>Counter</strong> (cumulative value — total orders placed), <strong>Gauge</strong> (current value — active database connections), <strong>Rate</strong> (percentage — successful payment rate), and <strong>Trend</strong> (statistical distribution — payment processing time). The interview answer: "For an e-commerce site, I'd create a Trend metric for checkout completion time and a Counter for successful purchases. I'd set thresholds: 99% of checkouts must complete within 5 seconds (<code>checkout_time: ['p(99)<5000']</code>). The power of custom metrics: they connect performance testing to business outcomes. When you can say 'under peak load, we still processed 487 orders per minute with 99% success rate,' you're talking the language that product owners and VPs of Engineering understand." Bonus: mention that custom metrics can be tagged (<code>new Trend('response_time', true, { service: 'payment' })</code>), and that k6 outputs can be sent to Grafana Cloud, Datadog, New Relic, or any statsd-compatible backend for real-time dashboarding.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>k6 in CI/CD — The Pipeline Integration Question Every Senior SDET Faces</h2>
+  <p>If you're interviewing at mid-level or above, expect this: "How would you integrate k6 performance tests into your CI/CD pipeline?" This tests whether you think about performance testing as an engineering gate, not a separate manual activity. Here's what a strong answer covers:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Pipeline Placement — What Runs When</h3>
+      <p>"Where do performance tests fit in your pipeline stages?" The strong answer layers performance tests by speed and scope, just like functional tests: (1) <strong>Smoke test on every PR</strong> — 1-2 VUs for 1 minute, verifying that the application doesn't break under minimal load. This is sub-3 minutes and catches performance regressions introduced by code changes (e.g., a developer accidentally adds an N+1 query). (2) <strong>Load test on merge to main</strong> — expected peak load for 10-15 minutes, verifying the deployment doesn't degrade performance. This runs against staging and gates deployment to production. (3) <strong>Stress and soak tests nightly</strong> — beyond-peak load and extended duration tests that are too resource-intensive for every merge. These run against a production-like staging environment and report results to a shared dashboard. (4) <strong>Synthetic monitoring in production</strong> — k6 can run as a continuous monitoring tool, executing scripts at regular intervals from multiple geographic locations to detect performance degradation in production. The key: performance tests get progressively more intensive and less frequent as they move through the pipeline. This mirrors the functional testing pyramid and demonstrates you think about performance testing as a system, not a one-off activity.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Practical k6 CI/CD Configuration</h3>
+      <p>"Walk me through a GitHub Actions workflow that runs k6 tests." The practical answer: (1) The workflow triggers on pull requests to main. (2) The job checks out code, sets up the application (docker-compose or direct deployment to staging), and waits for health checks to pass. (3) It runs k6: <code>k6 run --out json=results.json script.js</code> — the <code>--out</code> flag exports results for post-processing. (4) It checks the exit code — k6 exits non-zero when thresholds are breached, which fails the pipeline. (5) It uploads the results as a pipeline artifact and optionally posts a summary comment on the PR: "Load test: 100 VUs, p(95) response time 234ms, 0% errors." (6) For advanced pipelines: use k6's <code>--out</code> to stream results to Grafana Cloud or Datadog, set the <code>K6_CLOUD_TOKEN</code> as a GitHub Secret, and view real-time results during the pipeline run. The candidate who can discuss <code>K6_INFLUXDB_*</code> environment variables for pushing metrics to InfluxDB or the <code>--summary-export</code> flag for JSON summary output demonstrates genuine pipeline integration experience. The trap: running k6 against the same staging environment that other pipelines are hitting — contention from concurrent k6 runs distorts results. Use dedicated test environments or schedule performance pipeline stages to avoid overlap.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Real k6 Interview Scenarios — What Panels Actually Ask</h2>
+  <p>Drawing from panels Mitchell has conducted at HMRC, MoD, Nationwide, and consulting for Accenture, here are the k6 performance testing scenarios that appear in SDET interviews — and what a strong answer looks like for each.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"Write a k6 script that tests a login endpoint under load."</h3>
+      <p>This is the practical exercise that appears in most k6 interview rounds. A complete answer covers: (1) Import <code>http</code> from k6 and the <code>check</code> and <code>sleep</code> helpers. (2) Define options — 50 VUs ramping up over 1 minute, holding for 5 minutes. (3) Use the setup function to create a test user once and return credentials. (4) In the default function, send a POST to /api/login with the test credentials, check that the response status is 200 and the response body contains a token, and sleep for a realistic think-time (1-3 seconds) between iterations. (5) Set thresholds: p(95) response time under 1 second, error rate under 1%. (6) Handle the response JSON — extract the token for subsequent requests. The interviewer evaluates: correct k6 API usage, realistic test design (sleep between iterations, unique data handling), appropriate thresholds, and the use of checks for functional validation alongside performance measurement. The candidate who also mentions using <code>__VU</code> and <code>__ITER</code> (k6's built-in execution context variables for unique data per VU/iteration) demonstrates deeper k6 knowledge.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"Your performance test shows p(95) response time is 800ms. The threshold is 500ms. What do you do?"</h3>
+      <p>This tests your performance debugging methodology. The weak answer: "Increase the threshold." The strong answer walks through a structured investigation: (1) Check whether the response time increase is uniform (all endpoints slow) or specific (one slow endpoint). Use k6's sub-metrics (<code>http_req_waiting</code>, <code>http_req_connecting</code>) to isolate network vs server time. (2) Check server-side metrics — CPU, memory, database query times, connection pool utilisation. Is the database under-provisioned? Are there slow queries that only manifest under load? (3) Check for resource contention — is the test environment shared with other tests or pipelines? (4) Compare against baseline — is this a regression from a previous run, or a first-time benchmark? (5) If it's a specific endpoint: profile the code path, check for N+1 queries, serialisation overhead, or external API dependency latency. (6) If it's systemic: evaluate infrastructure — does the application need more CPU, memory, or database connections? The candidate who can walk through this debugging process demonstrates performance engineering thinking, not just test execution. Bonus: mention that k6's <code>http_req_duration</code> trend metric includes min, max, avg, and percentile values that help pinpoint whether the problem is consistent or spiky.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"How would you test the performance of a GraphQL API differently from a REST API?"</h3>
+      <p>This tests whether you understand that API architecture affects performance testing strategy. Strong answer: "GraphQL performance testing has distinct challenges: (1) Query complexity — a single GraphQL query can fetch deeply nested data, making response time highly variable depending on the query. I'd create test scripts with different query depths — shallow (1 level), typical (3-4 levels), and deep (7+ levels) — to capture this variability. (2) N+1 problems — GraphQL resolvers often execute one query per nested field, creating N+1 database queries. A performance test might pass with 50 VUs querying 2-level nesting but fail with 50 VUs querying 5-level nesting because the database connection pool saturates. (3) Single endpoint — unlike REST's multiple endpoints, GraphQL typically has one <code>/graphql</code> endpoint. k6's metrics will show aggregate stats for <em>all</em> queries hitting that endpoint. I'd use k6's tagging (<code>tags: { query: 'GetUserProfile' }</code>) to segment metrics by query type. (4) Variable payload sizes — a GraphQL response can be 200 bytes or 2MB depending on the query. I'd set thresholds on response size as well as response time. The GraphQL-specific insight: monitor resolver-level performance on the server side alongside k6's HTTP-level metrics — the HTTP response might be fast, but a specific resolver might be slow and hidden behind parallel resolver execution."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"k6 runs in a single JavaScript thread. How does it handle thousands of concurrent users?"</h3>
+      <p>This is the architecture question that tests whether you understand k6's internals. The answer: "k6's scripting is single-threaded per VU — each virtual user's JavaScript executes in its own Goja (JavaScript VM) instance, in a single thread. But the HTTP engine underneath is Go's highly concurrent goroutine model. When a VU's JavaScript calls <code>http.get()</code>, the Go engine handles the HTTP request asynchronously using goroutines while the JavaScript thread is blocked waiting for the response — exactly like async/await but at the engine level. This means: (1) Thousands of VUs don't consume thousands of OS threads — each VU is a lightweight goroutine. (2) The JavaScript code is straightforward and synchronous — no async/await, no promises — because the engine handles concurrency underneath. (3) The bottleneck isn't k6's architecture; it's typically the machine's network bandwidth, CPU for TLS, or the target system's capacity. The practical implication: k6 can drive significantly more load per machine than JMeter (which uses thread-per-VU), typically 50,000+ RPS on modest hardware. The candidate who can discuss this architecture signals they've gone beyond the k6 API into understanding why k6 is performant — a distinction interviewers at senior level notice."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>5 Common Performance Testing Mistakes That Cost SDET Candidates Offers</h2>
+  <p>After watching hundreds of candidates navigate performance testing questions, Mitchell has identified the specific mistakes that cause interviewers to lean back and wait for the next candidate. These aren't gaps in knowledge — they're gaps in how you <em>present</em> that knowledge.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #1: Treating Performance Testing as a Specialist's Job</h3>
+        <p>The single most common mistake SDET candidates make: saying "performance testing is for the performance engineering team" or "I'd hand off performance concerns to the platform team." In 2026, this answer signals you haven't kept up with DevTestOps. Performance testing has shifted left — it's now part of the SDET's responsibility, just like functional testing and security testing. The strong answer: "As an SDET, I own the automated performance testing gates — smoke tests on PRs, load tests on merge to main, threshold enforcement. I work with the performance engineering team on complex stress testing, capacity planning, and production monitoring. But the CI/CD performance gates that prevent a slow deployment from reaching production are my responsibility. k6 makes this possible because it's designed for CI/CD integration — it runs headless, it's fast, and its thresholds provide clear pass/fail signals." This demonstrates you understand the modern SDET-performance boundary, not an outdated siloed model.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #2: Focusing on Average Response Time</h3>
+        <p>"The average response time was 200ms — performance is great." This answer tells the interviewer you don't understand performance measurement. The average hides the worst experiences. A candidate who only discusses averages hasn't done production performance work — where the 1% of users experiencing 10-second response times are the ones writing negative reviews. The strong answer: "I monitor percentiles — p(50), p(90), p(95), and p(99). I set thresholds on p(95) and p(99), not on the average. The p(99) is particularly important because it captures the long-tail latency that indicates problems like garbage collection pauses, connection pool exhaustion, or contended locks — problems that the average completely masks." Bonus: mention the <strong>max</strong> value with caution — it's often an outlier that distorts understanding, but it can also reveal catastrophic failures that a percentile threshold might miss because they're below the percentile threshold (e.g., if p(99) is under 500ms but max is 30 seconds, something failed badly for a small number of users).</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #3: Testing Without Realistic Think Time</h3>
+        <p>"My k6 script sends 1,000 requests as fast as possible." This tells the interviewer you're load-generating, not performance-testing. Real users don't fire requests back-to-back — they read pages, fill in forms, and think between actions. A script without <code>sleep()</code> calls generates unrealistic, abusive load that produces panic-inducing metrics but doesn't represent real-world behaviour. The strong answer: "I use <code>sleep()</code> with randomised durations — <code>sleep(Math.random() * 3 + 1)</code> for 1-4 second pauses between user actions. This simulates realistic user behaviour and produces metrics that reflect what actual users would experience. I also model different user behaviours — some users browse quickly (short pauses), some read thoroughly (long pauses). The exception: stress testing and spike testing deliberately remove or minimise think time to push the system to its limits. Know which type of test you're running and justify your think-time strategy."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #4: Not Understanding the Difference Between Open and Closed Models</h3>
+        <p>This is the advanced concept that separates seniors. k6 supports both <strong>closed model</strong> (fixed number of VUs, each VU waits for the previous iteration to complete before starting the next — if the system slows down, the request rate drops) and <strong>open model</strong> (fixed arrival rate, new iterations start regardless of whether previous ones have completed — request rate stays constant). The interview trap: "Your load test shows increasing response times, but the request rate is dropping. Why?" The answer: you're using a closed model. As the system slows down, each VU takes longer to complete an iteration, so fewer requests are sent per second — the test unintentionally eases off. The strong answer: "For load testing, I prefer the open model using k6's <code>constant-arrival-rate</code> executor. It maintains a fixed request rate regardless of response time, which means: (1) it more accurately models real-world traffic (users don't slow down their requests because the server is slow), (2) it catches performance degradation sooner (the system can't hide by slowing down), and (3) it provides more consistent, reproducible results. I use the closed model (VU-based) for stress testing, where the goal is to see how many concurrent users the system can handle."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #5: Confusing Performance Testing with Load Generation</h3>
+        <p>The candidate who says "I run k6 and check the dashboard" is describing load generation, not performance testing. Performance testing includes: (1) defining performance requirements before the test, (2) designing realistic test scenarios, (3) running the test, (4) analysing results against requirements, (5) diagnosing the root cause of violations, and (6) verifying improvements. Load generation is step 3. Interviewers probe steps 1, 4, and 5 because that's where the engineering happens. The strong answer: "Before I run any test, I define the performance acceptance criteria with the product owner and infrastructure team — specific thresholds for response time, error rate, and throughput. After the test, I don't just report the numbers — I analyse them against the criteria, identify the slowest endpoints and operations, correlate k6 metrics with server-side telemetry (CPU, memory, database queries), and produce a findings document that prioritises issues by impact. This turns performance testing from a checkbox activity into an engineering practice that prevents production incidents."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real k6 Performance SDET Interview Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels Mitchell has conducted across government, defence, and enterprise, here's how k6 performance testing questions typically appear in a 60-minute SDET interview:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Experience Probe</h3>
+        <p>"What performance testing have you done in your current role?" This opener tests whether you've genuinely practised performance testing or just listed it on your CV. Be honest about your level. If you've primarily run k6 scripts that others wrote: "I've executed k6 performance tests as part of our CI/CD pipeline — running load tests against staging, checking threshold violations, and investigating regressions. I've also written k6 scripts for specific API flows — multi-step user journeys with checks and custom metrics. I haven't designed the full performance testing strategy for an organisation, but I understand the test types, metrics, and pipeline integration patterns." This answer demonstrates performance testing competence while being honest about its scope.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>k6 Scripting & Test Design</h3>
+        <p>"Write a k6 script for a given scenario" or "Explain the k6 lifecycle." You may be asked to whiteboard a k6 script or discuss the four lifecycle stages. Focus on: correct API usage (<code>http.get</code>, <code>check</code>, <code>sleep</code>), realistic test design (ramp-up, think time, unique data), appropriate use of setup and teardown, and threshold configuration. Interviewers evaluate your ability to translate a performance requirement into a working k6 script — and they'll ask follow-ups on why you chose specific options (fixed VUs vs arrival-rate, why those specific thresholds).</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>Performance Engineering & Architecture</h3>
+        <p>"Your load test passes, but the application degrades under production traffic. What did you miss?" This probes your understanding of the gap between testing and reality. Discuss: (1) Test data realism — were you testing with production-like data volumes? (2) User behaviour modelling — were you simulating realistic user journeys or just hitting endpoints? (3) Infrastructure parity — was your test environment equivalent to production? (4) External dependencies — did your test include third-party APIs, payment gateways, CDN behaviour? (5) Test isolation — were you the only load on the system, or were there background jobs, data pipelines, and other consumers hitting it simultaneously? The candidate who can discuss these gaps demonstrates that they think about performance testing as modelling reality, not just generating load.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–50 min</div>
+      <div class="timeline-content">
+        <h3>Operational & Incident Response</h3>
+        <p>"A performance test fails in CI — p(95) response time is 3x the threshold. What's your process?" This tests whether you treat performance test failures as operational events. Discuss: (1) Immediate triage — check if it's a transient issue (rerun once to confirm) or a genuine regression. (2) Isolate the cause — which endpoints are slow? Is it a specific change in the latest commit? (3) Correlate with server metrics — database CPU spike, connection pool saturation, or application thread pool exhaustion? (4) Block the deployment if the regression is confirmed — performance degradation is a production risk. (5) Post-mortem — why wasn't this caught earlier? Should performance smoke tests on PRs catch this before the full load test does? The candidate who treats a performance test failure with the same seriousness as a security vulnerability or a crash demonstrates operational maturity.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">50–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their performance testing maturity: "What's your current performance testing setup — do you have automated k6 tests in CI/CD, or is performance testing mostly manual? How do you handle performance test failures — do they block deployments, or are they advisory? Do SDETs here own the performance testing scripts and thresholds, or is that a separate performance team activity? What was the last performance-related production incident, and how has it changed your testing approach?" Questions that probe their performance posture demonstrate you're thinking about how you'd contribute to their specific environment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Why Performance Testing Competence Is Becoming a Career Accelerator for SDETs</h2>
+  <p>After 20 years watching the UK testing market evolve — from HMRC to the MoD, from Nationwide to Accenture — Mitchell has observed a consistent pattern: SDETs who add performance testing to their skill set advance faster and command higher salaries than pure functional automation engineers. Here's why:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Performance-competent SDETs are rare and the demand is growing.</strong> The pool of testers who can discuss Playwright locator strategies is deep. The pool who can also discuss k6 thresholds, percentile analysis, arrival-rate executors, and CI/CD performance gates is shallow. In every panel Mitchell has conducted where a candidate demonstrated genuine performance testing competence, the post-interview debrief included the phrase "they bring performance testing skills we weren't expecting." That surprise value translates to offers and higher salary bands — the same way security testing competence has become a premium differentiator.</li>
+    <li><strong>Performance testing makes your work visible to the people who control budgets.</strong> When your k6 thresholds block a deployment because p(95) response time degraded by 40%, the VP of Engineering sees the value — you prevented a performance incident that would have affected real users. When your nightly soak test catches a memory leak three days before it would have caused a production outage, the CTO hears about it. Performance testing — more than any other testing domain except security — has direct visibility to decision-makers. SDETs who can demonstrate performance impact get invited to architecture reviews and capacity planning conversations where careers advance.</li>
+    <li><strong>The DevTestOps trend is structural, not cyclical.</strong> The integration of performance testing into the development pipeline isn't a passing trend — it's a permanent shift driven by the economics of cloud infrastructure (performance directly impacts cost), user expectations (slow apps lose users in seconds), and the k6 tooling revolution (performance testing is now accessible to developers, not just performance specialists). SDETs who build performance testing skills now are positioning themselves for roles that are being defined as we speak: DevTestOps SDET, Performance Test Automation Engineer, Reliability SDET. These roles command premium compensation because they combine two scarce skill sets — test automation and performance engineering.</li>
+  </ul>
+  <p>The candidates adding k6 to their repertoire now — not just running scripts, but understanding metrics analysis, threshold design, and CI/CD integration — are the ones who'll walk into 2027 interviews as senior performance-aware SDETs while their purely functional peers are still competing for the same mid-level roles they have today.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your Performance Testing Interview — Starting Tonight</h2>
+  <p>You don't need to be a performance engineering specialist. You need to understand k6's scripting model, be able to discuss performance test types and their purposes, articulate how you'd set thresholds and interpret metrics, and — most importantly — demonstrate that you think about performance as a quality attribute that can be tested, automated, and gated in CI/CD, just like functional correctness. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> from the iOS App Store and complete the 2-minute onboarding assessment. Select your target stack and seniority level. The app's 800+ question bank includes performance testing topics — k6 scripting, load/stress/soak/spike testing, metrics and thresholds, k6 vs JMeter vs Gatling, CI/CD integration, and performance debugging — calibrated to all five seniority levels. Even if performance testing is a gap in your current role, the app surfaces questions at your level so you can build confidence before the interview exposes the gap.</li>
+
+    <li><strong>Run a performance testing mock interview today.</strong> Pick Performance Testing as your topic, set a 30-minute timer, and answer the questions out loud. The AI feedback scores you on technical accuracy, completeness, communication, and code quality — showing you exactly where your performance testing knowledge gaps are before the real panel finds them. The AI mock interviewer asks adaptive follow-ups on k6 architecture, threshold design, and operational scenarios, just like a real panel.</li>
+    <li><strong>Use Job Match for your target role.</strong> If the job description mentions "performance testing," "k6," "JMeter," "Gatling," "load testing," "stress testing," "soak testing," or "performance engineering," paste it into Job Match. You'll get 50 questions tailored to that exact role's performance testing expectations — no guessing whether they'll ask about arrival-rate executors, percentile analysis, or k6 CI/CD integration.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The candidates who prepare for performance testing questions now — who can articulate k6's lifecycle, who understand the difference between checks and thresholds, and who can discuss integrating k6 into a CI/CD pipeline with the same fluency they discuss Playwright — are the ones who'll walk into panels and surprise interviewers with a competency they weren't necessarily expecting to find. Performance testing isn't a specialist silo any more. It's a core SDET competency, and with <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a>, available on the iOS App Store, you can build that performance testing confidence before you ever sit down with an interviewer.</p>
+
+  <p>If you're building your performance testing skills from a test automation background, start with our guide on <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> — API performance testing is where functional API testing and performance testing most directly intersect. For the CI/CD pipeline integration where performance gates live, see our guide on <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>. For the security testing that performance issues can expose, see <a href="/blog/security-testing-qa-interview-questions">Security Testing QA Interview Questions</a>. And for the framework design round where performance test architecture is planned, see <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview Questions</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "Do I need to be a performance engineer to answer k6 questions in an SDET interview?",
+        a: "No. SDET interviews expect you to understand performance testing methodology and automation — not to be a performance engineering specialist. You need to know: k6's scripting model (JavaScript, lifecycle stages), performance test types (load, stress, soak, spike) and when to use each, how to set thresholds and interpret percentiles (p(95), p(99)), how to integrate k6 into CI/CD pipelines, and the high-level trade-offs between k6, JMeter, and Gatling. You don't need to know capacity planning, infrastructure sizing, or advanced statistical analysis — those are performance engineering domains. The distinction: an SDET automates performance testing as part of the quality pipeline; a performance engineer analyses system behaviour, plans capacity, and optimises infrastructure. Interviewers are testing whether you can contribute to the organisation's performance quality through automation, not whether you can replace their performance engineering team. SDET Interview Coach's performance testing questions are calibrated to SDET-appropriate depth, not performance engineer depth.",
+      },
+      {
+        q: "What's the difference between checks and thresholds in k6 — and why do interviewers ask about it?",
+        a: "Checks verify individual responses — e.g., 'does this HTTP response have status 200?' Checks report pass/fail rates but don't fail the test. A test with 50% check pass rate still exits with code 0 (success) unless thresholds are configured. Thresholds define performance pass/fail criteria at the test level — e.g., 'p(95) response time must be under 500ms, or the test fails.' When thresholds are breached, k6 exits with a non-zero exit code, which fails the CI pipeline. Interviewers ask about this distinction because it tests whether you understand performance testing as a pipeline gate (thresholds) or just a monitoring exercise (checks without thresholds). The strong answer: checks validate functional correctness under load; thresholds validate performance requirements. Both are essential. A candidate who only uses checks is doing functional validation under load, not performance testing.",
+      },
+      {
+        q: "How do I answer 'k6 vs JMeter vs Gatling — which would you choose and why?'",
+        a: "Start by acknowledging that the choice depends on context — there's no universal best tool. Then walk through the trade-offs: (1) k6 is the strongest choice for DevTestOps teams, JavaScript/TypeScript shops, and CI/CD-integrated performance testing because it's code-first, CLI-native, and treats performance tests as version-controlled code. (2) JMeter is the strongest choice for organisations with existing JMeter expertise, multi-protocol requirements (beyond HTTP), and teams where non-developers need a GUI for test creation. (3) Gatling is the strongest choice for Java/Scala shops that need extreme throughput efficiency on minimal hardware. The decisive factors in your recommendation: the team's primary programming language (k6 for JS/TS, Gatling for Scala, JMeter for mixed/non-dev teams), the CI/CD integration requirement (k6 excels here), and the existing investment in test scripts (migration cost is real). The key is demonstrating you choose tools based on engineering trade-offs, not personal preference.",
+      },
+      {
+        q: "What metrics should I monitor in a k6 performance test?",
+        a: "The essential k6 metrics every SDET should discuss: (1) http_req_duration — response time, with percentiles p(50), p(90), p(95), and p(99). Never use just the average. (2) http_req_failed — error rate, both the overall rate and per-endpoint breakdown. (3) http_reqs — total request rate (throughput) to verify the system is handling the expected volume. (4) http_req_waiting — time spent waiting for the server (TTFB), which isolates server processing time from network latency. (5) iterations — how many full test iterations completed, useful for end-to-end flow timing. (6) Custom metrics — business-specific measurements like 'checkout completion time' or 'payment processing rate.' For server-side correlation: CPU utilisation, memory usage, garbage collection frequency, database query times, connection pool utilisation, and thread pool saturation. The key insight: k6 measures the client's view of performance. Server-side metrics explain why the client sees what it sees. A strong candidate discusses both.",
+      },
+      {
+        q: "How do I integrate k6 performance tests into a CI/CD pipeline?",
+        a: "k6 is designed for CI/CD integration — it runs headless, returns meaningful exit codes, and outputs machine-readable results. A practical integration: (1) Install k6 in the CI environment (official Docker image or package install). (2) Run a smoke test on every PR — 1-2 VUs for 1-2 minutes, verifying the application doesn't break under minimal load. This catches major performance regressions quickly. (3) Run a load test on merge to main — expected peak load for 10-15 minutes against staging. Set thresholds that gate deployment to production. (4) Run stress/soak tests nightly — too resource-intensive for every merge. (5) Export results — use <code>--out json=results.json</code> for pipeline artifact storage, or <code>--out statsd</code> for real-time dashboarding in Grafana. (6) Configure k6's exit code to fail the pipeline when thresholds are breached. (7) For GitHub Actions: use the official <code>grafana/k6-action</code> or run k6 directly. Store the <code>K6_CLOUD_TOKEN</code> as a GitHub Secret for cloud result streaming. The trap: running performance tests against a shared staging environment that other pipelines are hitting — contention distorts results.",
+      },
+      {
+        q: "Does SDET Interview Coach cover k6 performance testing interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated Performance Testing topic area covering k6 scripting and lifecycle, load/stress/soak/spike test types, k6 vs JMeter vs Gatling, metrics and thresholds (checks, percentiles, custom metrics), CI/CD integration patterns, performance debugging methodology, and common performance testing mistakes. Questions are calibrated to five seniority levels — Junior candidates get foundational k6 scripting and test-type questions, while Lead candidates face enterprise performance testing strategy and pipeline architecture questions. The AI mock interviewer can run a dedicated performance testing round with adaptive follow-ups on k6 architecture, threshold design, and operational scenarios. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions performance testing, k6, JMeter, Gatling, or load testing. Available on the iOS App Store.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "api-testing-interview-questions-2026", "cicd-pipeline-testing-interview-questions", "security-testing-qa-interview-questions", "test-automation-framework-design-interview"],
+  },
+  {
     slug: "security-testing-qa-interview-questions",
     title: "Security Testing QA Interview Questions — What SDET Panels Ask About OWASP, Penetration Testing, and DevSecOps in 2026",
     description: "Real security testing interview questions from SDET panels. Covers OWASP Top 10, OWASP ZAP, Burp Suite, authentication and authorisation testing, API security (JWT, OAuth, rate limiting), SQL injection and XSS detection, and the DevSecOps questions that separate testers who understand security from those who've only run a vulnerability scan. Built from panels at HMRC, MoD, Nationwide, and Accenture.",
