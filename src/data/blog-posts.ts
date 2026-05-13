@@ -14,6 +14,310 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "security-testing-qa-interview-questions",
+    title: "Security Testing QA Interview Questions — What SDET Panels Ask About OWASP, Penetration Testing, and DevSecOps in 2026",
+    description: "Real security testing interview questions from SDET panels. Covers OWASP Top 10, OWASP ZAP, Burp Suite, authentication and authorisation testing, API security (JWT, OAuth, rate limiting), SQL injection and XSS detection, and the DevSecOps questions that separate testers who understand security from those who've only run a vulnerability scan. Built from panels at HMRC, MoD, Nationwide, and Accenture.",
+    date: "2026-05-13",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "security testing QA interview questions",
+      "OWASP Top 10 SDET interview questions 2026",
+      "security testing interview questions and answers",
+      "DevSecOps interview questions SDET",
+      "penetration testing QA interview",
+      "API security testing interview questions",
+      "authentication testing interview questions",
+      "OWASP ZAP Burp Suite interview questions",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's 11pm. Your SDET interview is in 10 hours. You've rehearsed your Playwright framework design answer, you can whiteboard a CI/CD pipeline from memory, and you've got BDD scenarios polished to a mirror shine. Then you re-read the job description one last time and your stomach drops: <em>"Experience with security testing — OWASP, authentication testing, and security automation."</em></p>
+  <p>You know security matters. You've heard of OWASP Top 10. You've maybe run a vulnerability scan once. But now you're picturing the panel asking you to explain the difference between authentication and authorisation testing, or describe how you'd test for SQL injection, or — worst of all — defend why security testing belongs in the SDET's wheelhouse and not just the penetration tester's. And you realise you've never had to <em>articulate</em> security testing. You've only ever <em>acknowledged</em> it exists.</p>
+  <p>This guide is for that moment. Built from 20 years of sitting on both sides of the SDET interview table — at HMRC, the Ministry of Defence, Nationwide, and Accenture — it covers exactly what interviewers ask about security testing, how they separate candidates who've integrated security into their testing practice from those who've only run a dependency scan, and how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> prepares you for security-specific questions so you walk into that room with answers that demonstrate security thinking, not security buzzwords.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Security Testing Questions Are Separating SDET Candidates in 2026</h2>
+  <p>Two years ago, security testing in an SDET interview was a bonus question — mention OWASP Top 10 and you'd get a nod. In 2026, it's becoming a differentiator, and candidates who can't discuss security testing fluently are losing offers to those who can. Here's what's changed:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>DevSecOps has moved security testing left — into the SDET's territory.</strong> The "shift-left" movement that brought testing earlier in the development cycle has now pulled security testing with it. Organisations that once relied on annual penetration tests are now embedding security checks into CI/CD pipelines — SAST in the build stage, DAST in the staging stage, and dependency scanning on every commit. SDETs are being asked to own these security gates alongside functional testing gates. Interviewers at Accenture and Nationwide have told Mitchell they now probe security testing competence as a core SDET competency, not a specialist nice-to-have.</li>
+    <li><strong>Regulatory pressure is forcing security testing into the QA workflow.</strong> GDPR, PCI DSS, SOC 2, ISO 27001 — the compliance landscape in 2026 means that security testing isn't optional, it's auditable. Organisations need SDETs who can demonstrate that security tests run, pass, and are documented. A candidate who can discuss how they'd integrate OWASP ZAP into a CI/CD pipeline and surface findings in a compliance report is demonstrating production-grade security thinking that pure functional testers lack.</li>
+    <li><strong>AI-generated attacks are making security testing more complex.</strong> As LLMs become capable of generating sophisticated attack vectors — crafting convincing phishing payloads, generating SQL injection strings, and automating XSS discovery — the security testing landscape is evolving faster than ever. The 2026 SDET interview expects you to understand that security testing isn't just about running a scanner; it's about thinking like an attacker and designing tests that evolve with the threat landscape.</li>
+  </ul>
+  <p>Security testing isn't a separate discipline from quality assurance. It's quality assurance applied to the attack surface. Interviewers who've been through a security incident know the difference between a tester who's run OWASP ZAP and a tester who understands what the findings mean — and they're probing for that distinction in every round.</p>
+</section>
+
+<section class="content-section">
+  <h2>OWASP Top 10 Essentials — The Framework Every Security Testing Interview References</h2>
+  <p>Every security testing interview starts with OWASP Top 10. It's the shared vocabulary of application security, and interviewers expect you to know it — not just the list, but what each vulnerability means in practice and how you'd test for it. Here's what a strong answer covers for the most commonly probed OWASP categories in SDET interviews:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Broken Access Control (A01:2021)</h3>
+      <p>The number one OWASP risk and the most common security testing interview question. Broken access control means users can access resources or perform actions they shouldn't — viewing another user's data, accessing admin endpoints without admin privileges, or modifying records that don't belong to them. The interview answer: "I test access control by mapping every endpoint and feature against user roles, then verifying that each role can only access what it's authorised to access. For each endpoint, I test: (1) an unauthenticated request — should return 401, (2) an authenticated but unauthorised request — should return 403, (3) horizontal privilege escalation — user A trying to access user B's data, and (4) vertical privilege escalation — a standard user trying to access an admin function. I automate these as a dedicated security test suite that runs in CI alongside functional tests." The key is demonstrating systematic role-based testing, not just ad-hoc checks.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Cryptographic Failures (A02:2021)</h3>
+      <p>Previously called "Sensitive Data Exposure," this covers failures to protect data in transit and at rest. The interview probes: "How do you test that sensitive data is properly protected?" The strong answer: "I verify that all traffic uses HTTPS — not just the login page, but every page after authentication. I check that cookies have the Secure and HttpOnly flags set. I verify that sensitive data like passwords, credit card numbers, and PII are never logged or returned in API responses. I test that password reset tokens and session IDs aren't exposed in URLs. For APIs, I verify that JWT tokens use strong algorithms (HS256 minimum, RS256 preferred) and aren't accepting 'none' algorithm tokens. I also check that API responses don't leak sensitive data — a user profile endpoint shouldn't return password hashes or security question answers, even if the frontend doesn't display them."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Injection (A03:2021)</h3>
+      <p>SQL injection, NoSQL injection, OS command injection, LDAP injection — the attack vector where untrusted data is interpreted as commands. The interview question: "How would you test for SQL injection in a login form?" The answer: "I'd test with common injection payloads — <code>' OR '1'='1</code> for authentication bypass, <code>' OR 1=1; --</code> for comment-based bypass, and <code>1; DROP TABLE users; --</code> for destructive injection. But the strong answer goes beyond the login form: I test every input field — search boxes, filter parameters, URL query parameters, API request bodies, and even HTTP headers like User-Agent and Referer. Modern frameworks with parameterised queries prevent classic SQL injection, but NoSQL injection in MongoDB (<code>{"$gt": ""}</code>) and XML injection in SOAP APIs are still common. I also test for blind injection — where the application doesn't return error messages but behaviour changes (response time, content length) indicate successful injection. Tools like SQLMap automate this, but understanding the manual methodology demonstrates you know <em>why</em> the tool works, not just what button to press."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Cross-Site Scripting — XSS (A03:2021 grouped with Injection)</h3>
+      <p>XSS remains one of the most common web vulnerabilities, and SDET interviewers expect you to know how to test for it. The three types: (1) Reflected XSS — the injected script is reflected off the web server in an error message, search result, or response. Test by submitting <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code> in input fields and checking if it's executed or escaped. (2) Stored XSS — the script is permanently stored on the target server (in a database, comment field, forum post) and executed when other users view it. Test by submitting the payload, logging out, logging in as a different user, and navigating to the page — if the script fires, the XSS is stored. (3) DOM-based XSS — the vulnerability exists in client-side JavaScript that unsafely writes user-controlled data to the DOM. Test by examining JavaScript code for dangerous sinks like <code>innerHTML</code>, <code>document.write</code>, and <code>eval</code> that use user-controlled input without sanitisation. The strong answer covers all three types and discusses Content Security Policy (CSP) headers as a defence-in-depth measure.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The OWASP question that catches most candidates: <strong>"What's the difference between a vulnerability scan and a penetration test — and which one should an SDET run?"</strong> The strong answer: "A vulnerability scan is automated — OWASP ZAP or Burp Suite crawls the application and identifies potential vulnerabilities based on signatures and patterns. It's broad but shallow — high false positive rate, finds low-hanging fruit, requires no human creativity. A penetration test is manual — a skilled tester thinks like an attacker, chains vulnerabilities together, and tests business logic flaws that no scanner can find. An SDET should run vulnerability scans as part of the CI/CD pipeline — automated, repeatable, every build. Penetration testing should be done by specialist security testers on a scheduled cadence — quarterly or before major releases. The SDET's role is to automate what can be automated and to surface findings from both automated and manual testing in a unified view." This distinction — and knowing where the SDET's security responsibility ends — demonstrates judgement that interviewers at government and enterprise specifically look for.</p>
+</section>
+
+<section class="content-section">
+  <h2>Security Testing Tools — OWASP ZAP, Burp Suite, SQLMap, and What Interviewers Expect You to Know</h2>
+  <p>Interviewers don't expect you to be a penetration tester. But they do expect you to know the tools in the security testing ecosystem — which tool does what, when you'd use each, and how to integrate them into an automated testing pipeline. Here's what they ask about each tool:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚡</span>
+      <div>
+        <h3>OWASP ZAP (Zed Attack Proxy)</h3>
+        <p>OWASP ZAP is the go-to open-source DAST tool and the one most SDET interviews reference. It sits between the browser and the application as a proxy, intercepting and analysing traffic for vulnerabilities. The interview question: "How would you integrate OWASP ZAP into your CI/CD pipeline?" The strong answer: "ZAP has a headless mode and a REST API. I'd configure a CI stage after deployment to staging that: (1) starts ZAP in daemon mode, (2) runs an automated spider to discover endpoints, (3) runs an active scan against discovered endpoints (with authentication — ZAP supports session tokens and form-based login), (4) exports results as JSON or HTML, (5) fails the pipeline if high-severity vulnerabilities are found, and (6) publishes the report as a pipeline artifact. I'd run the active scan nightly (it's too slow for every PR), but run a passive scan on every PR — passive scanning analyses traffic without sending attack payloads, so it's fast and safe for CI." Bonus: mentioning ZAP's automation framework and the ability to script custom scan policies demonstrates genuine tool experience, not just documentation knowledge.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🛡️</span>
+      <div>
+        <h3>Burp Suite</h3>
+        <p>Burp Suite is the industry-standard web application security testing platform — more powerful than ZAP but with a commercial licence. The interview distinction: "When would you use Burp Suite over OWASP ZAP?" Answer: "Burp Suite's strength is manual penetration testing — its Repeater tool for crafting and resending modified requests, Intruder for automated customised attacks, and Collaborator for detecting out-of-band vulnerabilities are more mature than ZAP's equivalents. For automated pipeline integration, ZAP is the better choice — it's open-source, has a cleaner headless API, and doesn't require licence management in CI. In an ideal setup: ZAP runs automated scans in CI/CD; Burp Suite is used by security specialists for manual penetration testing. The SDET configures and maintains the ZAP integration; the penetration tester uses Burp Suite for deep-dive assessments." This tool-awareness-with-context demonstrates you understand the security testing toolchain, not just one tool's feature list.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">💉</span>
+      <div>
+        <h3>SQLMap</h3>
+        <p>SQLMap is the automated SQL injection detection and exploitation tool. The interview question isn't "what is SQLMap?" — it's "when would you use SQLMap vs writing manual SQL injection tests?" The strong answer: "SQLMap automates detection and exploitation of SQL injection vulnerabilities — it tests hundreds of injection techniques across multiple database backends, which would take hours to do manually. I'd use SQLMap for comprehensive coverage: testing every parameter, every endpoint, every HTTP method. But I'd also write manual injection tests for: (1) complex injection points that SQLMap might miss — multi-step workflows where the injection payload needs to survive across requests, (2) second-order SQL injection where the payload is stored now and executed later, and (3) blind injection verification where I need domain knowledge to interpret whether the injection succeeded. Automated tools find 80% of vulnerabilities. Manual testing finds the 20% that need context. An SDET should do both." The key is demonstrating you understand the tool's <em>limitations</em>, not just its capabilities.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The security tool question that separates seniors: <strong>"How do you avoid scanning yourself into a security incident?"</strong> This demonstrates operational awareness. The answer: "Active scanning sends attack payloads — SQL injection strings, XSS scripts, and authentication bypass attempts. Running these against production is a security incident waiting to happen. I always run active scans against isolated staging environments that mirror production but have no real user data. If the staging environment shares infrastructure with production (same database cluster, same network), I ensure scan traffic is rate-limited and monitored. I also maintain a scan exclusion list — endpoints that should never be actively scanned, like password reset endpoints that might trigger real emails or rate-limited APIs that might trigger account lockouts. And I always coordinate with the operations team before running an active scan — the last thing you want is a SOC analyst investigating an attack that turns out to be your own security test."</p>
+</section>
+
+<section class="content-section">
+  <h2>Authentication and Authorisation Testing — The Patterns Interviewers Probe Deepest</h2>
+  <p>Authentication (who you are) and authorisation (what you're allowed to do) are the two security domains that SDETs are expected to understand and test. Every interviewer will ask at least one auth question — it's the security testing topic that maps most directly to functional testing, and it's where SDETs add the most immediate value. Here's what they probe:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Authentication Testing Patterns</h3>
+      <p>"How do you test authentication beyond 'valid credentials log in, invalid credentials don't'?" The weak answer stops at the login form. The strong answer covers: (1) Password policy enforcement — minimum length, complexity requirements, common password rejection, password history (can't reuse last N passwords). (2) Brute force protection — account lockout after N failed attempts, CAPTCHA after repeated failures, rate limiting on the login endpoint. (3) Session management — session tokens are generated securely (cryptographically random, not sequential), session timeout on inactivity, session invalidation on logout (test that the old session token doesn't work after logout), and concurrent session handling (should a user be logged out of device A when logging into device B?). (4) Password reset flow — the reset token is single-use, time-limited (usually 15-60 minutes), cryptographically random, and invalidated after use. (5) Multi-factor authentication — if MFA is enabled, test that authentication requires the second factor; test backup codes and recovery flows. (6) Remember-me functionality — the persistent login token should be separate from the session token and should be rotated on each use. A candidate who can discuss password reset token security specifically demonstrates experience beyond basic login testing.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Authorisation Testing Patterns</h3>
+      <p>"How do you systematically test that users can only do what they're authorised to do?" This is the question that tests whether you think in access control matrices or just spot-check permissions. The strong answer: "I create a role-permission matrix — a spreadsheet mapping every user role (anonymous, authenticated user, premium user, moderator, admin, super admin) against every endpoint and feature. For each cell: expected HTTP status (200, 401, 403). Then I automate tests that verify every cell — for every endpoint, with every role's credentials, assert the response status and body. I test both positive cases (admin CAN access admin endpoint) and negative cases (standard user CANNOT access admin endpoint). Beyond endpoints, I test: (1) horizontal privilege escalation — user A trying to access user B's resource (change the user ID in the URL or request body), (2) vertical privilege escalation — a lower-privilege role accessing a higher-privilege function, (3) context-based authorisation — a user who owns a resource can edit it, but a user who doesn't own it cannot, and (4) indirect object references — enumerating IDs in URLs or API parameters to access unauthorised data. The role-permission matrix becomes a living document that's updated when new features or roles are added, and the automated tests act as a regression suite that catches authorisation regressions immediately."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>JWT Token Security Testing</h3>
+      <p>JWT (JSON Web Token) security is a 2026-specific interview topic because JWTs are ubiquitous in modern APIs, and their misconfiguration is a common vulnerability. The interview question: "How would you test that JWT tokens are handled securely in your application?" The answer: (1) Verify the algorithm — test that the application rejects tokens with 'none' algorithm (a classic JWT attack where you set alg to 'none' and the server accepts the token without verifying the signature). (2) Verify the signature — test that tokens signed with a different key or a wrong secret are rejected. (3) Test token expiry — verify that an expired token is rejected. (4) Test audience and issuer claims — if the application validates 'aud' and 'iss' claims, test that tokens with incorrect values are rejected. (5) Test token replay — verify that using the same token across different sessions or after logout doesn't work (if the application implements token revocation). (6) Test sensitive data exposure — decode the JWT payload (it's base64, not encrypted) and verify it doesn't contain sensitive data like passwords, credit card numbers, or PII. (7) Test refresh token security — verify that refresh tokens have longer expiry than access tokens, are stored securely (HttpOnly, Secure cookies), and are rotated on use. The candidate who mentions JWT algorithm confusion attacks specifically demonstrates security testing depth beyond basic API testing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>API Security Testing — JWT, OAuth, Rate Limiting, and Input Validation</h2>
+  <p>API security testing is where the SDET's functional testing skills intersect most directly with security testing. The same endpoints you test for correct behaviour are the attack surface for injection, authorisation bypass, and data leakage. Here's what interviewers ask:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔑</span>
+      <div>
+        <h3>OAuth 2.0 and OpenID Connect Testing</h3>
+        <p>"How would you test an OAuth 2.0 implementation?" The strong answer covers the OAuth flow end-to-end: (1) Verify the authorisation code flow — the client receives an authorisation code (not an access token) in the redirect, exchanges it for an access token server-to-server, and the redirect URI is validated (the authorisation server should reject redirects to unregistered URIs). (2) Test the state parameter — verify that the state parameter is included in the authorisation request and validated in the callback to prevent CSRF attacks. (3) Test scope validation — verify that the access token only grants the scopes that were requested and approved (a token requested with 'read' scope should not allow 'write' operations). (4) Test token endpoint security — verify that the token endpoint requires client authentication (client ID and secret), rejects requests with invalid client credentials, and uses HTTPS. (5) Test the implicit flow is NOT used — the implicit flow (where the access token is returned directly in the redirect) is deprecated in OAuth 2.1 because it exposes tokens in browser history and referrer headers. A candidate who can discuss OAuth flows and their security implications demonstrates understanding of modern auth infrastructure, not just login form testing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⏱️</span>
+      <div>
+        <h3>Rate Limiting and Denial of Service Testing</h3>
+        <p>"How do you test that your API is protected against abuse?" Rate limiting is both a performance concern and a security concern — without it, an attacker can brute-force credentials, exhaust resources, or degrade service for legitimate users. The test approach: (1) Identify rate-limited endpoints — login, password reset, API endpoints that return data, file upload, and any endpoint with a computational or database cost. (2) Verify rate limit headers — the API should return <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, and <code>X-RateLimit-Reset</code> headers so clients can self-regulate. (3) Test per-endpoint limits — send requests at increasing rates and verify that the API returns 429 Too Many Requests at the documented threshold. (4) Test per-user vs per-IP limits — verify that rate limiting applies per authenticated user, not just per IP (otherwise an attacker can rotate IPs or share a NAT with legitimate users). (5) Test rate limit bypass — can the rate limit be bypassed by using different endpoints that achieve the same result, adding random query parameters, or using different HTTP methods? (6) Test rate limit persistence — if you hit the limit, wait the reset period, and verify you can make requests again. A candidate who discusses rate-limit-specific test scenarios — rather than just acknowledging rate limiting exists — demonstrates security-conscious API testing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>API Input Validation and Fuzzing</h3>
+        <p>"How do you test that your API validates input correctly?" Input validation is the first line of defence against injection attacks, and the SDET's role is to verify that every input point is properly validated. The test approach: (1) Type validation — send string values where integers are expected, arrays where objects are expected, null where required fields are expected. The API should return 400 Bad Request, not 500 Internal Server Error (a 500 on bad input often indicates the input reached code that didn't handle it). (2) Boundary testing — test minimum and maximum lengths for strings, minimum and maximum values for numbers, empty strings, zero values, and negative numbers where only positive makes sense. (3) Format validation — email fields should reject invalid emails, date fields should reject non-dates, UUID fields should reject non-UUIDs. (4) Injection payloads — send SQL injection, NoSQL injection, XSS, and command injection payloads to every input field and verify they're rejected or safely handled. (5) Mass assignment — send extra fields in the request body that shouldn't be modifiable (e.g., 'isAdmin': true in a user profile update) and verify they're ignored or rejected. (6) Content-type validation — send requests with incorrect Content-Type headers (XML to a JSON endpoint) and verify appropriate error handling. API fuzzing can be automated — but the SDET needs to understand what to fuzz and how to interpret the results. The strong answer demonstrates systematic input testing methodology, not just running a fuzzer and reporting the output.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Real Security Testing Interview Scenarios — What Panels Actually Ask</h2>
+  <p>Drawing from panels Mitchell has conducted at HMRC, MoD, Nationwide, and consulting for Accenture, here are the security testing scenarios that appear in SDET interviews — and what a strong answer looks like for each.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"You find a security vulnerability during testing. What do you do?"</h3>
+      <p>This is the security incident response question — it tests whether you treat security findings differently from functional bugs. The weak answer: "I file a bug ticket." The strong answer: "I follow the organisation's responsible disclosure process. Security vulnerabilities are not standard bugs — they shouldn't be logged in a public issue tracker where attackers might find them. My immediate steps: (1) Document the finding — what the vulnerability is, how to reproduce it, the potential impact, and any evidence (screenshots, request/response logs). (2) Assess severity — is this critical (data breach possible, authentication bypass), high (sensitive data exposure), medium (information disclosure), or low (theoretical exploit with minimal impact)? Use CVSS scoring if the organisation uses it. (3) Notify the security team or security champion immediately — not the next sprint planning. Critical vulnerabilities might warrant an incident response. (4) File the finding in the organisation's secure vulnerability tracking system — not JIRA, not Slack, not email. (5) Verify the fix — after the vulnerability is patched, I retest to confirm it's resolved and test that the fix didn't introduce new vulnerabilities. (6) Contribute to the post-mortem — what testing gap allowed this vulnerability to reach the stage where I found it, and how do we prevent similar vulnerabilities in the future?" This answer demonstrates security maturity — treating vulnerabilities as potential incidents, not just tickets.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"How would you integrate security testing into an existing CI/CD pipeline that currently only runs functional tests?"</h3>
+      <p>This is the DevSecOps practical question — it tests whether you can operationalise security testing, not just talk about it. The strong answer describes a phased approach: (1) Phase 1 — Dependency scanning. Add a dependency vulnerability scanner (Snyk, OWASP Dependency-Check, npm audit) to the build stage. This is fast, non-disruptive, and catches known vulnerabilities in third-party libraries. Fail the build on critical vulnerabilities. (2) Phase 2 — SAST (Static Application Security Testing). Add a static analysis tool (SonarQube with security rules, Semgrep, or Bandit for Python) to the build stage. This analyses source code for security anti-patterns without executing the application. (3) Phase 3 — Secret scanning. Add git-secrets, truffleHog, or GitHub's built-in secret scanning to prevent credentials from being committed. (4) Phase 4 — DAST (Dynamic Application Security Testing). Add OWASP ZAP passive scanning to the staging deployment stage — passive scanning analyses traffic without sending attacks, so it's safe for every build. (5) Phase 5 — DAST active scanning. Add OWASP ZAP active scanning as a nightly job against staging — active scanning sends attack payloads, so it's too slow and potentially disruptive for every PR. (6) Phase 6 — Continuous monitoring. Integrate findings into a centralised dashboard, track vulnerability trends over time, and set SLAs for remediation based on severity (critical: 24 hours, high: 7 days, medium: 30 days). The phased approach demonstrates you understand the operational reality of introducing security testing — start with low-friction, high-value checks, and progressively add depth without blocking the pipeline.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"How do you test that user sessions are managed securely?"</h3>
+      <p>Session management is a practical security testing topic that every web application SDET should understand. The interview answer covers: (1) Session token generation — verify that session tokens are cryptographically random (not sequential or predictable by capturing multiple tokens and looking for patterns). Test by logging in multiple times and comparing tokens. (2) Session token transmission — verify that session cookies have Secure flag (HTTPS only), HttpOnly flag (inaccessible to JavaScript), and SameSite attribute (Lax or Strict to prevent CSRF). (3) Session fixation — test that the session token changes after login. Log in, note the session token before and after authentication — if they're the same, the application is vulnerable to session fixation (an attacker sets a known session token, the victim logs in with it, the attacker uses the same token to access the victim's session). (4) Session timeout — test that idle sessions expire after the configured timeout. Log in, wait longer than the timeout, refresh — you should be redirected to login or your request should be rejected. (5) Session invalidation on logout — test that the session token doesn't work after explicit logout. (6) Concurrent sessions — test what happens when a user logs in from two devices. Depending on the application's security requirements, the previous session should either be invalidated or both should be allowed (and the user should be informed). Each of these tests can and should be automated — session management testing is a perfect candidate for the SDET's security testing suite.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"What's the difference between SAST and DAST — and where does each belong in your pipeline?"</h3>
+      <p>This question tests whether you understand the security testing toolchain as a system, not just individual tools. SAST (Static Application Security Testing) analyses source code without executing it — it finds vulnerabilities like hardcoded secrets, insecure cryptographic algorithms, SQL injection via string concatenation, and unsafe deserialisation. SAST runs in the build stage — it's fast, doesn't need a running application, and provides immediate feedback to developers. The trade-off: false positives are common because SAST lacks runtime context. DAST (Dynamic Application Security Testing) analyses a running application by sending requests and analysing responses — it finds vulnerabilities like XSS, SQL injection, broken access control, and misconfigured security headers. DAST runs against a deployed environment (staging) — it needs a running application and is slower, but it finds real, exploitable vulnerabilities with fewer false positives. The strong answer also mentions IAST (Interactive Application Security Testing) — which combines SAST and DAST by instrumenting the application to observe behaviour during testing — and RASP (Runtime Application Self-Protection), though those are more advanced. The key insight: SAST and DAST are complementary, not competing. SAST finds vulnerabilities early in development. DAST finds vulnerabilities in the integrated, running application. Both belong in your pipeline, at different stages. The candidate who can map security tools to pipeline stages — rather than listing tools — demonstrates production-grade DevSecOps thinking.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>5 Common Security Testing Mistakes That Cost Candidates Offers</h2>
+  <p>After watching hundreds of candidates navigate security testing questions, Mitchell has identified the specific mistakes that cause interviewers to lean back and wait for the next candidate. These aren't gaps in security knowledge — they're gaps in how you <em>present</em> that knowledge. You might understand security testing, but if you present it as an afterthought rather than a core competency, the panel won't hear the understanding.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #1: Treating Security Testing as a Specialist's Job</h3>
+        <p>The single most common mistake SDET candidates make: saying "security testing is for the security team" or "I'd hand off security findings to the penetration testers." In 2026, this answer signals you haven't kept up with DevSecOps. Security testing has shifted left — it's now part of the SDET's responsibility, just like functional testing and performance testing. The strong answer: "As an SDET, I own the automation of security testing — dependency scanning, SAST, DAST integration, authentication and authorisation tests, and API security tests. I work with the security team on penetration testing and threat modelling, but the automated security gates in the CI/CD pipeline are my responsibility. My role is to catch the 80% of vulnerabilities that can be found automatically so the security specialists can focus on the 20% that need human creativity." This demonstrates you understand the modern SDET-security boundary, not an outdated siloed model.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #2: Listing OWASP Top 10 Without Understanding the Practical Implications</h3>
+        <p>Every candidate who's read a security testing blog can recite A01-A10. Interviewers are testing whether you've gone beyond memorisation. When you mention "Broken Access Control," follow it with how you'd test for it: "I test every endpoint with every role to verify that the 403s are returned where expected." When you mention "Injection," follow it with: "I test every input field with SQLi and XSS payloads, including blind injection detection." The candidates who win interviews don't list OWASP categories — they describe their testing methodology for each category. If you can't describe <em>how you test</em> for an OWASP category, don't list it.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #3: Confusing Authentication Testing with Login Testing</h3>
+        <p>"I test authentication by verifying that valid credentials log in and invalid ones don't" — this answer signals you haven't thought about authentication as a security domain. Login testing is the surface. Authentication testing includes: password policy enforcement, brute force protection, session management (token generation, expiry, invalidation), multi-factor authentication flows, password reset security, account recovery flows, and credential storage (are passwords hashed? Are password hashes ever returned in API responses?). Interviewers who've worked on authentication systems will probe specifically for session management and password reset security — because that's where the most damaging authentication vulnerabilities live. A candidate who can discuss session token rotation and password reset token single-use demonstrates genuine authentication testing experience.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #4: Running Security Scans Without Understanding the Findings</h3>
+        <p>"I run OWASP ZAP and review the report" — this answer tells the interviewer you've run a tool, not that you understand security testing. Tools generate findings. The SDET interprets them. A strong answer: "When ZAP reports a potential XSS vulnerability, I verify it manually before raising it — automated scanners have high false positive rates for XSS because they can't execute the JavaScript to confirm. When ZAP reports a missing security header, I assess the actual risk — a missing Content-Security-Policy header on an internal admin tool behind a VPN is lower risk than the same finding on a public-facing login page. When ZAP reports dozens of low-severity findings, I prioritise — the SQL injection finding gets immediate attention; the 'cookie missing HttpOnly flag on a non-sensitive cookie' finding goes into the backlog. The tool finds; the SDET triages, verifies, and contextualises." This demonstrates you've actually worked with security tools in practice, not just read about them.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #5: Not Knowing What You Don't Know</h3>
+        <p>The candidate who claims to be a security expert when they've run OWASP ZAP twice is setting themselves up for a hard fall. Interviewers who probe security testing deeply will quickly expose the gap between claimed and actual expertise. The strong approach: be honest about your security testing level and frame it as a growth area. "I'm not a penetration tester. My security testing experience is primarily automated security testing in the CI/CD pipeline — dependency scanning, SAST integration, OWASP ZAP DAST scanning, and automated authentication and authorisation testing. I understand OWASP Top 10 and can discuss testing methodology for the most common web vulnerabilities. I'm actively building deeper security testing skills, and I'm looking for a role where I can work alongside security specialists to grow that expertise." Honesty about your current level plus demonstrated initiative to grow is more compelling than pretending you're a security architect when you're not. SDET Interview Coach includes security testing questions at all five seniority levels — so you can prepare for the security questions appropriate to your target role, not the questions a penetration tester would face.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real Security Testing SDET Interview Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels Mitchell has conducted across government, defence, and enterprise, here's how security testing questions typically appear in a 60-minute SDET interview:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Experience Probe</h3>
+        <p>"What security testing have you done in your current role?" This opener tests whether you've genuinely practised security testing or just listed it on your CV. Be honest about your level. If you've primarily run automated security scans: "I've integrated OWASP ZAP into our CI/CD pipeline for DAST, added dependency vulnerability scanning with Snyk to the build stage, and written automated tests for authentication and authorisation. I haven't done formal penetration testing — that's handled by a specialist team — but I own the automated security gates that catch vulnerabilities before they reach production." This answer demonstrates security testing competence while being honest about its scope. Interviewers respect candidates who know what they know and know what they don't.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>OWASP Top 10 & Vulnerability Knowledge</h3>
+        <p>"Pick an OWASP Top 10 category and explain how you'd test for it." This tests whether you understand vulnerabilities practically, not just theoretically. Choose a category you're comfortable with — Broken Access Control or Injection are good choices because they map directly to functional testing. Walk through your testing methodology: the endpoints you'd test, the payloads you'd use, the expected behaviour, the tools you'd employ, and how you'd integrate the tests into CI/CD. Don't just describe the vulnerability — describe the test suite you'd build to catch it. The follow-up will probe deeper: "And how would you test that same vulnerability in a single-page application with a GraphQL API?" — testing whether you can adapt your methodology to different architectures.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>Tool-Specific & Practical Questions</h3>
+        <p>"How would you configure OWASP ZAP to scan an authenticated application?" This tests practical tool experience, not theoretical knowledge. Discuss: (1) ZAP's context configuration — defining the application scope, (2) authentication setup — form-based authentication, session token management, verification of authenticated state, (3) scan policy — which scan rules to enable based on the application (aggressive vs. safe), (4) handling CSRF tokens — ZAP's anti-CSRF token handling for applications that use CSRF protection, (5) reporting — how findings are exported, filtered, and integrated into CI/CD reporting. If you've never configured ZAP for an authenticated scan, say so — but describe the approach you'd take based on documentation and your understanding of the tool.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–50 min</div>
+      <div class="timeline-content">
+        <h3>Operational & Incident Response</h3>
+        <p>"A critical vulnerability is found in a dependency your application uses. The patch isn't available yet. What do you do?" This tests operational security thinking. Discuss: (1) Assess impact — does your application use the vulnerable feature in an exploitable way? Is the vulnerable code path actually reachable? (2) Mitigation — can you disable the affected feature, add a WAF (Web Application Firewall) rule, or implement compensating controls? (3) Monitoring — increase monitoring on the affected component to detect exploitation attempts. (4) Communication — notify the security team, the product owner, and potentially customers depending on severity. (5) Patching plan — track the patch release, test it in staging, deploy as an emergency change if critical. The SDET's specific role: write a targeted security test that specifically tests for the vulnerability, add it to the CI/CD pipeline, and verify it passes once the patch is applied.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">50–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their security testing maturity: "What's your current security testing setup — do you have automated SAST and DAST in CI/CD, or is security testing mostly manual? How do you handle security findings — are they tracked in the same backlog as functional bugs, or is there a separate vulnerability management process? Do SDETs here contribute to threat modelling or security review sessions, or is that purely a security team activity? What was the last security incident, and how has it changed your testing approach?" Questions that probe their security posture demonstrate you're thinking about how you'd contribute to their specific environment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Why Security Testing Competence Is Becoming a Career Accelerator for SDETs</h2>
+  <p>After 20 years watching the UK testing market evolve — from HMRC to the MoD, from Nationwide to Accenture — Mitchell has observed a consistent pattern: SDETs who add security testing to their skill set advance faster and command higher salaries than pure functional automation engineers. Here's why:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Security-competent SDETs are scarce and the demand is surging.</strong> The pool of testers who can discuss Playwright locator strategies is deep. The pool who can also discuss OWASP Top 10 testing methodology, JWT token security, and OWASP ZAP CI/CD integration is shallow. In every panel Mitchell has conducted where a candidate demonstrated genuine security testing competence, the post-interview debrief included the phrase "they bring security testing skills we weren't expecting." That surprise value translates to offers and higher salary bands.</li>
+    <li><strong>Security testing makes your automation suite visible to senior leadership.</strong> When your automated tests catch a SQL injection vulnerability before it reaches production, the CISO hears about it. When your DAST pipeline stage blocks a deployment because of a broken access control regression, the VP of Engineering sees the value. Security testing — more than any other testing domain — has direct visibility to the people who control budgets and promotions. SDETs who can demonstrate security impact get invited to the conversations where careers advance.</li>
+    <li><strong>The DevSecOps trend is structural, not cyclical.</strong> The integration of security into the development pipeline isn't a passing trend — it's a permanent shift driven by regulatory pressure, cyber insurance requirements, and the increasing cost of security incidents. SDETs who build security testing skills now are positioning themselves for roles that are being defined as we speak: DevSecOps SDET, Security Test Automation Engineer, Application Security QA Lead. These roles command premium compensation because they combine two scarce skill sets — test automation and security testing.</li>
+  </ul>
+  <p>The candidates adding security testing to their repertoire now — not OWASP ZAP certification, but the practical methodology of testing for injection, broken access control, authentication weaknesses, and API security — are the ones who'll walk into 2027 interviews as senior security-aware SDETs while their purely functional peers are still competing for the same mid-level roles they have today.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your Security Testing Interview — Starting Tonight</h2>
+  <p>You don't need to be a penetration tester. You need to understand OWASP Top 10, be able to discuss security testing methodology for the most common web vulnerabilities, articulate how you'd integrate security testing into a CI/CD pipeline, and — most importantly — demonstrate that you think about testing the attack surface, not just the happy path. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> from the iOS App Store and complete the 2-minute onboarding assessment. Select your target stack and seniority level. The app's 800+ question bank includes security testing topics — OWASP Top 10, authentication and authorisation testing, API security (JWT, OAuth, rate limiting), security testing tools (OWASP ZAP, Burp Suite), DevSecOps pipeline integration, and security incident response — calibrated to all five seniority levels. Even if security testing is a gap in your current role, the app surfaces questions at your level so you can build confidence before the interview exposes the gap.</li>
+    <li><strong>Run a security testing mock interview today.</strong> Pick Security Testing as your topic, set a 30-minute timer, and answer the questions out loud. The AI feedback scores you on technical accuracy, completeness, communication, and code quality — showing you exactly where your security testing knowledge gaps are before the real panel finds them. The AI mock interviewer asks adaptive follow-ups on OWASP Top 10 methodology, tool-specific configuration, and operational security scenarios, just like a real panel.</li>
+    <li><strong>Use Job Match for your target role.</strong> If the job description mentions "security testing," "OWASP," "DevSecOps," "authentication testing," "authorisation," "ZAP," "Burp Suite," or "penetration testing," paste it into Job Match. You'll get 50 questions tailored to that exact role's security testing expectations — no guessing whether they'll ask about SQL injection testing, JWT security, or CI/CD security integration.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The candidates who prepare for security testing questions now — who can articulate OWASP Top 10 testing methodology, who understand the difference between authentication and authorisation testing, and who can discuss integrating OWASP ZAP into a CI/CD pipeline with the same fluency they discuss Playwright — are the ones who'll walk into panels and surprise interviewers with a competency they weren't necessarily expecting to find. Security testing isn't a specialist silo any more. It's a core SDET competency, and with <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a>, available on the iOS App Store, you can build that security testing confidence before you ever sit down with an interviewer.</p>
+
+  <p>If you're building your security testing skills from a test automation background, start with our guide on <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> — API security testing is where functional testing and security testing most directly intersect. For the CI/CD pipeline integration where security scanning lives, see our guide on <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>. For the web automation that security testing complements, see <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a>. And for the framework design round where security testing gates are architected, see <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview Questions</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "Do I need to be a penetration tester to answer security testing questions in an SDET interview?",
+        a: "No. SDET interviews expect you to understand security testing methodology and automation — not to be a penetration tester. You need to know OWASP Top 10, how to test for common web vulnerabilities (SQL injection, XSS, broken access control), how to integrate security tools like OWASP ZAP into CI/CD, and how to automate authentication and authorisation tests. You don't need to know advanced exploitation techniques, reverse engineering, or network-level penetration testing — those are specialist security tester domains. The distinction: an SDET automates security testing as part of the quality pipeline; a penetration tester performs manual deep-dive security assessments. Interviewers are testing whether you can contribute to the organisation's security posture through automation, not whether you can replace their penetration testing team. SDET Interview Coach's security testing questions are calibrated to SDET-appropriate depth, not penetration tester depth.",
+      },
+      {
+        q: "What's the difference between authentication and authorisation testing — and why do interviewers care?",
+        a: "Authentication verifies <em>who you are</em>. Authorisation verifies <em>what you're allowed to do</em>. Interviewers care about the distinction because they test different things and the vulnerabilities differ. Authentication testing covers: login mechanisms, password policies, brute force protection, session management, MFA flows, password reset security. Authorisation testing covers: role-based access control, horizontal privilege escalation (user A accessing user B's data), vertical privilege escalation (standard user accessing admin functions), and context-based authorisation (resource ownership). A candidate who can articulate the distinction and describe different testing strategies for each demonstrates security thinking beyond basic login testing. The most common interview mistake: describing authorisation testing as 'checking that users can log in' — which is authentication, not authorisation.",
+      },
+      {
+        q: "How do I answer 'Integrate OWASP ZAP into CI/CD' when I've never done it?",
+        a: "Be honest about your hands-on experience — but demonstrate conceptual understanding. Say: 'I haven't configured ZAP in a production CI/CD pipeline personally, but I understand the architecture. ZAP runs in headless mode with its REST API. You'd configure a CI stage that starts ZAP as a daemon, runs a spider to discover endpoints, executes an active scan with authentication configured via ZAP's context, exports results, and fails the pipeline on high-severity findings. I'd start with passive scanning on every build — it's fast and safe — and run active scanning nightly.' Then connect it to your existing skills: 'I have configured test automation in CI/CD pipelines, and the principles are the same — headless execution, result reporting, pipeline gating on failure. The tool is different but the pipeline integration pattern is familiar.' This demonstrates you can bridge your existing CI/CD knowledge into the security testing domain — which is exactly what interviewers want to hear from a candidate building security skills.",
+      },
+      {
+        q: "What OWASP Top 10 vulnerabilities should an SDET know how to test for?",
+        a: "The OWASP Top 10 (2021) categories most relevant to SDET security testing are: (1) Broken Access Control — test every endpoint with every role to verify correct 401/403 responses and prevent privilege escalation. (2) Cryptographic Failures — test HTTPS enforcement, secure cookie flags, and that sensitive data isn't exposed in responses or logs. (3) Injection — test all input fields with SQLi, NoSQLi, XSS, and command injection payloads; test for blind injection. (4) Insecure Design — test business logic flows for security weaknesses (e.g., can a user bypass the payment step?). (5) Security Misconfiguration — test for missing security headers (CSP, HSTS, X-Frame-Options), verbose error messages, and default credentials. (6) Vulnerable and Outdated Components — dependency scanning in CI/CD. (7) Identification and Authentication Failures — session management, brute force protection, password policy testing. (8) Software and Data Integrity Failures — test for insecure deserialisation, unsigned updates. (9) Security Logging and Monitoring Failures — test that security events are logged. (10) Server-Side Request Forgery (SSRF) — test URL inputs that might trigger internal requests. You don't need to be an expert in all ten — but you should be able to discuss testing methodology for the top five with confidence.",
+      },
+      {
+        q: "How do I test API security as an SDET — what's different from functional API testing?",
+        a: "Functional API testing verifies correct behaviour — the endpoint returns 200 with the expected data. Security API testing verifies that the endpoint <em>defends itself</em>. Key differences: (1) You test negative cases aggressively — send malformed JSON, integer overflow values, SQL injection in query params, XSS in request bodies. (2) You test authentication and authorisation on every endpoint — not just 'does the endpoint work with valid auth?' but 'does the endpoint reject missing auth, expired auth, wrong role auth, and tampered auth?' (3) You test rate limiting — send requests rapidly and verify 429 responses at the documented threshold. (4) You test JWT security — algorithm confusion, token expiry, signature verification, sensitive data in payload. (5) You test input validation — type confusion, boundary values, mass assignment of protected fields. (6) You test that error responses don't leak information — a 500 error should not include stack traces, database queries, or internal IP addresses. (7) You test CORS configuration — verify that the API only accepts requests from allowed origins. API security testing is an extension of functional API testing — same endpoints, different test cases. An SDET who already writes API tests can add security test cases incrementally.",
+      },
+      {
+        q: "Does SDET Interview Coach cover security testing interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated Security Testing topic area covering OWASP Top 10, authentication and authorisation testing, API security (JWT, OAuth, rate limiting), security testing tools (OWASP ZAP, Burp Suite, SQLMap), DevSecOps pipeline integration, security incident response, vulnerability triage and reporting, and common security testing mistakes. Questions are calibrated to five seniority levels — Junior candidates get foundational OWASP and authentication testing questions, while Lead candidates face enterprise DevSecOps strategy and security testing architecture questions. The AI mock interviewer can run a dedicated security testing round with adaptive follow-ups on vulnerability methodology, tool configuration, and operational scenarios. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions security testing, OWASP, DevSecOps, or vulnerability assessment. Available on the iOS App Store.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "api-testing-interview-questions-2026", "cicd-pipeline-testing-interview-questions", "playwright-interview-questions-2026", "test-automation-framework-design-interview"],
+  },
+  {
     slug: "bdd-cucumber-interview-questions-2026",
     title: "BDD and Cucumber Interview Questions — What SDET Panels Ask About Gherkin, Step Definitions, and Behaviour-Driven Testing in 2026",
     description: "Real BDD and Cucumber interview questions from SDET panels. Covers Gherkin syntax, step definitions, hooks, BDD vs TDD trade-offs, and the behavioural questions that separate testers who've practised BDD from those who've only read about it. Built from panels at HMRC, MoD, Nationwide, and Accenture.",
