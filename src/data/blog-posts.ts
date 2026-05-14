@@ -14,6 +14,462 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "api-testing-interview-questions-2026",
+    title: "API Testing Interview Questions 2026 — What SDET Panels Ask About REST, Postman & Contract Testing",
+    description: "Real API testing interview questions from SDET panels. Covers REST vs SOAP, HTTP methods and status codes, OAuth 2.0 and JWT authentication, Postman and Newman, API chaining and data-driven testing, schema validation, and contract testing with Pact. Built from real interview panels at HMRC, Nationwide, Accenture, and the MoD.",
+    date: "2026-05-14",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "API testing interview questions",
+      "API testing interview questions 2026",
+      "REST API testing interview questions",
+      "Postman interview questions SDET",
+      "API automation testing interview",
+      "contract testing interview questions",
+      "REST API SDET interview prep",
+      "API testing interview questions and answers",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's 11pm. Your SDET interview is tomorrow morning. You've nailed down your Playwright locator strategies. You can discuss fixture scoping and CI/CD pipelines without breaking a sweat. Then you remember the job description had that line buried halfway down: <em>"Experience with API testing — REST, Postman, contract testing."</em></p>
+  <p>Your stomach tightens. You've written API tests before — a few <code>fetch()</code> calls in a test script, maybe poked around in Postman. But you've never been <em>interviewed</em> on it. You don't know whether they'll ask about REST vs SOAP, HTTP status codes, authentication flows, or something called "contract testing" that you've only seen mentioned in blog posts.</p>
+  <p>This guide is for that moment. API testing comes up in nearly every SDET interview — and if you can't speak to it with confidence, you're leaving the door open for a candidate who can. Built from 20 years of sitting on both sides of the SDET interview table — at HMRC, the Ministry of Defence, Nationwide, and Accenture — this guide covers exactly what interviewers ask about API testing, the questions that trip up candidates who've only tested UIs, and how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> prepares you for the API testing round so you walk in ready — even if API testing isn't your primary stack.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why API Testing Questions Are Gatekeeping SDET Jobs in 2026</h2>
+  <p>Three years ago, many SDET interviews were satisfied with "I've used Postman to test endpoints." In 2026, that answer doesn't clear the phone screen. Here's what's changed:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Microservices made API testing non-negotiable.</strong> When your application is 50 services talking to each other, the test surface isn't the UI — it's the contracts between those services. In panels at Nationwide and Accenture, Mitchell has watched interviewers shift from "Do you test APIs?" to "How do you test the API contracts between services?" The distinction matters.</li>
+    <li><strong>Playwright blurred the line between UI and API testing.</strong> Playwright's built-in <code>request</code> context means interviewers now expect SDETs to discuss API testing within the same framework they use for browser automation. If you can't explain when to use <code>page.request</code> vs <code>request.newContext()</code>, you're missing a capability half your competition has.</li>
+    <li><strong>Contract testing went from niche to mainstream.</strong> Pact, Spring Cloud Contract, and schema validation are appearing in job descriptions that didn't mention them a year ago. Organisations with distributed architectures need SDETs who understand that testing APIs in isolation isn't enough — you need to verify that services agree on the shape of their communication.</li>
+  </ul>
+  <p>The API testing round isn't a pop quiz. It's a window into whether you understand testing at the integration layer — and in 2026, that's where most production bugs originate.</p>
+</section>
+
+<section class="content-section">
+  <h2>The 7 Categories Every API Testing Interview Covers</h2>
+  <p>In panels Mitchell has conducted and observed across government and enterprise, API testing questions cluster into seven categories. You won't get asked all seven — but you'll get asked at least three. Master them all and you can handle any API testing curveball.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. REST vs SOAP — The Fundamentals</h3>
+      <p>"What's the difference between REST and SOAP?" This is the opener. Strong candidates explain that REST is an architectural style using standard HTTP methods, multiple data formats (JSON, XML), and is stateless. SOAP is a protocol with strict XML messaging, built-in error handling, and WS-Security. The follow-up asks <em>when</em> you'd choose SOAP over REST — the answer is industries with strict transactional requirements like banking and payments, where SOAP's ACID compliance and formal contract (WSDL) matter.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. HTTP Methods & Idempotency</h3>
+      <p>"Which HTTP methods are idempotent, and why does it matter for testing?" Most candidates can list GET, PUT, DELETE as idempotent and POST as non-idempotent. Few can explain <em>why</em> it matters for test design: idempotent requests can be retried safely in CI without side effects, while non-idempotent POST requests require data cleanup or unique identifiers to prevent duplicate resource creation. This is the question that separates candidates who've tested APIs at scale from those who've only hit endpoints locally.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. HTTP Status Codes — Beyond 200 and 404</h3>
+      <p>"Walk me through the HTTP status code families and what a tester should validate for each." The answer tests breadth: 2xx (success — validate response body structure), 3xx (redirection — validate Location header and that the redirect target is correct), 4xx (client error — validate error message format, that the server doesn't leak stack traces, and that the right code is used: 400 vs 401 vs 403 vs 422), 5xx (server error — validate the API degrades gracefully, doesn't crash, and returns a consistent error contract). The trap is forgetting 429 (rate limiting) and how to test it.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. Authentication & Authorisation</h3>
+      <p>"How would you test an API that uses OAuth 2.0?" Authentication testing is where many candidates stumble because they've only worked with APIs that used hard-coded tokens. A strong answer covers: testing with valid and expired tokens (what status code do you expect?), testing with insufficient scopes (403 vs 401), testing token refresh flows, and how to handle auth in automated test suites — using pre-authenticated contexts, token caching, or environment-specific credentials. Discuss Basic Auth, API keys, JWT structure and validation, and OAuth 2.0 grant types.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. Postman & Newman — The Tooling Layer</h3>
+      <p>"How do you organise a Postman collection for a microservices application?" Interviewers use Postman questions to test whether you think about API testing as an engineering system. A strong answer discusses: collection structure (grouped by service or by workflow), environment variables for different stages, pre-request scripts for dynamic auth token generation, test scripts for response validation, and running collections in CI with Newman. Bonus: mention Postman's data-driven testing with external CSV/JSON data files via the Collection Runner or Newman's <code>-d</code> flag.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>6. API Chaining & Data-Driven Testing</h3>
+      <p>"Write a test that creates a user, logs in, and retrieves a protected resource." This is the practical coding question. You're testing API chaining — extracting data from one response (user ID, auth token) and using it in subsequent requests. Strong candidates also discuss data-driven approaches: running the same test scenario with multiple data sets (different user roles, different resource types), parameterising requests from external data files, and handling dependencies between chained requests when one fails mid-chain.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>7. Schema Validation & Contract Testing</h3>
+      <p>"How do you verify that an API response hasn't changed its structure?" This is where the seniors pull ahead. Mention JSON Schema validation (using libraries like Ajv or Chai JSON Schema) to verify response structure, types, required fields, and formats. Then introduce contract testing: Pact tests verify that the consumer's expectations match the provider's actual responses, catching breaking changes before they reach integration. The candidate who can articulate the consumer-driven contract workflow — consumer defines expectations → generates a contract file → provider verifies against the contract → CI fails on mismatch — demonstrates architectural maturity.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>REST vs SOAP — The Question Every Panel Asks, and Most Candidates Answer Wrong</h2>
+  <p>"What's the difference between REST and SOAP?" sounds like a softball. It isn't. Here's what interviewers at senior level are actually listening for:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🏗️</span>
+      <div>
+        <h3>REST Is an Architectural Style, Not a Protocol</h3>
+        <p>The distinction matters. REST (Representational State Transfer) is a set of constraints — client-server separation, statelessness, cacheability, uniform interface, layered system. SOAP (Simple Object Access Protocol) is a formal protocol with strict rules about message format, error handling, and security. A candidate who says "REST is a protocol" has told the interviewer they've memorised definitions without understanding them. The stronger answer: "REST is a style that uses HTTP as the application protocol. You can violate REST constraints and still have a working API — many so-called REST APIs don't fully implement HATEOAS. SOAP doesn't give you that flexibility, which is both its strength (guaranteed contract) and its weakness (heavier, slower to evolve)."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📐</span>
+      <div>
+        <h3>When SOAP Still Wins — The Decision Framework</h3>
+        <p>In 2026, asking "Why would anyone still use SOAP?" signals you understand the landscape. SOAP dominates in: financial services (bank transfers, payment processing — where transactional integrity is non-negotiable), enterprise resource planning, healthcare (HL7, FHIR often wrap SOAP), and any domain where WS-Security (message-level encryption, digital signatures) is a compliance requirement. The interviewer isn't testing whether you prefer REST — they're testing whether you understand that technology choices are contextual, and that "REST is better" is an opinion, not an engineering decision.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>The Testing Implications Nobody Discusses</h3>
+        <p>REST APIs are typically tested with JSON payloads, HTTP status codes, and standard auth mechanisms — tools like Postman, Playwright's API testing, and Supertest work out of the box. SOAP requires XML payload construction, WSDL parsing for endpoint discovery, and SOAP-specific tools like SoapUI. The testing complexity is higher — XML namespaces, SOAP envelope structure, and SOAP faults (which don't map cleanly to HTTP status codes) add layers of complexity. A candidate who can discuss this testing complexity differential demonstrates they've actually tested both, not just read about them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>HTTP Status Codes — The Hidden Interview Trap</h2>
+  <p>Every candidate knows 200, 404, and 500. The interview doesn't start until you go beyond those. Here's what panels probe and why:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>2xx: Success Isn't Just 200</h3>
+      <p><strong>201 Created</strong> — the response to a successful POST that creates a resource. Should include a <code>Location</code> header pointing to the new resource. Test that the header is present and valid. <strong>204 No Content</strong> — successful DELETE or PUT that returns no body. Test that the body is empty and that subsequent GET to that resource returns 404. <strong>202 Accepted</strong> — the request is queued for async processing. Your test needs to handle polling or webhook callbacks, not just check the immediate 202 response.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4xx: Client Errors — The Subtle Distinctions</h3>
+      <p><strong>400 vs 422:</strong> 400 means "your request is malformed — I can't parse it." 422 (Unprocessable Entity) means "I understand your request, but it fails business logic validation." Most APIs get this wrong — and your tests should catch it. <strong>401 vs 403:</strong> 401 means "you haven't authenticated — who are you?" 403 means "you're authenticated, but you don't have permission." Testing the distinction verifies your auth layer is correctly implemented. <strong>429 Too Many Requests:</strong> test rate limiting headers (<code>Retry-After</code>, <code>X-RateLimit-Remaining</code>) and that the API resumes after the window expires.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5xx: What Your Tests Should Catch</h3>
+      <p>The critical test isn't that 500 returns when the server crashes — it's that the error response doesn't leak information. Stack traces in production error responses are a security vulnerability. Test that 5xx responses return a sanitised error contract: a stable <code>error</code> object with <code>code</code> and <code>message</code> fields, no file paths, no SQL queries, no internal IP addresses. Also test <strong>503 Service Unavailable</strong> with retry logic — does your API consumer handle temporary outages gracefully, or does it fail permanently on the first 503?</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Authentication — The API Testing Round Where Candidates Freeze</h2>
+  <p>In Mitchell's experience across interview panels at HMRC and the MoD, authentication questions expose the gap between "I've tested APIs" and "I understand API security." Here's what they're probing:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔑</span>
+      <div>
+        <h3>API Keys — Simple but Dangerous</h3>
+        <p>API keys are the simplest mechanism: a static string sent in a header (<code>X-API-Key</code>) or query parameter. Testing API keys means verifying: rejected requests with missing keys (401), rejected requests with invalid keys (401), and that keys work consistently across endpoints they should authorise. The advanced answer discusses key rotation: how do you test that rotated keys work while old keys don't, without hard-coding keys in your test suite?</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔐</span>
+      <div>
+        <h3>OAuth 2.0 — The Flow Every SDET Should Know</h3>
+        <p>OAuth 2.0 is the most common auth mechanism in enterprise APIs. A strong candidate can walk through the client credentials flow: request a token from the <code>/token</code> endpoint with <code>client_id</code> and <code>client_secret</code>, receive an <code>access_token</code> (and optionally a <code>refresh_token</code>), use the access token in the <code>Authorization: Bearer</code> header. Testing OAuth means: verifing token expiry (the API returns 401, your test refreshes the token and retries), testing scope restrictions (does a token with <code>read</code> scope get rejected on a write endpoint?), and handling the token refresh flow automatically in your test framework via a shared auth fixture.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎫</span>
+      <div>
+        <h3>JWT — Structure, Validation, and Common Pitfalls</h3>
+        <p>JSON Web Tokens appear in nearly every modern API. A strong interview answer covers: JWT structure (header.payload.signature — three Base64-encoded sections separated by dots), what you should validate (issuer, audience, expiration, signature — and importantly, the <code>nbf</code> / not-before claim), and common testing scenarios. Test that an expired JWT returns 401 (not 500), that a tampered payload (signature mismatch) is rejected, that a JWT signed with the wrong algorithm (e.g., <code>HS256</code> when the server expects <code>RS256</code>) is rejected, and that token refresh works end-to-end. For automated testing: generate JWTs programmatically in your test framework rather than copying static tokens from a developer's machine.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🛡️</span>
+      <div>
+        <h3>Basic Auth — The Legacy Pattern You Still Need to Know</h3>
+        <p>Basic Authentication (<code>Authorization: Basic base64(username:password)</code>) is still everywhere in legacy systems. Testing Basic Auth means verifying: that credentials are transmitted over HTTPS (reject HTTP requests), that incorrect credentials return 401 with <code>WWW-Authenticate</code> header, and that encoded credentials aren't logged or exposed in error messages. The advanced consideration: how do you handle Basic Auth credentials in CI — environment variables in your CI platform, never committed to the repository, rotated on a schedule.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>API Testing Code Examples — What Interviewers Expect You to Write</h2>
+  <p>In many SDET interviews, you'll be asked to write an API test — either on a whiteboard, in a shared editor, or by explaining your approach. Here are the patterns that score well:</p>
+
+  <h3 style="margin-top: 1.5rem;">Playwright API Testing — The 2026 Standard</h3>
+  <p>Playwright's built-in <code>APIRequestContext</code> is now the expected answer for API testing in a Playwright shop. Here's what a strong candidate writes:</p>
+
+  <pre style="background: #1e1e2e; color: #cdd6f4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.7; margin: 1rem 0;"><code>import { test, expect } from '@playwright/test';
+
+test.describe('User API', () => {
+  let authToken: string;
+
+  test.beforeAll(async ({ request }) => {
+    // Authenticate and store the token for all tests
+    const authResponse = await request.post('/auth/login', {
+      data: { username: 'testuser', password: 'testpass' }
+    });
+    expect(authResponse.status()).toBe(200);
+    const body = await authResponse.json();
+    authToken = body.access_token;
+  });
+
+  test('GET /users returns paginated user list', async ({ request }) => {
+    const response = await request.get('/users', {
+      headers: { Authorization: \`Bearer \${authToken}\` },
+      params: { page: 1, limit: 10 }
+    });
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    // Schema validation on response structure
+    expect(body).toHaveProperty('data');
+    expect(body).toHaveProperty('pagination');
+    expect(Array.isArray(body.data)).toBeTruthy();
+    expect(body.data.length).toBeLessThanOrEqual(10);
+    expect(body.pagination).toMatchObject({
+      page: 1,
+      limit: 10,
+      total: expect.any(Number)
+    });
+  });
+
+  test('POST /users creates a user and returns 201', async ({ request }) => {
+    const newUser = {
+      name: 'Jane Smith',
+      email: \`jane-\${Date.now()}\`@example.com,
+      role: 'editor'
+    };
+
+    const response = await request.post('/users', {
+      headers: { Authorization: \`Bearer \${authToken}\` },
+      data: newUser
+    });
+
+    expect(response.status()).toBe(201);
+    expect(response.headers()['location']).toBeDefined();
+
+    const body = await response.json();
+    expect(body.name).toBe('Jane Smith');
+    expect(body.id).toBeDefined();
+  });
+
+  test('GET /users/:id with invalid token returns 401', async ({ request }) => {
+    const response = await request.get('/users/123', {
+      headers: { Authorization: 'Bearer invalid_token' }
+    });
+    expect(response.status()).toBe(401);
+  });
+});</code></pre>
+
+  <p style="margin-top: 1.5rem;">Notice what this code demonstrates: <strong>authToken is scoped at the describe level</strong> and set in <code>beforeAll</code> (no per-test auth calls), <strong>data uniqueness</strong> is handled with <code>Date.now()</code> (no hard-coded test data), <strong>schema validation</strong> is performed on response structure, <strong>status code validation</strong> covers 200, 201, and 401, and <strong>negative testing</strong> (invalid token) is included alongside happy-path tests. This is the pattern that signals a senior-level API tester.</p>
+
+  <h3 style="margin-top: 2rem;">Supertest + Jest — The Node.js Approach</h3>
+  <p>If your target company uses Node.js backends, expect Supertest questions:</p>
+
+  <pre style="background: #1e1e2e; color: #cdd6f4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.7; margin: 1rem 0;"><code>import request from 'supertest';
+import app from '../app';
+
+describe('Products API', () => {
+  let server: any;
+  let productId: string;
+
+  beforeAll(async () => {
+    server = app.listen(0);
+  });
+
+  afterAll(() => server.close());
+
+  it('should create a product and return 201', async () => {
+    const res = await request(server)
+      .post('/api/products')
+      .set('Authorization', \`Bearer \${process.env.TEST_TOKEN}\`)
+      .send({ name: 'Widget', price: 9.99, category: 'tools' })
+      .expect(201);
+
+    expect(res.body).toMatchObject({
+      id: expect.any(String),
+      name: 'Widget',
+      price: 9.99
+    });
+    productId = res.body.id;
+  });
+
+  it('should reject duplicate product names with 409', async () => {
+    await request(server)
+      .post('/api/products')
+      .set('Authorization', \`Bearer \${process.env.TEST_TOKEN}\`)
+      .send({ name: 'Widget', price: 9.99, category: 'tools' })
+      .expect(409)
+      .expect(res => {
+        expect(res.body.error).toBe('DUPLICATE_PRODUCT');
+      });
+  });
+
+  it('should reject invalid price with 422', async () => {
+    await request(server)
+      .post('/api/products')
+      .set('Authorization', \`Bearer \${process.env.TEST_TOKEN}\`)
+      .send({ name: 'Gadget', price: -5, category: 'tools' })
+      .expect(422)
+      .expect(res => {
+        expect(res.body.errors).toContainEqual(
+          expect.objectContaining({ field: 'price' })
+        );
+      });
+  });
+});</code></pre>
+
+  <p style="margin-top: 1.5rem;">The key signals here: <strong>server lifecycle management</strong> (start/stop in hooks), <strong>auth via environment variables</strong> (no hard-coded tokens), <strong>business logic testing</strong> (duplicate products return 409, not 500), <strong>validation testing</strong> (negative prices return 422 with structured errors), and <strong>test chaining</strong> (the created product ID is reused without a hard-coded value).</p>
+</section>
+
+<section class="content-section">
+  <h2>5 API Testing Interview Traps That Cost Candidates Offers</h2>
+  <p>These are the moments where interviewers stop taking notes and start waiting. They separate candidates who've tested APIs in production from those who've only explored them in Postman.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #1: "I just check the status code and move on."</h3>
+        <p>A status code tells you the request was processed, not that it was processed <em>correctly</em>. A 200 that returns an empty array when it should return 10 items is a bug. A 201 that creates a resource but doesn't return the resource ID is a broken contract. API testing means validating: status code, response headers (Content-Type, Location, CORS, rate-limit headers), response body structure (schema), response body values (data correctness), response time (performance SLAs), and — for critical endpoints — that the side effects actually happened (did the user actually get created in the database?). Strong candidates test all six, not just the status code.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #2: "I test APIs manually in Postman — automation isn't needed."</h3>
+        <p>Manual Postman testing catches bugs once. Automated API tests catch regressions every time someone pushes code. The correct answer: "I use Postman during development and exploration — it's excellent for rapid prototyping and debugging. But for regression testing, I automate API tests in the test framework — using Playwright's APIRequestContext, Supertest, or Newman in CI. Manual Postman is discovery. Automated API tests are safety." Bonus: mention exporting Postman collections to run in CI with Newman, bridging the explorative and automated worlds.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #3: "I test the happy path — error cases are edge cases."</h3>
+        <p>Error cases aren't edge cases — they're the paths your users hit when things go wrong, and they're where security vulnerabilities live. Interviewers want to hear: "I test the happy path for correctness and the error paths for resilience. I verify that 401 responses don't leak information about whether a resource exists, that 500 responses don't include stack traces, that 422 responses have consistent error structures, and that rate limiting (429) works correctly with proper <code>Retry-After</code> headers. Error handling is where APIs expose their quality — or their lack of it."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #4: "My API tests are independent — they don't share state."</h3>
+        <p>This is either naive or dishonest. Real API testing inevitably involves state — you create a user before testing user endpoints, you authenticate before testing protected resources. The question isn't whether state is shared, it's how you <em>manage</em> it. A strong answer: "My tests are logically independent — each test can run in isolation — but they share setup through hooks and fixtures. I use unique identifiers (timestamps, UUIDs) for created resources so tests don't collide. I use <code>beforeAll</code> for one-time setup (auth tokens) and <code>beforeEach</code> for per-test state. And I design tests so that test B doesn't assume test A ran — if test B needs a user, it either creates one or uses a fixture that guarantees one exists."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #5: "Contract testing is just schema validation with extra steps."</h3>
+        <p>This answer signals you've never done contract testing. Schema validation checks that a response matches a shape. Contract testing checks that a <em>consumer's</em> expectations match the <em>provider's</em> actual responses — and it's driven by the consumer, not the provider. The workflow is: the consumer team writes a Pact test defining what they expect from the provider, Pact generates a contract file, the provider team runs that contract against their actual API, and if anything the consumer relies on is missing or changed, the build fails <em>before</em> the change reaches integration. Schema validation is a tool. Contract testing is a collaboration pattern between teams. Knowing the difference signals you've operated in a microservices environment, not just tested APIs in isolation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Schema Validation & Contract Testing — The Senior-Level Differentiator</h2>
+  <p>If you're interviewing for a senior SDET or lead role, this is the section of the API testing round where the interviewer decides whether you're mid-level or senior. Here's what they're listening for:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📋</span>
+      <div>
+        <h3>JSON Schema Validation — What to Validate</h3>
+        <p>A strong schema validation strategy validates more than types. It validates: required fields are present, field types are correct (string, number, boolean, array, object), string formats are valid (email, date-time, URI), numeric constraints (minimum, maximum, multipleOf), array constraints (minItems, maxItems, uniqueItems), enum values (status must be one of ['active', 'inactive', 'suspended']), and nested object structures. Tools like Ajv (JavaScript), Chai JSON Schema, or built-in Playwright <code>expect().toMatchSchema()</code> make this programmatic. The key interview signal: you don't validate everything — you validate the fields your consumer actually depends on. Over-validation creates brittle tests that break on harmless additions.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🤝</span>
+      <div>
+        <h3>Consumer-Driven Contract Testing with Pact</h3>
+        <p>In a microservices architecture, Service A (consumer) calls Service B (provider). If Service B changes its API, Service A breaks. Contract testing catches this at build time. The workflow: the consumer team writes a Pact interaction specifying "when I call GET /users/123, I expect { id: '123', name: '...', email: '...' }." Pact spins up a mock provider, the consumer test runs against it, and Pact generates a contract file. The provider team runs <code>pact:verify</code> against their real API — if the response doesn't match the contract, the build fails. The candidate who can walk through this flow, discuss where contract files are stored (Pact Broker), and explain the difference between provider states ("given a user with id 123 exists") and test fixtures demonstrates they've implemented contract testing, not just read about it.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Contract Testing vs Integration Testing — The Tradeoff</h3>
+        <p>Integration tests verify that two real services work together. They're expensive, slow, and fragile. Contract tests verify that each service's expectations and responses align — in isolation, using mocks and stubs. The tradeoff: contract tests are fast, reliable, and catch breaking changes early, but they don't test real network conditions, auth handshakes, or database interactions. The ideal pipeline: contract tests in the PR build (fast, catches contract breaks immediately), integration tests in the staging environment (slower, catches real-world integration issues). A senior candidate can articulate this tiered strategy and explain <em>why</em> you need both.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real API Testing Interview Round Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels Mitchell has conducted at HMRC, Nationwide, and Accenture, here's how API testing questions typically appear in a 60-minute SDET interview:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Experience Probe</h3>
+        <p>"Tell us about an API testing project you've worked on." They're listening for: did you test APIs in isolation, or as part of a broader testing strategy? Did you integrate API tests into CI/CD? Did you handle authentication programmatically, or copy-paste tokens from Postman? Be specific about what <em>you</em> built — the framework, the patterns, the automation — not what your team did collectively.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>Technical Deep-Dive</h3>
+        <p>Expect questions on REST fundamentals, HTTP methods and status codes, authentication mechanisms, and tooling (Postman, Newman, Supertest, Playwright API testing). You may be asked to whiteboard an API test for a given scenario: "Write a test that creates an order, adds items, and verifies the total." Focus on test structure, data flow between requests, status code validation at each step, and error handling when a chained request fails.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>Architecture & Scaling</h3>
+        <p>"How would you set up API testing for an organisation with 30 microservices?" This is where you discuss: organising tests by service or by workflow, handling cross-service dependencies, contract testing between services, managing shared test data across services, and CI/CD pipeline design for fast feedback. Mention contract testing with Pact and schema validation as tools for scaling API quality across teams.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–50 min</div>
+      <div class="timeline-content">
+        <h3>Behavioural & Problem-Solving</h3>
+        <p>STAR-format questions about API-specific challenges: debugging a flaky API test that passes locally but fails in CI, handling a breaking API change from an upstream team, convincing developers to write contract tests, managing API credentials securely in CI/CD pipelines. This is where interviewers probe your operational experience with API testing.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">50–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their API architecture: "How many services do you have? How do teams manage API versioning? Do you use contract testing? What's your biggest API testing pain point?" Questions that probe their current API testing challenges show you're thinking about solving their problems, not just answering their questions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Why API Testing Expertise Is the Fastest-Growing Premium in SDET Salaries</h2>
+  <p>If you're thinking "I'll just focus on UI testing — that's what most SDET roles want," here's the reality: API testing is no longer a nice-to-have. It's the layer where most production incidents originate, and it's the layer where SDETs who can test both UI and API command a premium.</p>
+  <p>In recent panels at Accenture, Mitchell has watched compensation bands for SDETs who can design API testing strategies stretch 10–20% above UI-only roles. The reason is structural: microservices architectures mean the integration surface is overwhelmingly API-based. If you can only test through the browser, you're testing the outermost layer of an application with 50 internal services you never touch. That's a coverage gap no amount of UI testing can close.</p>
+  <p>More importantly, API testing expertise signals something interviewers care about deeply: you understand that testing happens at multiple layers, and you can architect a testing strategy that covers all of them. That's not an API testing skill — it's an architectural mindset. And it's what separates senior SDETs from mid-level testers.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your API Testing Interview — Starting Tonight</h2>
+  <p>You don't need to have tested 50 microservices to pass an API testing interview. You need to understand the seven categories, be able to articulate API testing concepts clearly, and — most importantly — demonstrate that you can <em>think</em> about API testing as an engineering system, not a collection of Postman requests. Here's the 3-step plan:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> and complete the 2-minute onboarding assessment. Select your target stack and seniority level. The app surfaces API testing questions calibrated to your experience — Junior candidates get REST fundamentals and status code questions, while Lead candidates face contract testing strategy and cross-service test architecture discussions. The 800+ question bank includes dedicated API testing topics with model answers, code examples, and interviewer follow-up questions.</li>
+    <li><strong>Run an API testing mock interview today.</strong> Pick your target stack, set a 30-minute timer, and answer the questions out loud. The AI feedback scores you on technical accuracy, completeness, communication, and code quality — showing you exactly where your API testing knowledge gaps are before the real interview exposes them.</li>
+    <li><strong>Use Job Match for your target role.</strong> If the job description mentions "API testing," "REST," "Postman," "contract testing," or "microservices," paste it into Job Match. You'll get 50 questions tailored to that exact role's API testing expectations — no guessing whether they'll ask about OAuth flows, status code validation, or Pact contract testing.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The candidates who prepare for API testing questions now are the ones who'll walk into interviews with a skill that most of their competition treats as an afterthought. API testing isn't a separate discipline from SDET work — it's the integration layer that connects everything else. Master it, and you're not just a tester who can code. You're an engineer who understands how systems talk to each other.</p>
+
+  <p>If you're preparing for a broader SDET interview, see our guide on <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a> for web automation coverage, our deep-dive on <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design</a> for the system-design round, and our guide on <a href="/blog/manual-qa-to-sdet-career-change">transitioning from manual QA to SDET</a> if you're making the career change. For mobile testing coverage, see our guide on <a href="/blog/mobile-test-automation-interview-questions-2026">Mobile Test Automation Interview Questions</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What's the difference between REST and SOAP, and why do interviewers ask this?",
+        a: "REST (Representational State Transfer) is an architectural style that uses standard HTTP methods (GET, POST, PUT, DELETE) and typically communicates with JSON. It's stateless, cacheable, and resource-oriented. SOAP (Simple Object Access Protocol) is a formal protocol with strict XML-based messaging, built-in error handling via SOAP faults, and WS-Security for message-level encryption and signing. Interviewers ask this to test whether you understand that REST is a style (with flexible implementation) while SOAP is a protocol (with rigid rules). The strong answer also discusses when SOAP is still relevant — financial services, healthcare, and enterprise integration where transactional integrity and formal contracts (WSDL) are non-negotiable. SDET Interview Coach includes REST vs SOAP questions at all five seniority levels, with follow-ups that test depth beyond the textbook definition.",
+      },
+      {
+        q: "Which HTTP methods are idempotent, and why does it matter for testing?",
+        a: "GET, PUT, DELETE, HEAD, and OPTIONS are idempotent — making the same request multiple times produces the same result. POST and PATCH are not idempotent — each request can create new resources or modify state differently. This matters for testing because: (1) Idempotent requests can be retried safely in CI without side effects — if a GET fails due to a network blip, the retry can't corrupt data. (2) Non-idempotent requests like POST require careful test data management — if your test creates a user and the assertion fails, retrying the test would create a duplicate user unless you use unique identifiers. (3) PUT is idempotent because it replaces the entire resource — submitting the same PUT twice results in the same resource state. PATCH is not guaranteed idempotent because partial updates may compound. Strong candidates design their test frameworks around this distinction.",
+      },
+      {
+        q: "How do I test OAuth 2.0 authentication in automated API tests?",
+        a: "The recommended approach is to create a shared authentication fixture that handles token acquisition and refresh automatically. In the test setup (beforeAll), send a request to the /token endpoint with client credentials, extract the access_token and refresh_token, and store them for all tests. Key testing scenarios: (1) valid token → 200 access granted, (2) expired token → 401, then your fixture automatically refreshes the token and retries, (3) token with insufficient scope → 403 (not 401 — you're authenticated but not authorised), (4) tampered token → 401, (5) missing Authorization header → 401 with WWW-Authenticate header, (6) token refresh flow — verify the old token is invalidated and the new one works. Never hard-code tokens in your test suite — use environment variables or programmatic token generation. SDET Interview Coach includes OAuth 2.0 testing questions with code examples in Playwright, Supertest, and Postman.",
+      },
+      {
+        q: "What's the difference between contract testing and schema validation?",
+        a: "Schema validation checks that an API response matches a predefined structure (types, required fields, formats) — it's provider-side validation. Contract testing goes further: it verifies that a consumer's specific expectations match what the provider actually returns, and it's consumer-driven. With Pact, the consumer team writes a test defining exactly what fields they need from the provider. Pact generates a contract file. The provider team runs pact:verify to check that their API satisfies every consumer's contract. If the provider removes a field that a consumer depends on, the contract test fails at build time — before the change reaches integration. This prevents breaking changes between microservices. A strong API testing strategy uses both: schema validation for provider-side correctness, contract testing for consumer-provider alignment. SDET Interview Coach covers both topics with detailed workflow explanations and code examples.",
+      },
+      {
+        q: "How do I handle test data in API testing to avoid collisions between tests?",
+        a: "The key principle is that every test should create its own data with unique identifiers. Use timestamps (Date.now()), UUIDs, or a test-run-specific prefix in all created resource identifiers — e.g., email: 'test-user-{runId}-{timestamp}@example.com'. For data that must exist before tests run (like reference data), use a database seed step in CI that runs once before the test suite. For cleanup: the preferred modern approach is time-based cleanup (a background job deletes test data older than N hours) rather than tear-down scripts, which are fragile and can leave orphaned data if a test crashes. Structure your tests so that: (1) beforeAll handles one-time setup (auth tokens, seeding reference data), (2) beforeEach creates fresh test-specific data (or rely on factory functions within each test), (3) tests never assume data created by another test exists. This ensures tests can run in any order and in parallel.",
+      },
+      {
+        q: "Does SDET Interview Coach cover API testing interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated API testing topic area covering REST fundamentals, SOAP, HTTP methods and status codes, authentication patterns (OAuth 2.0, JWT, API keys, Basic Auth), Postman and Newman, API chaining and data-driven testing, Playwright API testing with APIRequestContext, Supertest, schema validation with JSON Schema, and consumer-driven contract testing with Pact. Questions are calibrated to five seniority levels — Junior candidates get REST fundamentals and status code questions, while Lead candidates face contract testing strategy and cross-service API test architecture discussions. Every question includes short and long answers, code examples in the relevant language, interviewer follow-ups, and common mistakes to avoid. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions API testing, REST, Postman, or contract testing.",
+      },
+      {
+        q: "What are the most common mistakes in API testing interviews?",
+        a: "The five most common mistakes are: (1) Only testing the happy path — interviewers want to hear that you test error responses (401, 403, 422, 429, 500) as thoroughly as success responses, because error handling is where security vulnerabilities and poor UX converge. (2) Not validating response structure — checking status codes without validating the response body structure, data types, and required fields means you're missing a whole category of bugs. (3) Hard-coding auth tokens — signals you don't know how to handle authentication programmatically in a test framework. (4) Assuming API tests are independent when they're not — be honest about shared state and explain how you manage it (unique identifiers, beforeAll setup, time-based cleanup). (5) Confusing contract testing with schema validation — knowing the distinction (consumer-driven vs provider-side, collaboration pattern vs validation tool) is a senior-level signal. SDET Interview Coach's AI-graded feedback helps you identify and fix these gaps before the real interview.",
+      },
+    ],
+    relatedSlugs: ["sdet-interview-coach-app-guide", "playwright-interview-questions-2026", "test-automation-framework-design-interview", "mobile-test-automation-interview-questions-2026"],
+  },
+  {
     slug: "accessibility-testing-interview-questions-2026",
     title: "Accessibility Testing Interview Questions — What SDET Panels Ask About WCAG, Axe-Core, Screen Readers, and A11y Automation in 2026",
     description: "Real accessibility testing interview questions from SDET panels. Covers WCAG 2.2 levels A/AA/AAA, axe-core and Lighthouse CI integration, screen reader testing with NVDA and VoiceOver, semantic HTML and ARIA roles, automated vs manual a11y testing strategies, and the accessibility questions that separate candidates who've run an accessibility audit from those who understand inclusive testing. Built from panels at HMRC, MoD, Nationwide, and Accenture.",
