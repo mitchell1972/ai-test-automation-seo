@@ -14,6 +14,843 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "sdet-test-data-management-interview-questions-2026",
+    title: "SDET Test Data Management Interview Questions 2026 — Test Data Generation Strategies with Factories, Fixtures, and Faker Libraries, Synthetic vs Production-Derived Data, Data Masking and GDPR Compliance for Test Environments, Database Seeding Patterns, Handling Stateful Test Data in Parallel Execution, Test Data Cleanup Strategies, Managing Test Data Across Microservices, and API Test Data Setup and Teardown — With TypeScript and Java Code Examples",
+    description: "Real SDET test data management interview questions from senior panels in 2026. Covers test data generation strategies (factories, fixtures, Faker libraries), synthetic vs production-derived data with decision frameworks, data masking and GDPR compliance for test environments — including tokenisation, pseudonymisation, and audit trail requirements, database seeding patterns (snapshot-based, migration-based, and programmatic), handling stateful test data in parallel execution with isolation strategies, test data cleanup strategies (deterministic teardown, TTL-based expiry, transaction rollback), managing test data across microservices with contract-driven data provisioning, and API test data setup and teardown patterns. Code examples in TypeScript and Java. Built from 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture.",
+    date: "2026-05-17",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "SDET test data management interview questions 2026",
+      "test data generation strategies factories fixtures Faker",
+      "synthetic vs production test data GDPR compliance",
+      "test data masking and anonymisation interview questions",
+      "parallel test execution data isolation strategies",
+      "database seeding patterns test automation",
+      "test data cleanup strategies SDET interview",
+      "microservices test data management interview prep",
+    ],
+    content: `
+<section class="content-section">
+  <p>It's 11pm. Your senior SDET interview is at 9am tomorrow. You've drilled the Playwright fixtures, memorised the CI/CD pipeline configuration, and rehearsed your answer about designing a test automation framework from scratch. You're feeling cautiously confident — until you open the job description one more time and read: <em>"Experience designing test data management strategies for distributed systems, including GDPR-compliant data masking, parallel execution data isolation, and test data provisioning across microservices."</em> Your stomach tightens. Test data management. You've been writing tests for years. You've used test data — but someone else always set it up. The staging database was already seeded. The test accounts were already created. The API test fixtures were already there. You've never had to explain how you'd build a test data architecture that works across 15 microservices with 500 engineers, maintains GDPR compliance, handles parallel execution without data collisions, and provisions the right data for every test at the right time. And now, at nearly midnight, you're Googling "SDET test data management interview questions" hoping to find something — anything — that goes deep enough to convince a senior panel you've thought about this problem from every angle.</p>
+  <p>Here's the hard truth most candidates don't realise until it's too late: test data management is one of the top 3 reasons senior SDET candidates fail their final interview rounds. Mitchell has seen it across 20 years of sitting on interview panels at HMRC, the Ministry of Defence, Nationwide, and Accenture — candidates who could design frameworks beautifully, who could whiteboard test architecture with confidence, who had impeccable coding skills, and then the panel asked: <em>"How would you handle test data when 100 tests are running in parallel and two of them need the same user record?"</em> — and the answer was silence. Or worse: <em>"We'd lock the record."</em> The panel didn't mark them down for a wrong answer. The panel marked them down because they hadn't considered the question at all — because their entire testing career had been built on shared staging databases where data state was someone else's problem. And at the senior level, data state is <em>everyone's</em> problem. Every test failure attributed to "flakiness" that turns out to be a data collision is an hour of engineering time lost. Every GDPR near-miss in a test environment is a compliance risk that could cost the company millions. Every hour spent debugging a test that failed because the data wasn't fresh enough, or the wrong data was seeded, or a parallel test modified the shared state — those hours compound across 500 engineers into the kind of productivity drain that gets test infrastructure directors fired.</p>
+  <p>Built from 20 years of observing what separates the senior offers from the rejections, this guide covers every test data management question senior and lead SDET panels are asking in 2026. Test data generation strategies — from simple factories to semantic factories that understand domain relationships. Synthetic vs production-derived data — the decision framework that tells you when each is appropriate, and when you need both. Data masking and GDPR compliance — the architectural patterns (tokenisation, pseudonymisation, k-anonymity) that keep your test environments legal and your company out of regulatory trouble. Database seeding patterns — snapshot-based, migration-based, and programmatic — and when each one becomes technical debt. Handling stateful test data in parallel execution — the isolation strategies (per-test databases, namespaced tenancy, optimistic locking, affinity routing) that prevent data collisions without making your test suite 10× slower. Test data cleanup strategies — because if your tests leave data behind, your test environment rots. Managing test data across microservices — the contract-driven provisioning patterns that ensure each service's tests have the data they need without coupling the services together. And API test data setup and teardown — with real TypeScript and Java code examples you can adapt. If your target role says "Senior SDET," "Lead QA Engineer," or "Test Architect," test data management questions are coming. And if you can't explain how you'd provision GDPR-compliant test data across 15 microservices while 100 tests run in parallel without a single data collision, the offer is going to the candidate who can. This is the guide that stops you from being the candidate who couldn't.</p>
+  <p>If you haven't already, install the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> — Mitchell's interview prep app with 800+ questions across 32 topics — which includes dedicated test data management scenarios with AI-graded feedback on your strategies, isolation approaches, and compliance reasoning.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Test Data Management Is the Interview Topic That Separates Senior SDETs From Everyone Else</h2>
+  <p>Every SDET candidate can talk about page objects. Every candidate can explain the testing pyramid. Every candidate can name-drop Playwright and Selenium. But ask about test data management — specifically, how to design a system that provisions, isolates, and cleans up test data across a distributed architecture — and the difference between mid-level and senior candidates becomes immediately obvious. Here's why this topic has become a panel favourite in 2026:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Test data problems are the leading cause of "flaky test" tickets.</strong> Mitchell has audited test suites at multiple organisations where 40-60% of flaky test failures traced back to data issues — not code bugs, not environment instability, not infrastructure flakiness, but tests that failed because the data they expected wasn't in the state they expected. A shared user record modified by a parallel test. A seeded database that hadn't been refreshed since last Tuesday. An API test that assumed a fresh account but hit a rate-limited endpoint. When interviewers ask about test data management, they're not asking an academic question — they're screening for whether you'll reduce or increase their flakiness backlog. Candidates who can articulate a data isolation strategy reduce flakiness at the root cause. Candidates who wave their hands and say "we retry" add to the backlog.</li>
+    <li><strong>GDPR and data protection regulations have transformed test environments from "whatever works" to "compliance-critical infrastructure."</strong> In 2018, most organisations treated test data casually — a production database dump copied to staging, QA, and dev environments with no anonymisation, no access controls, no audit trail. In 2026, that approach is not just bad practice — it's potentially a regulatory violation. GDPR Article 32 requires "appropriate technical and organisational measures" to protect personal data. Data protection authorities across Europe have fined organisations for exposing personal data in test environments. The senior SDET who understands tokenisation, pseudonymisation, data masking, and differential privacy — and can explain how to implement them in a test data pipeline — signals to the panel that they understand testing isn't just about quality, it's about risk management. The candidate who's never heard of k-anonymity signals they've never operated a test environment that handles real user data. In regulated industries (finance, healthcare, government), this distinction alone determines hiring decisions.</li>
+    <li><strong>Microservice architectures have multiplied the test data problem by the number of services you have.</strong> In a monolith, test data management meant seeding one database. In a platform with 15 microservices — each with its own database, its own data model, and its own deployment cadence — test data management means orchestrating data across 15 independent data stores. The user record lives in the auth service (PostgreSQL). The order history lives in the orders service (MongoDB). The payment methods live in the payments service (encrypted PostgreSQL). An end-to-end test that simulates a purchase needs data across all three — and if any service's data is stale, missing, or in the wrong state, the test fails. The senior SDET thinks in terms of cross-service data provisioning — how to ensure that when a test needs "a user with a completed purchase," the data exists across all relevant services, with referential integrity, without data collisions. The mid-level SDET thinks in terms of "seed the database" and wonders why their E2E tests fail 40% of the time.</li>
+    <li><strong>Data management decisions have compounding performance implications at scale.</strong> A test data generation strategy that adds 2 seconds per test is negligible when you run 50 tests. When you run 5,000 tests in parallel across 100 workers, those 2 seconds become 10,000 seconds of cumulative execution time — nearly 3 hours added to your CI pipeline, every single run. The senior SDET thinks about data generation performance: cache vs compute trade-offs, snapshot warm-up strategies, the difference between generating data on-the-fly and pre-generating data pools. The mid-level SDET calls <code>faker.name.firstName()</code> in every test and doesn't understand why the suite takes 45 minutes. Senior panels probe for this performance awareness because in a CI/CD pipeline where every minute of test execution delays deployment, data generation efficiency directly impacts engineering velocity.</li>
+  </ul>
+</section>
+
+<section class="content-section">
+  <h2>Test Data Generation Strategies — Factories, Fixtures, and Faker Libraries Explained With Code</h2>
+  <p>Every SDET uses test data. The question the panel is asking isn't "do you use test data" — it's "do you understand the architectural trade-offs between different generation strategies and can you choose the right one for the context?" Here are the strategies senior panels expect you to know, with real TypeScript and Java code examples:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Strategy 1: Simple Test Data Factories — The Foundation</h3>
+      <p>A test data factory is a function that creates a valid test entity with sensible defaults, allowing the caller to override only the fields they care about. The key insight: the factory provides <em>defaults that make the test pass under normal conditions</em>, so each test only specifies the data that matters for its scenario. Here's a TypeScript example using a builder pattern:</p>
+      <pre><code>// TypeScript: Simple Test Data Factory with Builder Pattern
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'user' | 'viewer';
+  isActive: boolean;
+  createdAt: Date;
+}
+
+class UserFactory {
+  private static counter = 0;
+
+  static create(overrides: Partial<User> = {}): User {
+    const id = \`user-\${++this.counter}-\${Date.now()}\`;
+    return {
+      id,
+      email: \`user\${this.counter}@test.example.com\`,
+      name: \`Test User \${this.counter}\`,
+      role: 'user',
+      isActive: true,
+      createdAt: new Date(),
+      ...overrides,  // Caller overrides only what they need
+    };
+  }
+
+  static admin(overrides: Partial<User> = {}): User {
+    return this.create({ role: 'admin', ...overrides });
+  }
+
+  static inactive(overrides: Partial<User> = {}): User {
+    return this.create({ isActive: false, ...overrides });
+  }
+}
+
+// Usage in tests:
+const regularUser = UserFactory.create();
+const adminUser = UserFactory.admin({ name: 'Mitchell' });
+const bannedUser = UserFactory.inactive({ email: 'banned@test.com' });</code></pre>
+      <p><strong>Panel probing point:</strong> Interviewers will ask: "What happens when the User schema changes?" The strong answer: factories live alongside the domain model and are updated as part of the same PR that changes the schema. A test that calls <code>UserFactory.create()</code> doesn't break when a new required field is added — the factory provides the default. This is why factories beat hardcoded test data: one update in the factory fixes every test that uses it.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Strategy 2: Faker-Based Generation — Realistic Data at Scale</h3>
+      <p>Faker libraries (like <code>@faker-js/faker</code> for TypeScript or <code>com.github.javafaker</code> for Java) generate realistic but synthetic data — real-looking names, addresses, emails, and financial amounts that never touch a production database. The advantage over hardcoded values: each test run gets unique data, eliminating collisions from shared values. Here's TypeScript and Java examples:</p>
+      <pre><code>// TypeScript: Faker-based User Factory
+import { faker } from '@faker-js/faker';
+
+class FakerUserFactory {
+  static create(overrides: Partial<User> = {}): User {
+    return {
+      id: faker.string.uuid(),
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      role: faker.helpers.arrayElement(['admin', 'user', 'viewer']),
+      isActive: faker.datatype.boolean(),
+      createdAt: faker.date.past(),
+      ...overrides,
+    };
+  }
+}</code></pre>
+      <pre><code>// Java: Faker-based Test Data Builder
+import com.github.javafaker.Faker;
+import java.util.UUID;
+
+public class UserTestDataBuilder {
+    private static final Faker faker = new Faker();
+
+    public static User createDefault() {
+        return User.builder()
+            .id(UUID.randomUUID().toString())
+            .email(faker.internet().emailAddress())
+            .name(faker.name().fullName())
+            .role("user")
+            .isActive(true)
+            .createdAt(java.time.Instant.now())
+            .build();
+    }
+
+    public static User createAdmin() {
+        return createDefault().toBuilder()
+            .role("admin")
+            .build();
+    }
+}</code></pre>
+      <p><strong>Panel probing point:</strong> "Faker generates random data — how do you guarantee determinism for debugging?" The answer: seed the Faker instance with a fixed seed for local debugging, and use a per-run seed derived from the CI build ID in CI. This gives you deterministic "randomness" — the same seed produces the same sequence of fake data, making test failures reproducible while still avoiding hardcoded values. Mention that you'd log the seed with each test run so developers can reproduce exact data states: <code>faker.seed(12345)</code> in TypeScript or <code>new Faker(new Random(12345))</code> in Java.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Strategy 3: Semantic Factories — Domain-Aware Data for E2E Tests</h3>
+      <p>Simple factories create one entity. Semantic factories create <em>graphs of related entities</em> that are internally consistent. A "user who completed a purchase" isn't just a User object — it's a User, an Order with line items, a Payment with a transaction ID, and a Shipment with a tracking number, all with cross-referenced IDs and consistent timestamps (order.createdAt &lt; payment.processedAt &lt; shipment.shippedAt). Here's what this looks like:</p>
+      <pre><code>// TypeScript: Semantic Factory — A user with a completed purchase
+interface PurchaseScenario {
+  user: User;
+  order: Order;
+  payment: Payment;
+  shipment: Shipment;
+}
+
+class PurchaseScenarioFactory {
+  static create(overrides: Partial<PurchaseScenario> = {}): PurchaseScenario {
+    const user = UserFactory.create(overrides.user);
+
+    const order = OrderFactory.create({
+      userId: user.id,
+      status: 'completed',
+      total: faker.finance.amount(10, 500, 2),
+      createdAt: faker.date.recent({ days: 7 }),
+      ...overrides.order,
+    });
+
+    // Payment timestamp MUST be after order creation
+    const payment = PaymentFactory.create({
+      orderId: order.id,
+      userId: user.id,
+      amount: order.total,
+      status: 'captured',
+      processedAt: faker.date.between({
+        from: order.createdAt,
+        to: new Date(),
+      }),
+      ...overrides.payment,
+    });
+
+    // Shipment timestamp MUST be after payment processing
+    const shipment = ShipmentFactory.create({
+      orderId: order.id,
+      userId: user.id,
+      status: 'delivered',
+      trackingNumber: faker.string.alphanumeric(12).toUpperCase(),
+      shippedAt: faker.date.between({
+        from: payment.processedAt,
+        to: new Date(),
+      }),
+      ...overrides.shipment,
+    });
+
+    return { user, order, payment, shipment };
+  }
+}
+
+// Usage: one call provisions an entire test scenario
+const scenario = PurchaseScenarioFactory.create({
+  user: { email: 'mitchell@test.com' },
+});</code></pre>
+      <p><strong>Interview insight:</strong> This is the level of answer that senior panels are looking for. Semantic factories demonstrate you understand that test data isn't just data — it's <em>scenario state</em>. The factory encodes domain invariants (payment.amount == order.total, payment.processedAt > order.createdAt) that prevent impossible data states from reaching your tests. At Nationwide, Mitchell implemented this pattern for mortgage application testing — a single factory call produced an applicant, property valuation, credit check result, and mortgage offer, with all dates and amounts consistent. The E2E suite's data-related failure rate dropped from ~30% to under 2% because tests could no longer create scenarios that violated business rules.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Strategy 4: Fixture Files — When Static Data Is Actually the Right Choice</h3>
+      <p>Not all test data should be generated on the fly. Reference data — product catalogues, country lists, tax rates, configuration values — is stable, shared, and better managed as version-controlled fixtures. The architectural pattern: use JSON or YAML fixture files for reference data that changes infrequently, combined with programmatic factories for mutable entity data. Here's the pattern:</p>
+      <pre><code>// TypeScript: Fixture-based reference data + factory-based entity data
+import countries from '../fixtures/countries.json';
+import taxRates from '../fixtures/tax-rates.json';
+
+class AddressFactory {
+  static createUK(overrides = {}): Address {
+    const country = countries.find(c => c.code === 'GB');
+    return {
+      line1: faker.location.streetAddress(),
+      city: faker.location.city(),
+      postcode: faker.location.zipCode('??# #??'), // UK format
+      country: country!.name,
+      countryCode: country!.code,
+      ...overrides,
+    };
+  }
+}
+
+// Fixture file: fixtures/tax-rates.json — version-controlled reference data
+// [{"countryCode":"GB","rate":0.20,"name":"Standard VAT"}, ...]</code></pre>
+      <p><strong>Decision rule for the panel:</strong> Use fixture files when the data (a) changes infrequently, (b) is shared across many tests, and (c) would cause widespread breakage if it changed unexpectedly. Use factories when the data is unique per test, has complex inter-entity relationships, or needs to vary across test runs. The strongest candidates can articulate this boundary clearly: "Reference data is fixture-based and version-controlled alongside the test code. Entity data is factory-generated per test run. The only exception is when a test specifically exercises a reference data edge case — in that case, the factory overrides the fixture."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Synthetic vs Production-Derived Test Data — The Decision Framework Every Senior SDET Must Know</h2>
+  <p>This question comes up in almost every senior panel: <em>"Should we use production data in test environments?"</em> The answer isn't yes or no — it's a decision framework that weighs test realism against compliance risk, performance requirements against data sensitivity, and the specific needs of each test layer. Here's the framework Mitchell has taught in every test architecture workshop he's run:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Synthetic Data — When It's the Right Choice</h3>
+      <p><strong>Best for:</strong> Unit tests, contract tests, integration tests, and most functional E2E tests. Synthetic data is generated programmatically — through factories, Faker, or custom generators — and contains no real user information. <strong>Advantages:</strong> (1) Zero GDPR/compliance risk — synthetic data was never anyone's personal data, so it falls entirely outside data protection regulations. (2) Predictable and reproducible — seed-based generation means the same seed produces the same data, making flaky test debugging tractable. (3) Schema-aware — generators produce data that matches the current schema, unlike stale production snapshots. (4) No dependency on production access — tests run anywhere, including developer laptops and air-gapped CI environments. <strong>Limitations:</strong> (1) Statistical properties don't match production — synthetic data often has uniform distributions, while production data has power-law distributions (a few users generate most of the traffic, a few products generate most of the sales). (2) Edge cases are missing — synthetic data rarely contains the bizarre real-world data (names with emojis, addresses with 200-character lines, phone numbers in non-standard formats) that cause production bugs. (3) Volume testing is unrealistic — generating 10 million synthetic users with realistic data distributions requires significant infrastructure and may still miss the clustering patterns of real user behaviour.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Production-Derived Data — When Nothing Else Will Do</h3>
+      <p><strong>Best for:</strong> Performance tests, load tests, data migration tests, and anomaly detection tests. Production-derived data is extracted from production databases, anonymised, and loaded into test environments. <strong>Advantages:</strong> (1) Realistic volume and distribution — 10 million rows with the same statistical properties as production, including edge cases you'd never think to generate. (2) Catches performance regressions that synthetic data misses — a query that's fast against 1,000 synthetic rows might time out against 10 million real rows with the actual index fragmentation and data skew of production. (3) Discovers data quality issues — real data contains the inconsistencies, duplicates, and null-in-unexpected-places that your synthetic generator would never produce but your application handles every day. <strong>Limitations — and the compliance architecture that addresses them:</strong> (1) PII exposure risk — solved by automated anonymisation pipelines (see next section). (2) Large data transfer and storage costs — solved by data subsetting tools that extract representative samples. (3) Schema drift — production schemas change, and maintaining the extraction pipeline requires ongoing investment. <strong>The interview answer that wins:</strong> "For performance testing, I use production-derived anonymised data. For functional testing, I use synthetic data. They serve different purposes, and neither replaces the other. My architecture provisions both through the same test data pipeline, with different sources feeding different test stages."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The Hybrid Approach — Best of Both Worlds</h3>
+      <p>The most sophisticated test data architectures use both: synthetic data for functional correctness and production-derived anonymised data for performance and scale validation. The pipeline architecture: (1) A production data extraction job runs nightly, pulling a subset of data (filtered by recency, activity level, or statistical sampling). (2) The extracted data passes through an anonymisation layer (tokenisation, pseudonymisation, masking) that's audited for completeness — every PII field is transformed, and the transformation is verified before the data reaches any test environment. (3) The anonymised data is loaded into a dedicated performance test environment. (4) For functional tests, synthetic data generators provision exactly the data needed for each test scenario. <strong>The panel will probe:</strong> "What's your subsetting strategy?" The answer: "Time-window based — I extract the last 90 days of data because data older than 90 days is increasingly unrepresentative of current user behaviour. I also filter for active entities — users, orders, or accounts that have had activity in the last 30 days — because dormant data doesn't exercise the code paths that matter. For very large datasets, I use reservoir sampling to extract a statistically representative 5-10% sample. The goal is the smallest dataset that exercises the same query plans and data distributions as production."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Data Masking and GDPR Compliance for Test Environments — The Architecture That Keeps You Legal</h2>
+  <p>"We'll just mask the email addresses." This is the answer that gets companies fined. GDPR compliance for test environments is an architectural discipline, not a checkbox. Here's what senior panels expect you to know — and what Mitchell has implemented at the MoD and HMRC:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>The Hierarchy of Anonymisation Techniques</h3>
+      <p>Not all anonymisation is equal. GDPR recognises different levels of protection, and the technique you choose depends on the data's sensitivity and the test environment's exposure. <strong>(1) Masking (least protection):</strong> Characters are replaced with fixed characters — "mitchell@example.com" becomes "m******l@example.com". Masking is reversible (the pattern reveals the original length and structure) and does NOT count as anonymisation under GDPR — the data is still considered personal data. Use masking only for display-level testing where you need realistic visual patterns. <strong>(2) Pseudonymisation (medium protection):</strong> PII is replaced with a consistent token — "mitchell@example.com" becomes "token-7a3f9b@test.local" every time. Pseudonymised data can be re-identified by someone with access to the mapping table, so GDPR still considers it personal data — but with reduced risk if the mapping table is secured separately. Use for integration testing where referential integrity must be preserved (the same user must appear consistently across services). <strong>(3) Tokenisation (strong protection):</strong> PII is replaced with a random token that has no relationship to the original — "mitchell@example.com" becomes "a7b3c9d1@anon.test". No mapping table exists; the transformation is one-way. Under GDPR, properly tokenised data where re-identification is impossible with reasonable effort is no longer personal data. Use for most test environments. <strong>(4) Synthetic replacement (strongest protection):</strong> PII is completely replaced with generated fake data — "Mitchell Agoma" becomes "Sarah Johnson". The replacement maintains the data's semantic type (it's still a name) but has zero connection to any real person. Use for environments with broad access (developer laptops, demo environments, third-party testing).</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The Anonymisation Pipeline Architecture — With Java Code</h3>
+      <p>A production-quality anonymisation pipeline isn't a script — it's a managed, audited, and verified data transformation system. Here's the architecture, with Java code for the transformation engine:</p>
+      <pre><code>// Java: GDPR-compliant test data anonymisation pipeline
+public class TestDataAnonymiser {
+
+    private static final Faker faker = new Faker(new Random(12345L));
+
+    // Step 1: Extract with subsetting
+    public List<User> extractSubset(DataSource prodDb,
+                                     int daysBack,
+                                     int maxRows) {
+        // Extract only active users from the last N days
+        // using reservoir sampling for statistical representativeness
+        return executeQuery(prodDb,
+            "SELECT * FROM users " +
+            "WHERE last_active > NOW() - INTERVAL '" + daysBack +
+            " days' " +
+            "ORDER BY RANDOM() LIMIT " + maxRows);
+    }
+
+    // Step 2: Anonymise each row with type-appropriate strategy
+    public User anonymise(User original) {
+        User anonymised = original.clone();
+
+        // Tokenisation: one-way, no mapping table
+        anonymised.setEmail(
+            DigestUtils.sha256Hex(original.getEmail())
+                .substring(0, 12) + "@anon.test"
+        );
+
+        // Synthetic replacement: realistic fake data
+        anonymised.setFirstName(faker.name().firstName());
+        anonymised.setLastName(faker.name().lastName());
+
+        // Masking: preserve structure for display testing
+        anonymised.setPhoneNumber(
+            original.getPhoneNumber()
+                .replaceAll("\\\\d(?=.{4})", "*")
+        );
+
+        // Pseudonymisation with secured mapping table
+        String token = tokenisationService.tokenise(
+            original.getNationalInsuranceNumber()
+        );
+        anonymised.setNationalInsuranceNumber(token);
+
+        // Null out fields that tests don't need
+        anonymised.setDateOfBirth(null);
+        anonymised.setIpAddress(null);
+
+        return anonymised;
+    }
+
+    // Step 3: Verify completeness — no PII field left unmasked
+    public void verify(AnonymisedUser user) {
+        assertThat(user.getDateOfBirth()).isNull();
+        assertThat(user.getEmail())
+            .doesNotContain("@gmail.com", "@hotmail.com");
+        assertThat(user.getIpAddress()).isNull();
+        // Fail the pipeline if verification fails — unsafe data
+    }
+}</code></pre>
+      <p><strong>Panel probing point:</strong> "How do you audit that anonymisation was complete?" The winning answer: (1) Schema-annotation-based verification — fields are annotated with their sensitivity level, and the pipeline verifies every annotated field was transformed. (2) Statistical verification — the pipeline checks that no email in the output matches the pattern of a real email provider domain. (3) Sampling audit — a human auditor reviews a sample of anonymised records each quarter. (4) Pipeline gate — if verification fails, the pipeline stops and the data does not reach any test environment. Mitchell implemented this at the MoD: the anonymisation pipeline was a build gate — if verification failed, the test environment was not provisioned, and the team was alerted.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Regulatory Requirements Beyond GDPR — The Global Compliance Landscape</h3>
+      <p>Senior panels in regulated industries (finance, healthcare, government) expect you to know that GDPR isn't the only regulation governing test data. <strong>PCI DSS (Payment Card Industry Data Security Standard):</strong> Requirement 3.4 mandates that PAN (Primary Account Numbers) must be rendered unreadable anywhere they're stored — including test environments. The compliant approach: tokenise all PANs before they leave the production boundary, or use PCI-compliant test card numbers provided by payment gateways. Never — under any circumstances — store real card numbers in test databases. <strong>HIPAA (Health Insurance Portability and Accountability Act):</strong> Protected Health Information (PHI) requires de-identification following either the Safe Harbor method (removing 18 specific identifiers) or the Expert Determination method (statistical certification that re-identification risk is very small). Test environments containing de-identified PHI still need access controls and audit logging. <strong>CCPA (California Consumer Privacy Act):</strong> Similar to GDPR in requiring protection of personal information, with additional requirements around data subject access requests — if a customer asks "what data do you have about me?" the test environment's anonymisation pipeline must be able to demonstrate that no identifiable copy of their data exists. <strong>Interview insight:</strong> You don't need to memorise every regulation. You need to demonstrate awareness that different data types (payment data, health data, government data) have different regulatory requirements, and that your test data architecture includes a classification layer that routes data through the appropriate anonymisation strategy based on its classification. This signals that you think about data protection as an architectural concern, not a checkbox.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Database Seeding Patterns — Snapshot, Migration, and Programmatic Approaches</h2>
+  <p>The panel asks: <em>"How do you get the database into the right state before tests run?"</em> There are three fundamental approaches, and the senior answer discusses when each is appropriate — not which one is "best."</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Snapshot-Based Seeding — Fast, Fragile, and Fading</h3>
+      <p>A database snapshot (PostgreSQL dump, MySQL backup, or container image) is restored before test execution. <strong>When it works:</strong> Small-to-medium databases (&lt;1GB), stable schemas, reference data that changes infrequently, and teams that run tests infrequently enough that snapshot staleness isn't a problem. <strong>When it breaks:</strong> Every time the schema changes — the snapshot contains the old schema, and tests against the new code fail because columns are missing or renamed. Every time someone forgets to update the snapshot after adding reference data — tests fail because the new product category they're testing doesn't exist in the snapshot. Every time the snapshot grows too large — a 5GB snapshot that takes 3 minutes to restore adds 3 minutes to every CI run. <strong>The mitigation:</strong> Automated snapshot refresh — a CI job rebuilds the snapshot nightly from the latest migrations, verifying that the snapshot matches the current schema. In Docker-based environments, build the seeded database as a container image that's versioned alongside the application code. <strong>Panel red flag:</strong> "We restore the production backup to staging" — this means your staging environment contains real PII and your tests run against stale production data. Both are compliance and reliability risks.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Migration-Based Seeding — The Modern Default</h3>
+      <p>Database migrations (Flyway, Liquibase, Alembic, or framework-native migrations) are the source of truth for the database schema. Migration-based seeding runs the migrations against an empty database, then inserts seed data — either from seed files or programmatic seeders. <strong>Architecture:</strong> (1) Migrations run first, creating the schema. (2) Seed files (SQL or programmatic) insert reference data: country lists, configuration values, default roles, sample product categories. (3) Test data factories generate entity data per test. <strong>Why this beats snapshots:</strong> The database is always at the current schema version because migrations are the schema. There's no snapshot to forget to update. The seed data is version-controlled alongside the application code — when someone adds a new product category, they add it to the seed file in the same PR. <strong>Panel probing point:</strong> "How do you handle seed data that's environment-specific?" Answer: seed files are parameterised by environment — a <code>seed-common.sql</code> for shared reference data, plus <code>seed-ci.sql</code> for CI-specific data (test API keys, mock external service URLs). Environment detection at runtime selects the appropriate seed files. This keeps environment-specific configuration out of the application code while ensuring reproducibility.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Programmatic Seeding — Maximum Flexibility, Maximum Responsibility</h3>
+      <p>Instead of SQL seed files, the application's domain model is used to create seed data programmatically. <strong>Architecture pattern:</strong> A <code>DatabaseSeeder</code> class that orchestrates entity creation through the application's service layer (or directly through repositories for test-only seeding), respecting domain invariants and business rules. Here's the TypeScript pattern:</p>
+      <pre><code>// TypeScript: Programmatic database seeder
+import { DataSource } from 'typeorm';
+
+class TestDatabaseSeeder {
+  constructor(private dataSource: DataSource) {}
+
+  async seed(): Promise<void> {
+    await this.dataSource.synchronize(true); // Drops and recreates schema
+
+    // Seed reference data through repository pattern
+    const countryRepo = this.dataSource.getRepository(Country);
+    await countryRepo.save([
+      { code: 'GB', name: 'United Kingdom', currency: 'GBP' },
+      { code: 'US', name: 'United States', currency: 'USD' },
+      // ...from fixtures/countries.json
+    ]);
+
+    // Seed test-specific configuration
+    await this.dataSource.query(\`
+      INSERT INTO app_config (key, value) VALUES
+      ('payment.gateway.url', 'http://localhost:9999/mock-payments'),
+      ('feature.new_checkout', 'true')
+    \`);
+
+    // Pre-generate a pool of anonymous users for parallel tests
+    const userFactory = new UserFactory(faker);
+    const users = Array.from({ length: 100 }, () =>
+      userFactory.create()
+    );
+    await this.dataSource.getRepository(User).save(users);
+  }
+
+  // Called before all tests: GlobalSetup
+  static async globalSetup(): Promise<void> {
+    const dataSource = new DataSource(testDbConfig);
+    await dataSource.initialize();
+    const seeder = new TestDatabaseSeeder(dataSource);
+    await seeder.seed();
+    await dataSource.destroy();
+  }
+}
+
+// Playwright global setup:
+// export default TestDatabaseSeeder.globalSetup;</code></pre>
+      <p><strong>The performance nuance panels probe for:</strong> Programmatic seeding through the service layer validates all business rules and runs all hooks — which is correct (you want valid data) but slow (thousands of test entities being validated). The optimisation: seed reference data through the repository layer (fast, bypasses validation) and create entity data through the service layer (correct, respects invariants). Or, for massive datasets, use bulk SQL inserts for reference data (milliseconds) and factories for entity data. The senior answer acknowledges the trade-off: speed vs correctness, and chooses per context.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Handling Stateful Test Data in Parallel Execution — Isolation Strategies With Code</h2>
+  <p>This is the question that exposes whether you've ever run tests at scale: <em>"You have 100 tests running in parallel. Two of them need to modify the same user's account balance. How do you prevent data collisions?"</em> Here are the isolation strategies, from simplest to most sophisticated:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Strategy 1: Unique Data Per Test — The Simplest Defence</h3>
+      <p>Every test creates its own data with unique identifiers. No two tests ever access the same record. This is the most reliable strategy when it's feasible. Implementation in TypeScript:</p>
+      <pre><code>// Each test gets a unique namespace — no shared state
+import { test, expect } from '@playwright/test';
+
+test.describe('Account Balance Operations', () => {
+  test('should deduct from account balance', async ({ request }) => {
+    const uniqueId = \`test-\${Date.now()}-\${Math.random().toString(36)}\`;
+
+    // Create a unique user ONLY for this test
+    const user = await request.post('/api/users', {
+      data: { name: uniqueId, initialBalance: 1000 },
+    });
+    const userId = (await user.json()).id;
+
+    // Operate on this user — no other test touches it
+    const response = await request.post(
+      \`/api/users/\${userId}/deduct\`,
+      { data: { amount: 150 } }
+    );
+
+    expect(response.status()).toBe(200);
+    const updated = await request.get(\`/api/users/\${userId}\`);
+    expect((await updated.json()).balance).toBe(850);
+  });
+});</code></pre>
+      <p><strong>When it works:</strong> Tests that need a small number of entities with simple relationships. Unit tests, API contract tests, most integration tests. <strong>When it doesn't:</strong> Tests that need pre-existing data (a user with 2 years of transaction history), tests that exercise global state (system-wide configuration, rate limiters), and tests where data creation is slower than the test itself.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Strategy 2: Namespaced Tenancy — Shared Database, Isolated Data</h3>
+      <p>Each test run gets a unique tenant ID, and all test data is scoped to that tenant. Tests running in parallel use different tenant IDs and never see each other's data. This is the workhorse strategy for integration and E2E tests against shared databases.</p>
+      <pre><code>// TypeScript: Namespaced test data isolation
+import { v4 as uuid } from 'uuid';
+
+class TestTenant {
+  readonly tenantId: string;
+
+  constructor() {
+    this.tenantId = uuid(); // Unique per test worker
+  }
+
+  async createUser(overrides = {}): Promise<User> {
+    return db.user.create({
+      data: {
+        ...UserFactory.create(overrides),
+        tenantId: this.tenantId,  // All data tagged with tenant
+      },
+    });
+  }
+
+  async getUser(userId: string): Promise<User> {
+    // Queries always filter by tenant — never sees other tests' data
+    return db.user.findFirst({
+      where: { id: userId, tenantId: this.tenantId },
+    });
+  }
+
+  async cleanup(): Promise<void> {
+    // Deterministic cleanup: delete everything for this tenant
+    await db.user.deleteMany({
+      where: { tenantId: this.tenantId },
+    });
+  }
+}
+
+// Playwright worker fixture — one tenant per worker
+const test = base.extend<{ tenant: TestTenant }>({
+  tenant: async ({}, use) => {
+    const tenant = new TestTenant();
+    await use(tenant);
+    await tenant.cleanup();  // Guaranteed teardown
+  },
+});</code></pre>
+      <p><strong>Panel probing point:</strong> "What if the application doesn't support multi-tenancy?" Answer: Use database-level isolation — either per-test databases (Docker containers with randomised ports/names) or transaction-based isolation where each test runs inside a database transaction that's rolled back after the test completes. The architecture layer can abstract away whether isolation is implemented at the application level (tenant IDs) or the infrastructure level (database instances).</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Strategy 3: Transaction Rollback — Lightning-Fast Isolation for Single-DB Tests</h3>
+      <p>For tests that run against a single database, the fastest isolation strategy is wrapping each test in a database transaction and rolling it back after assertions. This is the standard approach in backend testing frameworks (JUnit with @Transactional in Spring, pytest-django with transactional_db). Here's the Java/Spring pattern:</p>
+      <pre><code>// Java + Spring: Transaction-rollback isolation
+@SpringBootTest
+@Transactional  // Each test runs in its own transaction
+class AccountServiceTest {
+
+    @Autowired
+    private AccountRepository accountRepo;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Test
+    void shouldDeductFromBalance() {
+        // This insert is visible within this transaction only
+        Account account = accountRepo.save(
+            Account.builder()
+                .balance(new BigDecimal("1000.00"))
+                .build()
+        );
+
+        accountService.deduct(account.getId(),
+                              new BigDecimal("150.00"));
+
+        Account updated = accountRepo.findById(account.getId())
+            .orElseThrow();
+        assertThat(updated.getBalance())
+            .isEqualByComparingTo("850.00");
+
+        // Spring rolls back the transaction — no cleanup needed
+        // Database is clean for the next test
+    }
+}</code></pre>
+      <p><strong>The limitation panels will probe:</strong> Transaction rollback doesn't work across multiple databases. If your test touches PostgreSQL for users and MongoDB for orders, you can't wrap both in a single ACID transaction. For microservice E2E tests, you need either namespaced tenancy or per-test data creation with cleanup. The senior answer acknowledges this limitation and explains when the strategy is safe (single-database integration tests) and when it's dangerous (multi-service tests that would silently commit data to one database while rolling back another).</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Strategy 4: Test Affinity Routing — The Scale Strategy</h3>
+      <p>When you have thousands of tests and can't afford per-test databases, test affinity routing minimises data conflicts by scheduling tests that access overlapping data to run on the same worker — sequentially within that worker. The test planner analyses data access patterns (which tables, which entities, which user IDs each test touches) and builds a conflict graph. Tests with overlapping data access are assigned to the same shard and run serially within it. Tests with no data overlap can run in parallel on different shards. <strong>Panel insight:</strong> This is a lead/principal-level answer. It demonstrates you've thought about test data isolation at the architectural level — as a scheduling and routing problem — not just as a per-test coding pattern. Mitchell has used this at Nationwide for a suite of 15,000+ E2E tests where per-test databases were cost-prohibitive. The conflict graph was generated from static analysis of API calls in test code (regex extraction of entity IDs), and tests were sharded nightly. Data-related failures dropped by 85% within the first month.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Test Data Cleanup Strategies — Because Rotting Test Environments Are a Silent Productivity Killer</h2>
+  <p>"We clean up after each test." Every candidate says this. The panel is listening for <em>how</em> — because a cleanup strategy that works for 50 tests on one developer's machine fails catastrophically for 5,000 tests running in CI with tests that crash mid-execution, leaving orphaned data behind. Here's the cleanup strategy hierarchy:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>The Cleanup Strategy Hierarchy — From Fragile to Foolproof</h3>
+      <p><strong>Level 1 — Test-Level Teardown (Fragile):</strong> Each test cleans up after itself in a <code>finally</code> block or <code>afterEach</code> hook. Problem: if the test crashes, the teardown never runs — orphaned data accumulates. Problem: teardown code is test code, and test code has bugs — a bug in your cleanup logic leaves data behind. This is the default strategy for most teams, and it's the most fragile. <strong>Level 2 — Namespaced Cleanup (Reliable):</strong> All test data is tagged with a test-run identifier. A cleanup job runs after the test suite, deleting all data with that identifier — regardless of whether individual tests cleaned up. The cleanup is declarative ("delete everything from this run"), not procedural ("each test deletes what it created"). This is robust against test crashes and cleanup bugs. <strong>Level 3 — TTL-Based Expiry (Self-Healing):</strong> Every test data record gets a <code>ttl</code> timestamp (e.g., created_at + 24 hours). A background job runs periodically and deletes all records where <code>NOW() > ttl</code>. This is the strongest strategy: even if the cleanup job fails, data auto-expires. Even if a test run crashes before cleanup, the data disappears within 24 hours. Mitchell implemented TTL-based cleanup at Accenture — the test environment's database size stopped growing, and the "why is staging slow" complaints stopped. <strong>Level 4 — Ephemeral Environments (Foolproof):</strong> The entire test environment is destroyed after the test run and rebuilt from scratch for the next run. This is the Kubernetes model: spin up a namespace, run tests, delete the namespace. There's nothing to clean up because the environment itself is ephemeral. This is the gold standard for CI — and increasingly the standard for E2E testing in cloud-native architectures. <strong>The panel's follow-up:</strong> "What about the cost?" Answer: Ephemeral environments are cheap when they're containerised and short-lived (15-30 minutes). The cost of NOT using ephemeral environments — debugging test failures caused by stale data, maintaining cleanup scripts, the engineering time lost to "it works on my machine but not in CI" — dwarfs the infrastructure cost. Frame it as an investment in developer productivity, not an infrastructure expense.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Cleanup Across Microservices — The Distributed Cleanup Problem</h3>
+      <p>In a microservice architecture, test data exists across multiple databases owned by different services. Cleaning up after an E2E test means deleting data from the auth service's PostgreSQL, the orders service's MongoDB, and the payments service's encrypted PostgreSQL. If any service's cleanup fails (network timeout, database connection issue), you have orphaned data across services. The architectural solution: (1) <strong>Centralised cleanup coordinator:</strong> A cleanup service maintains a registry of all entities created during a test run (service, entity type, entity ID). After the test run (or on a schedule), the coordinator calls each service's cleanup endpoint. If a service is unreachable, the coordinator retries with exponential backoff. (2) <strong>Service-level TTL:</strong> Each service implements its own TTL cleanup for test data — independent of the central coordinator. This provides defence in depth: even if the coordinator fails, each service eventually cleans up its own test data. (3) <strong>Event-driven cleanup:</strong> When a test run completes (or is abandoned), the test orchestrator publishes a <code>TestRunCompleted</code> event. Each service subscribes to this event and triggers its own cleanup. This decouples the test infrastructure from individual service implementations — the test orchestrator doesn't need to know about every service's database schema. <strong>Panel probing point:</strong> "How do you handle a test run that crashes before it publishes the completion event?" Answer: The TTL strategy covers this — data auto-expires regardless of whether the event was published. The event-driven cleanup is the fast path; TTL is the safety net.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Managing Test Data Across Microservices — The Provisioning Architecture</h2>
+  <p>In a monolith, test data is in one database. In a microservice architecture, test data is across 15 databases, each owned by a different team with a different schema, different deployment cadence, and — critically — different data models for the same logical entity. An "order" in the orders service is a different record from the "order" in the analytics service, which is different from the "order" in the shipping service. An E2E test that exercises the purchase flow needs data that's consistent across all of them. Here's how the architecture handles it:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Contract-Driven Data Provisioning — Services Own Their Data Contracts</h3>
+      <p>Each microservice publishes a <strong>test data contract</strong> — a declarative specification of the test data it can provide and the test data it needs from other services. The contract is versioned alongside the service's API. For example, the payments service publishes: <em>"I can create a test payment method for user X. I need user X to exist in the auth service, have a verified email, and have at least one saved address."</em> The test orchestrator reads all contracts and provisions data in dependency order: create the user in auth, verify the email, create the address — then call the payments service to create the payment method. If any service's contract changes, the orchestrator detects the version change and adapts. This is the pattern Mitchell implemented at Nationwide:</p>
+      <pre><code>// TypeScript: Test data contract for a microservice
+export const paymentsServiceDataContract: DataContract = {
+  service: 'payments',
+  version: '2.1.0',
+  provides: [
+    {
+      entity: 'PaymentMethod',
+      factory: (deps) => ({
+        type: 'card',
+        lastFour: '4242',
+        expiryMonth: '12',
+        expiryYear: String(new Date().getFullYear() + 1),
+        userId: deps.user.id,  // Dependency from auth service
+      }),
+    },
+  ],
+  requires: [
+    {
+      from: 'auth',
+      entity: 'User',
+      constraints: { emailVerified: true },
+    },
+  ],
+};
+
+// Orchestrator resolves dependency graph and provisions in order
+class DataOrchestrator {
+  async provision(scenario: string): Promise<DataContext> {
+    const contracts = await this.loadContracts();
+    const sorted = topologicalSort(contracts); // Dependency order
+    const context: DataContext = {};
+
+    for (const contract of sorted) {
+      // Check that all required deps exist in context
+      this.validateDeps(contract.requires, context);
+      // Provision data through the providing service's API
+      context[contract.service] = await this.provisionService(
+        contract, context
+      );
+    }
+    return context;
+  }
+}</code></pre>
+    </div>
+    <div class="challenge-card">
+      <h3>The Service Virtualisation Approach — When Dependencies Aren't Ready</h3>
+      <p>What happens when Service B needs test data from Service A, but Service A hasn't implemented its test data contract yet? Or Service A is being refactored and its test data API is unstable? This is where service virtualisation (also called service mocking at the data layer) comes in. For test data provisioning specifically: each service that needs data from another service can fall back to a <strong>virtual data provider</strong> — a lightweight implementation of the data contract that creates data directly in the requesting service's test scope, bypassing the actual service. The virtual provider doesn't test the integration between services — that's what contract tests are for. It enables E2E tests to run without every service being available. <strong>The panel's key insight:</strong> This is not an excuse to avoid real integration testing. Virtual data providers are a development convenience and a CI reliability measure — they let tests run when dependencies are unstable. But the pipeline must also include integration tests that run against real services, with real data contracts, as a gate before production deployment.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>API Test Data Setup and Teardown — Patterns Every Senior SDET Uses Daily</h2>
+  <p>API testing is where test data management gets concrete. Unlike E2E tests (which can create data through the UI) or unit tests (which mock everything), API tests operate at the integration boundary — they're fast enough to create real data, isolated enough to need cleanup, and numerous enough that data management patterns compound. Here are the patterns Mitchell teaches in every API testing workshop:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Pattern 1: Arrange-Act-Assert With Data Factories — The Blueprint</h3>
+      <p>Every API test follows Arrange-Act-Assert. The data management lives in Arrange (creating the data the test needs) and ideally in an automated teardown (removing it after). Here's the pattern in both TypeScript (Playwright) and Java (REST Assured):</p>
+      <pre><code>// TypeScript: Playwright API test with data factory
+import { test, expect } from '@playwright/test';
+import { UserFactory } from '../factories/user.factory';
+
+test.describe('GET /api/users/:id', () => {
+  test('should return user by ID with 200', async ({ request }) => {
+    // ARRANGE: Create test data via API
+    const newUser = UserFactory.create({ role: 'admin' });
+    const createResp = await request.post('/api/users', {
+      data: newUser,
+    });
+    expect(createResp.status()).toBe(201);
+    const { id } = await createResp.json();
+
+    // ACT: The operation under test
+    const response = await request.get(\`/api/users/\${id}\`);
+
+    // ASSERT: Verify the response
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    expect(body.email).toBe(newUser.email);
+    expect(body.role).toBe('admin');
+
+    // CLEANUP: Remove test data
+    await request.delete(\`/api/users/\${id}\`);
+  });
+});</code></pre>
+      <pre><code>// Java: REST Assured API test with builder pattern
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+public class UserApiTest {
+
+    @Test
+    void shouldReturnUserById() {
+        // ARRANGE
+        User newUser = UserFactory.createAdmin();
+        String userId = given()
+            .contentType(ContentType.JSON)
+            .body(newUser)
+        .when()
+            .post("/api/users")
+        .then()
+            .statusCode(201)
+            .extract().path("id");
+
+        // ACT & ASSERT
+        given()
+            .pathParam("id", userId)
+        .when()
+            .get("/api/users/{id}")
+        .then()
+            .statusCode(200)
+            .body("email", equalTo(newUser.getEmail()))
+            .body("role", equalTo("admin"));
+
+        // CLEANUP
+        given()
+            .pathParam("id", userId)
+        .when()
+            .delete("/api/users/{id}")
+        .then()
+            .statusCode(204);
+    }
+}</code></pre>
+    </div>
+    <div class="challenge-card">
+      <h3>Pattern 2: beforeEach/afterEach — Structured Setup and Teardown</h3>
+      <p>When multiple tests need the same setup, extract it into hooks. But the senior pattern also extracts cleanup into hooks — and handles the case where setup or the test itself throws:</p>
+      <pre><code>// TypeScript: Structured setup/teardown with error resilience
+test.describe('User API CRUD', () => {
+  let userId: string;
+  let testUser: User;
+
+  test.beforeEach(async ({ request }) => {
+    testUser = UserFactory.create();
+    const resp = await request.post('/api/users', {
+      data: testUser,
+    });
+    userId = (await resp.json()).id;
+  });
+
+  test.afterEach(async ({ request }) => {
+    // Cleanup runs even if the test failed
+    // Use try/catch because the resource might already be deleted
+    try {
+      await request.delete(\`/api/users/\${userId}\`);
+    } catch {
+      // Resource already gone — that's fine
+    }
+  });
+
+  test('should update user email', async ({ request }) => {
+    const resp = await request.patch(\`/api/users/\${userId}\`, {
+      data: { email: 'updated@test.com' },
+    });
+    expect(resp.status()).toBe(200);
+    expect((await resp.json()).email).toBe('updated@test.com');
+  });
+
+  test('should delete user', async ({ request }) => {
+    const resp = await request.delete(\`/api/users/\${userId}\`);
+    expect(resp.status()).toBe(204);
+    // Prevent afterEach from trying to delete again
+    userId = '';
+  });
+});</code></pre>
+    </div>
+    <div class="challenge-card">
+      <h3>Pattern 3: API-Level Data Factories — Create Entities Through the API, Not the Database</h3>
+      <p>There's a critical architectural decision in API testing: should test data be created through the API (using POST endpoints) or directly in the database? The senior answer: <strong>create through the API for the entity under test, and through the database for prerequisite data.</strong> Creating the entity under test through the API validates that the creation flow works — it's an additional test of the system. Creating prerequisite data (reference data, configuration, other entities the test needs but isn't testing) through the database is faster and avoids coupling tests to unrelated API endpoints. Here's the TypeScript pattern:</p>
+      <pre><code>// TypeScript: API-level data factory
+class ApiUserFactory {
+  constructor(private request: APIRequestContext) {}
+
+  // Create through API — also validates the creation endpoint
+  async create(overrides: Partial<User> = {}): Promise<User> {
+    const payload = UserFactory.create(overrides);
+    const resp = await this.request.post('/api/users', {
+      data: payload,
+    });
+    if (resp.status() !== 201) {
+      throw new Error(
+        \`Failed to create test user: \${await resp.text()}\`
+      );
+    }
+    return resp.json();
+  }
+
+  // Prerequisite: create directly in DB for speed
+  async seedReferenceData(): Promise<void> {
+    await db.query(\`
+      INSERT INTO countries (code, name)
+      VALUES ('GB', 'United Kingdom')
+      ON CONFLICT DO NOTHING
+    \`);
+  }
+}</code></pre>
+    </div>
+    <div class="challenge-card">
+      <h3>Pattern 4: Request Chaining — Test Data as API Response Dependencies</h3>
+      <p>Most API tests need data from a previous API response. A test that fetches a user's orders first needs to create a user (POST /users), extract the user ID, then create an order (POST /orders with userId), then fetch the orders (GET /users/:id/orders). The pattern: chain requests, accumulating state in variables. The senior insight: extract the chaining into a helper that returns all accumulated state, so individual tests stay focused on the assertion:</p>
+      <pre><code>// TypeScript: Request chaining helper
+async function setupUserWithOrder(
+  request: APIRequestContext
+): Promise<{ user: User; order: Order }> {
+  // Chain 1: Create user
+  const userResp = await request.post('/api/users', {
+    data: UserFactory.create(),
+  });
+  const user = await userResp.json();
+
+  // Chain 2: Create order for that user
+  const orderResp = await request.post('/api/orders', {
+    data: OrderFactory.create({ userId: user.id }),
+  });
+  const order = await orderResp.json();
+
+  return { user, order };
+}
+
+// Test stays focused on what it's testing
+test('should list orders for a user', async ({ request }) => {
+  const { user, order } = await setupUserWithOrder(request);
+
+  const resp = await request.get(
+    \`/api/users/\${user.id}/orders\`
+  );
+  expect(resp.status()).toBe(200);
+  const orders = await resp.json();
+  expect(orders).toHaveLength(1);
+  expect(orders[0].id).toBe(order.id);
+});</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Test Data Interview Anti-Patterns — Answers That Cost Senior Candidates Their Offers</h2>
+  <p>After 20 years of SDET interview panels, Mitchell has catalogued the test data management answers that reliably separate the offer candidates from the rejection pile. These aren't technical errors — they're <em>thinking errors</em> that signal a candidate hasn't operated test data at scale:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"We Use the Production Database Backup"</h3>
+      <p>This answer gets two immediate red flags from the panel. Red flag 1: GDPR/compliance — production backups contain personal data, and copying them to test environments without anonymisation is a data protection violation in most regulated industries. Red flag 2: Staleness — the production backup is a point-in-time snapshot, and as the schema evolves (new migrations, renamed columns, deprecated tables), the backup becomes increasingly incompatible with the current code. The candidate who gives this answer hasn't thought about either problem. The senior answer: "We use anonymised production-derived data for performance testing, generated through an automated pipeline that runs nightly and includes schema validation. For functional testing, we use synthetic data generated through factories and seed files that are version-controlled alongside the application code."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"We Clean Up in afterEach"</h3>
+      <p>This answer is not wrong — it's incomplete. afterEach cleanup is the first line of defence, but senior panels expect you to know it's not the last. What happens when the test crashes before afterEach runs? What happens when the CI agent is terminated mid-suite? What happens when a developer kills the test runner with Ctrl+C? The candidate who ONLY mentions afterEach hasn't designed for failure. The senior answer: "afterEach is the fast path. TTL-based expiry with a background cleanup job is the safety net. And for CI, ephemeral environments that are destroyed after the run are the gold standard. We implement all three because test data that survives a crashed test run rots your test environment over time."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"We Lock the Record"</h3>
+      <p>When asked about parallel test data collisions, some candidates suggest database-level locking — acquire a lock on the shared record, run the test, release the lock. This "solution" makes the problem worse in three ways: (1) It serialises test execution — the lock becomes a bottleneck, and your 100 parallel workers run one at a time. (2) It introduces deadlocks — two tests each holding a lock and waiting for the other's lock. (3) It tests an artificial scenario — in production, multiple users DO modify data concurrently, and the system must handle it. By serialising access, you're testing a scenario that never happens in production. The senior answer: "Data isolation, not data locking. Each test gets its own data — through unique IDs, tenant namespacing, or per-test database instances. The system under test still handles concurrent operations (multiple workers making concurrent API calls), but each operates on isolated data. This tests the system's actual concurrency behaviour without data collisions."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Your 24-Hour SDET Test Data Management Interview Prep Plan</h2>
+  <p>If your interview is tomorrow and you're reading this at 11pm, here's what to do in the time you have left — prioritised by interview impact:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Hour 1 (now):</strong> Memorise the four isolation strategies — unique data per test, namespaced tenancy, transaction rollback, and test affinity routing. Be able to explain each in one sentence, when it works, and when it breaks. This alone will put you ahead of 70% of candidates.</li>
+    <li><strong>Hour 2:</strong> Understand the anonymisation hierarchy — masking → pseudonymisation → tokenisation → synthetic replacement. Be able to explain why masking isn't GDPR-compliant anonymisation. Bonus: mention k-anonymity and differential privacy as advanced techniques.</li>
+    <li><strong>Hour 3:</strong> Practise the factory pattern code. Write a UserFactory.create() function from memory. Then extend it to a semantic factory (UserWithOrder). The panel may ask you to whiteboard one — being able to write it from muscle memory signals you do this daily.</li>
+    <li><strong>Hour 4:</strong> Install the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> and run the Test Data Management topic drills. The AI mock interviewer will ask you the exact questions panels ask — including the "what happens when the test crashes?" follow-up that catches most candidates. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions test data, data management, or data strategy.</li>
+    <li><strong>Hour 5 (morning of):</strong> Review the anti-patterns section above. These are the answers that get candidates rejected. Know them so you don't give them. When the panel says "tell me about your test data strategy," you want their reaction to be "this candidate has done this at scale" — not "this candidate has never thought about it."</li>
+  </ul>
+  <p>The test data management questions in your interview aren't testing whether you've memorised definitions. They're testing whether you've operated test infrastructure at a scale where data management is the hardest problem. Every strategy, every pattern, every code example in this guide is something Mitchell has implemented, debugged at 2am, defended in architecture reviews, or seen candidates fail to explain in interview panels across 20 years at HMRC, MoD, Nationwide, and Accenture. The candidates who get the senior offer aren't the ones with the most tools on their CV. They're the ones who can look at a test suite that's failing 40% of its runs due to data collisions and explain — with code and architecture — how they'd fix it, from the factory functions to the TTL cleanup jobs to the environment orchestration. Be that candidate.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What's the difference between test data factories and test data fixtures?",
+        a: "Test data factories are functions that generate valid test data on demand with sensible defaults — each test creates exactly what it needs and overrides only the fields it cares about. Fixtures are static data files (JSON, YAML) that contain pre-defined test data — useful for reference data that changes infrequently (country lists, tax rates, configuration values). The modern approach uses fixtures for stable reference data and factories for mutable entity data. Factories are preferred for entity data because they're schema-aware (they evolve with the data model) and provide isolation (each test gets fresh data). Fixtures become technical debt when the schema changes and nobody remembers to update the fixture file — factories avoid this by being programmatically tied to the current schema. Candidates who can articulate when to use each signal they've managed test data at scale, not just in development.",
+      },
+      {
+        q: "How do I handle test data for API tests that span multiple microservices?",
+        a: "Use a layered approach: (1) Create prerequisite data through each service's API or directly in the service's database for speed (reference data, configuration). (2) Create the entity under test through the API — this also validates the creation endpoint. (3) Use request chaining — extract IDs from creation responses and pass them to subsequent requests. (4) For services that depend on each other (Service B needs data from Service A), use contract-driven data provisioning — each service publishes a test data contract specifying what it can provide and what it requires. The test orchestrator resolves the dependency graph and provisions data in topological order. (5) Cleanup with a namespaced tenant ID or TTL-based expiry, not individual test teardown. For E2E tests that span 5+ services, consider semantic factories that create entire scenarios (user-with-order-with-payment) in a single call.",
+      },
+      {
+        q: "Is it GDPR-compliant to use production data in test environments?",
+        a: "Not without proper anonymisation. GDPR Article 32 requires 'appropriate technical and organisational measures' to protect personal data — and test environments are included in this scope. Copying production data containing PII (names, emails, addresses, IP addresses, payment information) to test environments without anonymisation is a compliance risk. The compliant approach: (1) Automate an anonymisation pipeline that extracts production data, applies appropriate anonymisation techniques (tokenisation for emails, synthetic replacement for names, masking for display testing), verifies that all PII fields were transformed, and only then makes the data available to test environments. (2) For most functional testing, use synthetic data generated through factories and Faker libraries — this data was never anyone's personal data and falls entirely outside GDPR scope. (3) For performance testing where production data distributions matter, use anonymised production-derived data with an auditable pipeline. The key is that the pipeline must be verified — if verification fails, the data doesn't reach any test environment. Mitchell implemented this at the MoD: the anonymisation pipeline was a build gate.",
+      },
+      {
+        q: "How do I prevent test data collisions when running 100 tests in parallel?",
+        a: "There are four isolation strategies, and the choice depends on your infrastructure and test requirements: (1) Unique data per test — each test creates its own data with unique identifiers. Simplest and most reliable when feasible. (2) Namespaced tenancy — each test run gets a unique tenant ID, all data is tagged with it, and queries filter by tenant. Works for most integration and E2E tests against shared databases. (3) Transaction rollback — each test runs in a database transaction that's rolled back after assertions. Fastest for single-database tests but doesn't work across multiple databases. (4) Test affinity routing — tests that access overlapping data are scheduled to run on the same worker sequentially. Most sophisticated, used for very large suites where per-test databases are cost-prohibitive. The senior answer is to combine strategies: unique data for unit and contract tests, namespaced tenancy for integration tests, and ephemeral per-run databases for CI. Never use database-level locking — it serialises execution and tests an artificial scenario that doesn't reflect production concurrency.",
+      },
+      {
+        q: "What's the best way to clean up test data after a test suite runs?",
+        a: "Implement a defence-in-depth cleanup strategy: (1) Test-level teardown (afterEach hooks) is the first line — clean up what you created. But never rely on it alone, because tests crash and teardown code has bugs. (2) Namespaced cleanup is the second line — all test data is tagged with a run identifier, and a cleanup job deletes everything with that identifier regardless of individual test state. (3) TTL-based expiry is the safety net — every test data record has an expiry timestamp, and a background job periodically deletes expired data. This ensures data auto-cleaned even if cleanup jobs fail. (4) Ephemeral environments are the gold standard — destroy the entire test environment after the run and rebuild from scratch. The cost of ephemeral infrastructure is dwarfed by the engineering time saved debugging stale-data failures. Mitchell has seen TTL-based cleanup eliminate the \"staging is slow\" complaint at Accenture — the database stopped growing because test data auto-expired within 24 hours.",
+      },
+      {
+        q: "How do I explain test data management to a panel when I've mostly worked on small teams?",
+        a: "Be honest about your experience level while demonstrating conceptual depth. A strong answer: 'In my current role on a small team, we use test data factories with Faker for unique data per test and afterEach cleanup. However, I understand that at scale — across microservices with parallel execution — the approach needs to evolve. I would introduce: (1) namespaced tenancy for data isolation across parallel workers, (2) TTL-based cleanup as a safety net beyond afterEach, (3) contract-driven data provisioning between services, and (4) a GDPR-compliant anonymisation pipeline if we ever use production-derived data. I haven't implemented all of these, but I understand the architecture and the problems each solves.' This answer signals that you can scale your thinking beyond your current team size — which is what senior panels are screening for. The worst answer is pretending you've done something at scale that you haven't — panels can detect this within two follow-up questions.",
+      },
+      {
+        q: "Does SDET Interview Coach cover test data management questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated Test Data Management topic area with questions spanning data generation strategies, isolation patterns for parallel execution, GDPR-compliant anonymisation, database seeding approaches, cleanup strategies, and microservice data provisioning. Questions are calibrated to five seniority levels — Junior candidates get foundational factory/fixture questions, while Lead candidates face the full distributed-data architecture discussion. The AI mock interviewer can run a dedicated test data management round, asking follow-up questions about what happens when tests crash, how you handle schema evolution, and what your anonymisation pipeline verification looks like. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions test data, data strategy, or data management.",
+      },
+    ],
+    relatedSlugs: [
+      "test-automation-framework-design-interview",
+      "api-testing-interview-questions-2026",
+      "cicd-pipeline-testing-interview-questions",
+      "sdet-interview-coach-app-guide",
+    ],
+  },
+  {
     slug: "sdet-system-design-interview-questions-2026",
     title: "SDET System Design Interview Questions 2026 — Designing a Test Infrastructure for 500 Engineers Across 15 Microservices, Test Data Management at Scale, Reporting and Observability Architecture, Test Environment Orchestration, Parallel Execution Architecture, Monorepo vs Multi-Repo Test Code, Integrating Unit/Integration/E2E/Performance Tests, Flakiness Management, and the Trade-Off Decisions Interviewers Probe for at Senior/Lead Level",
     description: "Real SDET system design interview questions from senior panels in 2026. Covers designing a test automation framework for 500 engineers across 15 microservices, test data management at scale, reporting and observability architecture, test environment orchestration, parallel execution architecture, monorepo vs multi-repo test code decisions, integrating multiple test types (unit/integration/e2e/performance) into a coherent pipeline, test result aggregation and flakiness management, handling secrets and test credentials, and the trade-off decisions senior panels expect you to defend. No code examples — this is architecture. Built from 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture.",
