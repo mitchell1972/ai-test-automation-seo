@@ -1208,7 +1208,7 @@ test('should list orders for a user', async ({ request }) => {
     slug: "sdet-system-design-interview-questions-2026",
     title: "SDET System Design Interview Questions 2026 — Designing a Test Infrastructure for 500 Engineers Across 15 Microservices, Test Data Management at Scale, Reporting and Observability Architecture, Test Environment Orchestration, Parallel Execution Architecture, Monorepo vs Multi-Repo Test Code, Integrating Unit/Integration/E2E/Performance Tests, Flakiness Management, and the Trade-Off Decisions Interviewers Probe for at Senior/Lead Level",
     description: "Real SDET system design interview questions from senior panels in 2026. Covers designing a test automation framework for 500 engineers across 15 microservices, test data management at scale, reporting and observability architecture, test environment orchestration, parallel execution architecture, monorepo vs multi-repo test code decisions, integrating multiple test types (unit/integration/e2e/performance) into a coherent pipeline, test result aggregation and flakiness management, handling secrets and test credentials, and the trade-off decisions senior panels expect you to defend. No code examples — this is architecture. Built from 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture.",
-    date: "2026-05-17",
+    date: "2026-05-18",
     author: SITE_CONFIG.author,
     keywords: [
       "SDET system design interview questions 2026",
