@@ -1530,7 +1530,7 @@ export default defineConfig({
     slug: "sdet-interview-preparation-plan-2026",
     title: "SDET Interview Preparation Plan 2026 — Complete 4-Week and 2-Week Study Schedules, Daily Routines, How to Use the Job Description to Target Your Study, Balancing Technical vs Behavioural vs System Design Prep, Common Preparation Mistakes That Cost Offers, the 72/48/24-Hour Pre-Interview Routine, How to Practise Interview Answers Without a Study Partner, and How to Use Spaced Repetition to Retain Everything You Learn",
     description: "A complete SDET interview preparation plan for 2026 with 4-week and 2-week study schedules, daily routines, JD dissection strategies, common preparation mistakes that cost offers, the 72/48/24-hour pre-interview routine, how to practise interview answers without a partner, and how to use spaced repetition to retain everything. Built from Mitchell's 20 years on interview panels at HMRC, MoD, Nationwide, and Accenture.",
-    date: "2026-05-18",
+    date: "2026-05-19",
     author: SITE_CONFIG.author,
     keywords: [
       "SDET interview preparation plan 2026",
