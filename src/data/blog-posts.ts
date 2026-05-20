@@ -668,7 +668,7 @@ ScenarioBuilder scn = scenario("Checkout")
     slug: "playwright-vs-selenium-vs-cypress-comparison-2026",
     title: "Playwright vs Selenium vs Cypress Comparison 2026 — Architecture Differences (CDP vs WebDriver vs Electron), Speed and Performance Benchmarks, Community and Ecosystem Comparison, API Design Philosophy and Developer Experience, Cross-Browser and Mobile Testing Capabilities, CI/CD Integration Ease, Learning Curve Analysis, Migration Path Considerations, and What Interviewers Ask About Framework Selection — With Code Examples Comparing the Same Test in All 3 Frameworks",
     description: "The definitive Playwright vs Selenium vs Cypress comparison for 2026 — the framework every SDET interview panel asks about. Covers architecture differences (Chrome DevTools Protocol vs WebDriver vs Electron), real speed comparisons, community size and ecosystem maturity, API design philosophy, cross-browser support (Chromium, Firefox, WebKit), mobile testing capabilities, CI/CD integration ease, learning curve analysis, ideal use cases for each framework, migration path strategies from one framework to another, and exactly what interviewers ask about this choice. Includes identical test examples written in Playwright, Selenium, and Cypress side by side. Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture.",
-    date: "2026-05-19",
+    date: "2026-05-20",
     author: SITE_CONFIG.author,
     keywords: [
       "Playwright vs Selenium vs Cypress comparison 2026",
