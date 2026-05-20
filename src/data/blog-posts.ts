@@ -14,6 +14,530 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "typescript-for-sdet-interviews-2026",
+    title: "TypeScript for SDET Interviews 2026 — Interfaces vs Types Deep Dive, Generics in Test Utilities and Page Object Patterns, Async/Await and Promise Patterns for Test Orchestration, Union Types and Discriminated Unions for Test Config, TypeScript-Specific Playwright Fixtures and Custom Matchers with Full Type Safety, Migrating JavaScript Test Suites to TypeScript Incrementally, TypeScript vs Java for Test Automation — When to Use Each, and How to Answer TypeScript Questions That Test Language Depth in Senior SDET Panels",
+    description: "The complete TypeScript for SDET interviews guide for 2026 — covering the TypeScript language features that interview panels now probe for depth, not just syntax familiarity. Covers interfaces vs type aliases and when interviewers expect you to defend your choice, generics in test utilities (reusable page objects, custom fixtures, typed API response handlers), async/await patterns and Promise combinators for test orchestration and sequencing, union types and discriminated unions for type-safe test configuration and data-driven testing, TypeScript-specific Playwright patterns including typed fixtures with `as const`, custom matcher declaration merging, and expect.extend type safety, migrating JavaScript test suites to TypeScript incrementally with strict mode, strictNullChecks, and the any-to-unknown refactor, and the TypeScript vs Java comparison for test automation — developer ergonomics, ecosystem maturity, and when each dominates. Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where TypeScript questions have moved from 'do you know the syntax?' to 'design a type-safe test framework architecture.'",
+    date: "2026-05-20",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "TypeScript for SDET interviews 2026",
+      "TypeScript interfaces vs types generics test automation",
+      "TypeScript Playwright fixtures custom matchers typed",
+      "migrate JavaScript test suite to TypeScript incrementally",
+      "TypeScript vs Java test automation comparison 2026",
+      "async await Promise patterns test orchestration TypeScript",
+      "union types discriminated unions type-safe test config",
+      "senior SDET TypeScript interview questions answers 2026",
+    ],
+    content: `
+<section class="content-section">
+  <p>You write Playwright tests. You import from <code>@playwright/test</code>, write <code>async</code> functions, catch errors, and your tests run. You've been writing TypeScript for two years — maybe three. Then the interview panel leans forward and asks: <em>"When would you use a type alias over an interface in a test framework? Walk me through how you'd design a generic page object factory with full type safety. What does <code>{ [K in keyof T]: T[K] extends Promise<infer U> ? U : never }</code> do, and where would you use it in a test utility?"</em> And suddenly you realise: you've been <em>using</em> TypeScript, but you haven't been <em>designing</em> with it. You've been annotating types, but you haven't been leveraging the type system to make your tests safer at compile time. You've been writing <code>any</code> when the types got complicated — and in 2026, that gap costs candidates the offer at the senior level. TypeScript is now the dominant language for test automation — it powers Playwright, Cypress, WebdriverIO, Jest, and Vitest. It's the language every greenfield test suite starts in. And interview panels have evolved accordingly: they're no longer asking "do you know TypeScript?" They're asking TypeScript architecture questions. They want to see that you can design a type-safe test framework — not just write tests that happen to compile.</p>
+  <p>This guide covers every TypeScript-for-SDET question senior panels are asking in 2026 — from the interfaces-vs-types debate that tests your language design intuition, to the generics patterns that demonstrate architectural thinking, to the Playwright-specific TypeScript patterns that separate framework authors from framework users. Every section maps to real interview questions Mitchell's panels have asked. And every code example is production-grade TypeScript — the kind you might be asked to whiteboard, critique, or extend during a pairing exercise. If you're interviewing for a senior or lead SDET role, TypeScript questions are no longer optional — and they're no longer about syntax. They're about architecture. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes a dedicated TypeScript for SDETs topic — with mock interview questions scored across type system depth, framework design, and practical patterns. Download it and practise the exact TypeScript questions panels ask before you walk into the room.</p>
+</section>
+
+<section class="content-section">
+  <h2>Interfaces vs Type Aliases — The Question Every Panel Asks (And What They're Actually Testing)</h2>
+  <p>"When would you use an <code>interface</code> over a <code>type</code> alias?" This question appears in more TypeScript-for-SDET interviews than any other — and it's deceptively deep. Panels aren't testing whether you can recite the differences from the TypeScript handbook. They're testing whether you understand the <em>design philosophy</em> of the type system — and whether you can apply it to test framework architecture. Here's the comparison that demonstrates language design intuition, not just syntax knowledge.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Interfaces — Open, Extensible, Declaration-Mergeable</h3>
+      <p><strong>Declaration merging:</strong> Interfaces can be declared multiple times in the same scope — TypeScript merges them into a single interface. This is the feature that makes interfaces uniquely suited for <strong>plugin architectures</strong> and <strong>library extensibility</strong>. In Playwright, this is how <code>expect.extend()</code> works: you declare an interface that merges with Playwright's built-in matcher types. <strong>Extends:</strong> Interfaces use the <code>extends</code> keyword — and they can extend multiple other interfaces, including classes. This makes interfaces naturally expressive for inheritance hierarchies. <strong>Error messages:</strong> When a type mismatch involves an interface, TypeScript reports the <em>interface name</em> in the error. This is a powerful developer experience advantage — errors are readable and self-documenting. <strong>Performance:</strong> Interfaces are checked by name (nominal-ish comparison), which is faster than the structural comparison types use — a real consideration in large codebases with thousands of type checks per compilation. <strong>Best for in test frameworks:</strong> Public API shapes that third-party consumers will implement (browser provider interfaces, reporter plugin interfaces), domain objects that represent entities (TestCase, TestResult, ReportConfig), and any type where you anticipate future extension through declaration merging (expect matchers, fixture types).</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Type Aliases — Expressive, Combinatorial, One-Shot</h3>
+      <p><strong>Union types:</strong> This is the killer feature for type aliases — you cannot define a union type with an interface. <code>type Status = 'passed' | 'failed' | 'skipped' | 'flaky'</code> — this is a type alias, and it's the most common pattern in test framework configuration. <strong>Intersection types:</strong> Combine multiple types into one: <code>type TestWithConfig = TestCase & TestConfig</code>. Type aliases make intersection types syntactically clean. <strong>Mapped types and conditional types:</strong> These are unique to type aliases. You cannot define mapped types (<code>{ [K in keyof T]: ... }</code>) or conditional types (<code>T extends U ? X : Y</code>) with interfaces. This is where the real type-level programming happens — deriving new types from existing ones, creating type utilities that make your test framework self-validating. <strong>Tuples and fixed arrays:</strong> <code>type TestEnv = [BrowserConfig, DatabaseConfig, MockServerConfig]</code> — tuples require type aliases. <strong>Primitive aliases:</strong> <code>type TestId = string</code> — giving semantic meaning to primitives. <strong>One-shot nature:</strong> Type aliases can't be re-opened or merged. Once defined, they're fixed. This is a feature in disguise — it means they can't be accidentally extended by another part of the codebase. <strong>Best for in test frameworks:</strong> Union types for config enums and discriminated unions, mapped/conditional types for framework utilities, intersection types for composing config objects, and any situation where you need type-level computation or transformation.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The interview answer that scores highest:</strong> "I use interfaces for contracts — the shapes I expect other code to implement or that I anticipate extending. In a test framework, the browser provider interface, the reporter interface, the fixture types — these are interfaces because they're contracts that evolve through extension. I use type aliases for everything else — union types for configuration enums, mapped types for deriving new types from existing ones, conditional types for type-level utilities, and intersection types for composing complex objects. The decision rule is: if the type represents a contract that may be extended or implemented by third-party code, use an interface. If the type is a computation — derived, composed, or conditional — use a type alias. And if I need a union type, mapped type, or conditional type, the decision is made for me — only type aliases can express those."</p>
+
+  <pre><code>// TypeScript for SDETs: interfaces vs types in a test framework context
+
+// Interface — a contract for browser providers
+interface BrowserProvider {
+  name: string;
+  launch(): Promise<Browser>;
+  connect(endpoint: string): Promise<Browser>;
+}
+
+// Interface — extendable through declaration merging
+interface PlaywrightFixtures {
+  page: Page;
+  browser: Browser;
+}
+
+// Later, in a custom fixture file — this merges!
+interface PlaywrightFixtures {
+  authenticatedPage: Page;
+  adminPage: Page;
+}
+
+// Type alias — union type for test status (impossible with interface)
+type TestStatus = 'passed' | 'failed' | 'skipped' | 'flaky' | 'timedOut';
+
+// Type alias — mapped type for extracting promise values
+type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
+
+// Type alias — intersection for composing test config
+type TestRunConfig = BrowserConfig & RetryConfig & ReportingConfig;</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Generics in Test Utilities — The Pattern That Demonstrates Architectural Thinking</h2>
+  <p>If interfaces vs types tests your language philosophy, generics test your architectural maturity. When a panel asks "how would you design a generic page object factory with full type safety?" they're testing whether you understand that test frameworks are <em>templates parameterised by types</em> — and whether you can design APIs that are self-documenting at the type level. A generic page object returns the correct type at compile time. A generic fixture factory enforces that the right fixture shape is passed to the right test. A generic API response handler extracts the correct response type from the request type. These are the patterns that transform a test suite from "it runs" to "it can't be used incorrectly."</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Generic Page Object Factory — Type-Safe, Reusable, Self-Documenting</h3>
+      <p>The problem: a test framework has 50 page objects. Each one follows the same pattern — constructor takes a page, exposes methods that return the page for chaining. Without generics, you either repeat this pattern 50 times (maintenance nightmare) or lose type safety with <code>any</code> (defeating the purpose of TypeScript). The solution: a generic page object factory that captures the page type as a type parameter and enforces it throughout the chain.</p>
+      <pre><code>// Generic page object factory with full type safety
+type PageClass<T> = new (page: Page) => T;
+
+class PageFactory {
+  static create<T>(PageClass: PageClass<T>, page: Page): T {
+    return new PageClass(page);
+  }
+  
+  // Navigate to a typed page
+  static async navigate<T>(
+    page: Page, 
+    url: string, 
+    PageClass: PageClass<T>
+  ): Promise<T> {
+    await page.goto(url);
+    return new PageClass(page);
+  }
+}
+
+// Usage — fully type-safe
+const loginPage = PageFactory.create(LoginPage, page);
+//    ^? LoginPage — inferred, not any!</code></pre>
+    </div>
+    <div class="comparison-card">
+      <h3>Generic API Response Handler — Type the Request, Get the Response</h3>
+      <p>The API testing pattern that impresses panels most: a generic API client where the <em>request type parameter</em> drives the <em>response type</em> at compile time. This eliminates an entire class of test bugs — asserting on the wrong response shape — because TypeScript won't let you access a property that doesn't exist on the response type.</p>
+      <pre><code>// Generic API client — request type → response type
+interface ApiEndpoint<TRequest, TResponse> {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  path: string;
+}
+
+class ApiClient {
+  async call<TRequest, TResponse>(
+    endpoint: ApiEndpoint<TRequest, TResponse>,
+    body: TRequest
+  ): Promise<TResponse> {
+    const response = await fetch(endpoint.path, {
+      method: endpoint.method,
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return response.json() as TResponse;
+  }
+}
+
+// Define endpoints once — responses are typed forever
+const createOrder: ApiEndpoint<CreateOrderRequest, Order> = {
+  method: 'POST', path: '/api/orders'
+};
+
+const order = await client.call(createOrder, {
+  productId: 'abc', quantity: 2
+});
+//    ^? Order — fully typed. order.total.amount autocompletes.</code></pre>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The generics interview answer that scores highest:</strong> "I use generics in three layers of a test framework. Layer 1 — Page objects and components: a generic <code>PageFactory.create&lt;T&gt;</code> that constructs typed page objects from page classes, and generic component classes (<code>class DataGrid&lt;TRow&gt;</code>) that parameterise over the row type. Layer 2 — API testing: generic endpoint definitions (<code>ApiEndpoint&lt;TRequest, TResponse&gt;</code>) that link request types to response types at compile time, so you can never assert on a field that doesn't exist. Layer 3 — Fixtures and test context: generic fixture factories (<code>createFixture&lt;TConfig, TFixture&gt;</code>) that derive the fixture type from the config type, enforcing that the right fixtures are passed to the right tests. The principle throughout: the type parameter captures the 'what varies' — the page type, the response type, the fixture type — and the generic function enforces the invariant — the construction pattern, the request-response link, the fixture-config contract. The result is a framework where misuse is impossible at the type level." For more on the architectural patterns that generics enable in test frameworks, see our <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview Guide</a>.</p>
+</section>
+
+<section class="content-section">
+  <h2>Async/Await and Promise Patterns — Test Orchestration with TypeScript</h2>
+  <p>Every SDET writes <code>await</code> — but senior panels test whether you understand the Promise <em>orchestration</em> layer. When to use <code>Promise.all</code> for parallel execution, <code>Promise.allSettled</code> for resilient multi-step setups, <code>Promise.race</code> for timeout guards, and how to build a proper retry-with-exponential-backoff as a typed utility. This is the difference between someone who writes async tests and someone who architects async test infrastructure.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Promise Combinators — When to Use Each in Test Automation</h3>
+      <p><strong>Promise.all — Simultaneous independent operations:</strong> Use when you need multiple setups to complete before the test starts, and the setups are independent of each other. Example: initialising browser, database, and mock server in parallel — if any one fails, the test should fail fast. <code>Promise.all</code> fails as soon as <em>any</em> promise rejects — this is the fail-fast combinator. <strong>Promise.allSettled — Resilient multi-step execution:</strong> Use when you want to run multiple operations and handle failures individually rather than aborting. Example: tearing down multiple test resources — if deleting a test user fails, that shouldn't prevent deleting the test order. <code>Promise.allSettled</code> never rejects — it returns an array of result objects, each with a <code>status</code> of 'fulfilled' or 'rejected'. <strong>Promise.race — Timeout guards:</strong> Use to enforce a maximum wait time for any operation. Example: "wait for the notification to appear, but fail if it takes more than 10 seconds." <strong>Promise.any — First success wins:</strong> Use when you have redundant resources and any one succeeding is sufficient. Example: connecting to a browser on any available port in a grid — the first successful connection wins.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Typed Retry Utility — Exponential Backoff with Generics</h3>
+      <p>The retry utility is the most commonly asked "design a test utility" question in TypeScript-for-SDET interviews. The panel wants to see: generics (the function is parameterised by the return type), async patterns (the retry loop uses await with a delay), exponential backoff (the delay increases with each attempt), and proper error handling (collect all errors, throw an aggregate if all retries fail).</p>
+      <pre><code>// Typed retry with exponential backoff
+type RetryOptions = {
+  maxAttempts: number;
+  initialDelayMs: number;
+};
+
+async function retry<T>(
+  fn: () => Promise<T>,
+  options: RetryOptions = { maxAttempts: 3, initialDelayMs: 1000 }
+): Promise<T> {
+  const errors: Error[] = [];
+  
+  for (let attempt = 0; attempt < options.maxAttempts; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      errors.push(e as Error);
+      if (attempt < options.maxAttempts - 1) {
+        const delay = options.initialDelayMs * Math.pow(2, attempt);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+  
+  throw new AggregateError(
+    errors,
+    \`All \${options.maxAttempts} attempts failed\`
+  );
+}
+
+// Usage in a Playwright test
+await retry(
+  () => page.waitForSelector('.notification-success', { timeout: 5000 }),
+  { maxAttempts: 3, initialDelayMs: 2000 }
+);</code></pre>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The interview answer that demonstrates async mastery:</strong> "I structure async test operations in three tiers. Tier 1 — Sequential (await chain): when operations depend on previous results — login before checkout, create user before assigning permissions. Tier 2 — Parallel (Promise.all): when operations are independent and should run concurrently — initialising multiple services, waiting for multiple elements to appear simultaneously. Tier 3 — Resilient (Promise.allSettled + retry): when operations can tolerate individual failures — cleanup, multi-region deployment verification, external API health checks where any one failure shouldn't abort the test. The key async utility every test framework needs is a typed retry with exponential backoff — <code>retry&lt;T&gt;(fn, options): Promise&lt;T&gt;</code> — because the most common failure mode in E2E tests is transient (network hiccup, rendering delay, animation race), and a properly-designed retry eliminates these false negatives without masking real failures."</p>
+</section>
+
+<section class="content-section">
+  <h2>Union Types and Discriminated Unions — Type-Safe Test Configuration</h2>
+  <p>The question that reveals whether you've truly internalised TypeScript's type system: "How would you design a test configuration type that's impossible to misconfigure?" The answer is discriminated unions — the TypeScript pattern that makes invalid states unrepresentable. In test automation, this means: a browser config that can't specify both 'headless: true' and 'channel: chrome' simultaneously; a retry config that can't have both 'maxRetries: 0' and 'retryDelayMs: 5000'; a test environment config that exposes different fields for 'local', 'staging', and 'production' — and fails at compile time if you try to use a staging-only field in a local config.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Discriminated Union Pattern — Make Invalid Configs Unrepresentable</h3>
+      <pre><code>// Discriminated union for test execution strategies
+type TestExecution =
+  | {
+      mode: 'serial';
+      maxWorkers: 1;
+    }
+  | {
+      mode: 'parallel';
+      maxWorkers: number;  // Required for parallel, meaningless for serial
+      workerIndex?: number;
+      totalWorkers?: number;
+    }
+  | {
+      mode: 'sharded';
+      shardIndex: number;    // Required for sharded
+      shardTotal: number;    // Required for sharded
+    };
+
+// TypeScript exhaustiveness check in test runner
+function runTests(config: TestExecution): void {
+  switch (config.mode) {
+    case 'serial':
+      // config.maxWorkers — ERROR at compile time! Doesn't exist on serial.
+      runSerially();
+      break;
+    case 'parallel':
+      runInParallel(config.maxWorkers);  // maxWorkers is guaranteed to exist
+      break;
+    case 'sharded':
+      // config.shardIndex and config.shardTotal are guaranteed
+      runSharded(config.shardIndex, config.shardTotal);
+      break;
+    default:
+      // Exhaustiveness check — if a new mode is added, this line errors
+      const _exhaustive: never = config;
+      throw new Error(\`Unknown mode: \${config}\`);
+  }
+}</code></pre>
+    </div>
+    <div class="comparison-card">
+      <h3>Template Literal Types for Test Identifiers</h3>
+      <p>TypeScript 4.1+ introduced template literal types — string types that are computed at the type level. In test automation, this is invaluable for enforcing naming conventions and generating test IDs that are self-documenting and collision-proof.</p>
+      <pre><code>// Template literal types for test identifiers
+type Feature = 'login' | 'checkout' | 'search' | 'payment';
+type TestType = 'e2e' | 'integration' | 'api' | 'visual';
+
+// Type-safe test ID — automatically enforces naming convention
+type TestId = \`\${Feature}-\${TestType}-\${number}\`;
+
+const valid: TestId = 'checkout-e2e-001';   // ✅
+// const invalid: TestId = 'checkout-smoke-001'; // ❌ Compile error!
+
+// Record type — all features must have all test types
+const testMatrix: Record<Feature, Record<TestType, TestId[]>> = {
+  login: {
+    e2e: ['login-e2e-001', 'login-e2e-002'],
+    integration: ['login-integration-001'],
+    api: ['login-api-001'],
+    visual: ['login-visual-001'],
+  },
+  checkout: {
+    e2e: ['checkout-e2e-001'],
+    integration: ['checkout-integration-001'],
+    api: ['checkout-api-001', 'checkout-api-002'],
+    visual: ['checkout-visual-001'],
+  },
+  search: { e2e: [], integration: [], api: [], visual: [] },
+  payment: { e2e: [], integration: [], api: [], visual: [] },
+};</code></pre>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The discriminated union interview answer:</strong> "I use discriminated unions to make invalid test configurations impossible to express. The pattern is: define a union type with a literal discriminant field (like <code>mode: 'serial' | 'parallel' | 'sharded'</code>), and each branch only exposes the fields that are valid for that mode. The advantages cascade: the test runner's <code>switch</code> statement on the discriminant is exhaustively checked — if someone adds a new mode, the compiler flags every branch that needs updating. Invalid combinations — like specifying maxWorkers in serial mode — are caught at compile time, not at runtime when the test executor crashes. And the discriminated union serves as self-documenting configuration — a new team member reading the config type sees exactly which fields belong to which mode, without needing a README. This is the TypeScript pattern that moves test framework design from 'hope you configured it right' to 'you can't configure it wrong.'"</p>
+</section>
+
+<section class="content-section">
+  <h2>TypeScript-Specific Playwright Patterns — Fixtures, Matchers, and Declaration Merging</h2>
+  <p>Playwright is the dominant E2E testing framework in 2026, and its TypeScript integration is the deepest of any browser automation tool. But most SDETs only scratch the surface — they use Playwright's types, but they don't extend them. Senior panels test for whether you understand Playwright's TypeScript extension points: the fixture type system, the matcher declaration merging, and the typed expect customisation. These are the patterns that distinguish framework consumers from framework extenders.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Typed Fixtures — Beyond the Basics</h3>
+      <p>Playwright's fixture system is fully typed — and the type system can be leveraged far beyond the basic <code>page</code> and <code>browser</code> fixtures. The pattern that impresses panels: composite fixtures that derive types from each other, fixtures with configuration that enforce the correct config shape through generics, and fixtures that use <code>as const</code> for literal inference.</p>
+      <pre><code>// Advanced typed fixtures in Playwright
+import { test as base, expect } from '@playwright/test';
+
+// Fixture config — discriminated union for different auth strategies
+interface AuthConfig {
+  role: 'admin' | 'user' | 'viewer';
+  tenantId: string;
+}
+
+// Extended fixtures with full type safety
+type CustomFixtures = {
+  authConfig: AuthConfig;
+  authenticatedPage: Page;  // Pre-authenticated with authConfig
+  apiClient: ApiClient;
+};
+
+const test = base.extend<CustomFixtures>({
+  authConfig: [{ role: 'user', tenantId: 'default' }, { option: true }],
+  
+  authenticatedPage: async ({ page, authConfig }, use) => {
+    // Login with the configured role
+    await page.goto('/login');
+    await page.fill('[data-testid="username"]', \`\${authConfig.role}@test.com\`);
+    await page.fill('[data-testid="password"]', 'test-password');
+    await page.click('[data-testid="login-button"]');
+    await expect(page.locator('[data-testid="dashboard"]')).toBeVisible();
+    await use(page);
+  },
+  
+  apiClient: async ({ authenticatedPage }, use) => {
+    const token = await authenticatedPage.evaluate(
+      () => localStorage.getItem('auth-token')
+    );
+    await use(new ApiClient(token!));
+  },
+});
+
+// Usage — fully typed
+test('admin can view all orders', async ({ authenticatedPage, apiClient, authConfig }) => {
+  // authConfig.role is 'admin' — guaranteed
+  // apiClient is pre-authenticated — guaranteed
+  const orders = await apiClient.getOrders();
+  await expect(authenticatedPage.locator('[data-testid="order-count"]'))
+    .toHaveText(String(orders.length));
+});</code></pre>
+    </div>
+    <div class="challenge-card">
+      <h3>Custom Matchers with Declaration Merging</h3>
+      <p>Playwright's <code>expect</code> is extensible through <code>expect.extend()</code>, but getting the types right requires TypeScript's declaration merging — the feature that lets you merge your custom matcher types into Playwright's built-in <code>Matchers</code> interface. This is the pattern that interview panels use to test whether you understand TypeScript's module augmentation.</p>
+      <pre><code>// Custom matchers with full TypeScript declaration merging
+import { expect, Locator } from '@playwright/test';
+import type { Page } from '@playwright/test';
+
+// Step 1: Define the custom matchers
+expect.extend({
+  async toBeWithinViewport(locator: Locator) {
+    const box = await locator.boundingBox();
+    if (!box) {
+      return { pass: false, message: () => 'Element not found' };
+    }
+    const viewport = locator.page().viewportSize()!;
+    const isVisible = 
+      box.x >= 0 && box.y >= 0 &&
+      box.x + box.width <= viewport.width &&
+      box.y + box.height <= viewport.height;
+    return {
+      pass: isVisible,
+      message: () => isVisible
+        ? 'Element is within viewport'
+        : \`Element at (\${box.x}, \${box.y}) is outside viewport\`
+    };
+  },
+  
+  async toHaveTrimmedText(locator: Locator, expected: string) {
+    const text = (await locator.textContent())?.trim() ?? '';
+    return {
+      pass: text === expected,
+      message: () => \`Expected trimmed text "\${expected}" but got "\${text}"\`
+    };
+  },
+});
+
+// Step 2: Declaration merging — tell TypeScript about the new matchers
+declare global {
+  namespace PlaywrightTest {
+    interface Matchers<R> {
+      toBeWithinViewport(): R;
+      toHaveTrimmedText(expected: string): R;
+    }
+  }
+}
+
+// Now fully typed — autocomplete shows both custom matchers
+await expect(page.locator('.modal')).toBeWithinViewport();
+await expect(page.locator('.title')).toHaveTrimmedText('Welcome');</code></pre>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The Playwright-TypeScript interview answer:</strong> "Playwright's TypeScript integration has three extension points that senior SDETs should master. First, typed fixtures — using Playwright's <code>test.extend&lt;MyFixtures&gt;()</code> with nested dependencies and discriminated unions for configuration. The type system enforces that fixture dependencies are satisfied — if fixture B depends on fixture A, TypeScript guarantees A exists when B is constructed. Second, custom matchers with declaration merging — using TypeScript's <code>declare global { namespace PlaywrightTest { interface Matchers&lt;R&gt; { ... } } }</code> to merge custom matcher signatures into Playwright's expect type. Third, typed API mocking — using Playwright's <code>page.route()</code> with typed response bodies that match your API's TypeScript types, so mocked responses are validated against the real response shape at compile time. The throughline: Playwright's types are extensible, not just consumable — and the best test frameworks treat them as a foundation to build on, not a ceiling to work within." For the full Playwright interview landscape, see our <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a> guide.</p>
+</section>
+
+<section class="content-section">
+  <h2>Migrating JavaScript Test Suites to TypeScript — Incrementally and Safely</h2>
+  <p>"We have 5,000 JavaScript tests across 200 files. Management wants them in TypeScript. How do you approach this migration?" This is the TypeScript migration question — and it tests whether you can deliver value incrementally, manage risk, and understand that migrating a test suite is a different problem than migrating application code. Tests have runtime validation built in (pass/fail assertions) — the value of TypeScript in tests is catching bugs <em>before</em> they reach CI, not just documenting types.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>The Incremental Migration Strategy — File by File, Config by Config</h3>
+      <p><strong>Phase 1 — Enable strict mode incrementally:</strong> Don't turn on all strict flags at once. Start with <code>"strict": false</code> in the root <code>tsconfig.json</code> and use project references with escalating strictness: a <code>tsconfig.strict.json</code> for new files (all strict flags on), and the root config for legacy files (lenient). As files migrate, they move into the strict project. This means every migration is a quality improvement, not just a syntax change. <strong>Phase 2 — Rename .js to .ts + any initial pass:</strong> The fastest path to TypeScript is renaming <code>.js</code> to <code>.ts</code> and adding <code>// @ts-nocheck</code> at the top. This gives you TypeScript file extension benefits (IDE tooling, import resolution) without compilation errors blocking progress. Then, remove <code>@ts-nocheck</code> file by file, fixing type errors as you go. <strong>Phase 3 — The any audit:</strong> Track every <code>any</code> in the codebase. Create a <code>// TODO: Type</code> comment convention. Set up ESLint with <code>@typescript-eslint/no-explicit-any: warn</code>. Every sprint, allocate time to eliminate <code>any</code>s from the most frequently-run tests first — because those are the tests where type errors would have the highest impact. <strong>Phase 4 — strictNullChecks and noUncheckedIndexedAccess:</strong> These two flags catch the most bugs in test code. <code>strictNullChecks</code> forces you to handle the case where <code>page.locator('.thing')</code> returns nothing. <code>noUncheckedIndexedAccess</code> forces you to handle undefined in array accesses — critical for test data arrays where the test assumes index 0 exists but doesn't. Turn these on only after the initial migration is complete and the type coverage is above 80%.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>The any-to-unknown Refactor — The Pattern That Demonstrates Type Discipline</h3>
+      <p>The most common TypeScript code smell in test suites is <code>any</code>. It's the escape hatch that developers reach for when the types get complicated — and over time, it compounds into a type system that provides zero safety. The any-to-unknown refactor is the pattern that demonstrates you understand <em>type discipline</em>, not just type syntax.</p>
+      <pre><code>// Before: any everywhere — no type safety
+function parseApiResponse(response: any): any {
+  const data: any = JSON.parse(response.body);
+  return data.result;
+}
+
+// After: unknown with type narrowing — full type safety
+interface ApiEnvelope<T> {
+  result: T;
+  status: 'success' | 'error';
+}
+
+function parseApiResponse<T>(response: unknown): T {
+  if (typeof response !== 'object' || response === null) {
+    throw new TypeError('Response must be an object');
+  }
+  
+  const envelope = response as ApiEnvelope<T>;
+  
+  if (envelope.status !== 'success') {
+    throw new Error(\`API error: \${envelope.status}\`);
+  }
+  
+  return envelope.result;
+}</code></pre>
+      <p><strong>The migration interview answer:</strong> "I migrate JavaScript test suites in four phases, each delivering measurable value before the next begins. Phase 1: project references with escalating strictness — new files are strict, legacy files are lenient, and the migration boundary is the tsconfig.json. Phase 2: file-by-file rename with @ts-nocheck as a temporary bridge — TypeScript extension benefits immediately, type safety arrives incrementally. Phase 3: the any audit — track and eliminate anys from the most frequently-run tests first, because those are the highest-leverage targets. Phase 4: strictNullChecks and noUncheckedIndexedAccess — the two flags that catch the most bugs in test code, enabled only after 80%+ type coverage. The migration is measured by three metrics: type coverage percentage (typed lines / total lines), any count (declining over time), and type-error-to-test-failure ratio (how many bugs does the type system catch before CI?). The last metric is the ROI — if TypeScript catches 3 bugs per sprint that JavaScript CI would have missed, the migration is paying for itself."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>TypeScript vs Java for Test Automation — The Comparison Every Multi-Language SDET Must Make</h2>
+  <p>The TypeScript-vs-Java question is a fixture in senior SDET interviews — not because there's a right answer, but because the comparison reveals whether you understand tool selection as a trade-off, not a preference. TypeScript dominates the browser and API testing ecosystem. Java dominates the enterprise and mobile testing ecosystem. A senior SDET who can articulate when to use each — and, more importantly, when to bridge them — demonstrates the architectural maturity panels are screening for.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>TypeScript — The Browser and API Testing Default</h3>
+      <p><strong>Ecosystem alignment:</strong> Playwright, Cypress, WebdriverIO, Jest, Vitest, Supertest, Pact JS — all TypeScript-first. The browser and API testing ecosystem has converged on TypeScript as its lingua franca. If your primary testing surface is web UIs and REST/GraphQL APIs, TypeScript is the pragmatic choice — not because TypeScript is inherently better than Java, but because the tools you'll use are TypeScript-native. <strong>Developer ergonomics:</strong> Faster iteration — no compile step (TypeScript is transpiled, not compiled), faster test startup (no JVM warmup), more concise syntax (TypeScript typically requires 30-50% fewer lines than equivalent Java), and structural typing (interfaces are satisfied implicitly — no <code>implements</code> keyword required). <strong>Async model:</strong> async/await with Promises is more ergonomic than CompletableFuture chains or reactive streams for the linear, sequential nature of most test scenarios. <strong>Full-stack advantage:</strong> Frontend developers who write production TypeScript can also write test TypeScript — reducing the skill barrier and enabling developers to own their tests. <strong>Limitations:</strong> Single-threaded event loop (less suitable for CPU-intensive test data generation), less mature enterprise integration patterns (JNDI, JMS, JDBC equivalents are less polished), and fewer enterprise-grade reporting and CI integration plugins than Java's mature Maven ecosystem.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Java — The Enterprise and Mobile Testing Powerhouse</h3>
+      <p><strong>Ecosystem alignment:</strong> Selenium WebDriver (Java is still the most-supported binding), Appium (Java client is the most mature), RestAssured, TestNG, JUnit 5, Cucumber JVM, Allure, Extent Reports, Serenity BDD. Java's testing ecosystem is older, deeper, and has more enterprise-grade integrations than TypeScript's. <strong>Mobile testing:</strong> Appium's Java client has the broadest API support and the most community resources. If mobile testing is a core requirement, Java has the edge. <strong>Performance testing:</strong> Gatling (Scala/Java DSL), JMeter (Java-based), and the broader JVM performance testing ecosystem has no TypeScript equivalent at the same maturity level. <strong>Enterprise integration:</strong> JDBC for database testing, JMS for message queue testing, JNDI for directory services, Spring Test for Spring Boot integration testing — Java's enterprise integration patterns are deeper and more standardised than TypeScript's equivalents. <strong>Multi-threading:</strong> True multi-threading for parallel test execution at scale, test data generation that's CPU-bound, and complex state machines in test harnesses. <strong>Limitations:</strong> Heavier toolchain (JVM, Maven/Gradle, IDE configuration), slower iteration cycle (compile → run vs TypeScript's transpile → run), more verbose syntax, and a higher barrier to entry for frontend developers who don't work in the JVM ecosystem.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The interview answer that scores highest:</strong> "I don't pick TypeScript or Java — I match the language to the testing surface and the team. For browser E2E testing, API contract testing, and component testing in a JavaScript/TypeScript frontend stack — TypeScript with Playwright or Cypress. The ecosystem is TypeScript-native, the iteration speed is faster, and the full-stack developer can own the tests. For mobile testing with Appium, enterprise Java backend testing with Spring Boot, or performance testing with Gatling/k6 — Java. The ecosystem maturity for those domains is still JVM-dominant. In a polyglot organisation with both frontend and backend test suites, I recommend TypeScript for the UI/API layer and Java for the mobile/performance layer — with shared test data and reporting infrastructure (Allure consuming results from both). The architectural skill isn't loyalty to one language — it's knowing where each language's testing ecosystem is strongest and designing a testing strategy that puts the right language on the right surface. For my approach to building polyglot test frameworks, see my <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview Guide</a> and <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a>."</p>
+</section>
+
+<section class="content-section">
+  <h2>Common TypeScript Interview Questions for SDET Roles — The Question Bank</h2>
+  <p>After 20 years of SDET interview panels, Mitchell has catalogued the TypeScript questions that appear most frequently in senior and lead-level rounds. Here's the question bank with the answer patterns that score highest:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Question 1: "When would you use a type alias instead of an interface in a test framework?"</h3>
+      <p><strong>What they're testing:</strong> Whether you understand the type system's design philosophy, not just its syntax.</p>
+      <p><strong>High-scoring answer:</strong> "I use interfaces for contracts — browser provider interfaces, reporter interfaces, fixture shapes — because they support declaration merging and express extension hierarchies clearly. I use type aliases for union types (test status enums, config discriminant fields), mapped types (deriving new types from existing ones), conditional types (type-level utilities), and intersection types (composing config objects). The decision is: interfaces for contracts that evolve through extension, type aliases for type-level computation and composition. And when I need a union type — which is constant in test framework config — the choice is made for me: only type aliases can express unions."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Question 2: "Write a generic function that retries an operation with exponential backoff."</h3>
+      <p><strong>What they're testing:</strong> Generics, async patterns, error handling, and whether you think about test infrastructure as reusable utilities.</p>
+      <p><strong>High-scoring answer:</strong> A typed <code>retry&lt;T&gt;(fn: () => Promise&lt;T&gt;, options: RetryOptions): Promise&lt;T&gt;</code> that preserves the return type through the retry chain, collects errors from each failed attempt, implements exponential backoff correctly (<code>delay * 2^attempt</code>), and throws an <code>AggregateError</code> with all failures if all attempts are exhausted. Bonus: explaining that the exponential backoff prevents thundering-herd problems when multiple tests retry simultaneously and that the typed return preserves the call site's type safety — <code>await retry(() => api.getOrder('123'))</code> returns <code>Order</code>, not <code>any</code>.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Question 3: "How would you design a type-safe test data factory?"</h3>
+      <p><strong>What they're testing:</strong> Generics, partial types, and whether you understand that test data factories should be composable and type-safe.</p>
+      <p><strong>High-scoring answer:</strong> "I'd create a generic builder pattern: <code>createTestData&lt;T&gt;(defaults: Required&lt;T&gt;, overrides?: Partial&lt;T&gt;): T</code>. The function takes the complete default shape of T (enforced by <code>Required&lt;T&gt;</code> — no fields can be forgotten) and an optional <code>Partial&lt;T&gt;</code> for test-specific overrides. The return type is <code>T</code>, not <code>Partial&lt;T&gt;</code> — because the defaults fill in any missing fields. This guarantees that every test using the factory gets a complete, type-safe object. For more complex scenarios — like generating arrays of test data with constraints — I'd extend to <code>createTestDataArray&lt;T&gt;(factory: () => T, count: number, constraints?: Partial&lt;T&gt;[]): T[]</code> where each constraint is applied to the corresponding index."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Question 4: "Explain TypeScript's <code>strictNullChecks</code> — and why it matters in test automation."</h3>
+      <p><strong>What they're testing:</strong> Whether you understand the practical impact of TypeScript's strict mode on test reliability.</p>
+      <p><strong>High-scoring answer:</strong> "<code>strictNullChecks</code> makes <code>null</code> and <code>undefined</code> distinct types that cannot be assigned to other types without explicit handling. In test automation, this is critical because the most common runtime test failure — 'Cannot read property of undefined' — becomes a compile-time error. <code>page.locator('.selector').textContent()</code> returns <code>string | null</code> under strictNullChecks — forcing the test to handle the null case explicitly rather than crashing at runtime. Similarly, <code>APIResponse.json()</code> could fail to parse — strictNullChecks forces the test to handle that before asserting on the result. In a 5,000-test suite, I've seen strictNullChecks prevent dozens of CI failures per sprint that would have manifested as mysterious 'undefined' errors. It's the single TypeScript flag that catches the most test bugs — and the one I enable first in any migration."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Question 5: "How do you handle type narrowing for Playwright locators that may or may not return elements?"</h3>
+      <p><strong>What they're testing:</strong> Type narrowing patterns, Playwright API knowledge, and defensive test design.</p>
+      <p><strong>High-scoring answer:</strong> "Playwright's <code>locator()</code> returns a <code>Locator</code> regardless of whether the element exists — the type doesn't encode existence. The type safety comes from the assertion layer: <code>await expect(locator).toBeVisible()</code> is the runtime check, and after that assertion, I can safely interact with the element. For cases where I need compile-time narrowing based on element existence, I use a custom utility: <code>async function requireElement(locator: Locator): Promise&lt;Locator&gt;</code> that calls <code>locator.waitFor({ state: 'attached' })</code> and throws if the element isn't found, narrowing the runtime guarantee that the locator is valid. The key insight: TypeScript can't prove element existence at compile time — that's a runtime property — but I can design utilities that encapsulate the existence check and make the happy path type-safe, while the error path is an explicit exception rather than a confusing timeout."</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The meta-pattern that scores highest: interviewers are screening for candidates who treat TypeScript as a design tool, not just a type annotation language. The strongest answers demonstrate type-system fluency (interfaces vs types with architectural reasoning), generic design patterns (typed factories, builders, and utilities that make misuse impossible), async architecture (Promise combinators chosen for the use case, not just the syntax), and practical migration experience (incremental strict mode adoption, the any-to-unknown refactor, metrics-driven migration). The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> trains you in exactly this — the TypeScript for SDETs topic covers interfaces vs types, generics in test utilities, async patterns, discriminated unions, and Playwright-specific TypeScript with AI-graded mock interviews scored across type-system depth, framework design, and practical coding patterns. Download it and practise the exact TypeScript questions panels ask before you walk into the room.</p>
+</section>
+
+<section class="content-section">
+  <h2>Further Reading and Interview Preparation</h2>
+  <p>This guide covers TypeScript for SDET interviews. To complete your test automation interview preparation across the full SDET landscape:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><a href="/blog/playwright-interview-questions-2026"><strong>Playwright Interview Questions 2026</strong></a> — The Playwright patterns that TypeScript enables. Covers typed fixtures, custom matchers, auto-waiting, Trace Viewer, API mocking with route(), and the Playwright-specific questions that dominate browser automation interviews in 2026.</li>
+    <li><a href="/blog/test-automation-framework-design-interview"><strong>Test Automation Framework Design Interview Guide</strong></a> — The framework design methodology that TypeScript generics and discriminated unions elevate. Covers layered architecture, page object patterns, test data strategy, and how to design a framework where TypeScript prevents misuse at compile time rather than discovering it at runtime.</li>
+    <li><a href="/blog/api-testing-interview-questions-2026"><strong>API Testing Interview Questions 2026</strong></a> — The API testing patterns where TypeScript's type system shines brightest. Covers typed API clients, generic response handlers, contract testing with Pact, and how to build API test suites where the request type determines the response type at compile time.</li>
+  </ul>
+  <p style="margin-top: 1.5rem;">The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> brings all of this together — 800+ questions across 32 topics, including a dedicated TypeScript for SDETs module covering interfaces vs types, generics in test utilities, async/await patterns, discriminated unions for test config, Playwright-specific TypeScript patterns, and the JavaScript-to-TypeScript migration strategy with AI-graded mock interviews. The app's Job Match feature analyses any SDET job description and generates 50 bespoke questions targeting the specific tools and technologies mentioned — including TypeScript-specific questions when the role mentions Playwright, Cypress, or TypeScript. Download it on the App Store and walk into your interview with the confidence that comes from having practised the exact TypeScript questions panels ask.</p>
+</section>`,
+    faqs: [
+      {
+        q: "What's the difference between interfaces and type aliases in TypeScript — and when should SDETs use each?",
+        a: "Interfaces define object shapes and are extensible through declaration merging — they're best for contracts that evolve over time, such as browser provider interfaces, reporter plugin interfaces, and fixture types that may be extended by third-party code or other parts of the framework. Type aliases can define union types, mapped types, conditional types, tuples, and intersection types — they're best for type-level computation and composition, such as test status enums (union types), deriving new types from existing ones (mapped types), composing config objects (intersection types), and creating type utilities (conditional types). The rule of thumb: if the type represents a contract that may be extended or implemented — use an interface. If the type involves computation, composition, or union — use a type alias. In practice, test frameworks use both: interfaces for provider and plugin contracts, type aliases for config enums and type utilities.",
+      },
+      {
+        q: "How would you design a generic page object factory in TypeScript for a test automation framework?",
+        a: "A generic page object factory uses TypeScript generics to return correctly typed page objects at compile time. The core pattern: <code>type PageClass&lt;T&gt; = new (page: Page) => T</code> which captures any page object constructor that takes a Playwright Page and returns T. The factory method <code>create&lt;T&gt;(PageClass: PageClass&lt;T&gt;, page: Page): T</code> constructs the page object and returns it typed as T — not as any. A navigation variant <code>navigate&lt;T&gt;(page: Page, url: string, PageClass: PageClass&lt;T&gt;): Promise&lt;T&gt;</code> navigates to the URL and returns the typed page object. The result: callers get fully typed page objects with autocomplete for all methods and properties, and TypeScript prevents passing the wrong page class type. For component-level page objects (like a DataGrid that renders different row types), use <code>class DataGrid&lt;TRow&gt;</code> — the row type is a generic parameter, so querying the grid returns <code>TRow[]</code> with full type safety.",
+      },
+      {
+        q: "How do you handle async/await patterns and Promise combinators in test automation with TypeScript?",
+        a: "I structure async test operations in three tiers based on dependency relationships. Tier 1 — Sequential (await chain): when operations depend on previous results — login before checkout, create resource before update — use sequential awaits. Tier 2 — Parallel independent (Promise.all): when operations are independent and can run concurrently — initialising browser, database, and mock server in parallel, waiting for multiple elements simultaneously. Promise.all fails fast if any promise rejects. Tier 3 — Resilient partial-failure-tolerant (Promise.allSettled): when operations can tolerate individual failures — test teardown, multi-region health checks, external API verification where one failure shouldn't abort the test. Promise.allSettled returns all results with their status, never rejecting. The key utility is a typed retry with exponential backoff: <code>retry&lt;T&gt;(fn, options): Promise&lt;T&gt;</code> that preserves the return type through retries, increases delay exponentially (delay × 2^attempt), collects errors from all attempts, and throws AggregateError if all retries are exhausted.",
+      },
+      {
+        q: "What TypeScript features do you use to make test configurations type-safe and prevent misconfiguration?",
+        a: "I use discriminated unions to make invalid configurations unrepresentable at the type level. The pattern: define a union type with a literal discriminant field (e.g., <code>mode: 'serial' | 'parallel' | 'sharded'</code>), where each branch only exposes fields valid for that mode. In the test runner, a switch statement on the discriminant is exhaustively checked — TypeScript errors if any branch is missing. Complement this with template literal types for test identifiers: <code>type TestId = \`\${Feature}-\${TestType}-\${number}\`</code> enforces naming conventions at compile time. Use <code>Record&lt;Feature, Record&lt;TestType, TestId[]&gt;</code> to ensure all features have all test types defined in the test matrix. The result: a test configuration system where TypeScript prevents misconfiguration at compile time — you literally cannot express an invalid config — rather than discovering it at runtime when the test runner crashes.",
+      },
+      {
+        q: "How should an SDET migrate a large JavaScript test suite to TypeScript incrementally?",
+        a: "I migrate in four phases, each delivering measurable value independently. Phase 1 — Project references with escalating strictness: create a tsconfig.strict.json for new files (all strict flags on) and keep the root tsconfig lenient for legacy files. As files migrate, they move into the strict project. Phase 2 — File-by-file rename: rename .js to .ts, add @ts-nocheck at the top to avoid blocking compilation, then remove it file by file as types are added. Prioritise the most frequently-run tests first. Phase 3 — The any audit: track every 'any' in the codebase with ESLint's no-explicit-any rule set to warn, allocate time each sprint to eliminate anys from high-run-frequency tests. Phase 4 — Enable strictNullChecks and noUncheckedIndexedAccess: these two flags catch the most test bugs ('Cannot read property of undefined'), enable them once type coverage exceeds 80%. Measure the migration by type coverage percentage, any count (declining), and type-error-to-test-failure ratio — how many bugs TypeScript catches before CI that JavaScript would have missed.",
+      },
+      {
+        q: "When would you choose TypeScript over Java for test automation — and when would you choose Java?",
+        a: "I match the language to the testing surface and team ecosystem. Choose TypeScript for browser E2E testing (Playwright, Cypress, WebdriverIO are TypeScript-native), API testing (Supertest, Pact JS, typed API clients), and when the production stack is JavaScript/TypeScript — the full-stack developer owns the tests, and iteration speed is faster without JVM warmup. Choose Java for mobile testing with Appium (Java client has the broadest API support), enterprise Java backend integration testing (Spring Test, JDBC, JMS), performance testing (Gatling's Scala DSL, JMeter's Java ecosystem), and organisations where the SDET team is already JVM-native. In polyglot organisations, I use TypeScript for the UI/API layer and Java for the mobile/performance layer, with shared reporting via Allure consuming results from both. The skill isn't loyalty to one language — it's knowing where each language's testing ecosystem is strongest and designing a strategy that puts the right language on the right testing surface.",
+      },
+      {
+        q: "How do you add custom Playwright matchers with full TypeScript support?",
+        a: "Custom Playwright matchers require two steps. Step 1 — Define the matcher implementation using <code>expect.extend({...})</code>, where each matcher receives the appropriate Playwright type (Locator, Page, APIResponse) and returns a <code>{ pass: boolean, message: () => string }</code> object. Step 2 — Declaration merging to tell TypeScript about the new matchers: use <code>declare global { namespace PlaywrightTest { interface Matchers&lt;R&gt; { yourMatcher(...): R; } } }</code>. This merges your custom matcher signatures into Playwright's built-in Matchers interface, giving you autocomplete and type-checking on all custom matchers. Without the declaration merging, the matchers work at runtime but TypeScript doesn't know about them — defeating the purpose of TypeScript. This pattern also works for extending Playwright's fixture types: declare your custom fixture interface in the global PlaywrightTest namespace and it merges with Playwright's built-in fixtures.",
+      },
+    ],
+    relatedSlugs: [
+      "playwright-interview-questions-2026",
+      "test-automation-framework-design-interview",
+      "api-testing-interview-questions-2026",
+    ],
+  },
+  {
     slug: "test-reporting-metrics-interview-questions-2026",
     title: "Test Reporting and Metrics Interview Questions 2026 — Allure vs Extent Reports vs Playwright Built-In Reporter Comparison, Test Metrics That Matter (Pass Rate, Flakiness %, MTTR, Execution Time Trends), Building Custom Test Dashboards with Grafana and Elasticsearch, CI/CD Test Result Aggregation and Pipeline Gating, Communicating Test Results to Stakeholders (Engineering vs Leadership vs Product), Test Evidence Strategy (Screenshots, Videos, Traces, HAR Files), Fixing the 'Green Build but Broken App' Anti-Pattern, Flakiness Metrics and Trend Analysis, and How to Answer Test Reporting Questions That Target Metrics Thinking in Senior SDET Panels",
     description: "The complete test reporting and metrics interview guide for 2026 — covering the reporting layer every SDET interview panel now probes for depth, not just tool familiarity. Covers the Allure vs Extent Reports vs Playwright built-in reporter comparison across customisation, CI integration, and stakeholder readiness, the test metrics that actually matter (pass rate, flakiness percentage, mean time to recovery, execution time trends, defect escape rate), designing and building custom test dashboards with Grafana, Elasticsearch, and Kibana, CI/CD test result aggregation and pipeline gating strategies, communicating test results to different audiences (engineering deep-dives vs leadership one-pagers vs product release confidence scores), building a comprehensive test evidence strategy with screenshots, videos, traces, and HAR files, the 'green build but broken app' anti-pattern and how to fix it, and flakiness metrics with trend analysis to measure and reduce test instability. Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where test reporting questions now separate candidates who can run tests from those who can measure quality.",
