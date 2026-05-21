@@ -14,6 +14,464 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "cypress-interview-questions-2026",
+    title: "Cypress Interview Questions 2026 — Architecture Deep Dive (Runs Inside the Browser), cy Command Chaining and Asynchronous Execution Model, Cypress vs Playwright in 2026 — Which Tool for Which Team, Fixtures, Custom Commands and the Support File Pattern, intercept() Network Stubbing and API Mocking Mastery, Cypress Component Testing with React/Vue/Angular, Flaky Test Diagnosis and Retry Strategy in Cypress, Cypress Dashboard, CI/CD Integration and Parallelisation, and How to Answer Cypress Questions That Test Engineering Depth at Senior SDET Panels",
+    description: "The complete Cypress interview questions guide for 2026 — completing the browser automation trifecta alongside Playwright and Selenium. Covers Cypress's unique architecture (runs inside the browser, direct DOM access, no WebDriver protocol overhead), the asynchronous command chaining model and how .then(), .should(), and Cypress.Promise work under the hood, Cypress vs Playwright comparison in 2026 context — developer experience, cross-browser support, component testing, and the decision framework panels expect, fixtures and custom commands — how to structure the support file for maintainable test suites, intercept() and network stubbing — the complete guide to cy.intercept() for API mocking, request aliasing, dynamic responses, and network error simulation, Cypress Component Testing — the built-in component testing support for React, Vue, and Angular and when to use it over E2E tests, flaky test diagnosis in Cypress — the test retry mechanism, Test Isolation mode, cy.clock() and cy.tick() for timer control, and the structural causes of flakiness, Cypress Dashboard and CI/CD integration — parallelisation strategies, GitHub Actions and Cypress Cloud integration, Smart Orchestration, and the pipeline gating decisions that demonstrate seniority, and the 8 most common Cypress interview traps that eliminate candidates — from misunderstanding the async execution queue to abusing cy.wait() with arbitrary timeouts. Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where Cypress questions have moved from 'can you write a login test?' to 'explain the Cypress command queue execution model and when you'd choose Cypress over Playwright for a greenfield project.' The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated Cypress testing topics — with AI mock interview rounds covering Cypress architecture, command chaining, network stubbing, component testing, and CI/CD integration at five seniority levels.",
+    date: "2026-05-21",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Cypress interview questions 2026",
+      "Cypress architecture runs inside browser DOM access",
+      "Cypress vs Playwright comparison 2026 SDET interview",
+      "Cypress intercept network stubbing API mocking",
+      "Cypress component testing React Vue Angular",
+      "Cypress flaky test diagnosis retry strategy",
+      "Cypress custom commands fixtures support file pattern",
+      "Cypress Dashboard CI/CD parallelisation interview",
+    ],
+    content: `
+<section class="content-section">
+  <p>You've written Cypress tests. You've used <code>cy.get()</code>, <code>cy.click()</code>, and <code>cy.contains()</code>. You've probably set up a fixture or two and used <code>cy.intercept()</code> to stub an API call. You've watched the Cypress Test Runner replay your tests in that distinctive left-to-right panel, and you've been impressed by how intuitive it all feels. Then the interview panel leans forward and asks: <em>"Cypress runs inside the browser. Walk me through what that actually means at the execution level. How does the command queue work under the hood, and why can't you just assign the return value of cy.get() to a variable? When would you choose Cypress over Playwright for a greenfield project — and when would that choice be wrong? Explain how cy.intercept() differs from a traditional HTTP mock at the network layer. How do you diagnose a flaky Cypress test that fails once every fifteen CI runs?"</em> And suddenly you realise: you've been <em>using</em> Cypress, but you haven't been <em>engineering</em> with Cypress. You've been clicking through the GUI, but you haven't been thinking about the command queue, the proxy-based network interception model, or the architectural trade-offs that make Cypress brilliant for some problems and unsuitable for others. You've been treating Cypress as a tool — and in 2026, that gap costs candidates the offer.</p>
+  <p>Cypress is the most popular front-end testing framework in the JavaScript ecosystem. With over 50 million downloads and adoption at companies from Slack to Shopify to the BBC, it's the tool most likely to appear on your CV — and therefore the tool interviewers are most likely to probe deeply. Unlike Selenium and Playwright, which operate outside the browser and communicate via protocol, Cypress runs <em>inside</em> the browser alongside your application. This architectural choice gives it unique capabilities — direct DOM access, automatic waiting, real-time test replay with time-travel debugging — but also imposes constraints: no multi-tab support, no native mobile testing, and limited cross-browser support (Chrome-family and Firefox, no Safari or IE). These trade-offs are exactly what interviewers want you to articulate in 2026.</p>
+  <p>This guide completes the browser automation trifecta alongside our deep-dives on <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a> and <a href="/blog/selenium-interview-questions-2026">Selenium Interview Questions 2026</a>. Together with the <a href="/blog/playwright-vs-selenium-vs-cypress-comparison-2026">Playwright vs Selenium vs Cypress Comparison 2026</a>, these four posts cover every browser automation tool an SDET panel might ask about — and this guide will help you articulate the Cypress-specific answers that demonstrate depth beyond surface-level API familiarity. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated Cypress mock interviews — with AI-scored rounds covering architecture, command chaining, network stubbing, component testing, and the exact questions panels ask at each seniority level.</p>
+</section>
+
+<section class="content-section">
+  <h2>Cypress Architecture Deep Dive — Running Inside the Browser</h2>
+  <p>This is the question that opens more Cypress interviews than any other: <em>"Explain Cypress's architecture. Where does it run, and how does it control the browser?"</em> Interviewers aren't testing whether you can recite marketing copy. They're testing whether you understand the <em>execution model</em> — and the architectural constraints that define what Cypress can and cannot do. A candidate who can diagram Cypress's in-browser architecture on a whiteboard demonstrates something that differentiates senior from junior: they understand <em>why</em> Cypress behaves the way it does, not just <em>what</em> commands to type.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>In-Browser Execution — The Cypress Engine</h3>
+      <p>Cypress's defining architectural choice is that it runs <em>inside</em> the browser alongside your application. Unlike Selenium (which sends commands over the WebDriver protocol to a separate browser driver) and Playwright (which communicates with the browser via the Chrome DevTools Protocol from a Node.js process), Cypress executes its test code in the same JavaScript event loop as your application. This gives it several unique capabilities: <strong>Direct DOM access:</strong> Cypress can read and manipulate the DOM synchronously because it shares the same JavaScript context. No network round-trips between test runner and browser. <strong>Automatic waiting:</strong> Built into every command — <code>cy.get()</code> automatically retries until the element exists, is visible, is enabled, and isn't animating. No explicit waits needed. <strong>Time-travel debugging:</strong> Cypress snapshots the DOM at every command step, letting you hover over each command in the Test Runner and see exactly what the page looked like at that moment. <strong>However, there are constraints:</strong> Cypress cannot drive multiple browser tabs simultaneously, cannot navigate to different-origin URLs within a single test (without <code>cy.origin()</code>), and only supports Chrome-family browsers (Chromium, Edge, Electron) and Firefox. Safari and IE are not supported. These constraints are direct consequences of the in-browser architecture — and being able to explain <em>why</em> demonstrates architectural understanding that sets you apart.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>The Cypress Command Queue — Asynchronous by Design</h3>
+      <p>The most common Cypress interview trap is misunderstanding the command execution model. In Cypress, commands like <code>cy.get()</code>, <code>cy.click()</code>, and <code>cy.type()</code> don't execute immediately. They're <em>enqueued</em> onto a command chain and executed serially, asynchronously, when Cypress is ready. <strong>The queue:</strong> Every <code>cy.*</code> command is pushed onto a queue. Cypress processes commands one at a time — each command waits for the previous one to complete and for the target element to reach a stable, actionable state. <strong>Why you can't assign cy.get() to a variable:</strong> <code>const element = cy.get('.button')</code> assigns the <em>chainable command object</em>, not the DOM element. The actual DOM lookup happens later, asynchronously. This is why Cypress uses <code>.then()</code>, <code>.should()</code>, and <code>.invoke()</code> for working with yielded values. <strong>Commands vs assertions vs utilities:</strong> Commands (<code>cy.get</code>, <code>cy.click</code>) interact with the application. Assertions (<code>.should()</code>, <code>.expect()</code>) validate state. Utilities (<code>Cypress._</code>, <code>Cypress.Promise</code>) provide helper functions. The critical interview insight: commands are queued and retry-able, assertions built into commands participate in the retry loop, but <code>expect()</code> outside a command chain does not retry. Candidates who can explain when <code>expect()</code> is appropriate vs when <code>.should()</code> is necessary demonstrate command of the retry model — and that's a senior-level signal.</p>
+    </div>
+  </div>
+
+  <pre><code>// ❌ WRONG — This does not work in Cypress
+const button = cy.get('.submit-btn');  // assigns a chainable, not the element
+button.click();                        // this actually works, but not how you think
+
+// ✅ CORRECT — Understanding the async command queue
+cy.get('.submit-btn').should('be.visible').click();
+
+// ✅ CORRECT — Using .then() to access the actual element
+cy.get('.submit-btn').then(($btn) => {
+  // $btn is the actual jQuery-wrapped DOM element
+  expect($btn).to.have.attr('type', 'submit');
+  // You can also use native DOM APIs
+  const nativeEl = $btn[0];
+  nativeEl.classList.add('test-clicked');
+});
+
+// ✅ CORRECT — Using .invoke() for synchronous property access
+cy.get('.form').invoke('attr', 'data-status').should('eq', 'valid');
+
+// ✅ CORRECT — Cypress.Promise for custom async operations
+function waitForAnalyticsEvent(eventName: string): Cypress.Chainable&lt;void&gt; {
+  return cy.window().then((win) => {
+    return new Cypress.Promise((resolve) => {
+      const handler = (event: CustomEvent) => {
+        if (event.detail.name === eventName) {
+          win.removeEventListener('analytics', handler as EventListener);
+          resolve();
+        }
+      };
+      win.addEventListener('analytics', handler as EventListener);
+    });
+  });
+}</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Cypress vs Playwright in 2026 — The Decision Framework Interviewers Want</h2>
+  <p>In 2026, the browser automation landscape has evolved. Playwright has matured into a robust, multi-browser, multi-language framework. Selenium has modernised with Selenium 4 and the WebDriver BiDi protocol. Cypress has introduced Component Testing, improved cross-origin support with <code>cy.origin()</code>, and deepened its Dashboard and CI/CD integration. The question panels ask isn't "Is Cypress good?" — it's "When would you choose Cypress, and when would you choose Playwright?" Here's the comparison that demonstrates strategic thinking:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>When Cypress Wins</h3>
+      <p><strong>Front-end developer-owned testing:</strong> Cypress's in-browser execution, automatic waiting, and time-travel debugging make it the most developer-friendly testing tool for front-end teams. The learning curve is shallower than Playwright's, and the Test Runner's real-time feedback loop accelerates test development. <strong>Component Testing:</strong> Cypress's Component Testing support for React, Vue, Angular, and Svelte is more mature than Playwright's — it mounts components directly, bypasses the network, and provides first-class framework adapters. If your team wants a single tool for component and E2E testing, Cypress leads. <strong>Network stubbing at the browser level:</strong> <code>cy.intercept()</code> operates at the browser's network layer — it intercepts requests before they leave the browser. This gives you more control than Playwright's <code>page.route()</code> for certain patterns, and it's easier to debug because intercepted requests appear in the Cypress Command Log. <strong>Dashboard and analytics:</strong> Cypress Cloud provides test analytics, flake detection, and Smart Orchestration out of the box. The developer experience of debugging a CI failure via Cypress Cloud's replay with video, screenshot, and DOM snapshot is unmatched. <strong>Single-page applications (SPAs):</strong> Cypress was designed for SPAs. Its architecture excels with frameworks like React, Vue, and Angular where you navigate in-memory and don't need multi-tab or multi-origin workflows.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>When Playwright Wins</h3>
+      <p><strong>Cross-browser testing at scale:</strong> Playwright supports Chromium, Firefox, and WebKit (Safari engine) with a single API. If your users are on Safari — and if you're testing a consumer web app, they are — Cypress doesn't cover them. <strong>Multi-tab and multi-origin workflows:</strong> Playwright natively handles multiple browser contexts, tabs, and origins. If your application involves OAuth flows, third-party payment integrations, or multi-window interactions, Playwright handles these natively where Cypress requires workarounds or <code>cy.origin()</code> boilerplate. <strong>API testing without a browser:</strong> Playwright's <code>request</code> context lets you test APIs directly — no browser overhead. You can mix API-only tests with browser tests in the same suite, which is powerful for contract testing and test data setup. <strong>Multi-language support:</strong> Playwright supports JavaScript, TypeScript, Python, Java, and .NET. Cypress only supports JavaScript/TypeScript — if your team is polyglot (back-end Java engineers writing some tests), Playwright accommodates them. <strong>Mobile emulation:</strong> Playwright provides built-in device emulation for mobile viewports, touch events, geolocation, and permissions. Cypress can change viewport size but doesn't emulate mobile devices as comprehensively. <strong>The 2026 verdict:</strong> Most greenfield projects choose Playwright for cross-browser E2E testing and Cypress for component testing and developer-owned SPA testing. The tools are increasingly complementary, not competing. The strongest interview answer acknowledges this and describes how you'd use both in a testing strategy — Cypress for component tests and developer-local E2E, Playwright for cross-browser CI regression.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>cy.intercept() — Network Stubbing and API Mocking Mastery</h2>
+  <p><code>cy.intercept()</code> is Cypress's network stubbing command — it replaced <code>cy.route()</code> in Cypress 6.0 and is now the standard for every network-related testing pattern. Interviewers probe <code>cy.intercept()</code> deeply because it's the command that separates developers who test the happy path from engineers who can simulate production conditions. Here's what you need to know:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Request Stubbing — Control the Response</h3>
+      <p><code>cy.intercept('GET', '/api/users', { fixture: 'users.json' })</code> — intercepts a GET request to /api/users and responds with fixture data. The request never reaches your server. This is the deterministic testing pattern: your test controls the data, so your test can't fail because of server state. <strong>Dynamic responses:</strong> <code>cy.intercept('POST', '/api/login', (req) => { req.reply({ statusCode: 200, body: { token: 'fake-jwt' } }) })</code> — the callback form lets you generate responses dynamically based on the request. You can read <code>req.body</code>, validate the payload, and respond conditionally. <strong>Throttling:</strong> <code>req.reply({ delay: 2000, body: data })</code> — simulate network latency by adding a delay to the response. Essential for testing loading states and timeout handling. <strong>Force 500 errors:</strong> <code>req.reply({ statusCode: 500, body: { error: 'Internal Server Error' } })</code> — test error handling without actually breaking your API. Interviewers love to ask how you'd test a feature's behaviour when the API is down — this is the answer.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Request Spying — Observe Without Modifying</h3>
+      <p>Sometimes you want to <em>observe</em> network traffic without changing it. <code>cy.intercept('POST', '/api/analytics').as('analyticsCall')</code> — the request passes through normally, but Cypress records it as an alias. You can then assert on the request: <code>cy.wait('@analyticsCall').its('request.body').should('deep.equal', expectedPayload)</code>. <strong>Asserting on intercepted requests:</strong> You can verify that the correct data was sent, that headers were set correctly, and that requests were made in the expected order. <strong>Waiting for completion:</strong> <code>cy.wait('@createUser').its('response.statusCode').should('eq', 201)</code> — wait for the intercepted request to complete and assert on the actual server response. This is the pattern for integration-style tests where you want real API calls but need to wait for and validate the responses.</p>
+    </div>
+  </div>
+
+  <pre><code>// Complete intercept() example — fixture-based stubbing with dynamic responses
+describe('User Dashboard', () => {
+  beforeEach(() => {
+    // Stub the users endpoint with fixture data
+    cy.intercept('GET', '/api/users*', { fixture: 'users.json' }).as('getUsers');
+
+    // Spy on analytics — let the request through, but capture it
+    cy.intercept('POST', '/api/analytics').as('analytics');
+
+    // Dynamic stubbing — validate the request and respond conditionally
+    cy.intercept('POST', '/api/users', (req) => {
+      expect(req.body).to.have.property('email');
+      if (req.body.email === 'duplicate@test.com') {
+        req.reply({ statusCode: 409, body: { error: 'Email already exists' } });
+      } else {
+        req.reply({ statusCode: 201, body: { id: 'new-id', ...req.body } });
+      }
+    }).as('createUser');
+
+    cy.visit('/dashboard');
+    cy.wait('@getUsers');
+  });
+
+  it('shows the user list from stubbed data', () => {
+    cy.get('[data-cy=user-row]').should('have.length', 3);
+  });
+
+  it('handles duplicate email error', () => {
+    cy.get('[data-cy=add-user]').click();
+    cy.get('[data-cy=email-input]').type('duplicate@test.com');
+    cy.get('[data-cy=submit]').click();
+    cy.wait('@createUser');
+    cy.get('[data-cy=error-message]').should('contain', 'Email already exists');
+  });
+
+  it('sends analytics on page view', () => {
+    cy.wait('@analytics').its('request.body').should('include', {
+      event: 'page_view',
+      page: 'dashboard',
+    });
+  });
+});</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Fixtures, Custom Commands, and the Support File Pattern</h2>
+  <p>The Cypress support file (<code>cypress/support/e2e.js</code> or <code>.ts</code>) is where you define reusable logic. Interviewers probe your support file strategy because it reveals whether you've engineered a test suite or just accumulated scripts. Here's what a senior-level support file architecture looks like:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📁</span>
+      <div>
+        <h3>Fixtures — Test Data at Scale</h3>
+        <p>Fixtures (<code>cypress/fixtures/</code>) are static JSON files that serve as test data. <strong>Pattern:</strong> One fixture file per domain entity — <code>users.json</code>, <code>products.json</code>, <code>orders.json</code>. Use arrays for lists and objects for single records. <strong>Avoid:</strong> giant <code>testData.json</code> monsters. <strong>Generating fixtures:</strong> For large test suites, generate fixtures from your API schemas or seed data — don't hand-write 200 user objects. <strong>TypeScript with fixtures:</strong> Define interfaces for your fixture data: <code>interface UserFixture { id: string; email: string; role: 'admin' | 'user' }</code>. Import and type your fixtures to catch data shape mismatches at compile time. <strong>The interview signal:</strong> Explaining how you version fixtures alongside API schemas and detect drift between fixture shapes and real API responses demonstrates that you think about test data as an engineering concern, not just a convenience.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚙️</span>
+      <div>
+        <h3>Custom Commands — The Right Way</h3>
+        <p><code>Cypress.Commands.add()</code> creates reusable commands. <strong>Good candidates:</strong> <code>cy.login()</code>, <code>cy.seedDatabase()</code>, <code>cy.getByTestId()</code>. These abstract common workflows and make tests readable. <strong>The trap:</strong> Over-abstracting. Every custom command you add is a dependency that every test implicitly carries. <strong>The senior-level approach:</strong> Create thin custom commands that wrap the DOM interaction layer (e.g., <code>cy.getByTestId('submit').click()</code>) and keep business-logic workflows in plain functions or page objects, not custom commands. This keeps the Cypress command log clean and debuggable. <strong>TypeScript declaration merging:</strong> Extend the <code>Cypress.Chainable</code> interface to type your custom commands — then IntelliSense autocompletes them with full type information.</p>
+      </div>
+    </div>
+  </div>
+
+  <pre><code>// cypress/support/commands.ts — Custom command patterns
+
+// 1. Thin wrapper for data-cy selectors (recommended by Cypress best practices)
+Cypress.Commands.add('getByTestId', (testId: string) => {
+  return cy.get(\`[data-cy=\${testId}]\`);
+});
+
+// 2. Login command using the UI (useful for auth setup)
+Cypress.Commands.add('login', (email: string, password: string) => {
+  cy.session([email, password], () => {
+    cy.visit('/login');
+    cy.getByTestId('email-input').type(email);
+    cy.getByTestId('password-input').type(password);
+    cy.getByTestId('login-submit').click();
+    cy.url().should('include', '/dashboard');
+  });
+});
+
+// 3. Login via API — faster, avoids UI for test setup (preferred in 2026)
+Cypress.Commands.add('loginByApi', (email: string, password: string) => {
+  cy.request('POST', '/api/auth/login', { email, password }).then((response) => {
+    window.localStorage.setItem('auth_token', response.body.token);
+  });
+});
+
+// TypeScript — declare your custom commands for IntelliSense
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getByTestId(testId: string): Chainable&lt;JQuery&lt;HTMLElement&gt;&gt;;
+      login(email: string, password: string): Chainable&lt;void&gt;;
+      loginByApi(email: string, password: string): Chainable&lt;void&gt;;
+    }
+  }
+}</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Cypress Component Testing — The 2026 Game-Changer</h2>
+  <p>Component Testing is Cypress's biggest differentiator in 2026. Introduced as an alternative to E2E testing, Component Testing mounts individual components (React, Vue, Angular, Svelte) in isolation and tests them in a real browser — with all the Cypress debugging benefits. Interviewers increasingly ask about Component Testing because it represents a philosophical shift in where testing happens:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Component Testing vs E2E Testing</h3>
+      <p><strong>Component Testing:</strong> Mounts a single component (e.g., a login form, a data table, a modal) in isolation. No routing, no API calls (all stubbed), no page layout dependencies. Tests run in milliseconds and are deterministic. <strong>E2E Testing:</strong> Navigates the full application with real routing, real (or stubbed) APIs, and real browser rendering. Tests take seconds and can be flaky due to external dependencies. <strong>The 2026 best practice:</strong> Component tests for component logic, visual states, and user interactions; E2E tests for critical user journeys that span multiple pages or components. The ratio: 70% component tests, 20% integration tests, 10% E2E tests. Candidates who can articulate this testing trophy distribution demonstrate modern testing strategy.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Framework Adapters and Configuration</h3>
+      <p>Cypress Component Testing supports React (with Webpack or Vite), Vue (with Vite), Angular (with its build pipeline), Svelte, and Next.js. The setup: <code>npm install -D @cypress/react @cypress/webpack-dev-server</code> (for React/Webpack). The mount command: <code>cy.mount(&lt;LoginForm onSubmit={cy.stub().as('onSubmit')} /&gt;)</code> — mounts the component, passes props and stubs as you'd expect. <strong>Key interview talking points:</strong> Component tests share the same <code>cy.intercept()</code> API as E2E tests but stub all network requests by default (the component doesn't live in a full page). You can test visual states (loading, empty, error, edge cases) that would be difficult or slow to set up in E2E. And you can use Cypress's .then(), .should(), and .invoke() patterns to assert on component state after interactions — just like E2E, but faster and more focused.</p>
+    </div>
+  </div>
+
+  <pre><code>// Cypress Component Test — React LoginForm
+import LoginForm from '../../src/components/LoginForm';
+
+describe('LoginForm Component', () => {
+  it('renders the form and handles submission', () => {
+    const onSubmit = cy.stub().as('onSubmit');
+    cy.mount(&lt;LoginForm onSubmit={onSubmit} /&gt;);
+
+    cy.getByTestId('email-input').type('user@example.com');
+    cy.getByTestId('password-input').type('password123');
+    cy.getByTestId('login-submit').click();
+
+    cy.get('@onSubmit').should('have.been.calledOnceWith', {
+      email: 'user@example.com',
+      password: 'password123',
+    });
+  });
+
+  it('shows validation error for empty email', () => {
+    cy.mount(&lt;LoginForm onSubmit={cy.stub()} /&gt;);
+    cy.getByTestId('login-submit').click();
+    cy.getByTestId('email-error')
+      .should('be.visible')
+      .and('contain', 'Email is required');
+  });
+
+  it('disables the submit button while loading', () => {
+    // Simulate a slow submit by returning a promise that never resolves
+    const neverResolve = cy.stub().returns(new Promise(() => {}));
+    cy.mount(&lt;LoginForm onSubmit={neverResolve} /&gt;);
+
+    cy.getByTestId('email-input').type('user@example.com');
+    cy.getByTestId('password-input').type('password123');
+    cy.getByTestId('login-submit').click();
+
+    cy.getByTestId('login-submit').should('be.disabled');
+    cy.getByTestId('loading-spinner').should('be.visible');
+  });
+});</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Flaky Test Diagnosis and Retry Strategy in Cypress</h2>
+  <p>Flaky tests are the number one killer of test suite credibility. When a test fails intermittently, engineers stop trusting the suite — they ignore failures, disable tests, or bypass the CI gate. Interviewers probe flakiness handling because it reveals whether you're a test author or a test engineer. Here's the Cypress-specific approach:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Root Causes of Flakiness in Cypress</h3>
+        <p><strong>Timing races:</strong> The application state (API response, animation, re-render) completes <em>after</em> Cypress tries to interact. This is the most common cause. <strong>Test isolation violations:</strong> One test's state leaks into the next — localStorage, cookies, or in-memory application state that isn't reset between tests. <strong>External dependency instability:</strong> Real API calls that sometimes return slowly, time out, or return unexpected data. <strong>Animation interference:</strong> Cypress waits for elements to stop animating, but CSS transitions and animations can confuse the actionability checks. <strong>Selector fragility:</strong> Dynamic class names, auto-generated IDs, or DOM structures that change between deployments. The key insight: Cypress's automatic retry and waiting eliminate <em>most</em> timing races, but they can't fix test isolation problems or external dependency issues. Diagnosing which category a flaky test falls into is the senior-level skill.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔧</span>
+      <div>
+        <h3>Cypress-Specific Fixes and Debugging</h3>
+        <p><strong>Test Retries:</strong> Configure <code>retries: { runMode: 2, openMode: 0 }</code> in <code>cypress.config.ts</code> — Cypress retries failing tests in CI. This is a safety net, not a fix. <strong>Test Isolation:</strong> Cypress 12+ introduced Test Isolation mode (enabled by default) — it clears the page, cookies, localStorage, and sessionStorage between tests. If flakiness disappears in isolated mode, you had a state leakage problem. <strong>cy.clock() and cy.tick():</strong> Control time in your tests — freeze the clock, tick forward by specific amounts, and test timer-dependent behaviour deterministically. <strong>cy.intercept() for determinism:</strong> Stub all external APIs. A test that depends on a real API is a test that can fail for reasons unrelated to your code. <strong>Debugging workflow:</strong> (1) Enable video recording and screenshot on failure. (2) Reproduce locally with <code>cypress open</code> and time-travel debugging. (3) Add <code>.debug()</code> to the command chain to pause execution and inspect state. (4) Use <code>cy.task()</code> to log server-side state during test execution. Interviewers want to hear this structured debugging approach — not "I add cy.wait(5000) and hope it works."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Cypress Dashboard, CI/CD Integration, and Parallelisation</h2>
+  <p>In 2026, running Cypress locally is the easy part. The interview questions focus on CI/CD: how you integrate Cypress into a pipeline, how you handle test execution at scale, and how you use Cypress Cloud (formerly Cypress Dashboard) for observability. Here's what panels probe:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>GitHub Actions Integration</h3>
+      <p>The standard 2026 Cypress CI pattern uses the official <code>cypress-io/github-action</code>. It handles installing dependencies, caching the Cypress binary, starting your dev server, running tests, and uploading results to Cypress Cloud. <strong>Key configuration:</strong> <code>parallel: true</code> for parallel execution across multiple CI machines, <code>record: true</code> to send results to Cypress Cloud, <code>group</code> and <code>ci-build-id</code> for grouping parallel runs. <strong>The pipeline gating decision:</strong> Do you block deployments on Cypress failures? The senior answer: block on critical-path tests (login, checkout, core user flows) but allow non-critical test failures to generate alerts without blocking. This requires test tagging (<code>cypress-grep</code> or custom tags in test titles) and separate CI jobs for critical and non-critical suites. Interviewers want to hear you've thought about the blast radius of test failures.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Parallelisation and Smart Orchestration</h3>
+      <p>Cypress Cloud's Smart Orchestration automatically distributes spec files across available CI machines for the fastest overall execution time. It learns from historical run durations to balance the workload. <strong>Manual parallelisation:</strong> Without Cypress Cloud, you use the <code>--parallel</code> flag and configure your CI to spawn multiple containers, each running a subset of specs. <strong>Spec splitting strategies:</strong> By weight (duration-based, using historical data), by count (equal number of specs per machine), or by tag (functional grouping). <strong>The senior insight:</strong> Parallelisation is a cost-speed tradeoff. More parallel machines = faster runs = higher CI cost. The strongest candidates can discuss the break-even point and how to decide the optimal parallelism level for your team's budget and required pipeline speed.</p>
+    </div>
+  </div>
+
+  <pre><code># .github/workflows/cypress.yml — Production-grade Cypress CI pipeline
+name: Cypress E2E Tests
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3, 4]  # 4 parallel machines
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+          record: true
+          parallel: true
+          group: 'E2E - Chrome'
+          ci-build-id: \${{ github.run_id }}-\${{ github.run_attempt }}
+          tag: 'critical-path'
+        env:
+          CYPRESS_RECORD_KEY: \${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 7</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>8 Cypress Interview Traps That Eliminate Candidates</h2>
+  <p>These are the questions that make interviewers lean back and wait. They're not trick questions — but they separate people who've written a few Cypress tests from people who understand the engineering.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #1: Assigning cy.get() to a variable</h3>
+        <p>"Why doesn't <code>const el = cy.get('.button'); el.click()</code> work the way you'd expect?" Wrong answer: "It does work — I've used it." (It appears to work because Cypress enqueues both commands, but the variable holds a chainable, not the element.) Correct answer: Explains the async command queue — <code>cy.get()</code> doesn't return the element, it returns a chainable that will <em>yield</em> the element when the command executes. For imperative access, use <code>.then(($el) => { ... })</code>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #2: Using cy.wait() with arbitrary timeouts</h3>
+        <p>"I add <code>cy.wait(5000)</code> to fix timing issues." This is the most common red flag in Cypress interviews. It signals that you don't trust (or understand) Cypress's automatic waiting. The correct approach: assert on the state you're waiting for — <code>cy.get('.spinner').should('not.exist')</code> or <code>cy.get('.data-loaded-indicator').should('be.visible')</code>. If you absolutely must wait for an external condition, use <code>cy.wait('@apiAlias')</code> to wait for a specific network request. <code>cy.wait(5000)</code> should never appear in production test code — every instance is a bug waiting to become a flaky test.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #3: Mixing async/await with Cypress commands</h3>
+        <p>"Can I use async/await with Cypress?" The answer: not directly. Cypress commands are not Promises — they're chainables that run on a queue. <code>await cy.get('.button')</code> does not work as expected. You <em>can</em> use async/await for non-Cypress operations inside <code>.then()</code> callbacks, and <code>Cypress.Promise</code> provides a Promise implementation that integrates with the queue. The mistake candidates make is trying to <code>await</code> a <code>cy.*</code> command — the correct pattern is chaining with <code>.then()</code> or <code>.should()</code>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #4: Not using cy.session() for auth persistence</h3>
+        <p>"My tests log in before every test." Before Cypress 12, this was the standard pattern. Now, <code>cy.session()</code> caches and restores authentication state (cookies, localStorage, sessionStorage) across tests — so a login that takes 3 seconds happens once, not 50 times. Candidates who don't know about <code>cy.session()</code> reveal that they haven't kept up with Cypress's evolution. The senior approach: combine <code>cy.session()</code> with <code>cy.origin()</code> for OAuth flows, and validate the session is still valid before reuse.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #5: Over-using conditional testing</h3>
+        <p>"I use <code>if (cy.get('.element').should('exist'))</code> to handle conditional UI." Cypress deliberately discourages conditional testing because the async command queue makes it unreliable. The <code>cy.get()</code> command includes built-in retry and assertion — it doesn't return a boolean you can branch on. The correct approach: either (a) control your test data so the UI state is deterministic, or (b) use <code>cy.get('body').then(($body) => { if ($body.find('.element').length) { ... } })</code> for truly conditional scenarios — but be prepared to justify why you can't make the test deterministic.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #6: Ignoring the Cypress Best Practices around selectors</h3>
+        <p>"I use CSS class selectors — they're the most reliable." Wrong. CSS classes are for styling, and they change when design changes. Cypress recommends <code>data-cy</code> (or <code>data-test</code>, <code>data-testid</code>) attributes as the primary selector strategy. These are immune to CSS refactors, component renames, and content changes. Candidates who argue for class selectors over data attributes reveal that they haven't read the Cypress best practices or experienced the maintenance pain of brittle selectors at scale.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #7: Not handling cross-origin navigation</h3>
+        <p>"My test navigates to a third-party payment page." Cypress's same-origin limitation means navigating to a different origin (e.g., Stripe checkout) breaks the test unless you use <code>cy.origin()</code>. Before Cypress 12, this was a hard limitation. Now, <code>cy.origin('https://checkout.stripe.com', () => { cy.get('#card-number').type('4242424242424242') })</code> creates a sandboxed context for the cross-origin interaction. Candidates who aren't aware of <code>cy.origin()</code> reveal outdated knowledge — this was one of the most requested features, and its addition in Cypress 12 was a major milestone.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Trap #8: Not using TypeScript with Cypress</h3>
+        <p>"TypeScript is overhead — JavaScript is fine for tests." In 2026, TypeScript is the default for professional Cypress suites. Cypress has first-class TypeScript support — type definitions for all commands, IntelliSense in your IDE, and compile-time checking of fixture data shapes, custom command signatures, and configuration. Candidates who dismiss TypeScript signal that they haven't worked on test suites at scale, where type safety prevents the category of bugs where tests pass but test the wrong thing because of a data shape mismatch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare: From Cypress User to Cypress Engineer</h2>
+  <p>Knowing the Cypress API is necessary but insufficient for 2026 interview panels. You need to demonstrate that you understand the <em>engineering decisions</em> behind Cypress — its architecture, its trade-offs, and where it fits in a modern testing strategy. Here's how to level up:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Read the Architecture Docs</h3>
+      <p>Cypress's documentation includes detailed architecture guides that most candidates skip. Read "How Cypress Works" — the section on the command queue, the retry-ability model, and the network proxy architecture. These are the exact topics interviewers probe because they separate memorisation from understanding.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Build a Component Testing Suite</h3>
+      <p>If you've only done E2E testing with Cypress, build a small component testing suite for a React or Vue application. The mental model shift from "test the whole page" to "test one component in isolation" is what interviewers are looking for when they ask about testing strategy.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Practise With SDET Interview Coach</h3>
+      <p>The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated Cypress interview rounds with AI-scored mock interviews. It covers exactly the question categories covered in this guide — architecture, command chaining, intercept, component testing, flaky test diagnosis, and CI/CD integration — calibrated to five seniority levels. The spaced repetition system ensures you retain these concepts, and the Job Match feature generates 50 bespoke Cypress questions from any SDET job description that mentions Cypress.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Know the Ecosystem — Beyond Cypress</h3>
+      <p>The strongest candidates can compare Cypress to Playwright, Selenium, and Testing Library. Read our guides on <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions</a>, <a href="/blog/selenium-interview-questions-2026">Selenium Interview Questions</a>, and the <a href="/blog/playwright-vs-selenium-vs-cypress-comparison-2026">Playwright vs Selenium vs Cypress Comparison</a> to build the comparative knowledge that demonstrates strategic thinking. When an interviewer asks "Why Cypress?", the answer that gets the offer isn't a feature list — it's a decision framework that shows you understand when Cypress is the right tool and when it isn't.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The browser automation interview landscape in 2026 requires depth across all three major tools. This Cypress deep-dive completes the trifecta: <a href="/blog/playwright-interview-questions-2026">Playwright</a> for modern cross-browser E2E testing, <a href="/blog/selenium-interview-questions-2026">Selenium</a> for legacy enterprise environments and multi-language support, and Cypress for front-end developer-owned testing with best-in-class developer experience and component testing capabilities. Master all three, and you're not just a candidate who knows a testing tool — you're a test automation engineer who can architect a testing strategy for any stack. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> is built to help you get there — with structured mock interviews, AI feedback, and exhaustive question banks covering every tool, every architecture pattern, and every seniority level.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What is Cypress's architecture and how does it differ from Selenium and Playwright?",
+        a: "Cypress runs inside the browser alongside your application, sharing the same JavaScript event loop. This gives it direct DOM access, automatic waiting on every command, and time-travel debugging — but limits it to single-tab, same-origin workflows (with cy.origin() handling cross-origin cases). Selenium uses the WebDriver protocol — an out-of-process driver communicates with the browser via a wire protocol, which is slower and doesn't provide automatic waiting but supports all browsers and multiple tabs. Playwright uses the Chrome DevTools Protocol (CDP) from a Node.js process — it's faster than Selenium, supports multiple browsers and tabs, and provides auto-waiting, but doesn't have Cypress's in-browser execution or time-travel debugging. The key architectural difference: Cypress shares the browser's JavaScript context, while Selenium and Playwright operate from outside the browser.",
+      },
+      {
+        q: "Why can't I assign cy.get() to a variable in Cypress?",
+        a: "Cypress commands don't execute immediately — they're enqueued onto a command chain and executed asynchronously. When you write const el = cy.get('.button'), you're storing the chainable command object (a Cypress.Chainable), not the DOM element. The actual DOM lookup happens later when Cypress processes the command from the queue. To access the actual element, use .then(($el) => { ... }) which provides the yielded jQuery-wrapped element, or use .invoke() for synchronous property access. This asynchronous command queue is fundamental to Cypress's retry-ability — every command automatically retries until its associated assertions pass, which wouldn't be possible with synchronous variable assignment.",
+      },
+      {
+        q: "How does cy.intercept() work and when should I use it vs real API calls?",
+        a: "cy.intercept() operates at the browser's network layer — it intercepts HTTP requests before they leave the browser and can either stub the response (the request never reaches your server) or spy on it (the request passes through but Cypress records it for assertions). Stub when: (1) your test should be deterministic and independent of server state, (2) you need to test edge cases like 500 errors, timeouts, or specific data shapes that are hard to reproduce with real APIs, (3) you're testing loading states and need precise control over response timing. Use real API calls when: (1) you're testing the integration between front-end and back-end, (2) the API behaviour itself is what's under test, (3) you need to validate that the full request/response cycle works end-to-end. The 2026 best practice: stub by default in component tests and developer-local runs, use real APIs (with cy.intercept() for assertion) in CI E2E tests against staging environments.",
+      },
+      {
+        q: "What is Cypress Component Testing and when should I use it instead of E2E?",
+        a: "Cypress Component Testing mounts individual UI components (React, Vue, Angular, Svelte) in isolation in a real browser. It's ideal for: testing component logic and state (all visual states including loading, empty, error), testing user interactions in isolation (form validation, button click handlers, modal open/close), and rapid feedback during development (tests run in milliseconds vs seconds for E2E). Use E2E tests instead when: you need to test multi-page user journeys, you need to validate integration between components, or you need to test the full stack (front-end + API + database). The 2026 testing trophy recommends: 70% component tests (fast, focused, deterministic), 20% integration tests, and 10% E2E tests (critical user journeys). Cypress's Component Testing is more mature than Playwright's equivalent, making Cypress the preferred tool for component-heavy testing strategies.",
+      },
+      {
+        q: "How do I handle flaky Cypress tests in CI/CD?",
+        a: "First, diagnose the root cause: (1) Enable video recording and screenshot on failure in CI. (2) Check if Test Isolation mode is enabled — state leakage between tests is the most common cause of flakiness. (3) Use cy.intercept() to verify that API responses are deterministic. (4) Reproduce locally with cypress open and use time-travel debugging to inspect state at each command step. Fix patterns: replace cy.wait(N) with cy.wait('@apiAlias') or explicit assertions on UI state (cy.get('.spinner').should('not.exist')), use cy.session() to cache authentication state, use data-cy attributes for selectors, stub external APIs for determinism. For CI resilience: configure retries: { runMode: 2 } to auto-retry failures (as a safety net, not a fix), use Cypress Cloud's flake detection to identify intermittently failing tests, and implement a quarantine process — move persistently flaky tests to a separate suite that runs but doesn't block deployments.",
+      },
+      {
+        q: "Does SDET Interview Coach cover Cypress interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated Cypress testing topic area with questions spanning architecture, command chaining, cy.intercept() network stubbing, fixtures and custom commands, component testing, flaky test diagnosis, CI/CD integration, and Cypress vs Playwright comparison. Questions are calibrated to five seniority levels — Junior candidates get API familiarity questions, while Lead candidates face architectural decision-making and testing strategy discussions. The AI mock interviewer can run a dedicated Cypress round, asking follow-up questions and scoring your answers on technical accuracy, completeness, and communication. Use Job Match to generate 50 bespoke Cypress questions from any SDET job description that mentions Cypress — it parses the listing and creates questions targeting the specific Cypress skills and seniority level the role requires.",
+      },
+    ],
+    relatedSlugs: ["playwright-interview-questions-2026", "selenium-interview-questions-2026", "playwright-vs-selenium-vs-cypress-comparison-2026"],
+  },
+  {
     slug: "jmeter-interview-questions-2026",
     title: "JMeter Interview Questions 2026 — Thread Groups, Samplers and Listeners Architecture Deep Dive, JMeter vs k6 vs Gatling — Choosing the Right Performance Testing Tool for Your Stack, Test Plan Structure and Controller Logic for Realistic Workload Modeling, Assertions and Timers — Avoiding Common JMeter Interview Traps, Distributed Testing Architecture — Master-Slave Mode and Cloud Execution, JMeter Plugins Ecosystem — Essential Plugins Every Performance Engineer Should Know, CI/CD Integration with Jenkins and Maven — Running JMeter Tests in Pipeline, JMeter Scripting with JSR223 and Groovy — When to Use Beanshell and When to Avoid It, Handling Dynamic Data with CSV Data Set Config and Correlation Extractors, and How to Answer Performance Testing Architecture Questions at Senior SDET Panels",
     description: "The complete JMeter interview questions guide for 2026 — covering every JMeter topic that performance testing interview panels probe, from thread group architecture and test plan structure to distributed testing, CI/CD integration, and the JMeter-vs-k6-vs-Gatling comparison that demonstrates strategic thinking. Covers JMeter architecture fundamentals (thread groups simulate virtual users, samplers execute protocol requests, listeners collect and visualise results, and config elements manage parameterisation), JMeter vs k6 vs Gatling comparison across developer ergonomics, scripting models, resource efficiency, protocol support, and ecosystem maturity — with the decision framework panels want to hear, test plan structure and controller logic (simple controllers, loop controllers, throughput controllers, if controllers, and transaction controllers for business-process modelling), assertions (response, duration, size, XML, JSON, and Beanshell assertions) and timers (constant, Gaussian random, uniform random, throughput shaping, and synchronising timers for rendezvous patterns) — the configuration antipatterns that reveal inexperience, distributed testing architecture with master-slave mode — how JMeter distributes load across multiple injector nodes, the network and resource constraints, and how to scale beyond on-prem into cloud execution, the JMeter plugins ecosystem — JMeter Plugins Manager, Custom Thread Groups (Concurrency, Arrivals, Free-Form), PerfMon for server-side metrics collection, and the top 10 plugins every candidate should name, CI/CD integration with Jenkins and Maven — the JMeter Maven plugin, Jenkins Performance Plugin for trend analysis, pipeline-as-code with Jenkinsfile, and the pass/fail criteria that gate deployments, JMeter scripting with JSR223 (Groovy) vs Beanshell — the 10-100x performance difference, pre-processors and post-processors, and the scripting lifecycle interviewers expect you to know, handling dynamic data patterns — CSV Data Set Config for parameterised test data, Regular Expression Extractor and JSON Extractor for correlation, and the common data-handling bugs that break distributed tests, plus the 10 most common JMeter interview traps that eliminate candidates — from confusing thread count with user count to mishandling cookie and cache management in authenticated workflows. Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where performance testing rounds have moved from 'can you record a JMeter script?' to 'design a distributed performance testing architecture for a microservices platform with 10 million concurrent users.' The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated performance testing topics — with AI mock interview rounds covering JMeter architecture, scripting, distributed testing, and CI/CD integration at five seniority levels.",
