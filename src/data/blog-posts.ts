@@ -14,6 +14,659 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "docker-test-automation-interview-questions-2026",
+    title: "Docker for SDET Test Automation Interviews 2026 — Dockerfile Best Practices and Multi-Stage Builds for Test Images, Docker Compose for Local Test Stacks (Selenium Grid, Databases, API Services), Containerising Playwright and Selenium Tests for CI/CD Consistency, TestContainers for Integration Testing with Real Dependencies, Docker Volumes and Networks for Multi-Container Test Environments, Docker in CI/CD Pipelines (GitHub Actions, Jenkins, GitLab CI), Docker vs Kubernetes for Test Infrastructure Scaling Decisions, and How to Answer Docker Questions That Test Infrastructure Thinking at Senior SDET Panels",
+    description: "The complete Docker for SDET test automation interview guide for 2026 — covering every containerisation topic that modern interview panels now probe, from Dockerfile fundamentals and multi-stage builds to Docker Compose for local test stacks, TestContainers for integration testing, and Docker-vs-Kubernetes infrastructure decisions. Covers Docker fundamentals interviewers test (Dockerfile instructions — FROM, RUN, COPY, ENTRYPOINT, CMD, multi-stage builds for lean test images; image layering and cache optimisation; container lifecycle — run, exec, logs, inspect), containerising Selenium and Playwright tests (headless browser containers, Selenium Grid with Docker Compose, Playwright's official Docker image, mounting test reports as volumes, the --network=host vs bridge networking decision), TestContainers for integration testing (the Java and Node.js/TypeScript TestContainers libraries, spinning up real PostgreSQL, Redis, Kafka, and Selenium containers from test code, the @Testcontainers JUnit 5 integration, GenericContainer patterns, and how TestContainers eliminates 'it works on my machine' for integration tests), Docker in CI/CD pipelines (GitHub Actions service containers, Docker layer caching strategies, running Playwright and Selenium tests in CI with Docker, multi-stage Dockerfiles that separate build from execution, and the artifact extraction pattern for test reports and screenshots), multi-container test environments with Docker Compose (declaring PostgreSQL + Redis + Selenium Hub + Chrome Node + your test runner in a single docker-compose.yml, wait-for-it and healthcheck patterns for service readiness, the depends_on vs healthcheck distinction interviewers probe, and Compose profiles for dev vs CI configurations), Docker vs Kubernetes for test infrastructure (when Docker Compose suffices, when Kubernetes adds value — dynamic test environments, namespace isolation, auto-scaling test runners, and the k8s Job/CronJob pattern for scheduled test execution), and common Docker interview questions for SDETs — from 'what's the difference between ENTRYPOINT and CMD?' to 'how do you debug a containerised test that only fails in CI?' to 'explain Docker layer caching and how you'd optimise a test image build time from 5 minutes to 30 seconds.' Code examples in TypeScript (Playwright, TestContainers Node) and YAML (Docker Compose, GitHub Actions). Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where infrastructure and containerisation questions have moved from 'have you used Docker?' to 'design a containerised test infrastructure that supports 50 parallel test suites across 3 cloud regions.' The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated infrastructure and CI/CD interview topics — with AI mock interview rounds covering Docker, TestContainers, Docker Compose, and CI/CD containerisation patterns at five seniority levels.",
+    date: "2026-05-21",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Docker for SDET test automation interviews 2026",
+      "Dockerfile Docker Compose test containers SDET interview",
+      "containerize Selenium Playwright tests Docker CI/CD pipeline",
+      "TestContainers integration testing TypeScript Node.js examples",
+      "Docker volumes networks multi-container test environments",
+      "Docker vs Kubernetes test infrastructure SDET interview 2026",
+      "Docker Compose Selenium Grid local test stack setup",
+      "Docker CI/CD GitHub Actions Jenkins GitLab test automation",
+    ],
+    content: `
+<section class="content-section">
+  <p>You've written tests. Good tests — Playwright tests, Selenium tests, API tests with Supertest. They pass on your machine. Then CI runs them, and they fail. <em>"Element not found."</em> <em>"Connection refused."</em> <em>"Timeout waiting for selector."</em> You check the CI logs: the database wasn't seeded. The Selenium Grid was on a different version. A background service timed out starting up. And your interview panel — hearing you describe this — leans forward and asks: <em>"How do you ensure deterministic test execution across environments? Walk me through your containerisation strategy. What's the difference between ENTRYPOINT and CMD — and which would you use for a test runner image? When would you use TestContainers instead of a shared Docker Compose stack? Design a multi-container test environment that spins up PostgreSQL, Redis, Selenium Grid, and your test suite — and explain how you ensure service readiness before the first test executes. When does Docker Compose suffice for test infrastructure, and when do you graduate to Kubernetes?"</em> And suddenly you realise: you've been <em>running</em> tests, but you haven't been <em>engineering</em> the infrastructure they run on. You've been treating Docker as a deployment tool — not as a test reliability engineering tool. And in 2026, that gap costs candidates the offer.</p>
+  <p>Docker has moved from a nice-to-have to a foundational SDET skill. In 2026, interview panels expect you to containerise tests, compose multi-service test environments, use TestContainers for integration tests with real dependencies, and design container-based CI/CD pipelines that produce deterministic, reproducible results. Not because Docker is trendy — because <em>tests that depend on the host environment are unreliable tests</em>. A test that passes on your macOS machine but fails in CI's Ubuntu runner is a test whose failure costs engineer-hours diagnosing environmental drift. Docker eliminates that class of failure by making the test environment identical everywhere. And that's exactly the argument interview panels want to hear: not "I use Docker because everyone uses Docker," but "I use Docker because it makes my test suite deterministic across environments — and here's how."</p>
+  <p>This guide covers every Docker topic that SDET interview panels probe in 2026 — from the Dockerfile fundamentals that gate junior-to-mid transitions, to the TestContainers patterns that signal senior-level integration testing maturity, to the Docker-vs-Kubernetes infrastructure decisions that separate test engineers from test architects. Complement it with our CI/CD deep-dive at <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>, our system design coverage at <a href="/blog/sdet-system-design-interview-questions-2026">SDET System Design Interview Questions</a>, and our test data patterns at <a href="/blog/sdet-test-data-management-interview-questions-2026">SDET Test Data Management Interview Questions</a>. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated infrastructure and containerisation mock interviews — with AI-scored rounds covering Docker, TestContainers, Docker Compose, and CI/CD integration at five seniority levels.</p>
+</section>
+
+<section class="content-section">
+  <h2>Docker Fundamentals Interviewers Test — Dockerfile, Images, and the Container Lifecycle</h2>
+  <p>Every Docker interview starts with fundamentals. But in 2026, panels aren't asking "what's a Docker image?" — they're asking questions that test whether you've built and debugged Docker images in production test pipelines. A candidate who can explain the difference between ENTRYPOINT and CMD with use cases from a real test suite demonstrates something the junior candidate can't: they've hit the sharp edges and learned from them.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Dockerfile Instructions — The Essentials Interviewers Probe</h3>
+      <p><strong>FROM:</strong> Specifies the base image. For test images, the base image choice is the first architectural decision: <code>node:20-alpine</code> for Jest/Playwright tests (small, fast), <code>mcr.microsoft.com/playwright:v1.44.0-focal</code> for Playwright with all browser dependencies pre-installed (larger but no manual browser dependency hunting), <code>openjdk:17-slim</code> for Selenium/Maven-based test suites. <strong>RUN:</strong> Executes commands during image build. Each RUN creates a new layer. The optimisation: chain related commands with <code>&&</code> to reduce layer count and image size. <strong>COPY vs ADD:</strong> COPY copies files from the build context. ADD does the same but also auto-extracts tarballs and supports URLs. The interview rule: use COPY unless you specifically need tar extraction — ADD's URL support is deprecated practice. <strong>ENTRYPOINT vs CMD — the most-asked Docker interview question:</strong> ENTRYPOINT defines the executable that the container always runs. CMD provides default arguments to that executable (or, if ENTRYPOINT is absent, CMD defines the default command). The critical distinction: CMD can be overridden at <code>docker run</code> time, ENTRYPOINT cannot (without <code>--entrypoint</code>). For test images: use ENTRYPOINT for the test runner binary (<code>["npx", "playwright", "test"]</code>) and CMD for default arguments (<code>["--config=playwright.ci.config.ts"]</code>) — so CI can override the config file without changing the runner. <strong>WORKDIR:</strong> Sets the working directory for subsequent instructions. Always use absolute paths. <strong>EXPOSE:</strong> Documents which ports the container listens on. Declarative, not functional — doesn't actually publish ports. <strong>VOLUME:</strong> Creates a mount point for external volumes. For test images, use volumes for test reports, screenshots, and video artifacts — so they survive container termination.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Multi-Stage Builds — The Pattern That Demonstrates Image Optimisation Maturity</h3>
+      <p>The multi-stage build is the architectural pattern that senior candidates cite when asked "how do you optimise your test Docker images?" The problem: building a test environment requires development tools (TypeScript compiler, dependency installers, browser binary downloaders) — but the runtime test image doesn't need any of those. Keeping build tools in the runtime image bloats it from 200MB to 1.2GB. The solution: a multi-stage Dockerfile where Stage 1 ("builder") installs all dependencies, compiles TypeScript, and downloads browser binaries — and Stage 2 ("runtime") copies only the compiled output, production dependencies, and browser binaries from Stage 1. The result: a lean runtime image that's fast to pull in CI, starts quickly, and only contains what the tests actually need to run. <strong>The SDET-specific pattern:</strong> Stage 1: install all devDependencies, run <code>npx playwright install</code> to download Chromium/Firefox/WebKit browser binaries, compile TypeScript to JavaScript. Stage 2: start from the same base image, copy node_modules (production only) and compiled output from Stage 1, copy the browser binaries from Stage 1, set the test entrypoint. The browser binary copy is the critical step — Playwright's browsers are ~400MB and installing them from scratch in CI takes 30-60 seconds. Copying them from the builder stage takes milliseconds.</p>
+    </div>
+  </div>
+
+  <pre><code># Dockerfile — Multi-stage build for a Playwright TypeScript test suite
+# Stage 1: Builder — compile TypeScript, install browsers
+FROM mcr.microsoft.com/playwright:v1.44.0-focal AS builder
+
+WORKDIR /app
+
+# Copy package files first — leverage Docker layer caching
+COPY package*.json ./
+RUN npm ci
+
+# Copy source and compile TypeScript
+COPY tsconfig.json ./
+COPY src/ ./src/
+RUN npx tsc
+
+# Install Playwright browsers (Chromium, Firefox, WebKit)
+RUN npx playwright install --with-deps
+
+# Stage 2: Runtime — lean test execution image
+FROM mcr.microsoft.com/playwright:v1.44.0-focal
+
+WORKDIR /app
+
+# Copy only production dependencies from builder
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copy compiled JavaScript output from builder
+COPY --from=builder /app/dist ./dist
+
+# Copy Playwright browser binaries from builder (avoids re-download)
+COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
+
+# Copy test configuration and fixtures
+COPY playwright.config.ts ./
+COPY fixtures/ ./fixtures/
+
+# ENTRYPOINT: the test runner (not overridable without --entrypoint)
+ENTRYPOINT ["npx", "playwright", "test"]
+
+# CMD: default arguments (overridable at docker run time)
+CMD ["--config=playwright.ci.config.ts"]</code></pre>
+
+  <p style="margin-top: 1.5rem;"><strong>The interview answer that demonstrates depth:</strong> "I structure test Docker images as multi-stage builds. Stage 1 — the builder — installs all dependencies including devDependencies, compiles TypeScript to JavaScript, and downloads browser binaries. Stage 2 — the runtime — copies only production node_modules, compiled output, and browser binaries from Stage 1. This produces an image that's 60-70% smaller than a single-stage build, pulls faster in CI (reducing cold-start pipeline time), and doesn't expose build tools inside the runtime container. I use ENTRYPOINT for the test runner binary and CMD for default flags — so CI can override flags without a new image build. I mount test reports as a Docker volume so they survive container termination, and I use a .dockerignore file to exclude node_modules, .git, and local test artifacts from the build context — which speeds up the COPY step and prevents cache invalidation from local cruft."</p>
+</section>
+
+<section class="content-section">
+  <h2>Containerising Playwright and Selenium Tests — The Practical Patterns</h2>
+  <p>Every SDET has run Playwright or Selenium tests locally. Containerising those tests — and making them run identically in CI — is the skill panels probe for evidence of operational maturity. The questions aren't "can you run a Playwright test in Docker?" — they're "explain your container strategy for browser-based tests, how you handle browser binaries, how you mount test reports, and how you debug a containerised test that's failing in CI but passing locally."</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Playwright in Docker — The Official Image and Custom Approaches</h3>
+      <p>Playwright publishes an official Docker image: <code>mcr.microsoft.com/playwright:v1.44.0-focal</code>. It includes Node.js, all three browser engines (Chromium, Firefox, WebKit), and all system dependencies (libgtk, libnotify, libgconf, etc.) — everything needed to run headless browser tests. <strong>When to use the official image:</strong> For CI pipelines and production test runs — it's battle-tested, maintained by the Playwright team, and eliminates the "missing system dependency" debugging nightmare. <strong>When to build a custom image:</strong> When your tests need additional tools (kubectl for Kubernetes test fixtures, AWS CLI for S3 test data seeding, database clients for test data setup) or when you need a specific Node.js version that isn't bundled. <strong>The headless configuration:</strong> Playwright runs headless by default in Docker because there's no display server. For headed debugging, you can mount an X11 socket or use Playwright's <code>--headed</code> flag with a VNC server in the container — but this is a development convenience, not a CI pattern. <strong>Test report persistence:</strong> Mount a volume (<code>-v $(pwd)/test-results:/app/test-results</code>) to persist Playwright HTML reports, screenshots, and trace viewer files after the container exits. Without a volume mount, all test artifacts are lost when the container terminates.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Selenium Grid with Docker Compose — The Hub-Node Architecture</h3>
+      <p>Selenium Grid's hub-node architecture is the classic Docker Compose test stack. The Hub acts as the central router — test scripts connect to the Hub, which distributes test sessions to registered Nodes. Each Node runs a specific browser (Chrome, Firefox, Edge) and can handle multiple concurrent sessions. <strong>The Docker Compose pattern:</strong> Define a <code>selenium-hub</code> service (the Hub), one or more browser node services (chrome, firefox, edge), and your test runner service — all connected via a Docker network. The browser nodes register with the Hub via the <code>SE_EVENT_BUS_HOST</code> and <code>SE_EVENT_BUS_PUBLISH_PORT</code> / <code>SE_EVENT_BUS_SUBSCRIBE_PORT</code> environment variables. Your test runner connects to <code>http://selenium-hub:4444</code> (the Docker Compose service name becomes the hostname). <strong>Scaling browser nodes:</strong> <code>docker compose up --scale chrome=3</code> — spins up 3 Chrome nodes behind the Hub, enabling 3 concurrent Chrome test sessions. This is how you parallelise Selenium tests without a cloud provider. <strong>Video recording:</strong> Selenium Grid 4 supports session video recording — mount a volume to <code>/videos</code> on the browser node and each test session is recorded to an MP4 file. Invaluable for debugging flaky CI failures. <strong>The VNC debugging pattern:</strong> Map port 5900 on a browser node to your host, connect with a VNC client, and watch the browser execute your test in real time — this is the Docker equivalent of seeing the browser on your desktop.</p>
+    </div>
+  </div>
+
+  <pre><code># docker-compose.yml — Selenium Grid for parallel cross-browser testing
+type DockerCompose = (services: {
+  selenium-hub: {
+    image: string;
+    container_name: string;
+    ports: string[];
+    environment: Record&lt;string, string&gt;;
+  };
+  chrome: {
+    image: string;
+    depends_on: string[];
+    environment: Record&lt;string, string&gt;;
+    volumes: string[];
+  };
+  firefox: {
+    image: string;
+    depends_on: string[];
+    environment: Record&lt;string, string&gt;;
+    volumes: string[];
+  };
+  test-runner: {
+    build: { context: string; dockerfile: string };
+    depends_on: string[];
+    environment: Record&lt;string, string&gt;;
+    volumes: string[];
+    command: string;
+  };
+}) => void;
+
+# Actual docker-compose.yml:
+version: '3.8'
+
+services:
+  selenium-hub:
+    image: selenium/hub:4.18
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"  # Subscriber
+      - "4443:4443"  # Publisher
+      - "4444:4444"  # UI + W3C WebDriver endpoint
+    environment:
+      SE_SESSION_REQUEST_TIMEOUT: 300
+      SE_SESSION_RETRY_INTERVAL: 5
+
+  chrome:
+    image: selenium/node-chrome:4.18
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_NODE_MAX_SESSIONS: 4
+      SE_NODE_SESSION_TIMEOUT: 300
+    volumes:
+      - ./videos/chrome:/videos  # Session video recording
+
+  firefox:
+    image: selenium/node-firefox:4.18
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_NODE_MAX_SESSIONS: 4
+    volumes:
+      - ./videos/firefox:/videos
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.selenium
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      SELENIUM_HUB_URL: http://selenium-hub:4444
+      TEST_ENV: ci
+    volumes:
+      - ./test-results:/app/test-results
+      - ./screenshots:/app/screenshots
+    command: ["npm", "run", "test:e2e:ci"]
+
+# Scale up: docker compose up --scale chrome=3 --scale firefox=2
+# Result: 12 Chrome sessions + 8 Firefox sessions = 20 parallel tests</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>TestContainers — Integration Testing with Real Dependencies</h2>
+  <p>TestContainers is the topic that most separates mid-level from senior SDETs in Docker interviews. When a panel asks "how do you test database integrations?" and the candidate says "I mock the database layer" — alarm bells ring. Mocking a database means you're not testing the actual SQL, the actual connection pool behaviour, or the actual transaction isolation. TestContainers solves this by spinning up real infrastructure — PostgreSQL, Redis, Kafka, Elasticsearch, Selenium browser containers — directly from your test code, using Docker under the hood. The containers are ephemeral: they start before the test, run during the test, and are destroyed after. Every test gets a clean, isolated instance.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>TestContainers with Java/JUnit 5 — The Mature Ecosystem</h3>
+      <p>TestContainers was born in the Java ecosystem and its JUnit 5 integration is the most mature. The <code>@Testcontainers</code> annotation combined with <code>@Container</code> fields automatically manages container lifecycle — start before tests, stop after. GenericContainer lets you spin up any Docker image; specialised modules (PostgreSQLContainer, KafkaContainer, RedisContainer, LocalStackContainer for AWS services) provide preconfigured, opinionated wrappers. <strong>Key patterns:</strong> Singleton containers (shared across test class via <code>static</code> field — starts once, reused across all tests), per-test containers (new container per test method — maximum isolation, slower), and the <code>@DynamicPropertySource</code> annotation for injecting container connection details into Spring Boot tests. <strong>The interview insight that scores highest:</strong> knowing when to use singleton vs per-test containers. Singleton: fast, suitable for read-heavy tests where data isolation between tests is managed through test-scoped transactions or unique keys. Per-test: maximum isolation, slower, necessary when tests mutate shared state that can't be transactionally isolated (schema changes, extension installations, configuration changes).</p>
+    </div>
+    <div class="comparison-card">
+      <h3>TestContainers with Node.js/TypeScript — The Growing Ecosystem</h3>
+      <p>The Node.js TestContainers library (<code>testcontainers</code> on npm, v10+) provides the same capabilities with a promise-based API. The core class: <code>GenericContainer</code> which wraps any Docker image. Specialised modules: <code>PostgreSqlContainer</code>, <code>RedisContainer</code>, <code>KafkaContainer</code>, <code>ElasticsearchContainer</code>. <strong>Key patterns:</strong> <code>await container.start()</code> returns connection details (host, port), <code>await container.stop()</code> for cleanup. Integration with Jest/Vitest: use <code>beforeAll</code> to start containers, <code>afterAll</code> to stop them, or use a global setup file for containers shared across the entire test suite. <strong>Playwright + TestContainers:</strong> You can even use TestContainers to spin up browser containers for Playwright — though Playwright's official Docker image is usually more practical for CI. The TestContainers browser pattern is more useful when you need programmatic control over the browser container lifecycle within a Node.js test suite that's also managing other infrastructure containers.</p>
+    </div>
+  </div>
+
+  <pre><code>// TestContainers with TypeScript + Jest — Integration test with real PostgreSQL
+import {
+  PostgreSqlContainer,
+  type StartedPostgreSqlContainer,
+} from '@testcontainers/postgresql';
+import { RedisContainer } from '@testcontainers/redis';
+import { GenericContainer } from 'testcontainers';
+import { Client } from 'pg';
+import { createApp } from '../src/app';
+
+describe('Order Service Integration Tests', () => {
+  let postgresContainer: StartedPostgreSqlContainer;
+  let redisContainer: any;
+  let dbClient: Client;
+  let app: any;
+
+  beforeAll(async () => {
+    // Start PostgreSQL container with test-specific configuration
+    postgresContainer = await new PostgreSqlContainer('postgres:16-alpine')
+      .withDatabase('orders_test')
+      .withUsername('test_user')
+      .withPassword('test_password')
+      .withExposedPorts(5432)
+      .start();
+
+    // Start Redis container for caching layer
+    redisContainer = await new RedisContainer('redis:7-alpine')
+      .withExposedPorts(6379)
+      .start();
+
+    // Connect and run migrations — using real database, real SQL
+    dbClient = new Client({
+      host: postgresContainer.getHost(),
+      port: postgresContainer.getPort(),
+      database: postgresContainer.getDatabase(),
+      user: postgresContainer.getUsername(),
+      password: postgresContainer.getPassword(),
+    });
+    await dbClient.connect();
+    await dbClient.query(\`
+      CREATE TABLE orders (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id VARCHAR(50) NOT NULL,
+        total DECIMAL(10,2) NOT NULL,
+        status VARCHAR(20) DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    \`);
+
+    // Start the app with real infrastructure
+    app = createApp({
+      postgresUrl: postgresContainer.getConnectionUri(),
+      redisUrl: redisContainer.getConnectionUrl(),
+    });
+  }, 60000); // 60s timeout for container startup
+
+  afterAll(async () => {
+    await dbClient.end();
+    await postgresContainer.stop();
+    await redisContainer.stop();
+  });
+
+  beforeEach(async () => {
+    // Clean data between tests — each test gets a clean slate
+    await dbClient.query('DELETE FROM orders');
+  });
+
+  it('creates an order and returns it with calculated total', async () => {
+    const response = await app.createOrder({
+      userId: 'user-001',
+      items: [
+        { productId: 'prod-1', quantity: 2, price: 29.99 },
+        { productId: 'prod-2', quantity: 1, price: 49.99 },
+      ],
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body.total).toBe(109.97); // Real calculation tested
+
+    // Verify the data actually persisted correctly
+    const { rows } = await dbClient.query(
+      'SELECT * FROM orders WHERE id = $1',
+      [response.body.id]
+    );
+    expect(rows[0].status).toBe('pending');
+    expect(parseFloat(rows[0].total)).toBe(109.97);
+  });
+
+  it('handles concurrent order creation with optimistic locking', async () => {
+    // Test actual transaction isolation — impossible with mocks
+    const order1 = app.createOrder({ userId: 'user-001', items: [{ productId: 'last-item', quantity: 1, price: 10.00 }] });
+    const order2 = app.createOrder({ userId: 'user-001', items: [{ productId: 'last-item', quantity: 1, price: 10.00 }] });
+
+    const results = await Promise.allSettled([order1, order2]);
+    const succeeded = results.filter(r => r.status === 'fulfilled').length;
+
+    // Only one should succeed if inventory logic is correct
+    expect(succeeded).toBe(1);
+  });
+});</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Docker Volumes and Networks — The Multi-Container Plumbing Interviewers Probe</h2>
+  <p>Docker volumes and networks are the "plumbing" concepts that most candidates skip over — and that senior panels probe specifically. When you understand volumes, you understand how test artifacts survive container termination. When you understand networks, you understand how containers discover each other and why "localhost" means different things inside and outside a container. These aren't trivia — they're the operational knowledge that determines whether your containerised test suite works on the first try or consumes three days of debugging.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Volumes — Test Artifact Persistence and Test Data Injection</h3>
+      <p>Docker containers are ephemeral by design — when a container exits, its filesystem is destroyed (unless you <code>docker commit</code>, which you shouldn't for test containers). Volumes solve this by providing persistent storage that exists independently of the container lifecycle. <strong>Named volumes:</strong> Managed by Docker (<code>docker volume create</code>), stored in Docker's data directory, survive container removal. Use for test data that should persist across CI runs (reference datasets, golden files). <strong>Bind mounts:</strong> Mount a host directory into the container (<code>-v /host/path:/container/path</code>). Use for test reports, screenshots, and videos — you want these on the CI host's filesystem where subsequent pipeline steps (artifact upload, Slack notification) can access them. <strong>The test artifact pattern:</strong> Mount <code>./test-results:/app/test-results</code> in CI — Playwright writes its HTML report, JSON results, and screenshots to <code>/app/test-results</code> inside the container, which is actually <code>./test-results</code> on the CI host. The container exits, the volume persists, and the next pipeline step uploads <code>./test-results</code> as a CI artifact. <strong>tmpfs volumes:</strong> In-memory volumes (<code>--tmpfs /app/temp</code>) — faster than disk, automatically cleaned up. Use for temporary test data that doesn't need to persist — database scratch space, download caches, unpacked test fixtures. <strong>The volume permission trap:</strong> Files written by the container are owned by the container's user (often root). If the CI host runs as a different user, it can't read or delete those files. The fix: either run the container with the host's UID (<code>--user $(id -u):$(id -g)</code>) or use a post-test step that chowns the artifact directory.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Networks — Service Discovery and the localhost Trap</h3>
+      <p>Docker networking is where most containerisation bugs originate — and where interview panels probe for operational debugging experience. <strong>Bridge network (default):</strong> Containers on the same bridge network can reach each other by container name or service name (in Compose). DNS resolution is built-in. This is the default for Docker Compose and the recommended pattern for multi-container test stacks. <strong>Host network (<code>--network=host</code>):</strong> The container shares the host's network stack — <code>localhost</code> inside the container is the host's <code>localhost</code>. Faster (no network address translation overhead) but less isolated. Use when your test needs to connect to services running on the host (a local dev database, a mock server on a random port). <strong>The localhost trap — the most common Docker networking bug:</strong> Inside a container, <code>localhost</code> refers to <em>the container itself</em>, not the Docker host. If your test code connects to <code>http://localhost:4444</code> expecting to reach a Selenium Hub running in another container, it will fail — because <code>localhost:4444</code> inside the test container points to the test container, not the Hub container. The fix: use the service name as the hostname (<code>http://selenium-hub:4444</code>) on a bridge network, or use <code>host.docker.internal</code> (macOS/Windows) to reach the host. <strong>The network debugging answer interviewers want:</strong> "I debug Docker networking issues in this order: (1) <code>docker network inspect</code> to verify containers are on the same network, (2) <code>docker exec &lt;container&gt; ping &lt;service-name&gt;</code> to test DNS resolution, (3) <code>docker exec &lt;container&gt; nc -zv &lt;service-name&gt; &lt;port&gt;</code> to test TCP connectivity, (4) check that the application code uses the service name as hostname, not localhost. The fix is almost always a hostname issue or a missing <code>depends_on</code> that doesn't wait for service readiness."</p>
+    </div>
+  </div>
+
+  <pre><code># Docker Compose — Multi-container networking with health checks and dependencies
+type DockerComposeEnv = {
+  services: {
+    postgres: { host: string; port: number; db: string };
+    redis: { host: string; port: number };
+    localstack: { host: string; port: number };
+    test_runner: { build: string; depends_on: Record&lt;string, 'service_healthy'&gt;; environment: Record&lt;string, string&gt;; volumes: string[] };
+  };
+  networks: { test_network: { driver: 'bridge' } };
+  volumes: { pg_data: {}, test_results: {} };
+}; void;
+
+# Actual docker-compose.integration.yml:
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: tester
+      POSTGRES_PASSWORD: testpass
+    ports:
+      - "5432"  # Random host port — avoids conflicts
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tester -d testdb"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+    networks:
+      - test_network
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+    networks:
+      - test_network
+
+  localstack:
+    image: localstack/localstack:3.0
+    environment:
+      SERVICES: s3,dynamodb,sqs
+      DEFAULT_REGION: eu-west-2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    networks:
+      - test_network
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      postgres:
+        condition: service_healthy  # Wait for actual readiness, not just container start
+      redis:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+    environment:
+      PG_HOST: postgres          # Service name = DNS hostname
+      PG_PORT: "5432"
+      PG_DB: testdb
+      PG_USER: tester
+      PG_PASSWORD: testpass
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      AWS_ENDPOINT: http://localstack:4566
+      AWS_REGION: eu-west-2
+      NODE_ENV: test
+    volumes:
+      - ./test-results:/app/test-results  # Artifact persistence
+      - ./coverage:/app/coverage
+    networks:
+      - test_network
+    command: ["npm", "run", "test:integration"]
+
+networks:
+  test_network:
+    driver: bridge
+
+volumes:
+  pg_data:
+  test_results:</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Docker in CI/CD Pipelines — The Deterministic Test Execution Pattern</h2>
+  <p>The reason Docker dominates CI/CD test pipelines is simple: <em>determinism</em>. A test suite that runs in a Docker container on your laptop runs in exactly the same environment in GitHub Actions, Jenkins, or GitLab CI. Same OS, same dependencies, same browser versions, same system libraries. Docker eliminates the "it works on my machine" class of test failures by making the CI environment identical to the development environment. But getting Docker right in CI requires understanding layer caching, service containers, artifact extraction, and the pipeline patterns that make containerised tests fast enough to gate deployments. For the full CI/CD testing picture, see our dedicated guide at <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>GitHub Actions — Docker Service Containers and Layer Caching</h3>
+      <p>GitHub Actions supports Docker natively through two mechanisms: <strong>service containers</strong> (database, Redis, Selenium Hub — defined in the workflow YAML, GitHub manages their lifecycle) and <strong>container jobs</strong> (the entire job runs inside a Docker container). <strong>Service containers:</strong> Ideal for databases and infrastructure — they start before the job and stop after. The syntax: <code>services: { postgres: { image: postgres:16, env: {...}, ports: [...], options: --health-cmd ... } }</code>. Your test code connects to <code>postgres:5432</code> (the service name becomes the hostname). <strong>Container jobs:</strong> The entire job runs inside your custom Docker image — you get the exact same environment as local development. Syntax: <code>jobs: { test: { container: 'my-test-image:latest', steps: [...] } }</code>. <strong>Docker layer caching:</strong> The single biggest CI speed improvement — without it, every CI run rebuilds your Docker image from scratch (downloading dependencies, compiling TypeScript, installing browsers — easily 5-10 minutes). With layer caching, only changed layers rebuild. GitHub Actions supports Docker layer caching via <code>docker/build-push-action</code> with <code>cache-from</code> and <code>cache-to</code> using GitHub Cache or a Docker registry. <strong>The SDET-specific CI insight:</strong> Cache your Playwright browser binaries — they're 400MB and take 30-60 seconds to download fresh. Cache your node_modules — <code>npm ci</code> takes 60-120 seconds without cache. A well-cached Docker build for a Playwright test suite should take 20-40 seconds on cache hit vs 5-10 minutes on cache miss.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The Artifact Extraction Pattern — Getting Test Results Out of Containers</h3>
+      <p>When your tests run inside a Docker container, their output (reports, screenshots, videos, logs) lives inside the container's filesystem — which is destroyed when the container exits. Extracting those artifacts is critical for CI observability. <strong>Pattern 1 — Volume mount (recommended):</strong> Mount a host directory into the container (<code>-v $PWD/test-results:/app/test-results</code>) and the test runner writes to it. Artifacts appear on the CI host immediately and survive container termination. <strong>Pattern 2 — docker cp (worst case fallback):</strong> Run your tests, then <code>docker cp &lt;container&gt;:/app/test-results ./test-results</code> before the container is removed. Less reliable — if the container crashes, docker cp may not work. <strong>Pattern 3 — CI artifact upload:</strong> After tests complete, use the CI platform's artifact upload action (<code>actions/upload-artifact@v4</code> on GitHub Actions) to preserve test results, screenshots, and videos for later inspection. Set retention days appropriately — 7 days for routine runs, 30 days for release-blocking tests. <strong>The interview answer that demonstrates experience:</strong> "I always mount test results as a Docker volume — never rely on docker cp. In GitHub Actions, I use <code>-v \${{ github.workspace }}/test-results:/app/test-results</code> in the container options, then <code>actions/upload-artifact@v4</code> to preserve them with appropriate retention. For Playwright specifically, I mount both the test-results directory and the playwright-report directory so I get both raw JSON results and the interactive HTML report."</p>
+    </div>
+  </div>
+
+  <pre><code># .github/workflows/e2e-tests.yml — Dockerised Playwright tests with service containers
+name: E2E Tests (Docker)
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: tester
+          POSTGRES_PASSWORD: testpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U tester -d testdb"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 10
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 10
+
+    container:
+      image: ghcr.io/myorg/playwright-tests:latest
+      credentials:
+        username: \${{ github.actor }}
+        password: \${{ secrets.GITHUB_TOKEN }}
+      options: >-
+        --network host
+        -v \${{ github.workspace }}/test-results:/app/test-results
+        -v \${{ github.workspace }}/playwright-report:/app/playwright-report
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test --config=playwright.ci.config.ts
+        env:
+          DATABASE_URL: postgresql://tester:testpass@localhost:5432/testdb
+          REDIS_URL: redis://localhost:6379
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-screenshots
+          path: test-results/**/*.png
+          retention-days: 7</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Docker vs Kubernetes for Test Infrastructure — The Scaling Decision</h2>
+  <p>This is the strategic infrastructure question that appears at the senior and lead SDET level: <em>"When do you move from Docker Compose to Kubernetes for test infrastructure?"</em> Panels aren't looking for Kubernetes evangelism — they're looking for engineering judgment. The candidate who says "Kubernetes for everything" has demonstrated trend-following. The candidate who says "Docker Compose suffices for most test needs; here's when Kubernetes adds value" has demonstrated infrastructure maturity.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Docker Compose — When It's the Right Tool</h3>
+      <p>Docker Compose is ideal for: <strong>Local development test stacks</strong> — one developer, one docker-compose.yml, spin up Postgres + Redis + your app + test runner in 30 seconds. <strong>Single-machine CI pipelines</strong> — GitHub Actions, Jenkins on a single agent, GitLab CI on a single runner. Docker Compose is the simplest, fastest path to deterministic test environments on a single host. <strong>Teams up to ~20 engineers</strong> where test suite concurrency is manageable on a single CI machine. <strong>Integration tests that don't need horizontal scaling</strong> — the test suite takes 10 minutes, runs on every PR, and fits on one machine. <strong>Strengths:</strong> Simplicity (one YAML file, one command), speed (no cluster overhead), familiarity (every developer knows Compose), zero infrastructure management. <strong>Limitations:</strong> Single-machine ceiling — you can't add more machines when tests outgrow one host. No built-in scheduling, resource allocation, or auto-scaling. Manual parallelisation (you write CI matrix strategies yourself). No multi-tenancy — one Compose stack, one test run at a time.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Kubernetes — When You Need to Graduate</h3>
+      <p>Kubernetes adds value when: <strong>Test suite concurrency exceeds single-machine capacity</strong> — your CI needs to run 20 parallel test suites simultaneously and no single VM can handle all those containers. k8s schedules test pods across a cluster of machines. <strong>Dynamic test environments for 50+ engineers</strong> — every PR gets its own isolated test namespace with Postgres, Redis, and the app, automatically provisioned and torn down. <strong>Auto-scaling test runners</strong> — k8s Jobs or CronJobs scale horizontally, and you can use KEDA (Kubernetes Event-Driven Autoscaling) to spin up test runners based on PR queue depth. <strong>Multi-cloud / multi-region testing</strong> — run tests across geographically distributed k8s clusters to measure latency and failover behaviour from different regions. <strong>Key k8s primitives for testing:</strong> <code>Job</code> (run a test suite to completion — the container exits, the Job succeeds or fails), <code>CronJob</code> (scheduled test execution — nightly full regression, weekly performance baseline), <code>Namespace</code> (isolate PR test environments — one namespace per PR, delete on PR close), <code>ConfigMap/Secret</code> (manage test configuration without hardcoding), <code>PersistentVolumeClaim</code> (test artifact persistence across pod restarts). <strong>The interview insight:</strong> Kubernetes doesn't replace Docker Compose — it adds orchestration when you outgrow a single machine. Most SDET teams will spend their first 2-3 years on Docker Compose and graduate to k8s only when concurrency demands it. Demonstrating you understand <em>when</em> to make that transition — not that you know kubectl commands — is the senior-level signal.</p>
+    </div>
+  </div>
+
+  <pre><code># Kubernetes Job — Run a Playwright test suite to completion on a k8s cluster
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: playwright-e2e-\${GIT_SHA}
+  namespace: test-automation
+  labels:
+    app: playwright-tests
+    pr: "\${PR_NUMBER}"
+spec:
+  backoffLimit: 1        # Retry once on failure
+  ttlSecondsAfterFinished: 3600  # Auto-cleanup after 1 hour
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: playwright
+          image: ghcr.io/myorg/playwright-tests:\${GIT_SHA}
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: test-db-credentials
+                  key: url
+            - name: TEST_ENV
+              value: "k8s-ci"
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "2"
+            limits:
+              memory: "4Gi"
+              cpu: "4"
+          volumeMounts:
+            - name: test-results
+              mountPath: /app/test-results
+      volumes:
+        - name: test-results
+          persistentVolumeClaim:
+            claimName: playwright-results-pvc</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Common Docker Interview Questions for SDETs — And How to Answer Them</h2>
+  <p>After 20 years of SDET interview panels, Mitchell has catalogued the Docker and containerisation questions that appear most frequently. Here's the question bank with the answer patterns that separate candidates who've tinkered with Docker from those who've engineered containerised test infrastructure at scale.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>"What's the difference between ENTRYPOINT and CMD?"</h3>
+        <p>This is the most-asked Docker question in SDET interviews. <strong>Wrong answer:</strong> "They both define what runs in the container." <strong>Correct answer:</strong> ENTRYPOINT defines the <em>executable</em> that always runs — it's not overridable without <code>--entrypoint</code>. CMD defines <em>default arguments</em> to that executable, which can be overridden at <code>docker run</code> time. For a test image: <code>ENTRYPOINT ["npx", "playwright", "test"]</code> and <code>CMD ["--config=playwright.config.ts"]</code>. In CI, you can run <code>docker run my-test-image --config=playwright.ci.config.ts --grep=@smoke</code> — CMD is replaced with your CI-specific flags, but the test runner (ENTRYPOINT) stays the same. If both are absent, the container runs whatever is specified at <code>docker run</code>. If CMD is a string, it's wrapped in <code>/bin/sh -c</code>; if it's an array (exec form), it executes directly without a shell.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>"How do you debug a containerised test that only fails in CI?"</h3>
+        <p><strong>Wrong answer:</strong> "I add more console.log statements and re-run CI." (Each CI run is 10 minutes — this is the slowest possible debug loop.) <strong>Correct answer:</strong> "My debugging workflow is: (1) pull the exact CI Docker image locally — <code>docker pull &lt;registry&gt;/&lt;image&gt;:&lt;tag&gt;</code> from the CI logs, (2) run the container interactively with the same environment variables and volume mounts as CI — <code>docker run -it --entrypoint /bin/bash ...</code>, (3) execute the test command manually inside the container to reproduce the failure, (4) use Playwright's <code>--headed</code> flag with VNC or X11 forwarding to see the browser UI, (5) check environment variable differences between local and CI — a missing env var is the most common cause of CI-only failures, (6) compare the Docker image layer digests to ensure local and CI are running the same image. This whole workflow takes 2-3 minutes vs 10+ minutes per CI iteration."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>"Explain Docker layer caching and how you'd optimise a test image build from 5 minutes to 30 seconds."</h3>
+        <p><strong>Correct answer:</strong> "Docker builds images as a sequence of layers — each instruction (FROM, RUN, COPY) creates a layer. Layers are cached: if a layer's instruction and context haven't changed, Docker reuses the cached layer instead of rebuilding. The optimisation strategy: (1) Order instructions by change frequency — least-frequently-changing first. <code>COPY package*.json ./</code> before <code>COPY src/ ./src/</code> — so dependency installation is cached when only source code changes. (2) Chain RUN commands — <code>RUN apt-get update && apt-get install -y ... && rm -rf /var/lib/apt/lists/*</code> reduces layer count and cleans up in the same layer. (3) Use multi-stage builds — the builder stage has all dev tools, the runtime stage copies only what's needed. (4) Use .dockerignore — exclude node_modules, .git, coverage, dist, local test artifacts from the build context. (5) For Playwright specifically: copy the browser binaries from the builder stage rather than reinstalling them — saves 30-60 seconds per build. (6) Use CI-specific cache mounts (<code>--mount=type=cache,target=/root/.npm</code> in BuildKit) for npm cache persistence across builds. A well-optimised test Dockerfile goes from 5 minutes to 30-60 seconds on cache hit — and this directly impacts how quickly CI gates PR merges."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>"depends_on vs healthcheck — which should you use and why?"</h3>
+        <p><strong>Wrong answer:</strong> "depends_on ensures Postgres is ready before tests start." <strong>Correct answer:</strong> "<code>depends_on</code> only waits for the <em>container to start</em> — it does not wait for the service inside the container to be ready. A Postgres container can be 'started' (the process is running) but not 'ready' (pg_isready still connecting, initialising the database, running init scripts). If your test runner depends on Postgres being actually ready to accept connections, <code>depends_on</code> alone will cause race-condition failures. The fix: combine <code>depends_on</code> with a healthcheck. Define <code>healthcheck: { test: ["CMD-SHELL", "pg_isready -U tester"], interval: 2s, retries: 10 }</code> on the Postgres service, then <code>depends_on: { postgres: { condition: service_healthy } }</code> on the test runner. Now Docker Compose waits until the health check passes before starting the test runner. Without this, you need application-level retry logic in your test setup — which works, but adds complexity and obscures the true cause of startup failures. The healthcheck pattern is the production-grade approach."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>"How do you handle test data seeding in Docker Compose test environments?"</h3>
+        <p><strong>Correct answer:</strong> "I have three strategies, chosen by test complexity. Strategy 1 — init scripts: mount SQL files to <code>/docker-entrypoint-initdb.d/</code> on the Postgres container — Docker runs them on first startup. Works for static reference data (product catalogues, country lists, role definitions). Strategy 2 — programmatic seeding in beforeAll: my test suite connects to the database and seeds test-specific data before each test or describe block. This is the most common pattern for integration tests — it keeps the seeding logic alongside the test that depends on it, making the test self-contained and readable. Strategy 3 — seed container: a separate Docker Compose service that runs once, seeds the database, and exits with code 0. The test-runner service depends on this seed service completing successfully. This pattern is useful when seeding is complex (multiple services, large datasets) and you want a clear separation between 'preparing the environment' and 'running the tests.' The key principle across all three: test data is ephemeral and test-specific — every test run starts from a known state and creates the data it needs. Never depend on persistent shared test data that another test might mutate." This connects directly to the patterns covered in our <a href="/blog/sdet-test-data-management-interview-questions-2026">SDET Test Data Management Interview Questions</a> guide.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>"When would you use TestContainers vs a shared Docker Compose stack for integration tests?"</h3>
+        <p><strong>Correct answer:</strong> "TestContainers excels when tests need <em>isolation</em> — each test or test class gets its own database/Redis/Kafka instance, guaranteeing no test interference. It's ideal for: CI pipelines where tests run in parallel on the same machine (each test's containers are independent), tests that mutate schema or configuration (no risk of affecting other tests), and tests where the infrastructure lifecycle should match the test lifecycle (start before test, stop after — no dangling state). Docker Compose (shared stack) excels when tests need <em>speed</em> — starting one Postgres instance and sharing it across hundreds of tests is much faster than starting a new Postgres per test class. It's ideal for: local development (spin up the stack once, run tests repeatedly without container startup overhead), large test suites where per-test container startup would dominate execution time, and environments where the infrastructure is complex to start (10+ services) and the startup time is prohibitive for per-test isolation. The pragmatic approach: in local dev, use Docker Compose for speed. In CI, use TestContainers for isolation — CI machines are ephemeral anyway, so the isolation benefit is pure upside. For the full infrastructure architecture perspective, see our <a href="/blog/sdet-system-design-interview-questions-2026">SDET System Design Interview Questions</a> guide."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How SDET Interview Coach Prepares You for Docker and Infrastructure Interview Rounds</h2>
+  <p>Docker knowledge is no longer optional for SDETs — it's table stakes at mid-level and the differentiator at senior. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> prepares you for Docker and infrastructure rounds with AI-powered mock interviews that simulate the exact flow of a containerisation-focused SDET interview — from the opening "explain the difference between ENTRYPOINT and CMD" to the architect-level "design a containerised test infrastructure for 50 parallel test suites across 3 cloud regions."</p>
+
+  <p>The app's infrastructure topic area covers Docker, Docker Compose, TestContainers, Kubernetes for testing, CI/CD container patterns, and cloud infrastructure for test environments — with questions calibrated to five seniority levels. At junior level, the questions focus on Dockerfile basics, running containers, and simple docker-compose.yml files. At mid level, they cover multi-stage builds, TestContainers, service containers in CI, and volume/network patterns. At senior and lead levels, they probe infrastructure architecture — Docker-vs-Kubernetes decisions, multi-region test infrastructure design, cost-optimisation of containerised CI pipelines, and the design of self-service test environment platforms that serve 100+ engineering teams.</p>
+
+  <p>The AI mock interviewer scores your answers on technical accuracy, completeness, communication clarity, and real-world applicability — the same criteria real interview panels use. After each mock round, you receive a detailed scorecard with specific feedback on what to improve, plus links to the relevant sections in our infrastructure guides (including this Docker guide, the <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing guide</a>, and the <a href="/blog/sdet-system-design-interview-questions-2026">System Design guide</a>). The spaced repetition system ensures you retain Dockerfile instruction semantics, Docker Compose healthcheck patterns, and the TestContainers API patterns that interviewers expect you to recall under pressure. Use Job Match to generate 50 bespoke questions from any job description that mentions Docker, Kubernetes, containerisation, or CI/CD — and walk into your interview knowing you've practised the exact questions your panel will ask.</p>
+
+  <p>For the broader infrastructure picture, complement this guide with <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a> for the full pipeline integration perspective and <a href="/blog/sdet-system-design-interview-questions-2026">SDET System Design Interview Questions</a> for the architectural patterns that Docker enables in distributed test infrastructure.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What Docker concepts do SDET interview panels test in 2026?",
+        a: "SDET interview panels in 2026 test Docker across four layers of depth. Layer 1 — Fundamentals: Dockerfile instructions (FROM, RUN, COPY, ENTRYPOINT vs CMD), image layering and caching, container lifecycle (run, exec, logs, inspect), and the difference between volumes and bind mounts. Layer 2 — Containerising Test Suites: multi-stage builds for lean test images, containerising Playwright/Selenium tests with browser binaries, Docker Compose for multi-service test stacks (Selenium Grid, databases, message brokers), and the localhost vs service-name networking distinction. Layer 3 — Integration Testing Patterns: TestContainers for spinning up real PostgreSQL, Redis, Kafka, and Selenium containers from test code, the singleton vs per-test container isolation trade-off, and healthcheck-based service readiness. Layer 4 — Infrastructure Architecture: Docker-vs-Kubernetes for test infrastructure scaling, Docker layer caching strategies in CI/CD, container orchestration for parallel test execution, and the design of self-service test environment platforms. At junior level, panels test Layer 1. At mid level, Layers 1-2. At senior and lead levels, Layers 2-4 — especially the infrastructure architecture decisions.",
+      },
+      {
+        q: "How do you containerise Playwright or Selenium tests with Docker?",
+        a: "For Playwright: use the official Playwright Docker image (mcr.microsoft.com/playwright:v1.44.0-focal) which includes all three browser engines and system dependencies. Build a multi-stage Dockerfile where Stage 1 installs dependencies and downloads browsers, Stage 2 copies only the production artifacts. Use ENTRYPOINT ['npx', 'playwright', 'test'] and CMD for default config file. Mount volumes for test results persistence (-v ./test-results:/app/test-results). For Selenium: use Docker Compose with the selenium/hub image as the central router and selenium/node-chrome / selenium/node-firefox images as browser nodes. Connect nodes to the hub via SE_EVENT_BUS_HOST and SE_EVENT_BUS_PUBLISH_PORT/SUBSCRIBE_PORT env vars. Your test code connects to http://selenium-hub:4444 (the Compose service name). Scale browser nodes with docker compose up --scale chrome=3 for parallel execution. For both: never use localhost inside a container to reach another container — use the service name on a bridge network. Mount the same directories for test reports to persist artifacts after container exit.",
+      },
+      {
+        q: "What are TestContainers and when should SDETs use them for integration testing?",
+        a: "TestContainers is a library that programmatically manages Docker containers from within test code. Instead of mocking a database or relying on a shared test database, TestContainers spins up a real PostgreSQL/Redis/Kafka/Elasticsearch container before the test and destroys it after. This gives you integration tests that run against real infrastructure with full isolation — every test or test class gets its own clean instance. Use TestContainers when: (1) you need to test actual SQL queries, connection pool behaviour, or transaction isolation levels — things mocks can't verify, (2) tests run in parallel and need infrastructure isolation to prevent data interference, (3) you need ephemeral infrastructure that's guaranteed clean at test start and destroyed at test end, (4) you want to test against the exact same database/Redis/Kafka version as production. Don't use TestContainers when: (1) container startup time dominates test execution (for large test suites, a shared Docker Compose stack is faster), (2) the infrastructure is trivial and deterministic enough that mocks are sufficient, (3) your CI environment doesn't support Docker-in-Docker. TestContainers supports Java (JUnit 5 integration, @Testcontainers annotation), Node.js/TypeScript (testcontainers npm package, GenericContainer + PostgreSqlContainer), Python, Go, and .NET.",
+      },
+      {
+        q: "How do you set up a multi-container test environment with Docker Compose?",
+        a: "A multi-container test environment with Docker Compose follows this pattern: (1) Define infrastructure services — PostgreSQL, Redis, Kafka, LocalStack (for AWS), each with their Docker image, environment variables, ports, and healthcheck configuration. (2) Define the test-runner service — it builds from a Dockerfile, depends_on the infrastructure services with condition: service_healthy (not just service_started), and mounts volumes for test artifacts. (3) Use Docker Compose's built-in DNS — service names become hostnames, so your test code connects to postgres:5432, redis:6379, etc. (4) Configure healthchecks for every service — the test-runner must wait for actual service readiness, not just container start. (5) Use networks to isolate the test stack from other Compose stacks. (6) Seed test data either via docker-entrypoint-initdb.d scripts on the database container or programmatically in beforeAll/test setup. Key gotchas: depends_on without condition: service_healthy only waits for container start, not service readiness. localhost inside the test container points to the test container itself, not the host or other containers. Large database init scripts in /docker-entrypoint-initdb.d run on every first-start — cache the database volume if this is slow.",
+      },
+      {
+        q: "How do you integrate Docker into a CI/CD pipeline for test automation?",
+        a: "Docker CI/CD integration for test automation follows a deterministic execution pattern. Strategy 1 — Container jobs (GitHub Actions): the entire CI job runs inside your test Docker image. Define service containers (Postgres, Redis, Selenium Hub) that GitHub manages alongside your job. Use Docker layer caching (docker/build-push-action with cache-from/cache-to) to avoid rebuilding unchanged layers — this is the single biggest CI speed improvement. Strategy 2 — Docker Compose in CI: checkout code, docker compose up -d postgres redis, wait for healthchecks, docker compose run test-runner, docker compose down. Simpler than container jobs for complex multi-service stacks. Strategy 3 — Kubernetes Jobs: for scale-out CI, define a k8s Job that pulls the test image, runs tests, and exits. The Job status determines pipeline pass/fail. Across all strategies: (1) always mount test results as volumes — never rely on docker cp, (2) use CI artifact upload (actions/upload-artifact) to preserve results, (3) use --exit-code-from on docker compose run to propagate the test runner's exit code, (4) set appropriate resource limits (memory, CPU) to prevent noisy-neighbour issues in shared CI infrastructure, (5) use .dockerignore to minimise build context size and speed up COPY layers.",
+      },
+      {
+        q: "When should you choose Docker vs Kubernetes for test infrastructure?",
+        a: "Docker/Docker Compose is the right choice for: local development test stacks, single-machine CI pipelines, teams up to ~20 engineers where test concurrency fits on one host, and any scenario where simplicity and speed outweigh scaling needs. Kubernetes adds value when: test concurrency exceeds single-machine capacity (you need to schedule test pods across a cluster), you need dynamic test environments for 50+ engineers (one namespace per PR, auto-provisioned and torn down), you need auto-scaling test runners (KEDA scaling based on PR queue depth), or you require multi-region test execution. The pragmatic path: start with Docker Compose — it handles the first 2-3 years of most SDET teams' needs. Graduate to Kubernetes when you hit the single-machine ceiling or when your organisation already runs Kubernetes for production (reusing existing cluster capacity for test infrastructure). The senior-level insight: the infrastructure decision is about operational complexity budget. Kubernetes adds significant operational overhead (cluster management, RBAC, networking policies, monitoring). Don't pay that cost until the value justifies it — and for most test suites, Docker Compose provides 90% of the benefit for 10% of the complexity.",
+      },
+      {
+        q: "Does SDET Interview Coach cover Docker and infrastructure interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated infrastructure and containerisation topic area covering Docker, Docker Compose, TestContainers, Kubernetes for testing, CI/CD pipeline patterns, and cloud infrastructure for test environments. Questions are calibrated across five seniority levels — from Dockerfile basics at Junior to multi-region containerised test infrastructure architecture at Lead. The AI mock interviewer asks the exact follow-up questions that real panels use ('explain the difference between ENTRYPOINT and CMD,' 'how do you debug a containerised test that only fails in CI?,' 'when does Docker Compose suffice and when do you graduate to Kubernetes?') and scores your answers on technical accuracy, completeness, and real-world applicability. Use Job Match to generate 50 bespoke Docker and infrastructure questions from any SDET job description that mentions Docker, Kubernetes, containerisation, or CI/CD. Download the SDET Interview Coach iOS app and practise the exact Docker questions panels ask before your interview.",
+      },
+    ],
+    relatedSlugs: ["cicd-pipeline-testing-interview-questions", "sdet-system-design-interview-questions-2026", "sdet-test-data-management-interview-questions-2026"],
+  },
+  {
     slug: "cypress-interview-questions-2026",
     title: "Cypress Interview Questions 2026 — Architecture Deep Dive (Runs Inside the Browser), cy Command Chaining and Asynchronous Execution Model, Cypress vs Playwright in 2026 — Which Tool for Which Team, Fixtures, Custom Commands and the Support File Pattern, intercept() Network Stubbing and API Mocking Mastery, Cypress Component Testing with React/Vue/Angular, Flaky Test Diagnosis and Retry Strategy in Cypress, Cypress Dashboard, CI/CD Integration and Parallelisation, and How to Answer Cypress Questions That Test Engineering Depth at Senior SDET Panels",
     description: "The complete Cypress interview questions guide for 2026 — completing the browser automation trifecta alongside Playwright and Selenium. Covers Cypress's unique architecture (runs inside the browser, direct DOM access, no WebDriver protocol overhead), the asynchronous command chaining model and how .then(), .should(), and Cypress.Promise work under the hood, Cypress vs Playwright comparison in 2026 context — developer experience, cross-browser support, component testing, and the decision framework panels expect, fixtures and custom commands — how to structure the support file for maintainable test suites, intercept() and network stubbing — the complete guide to cy.intercept() for API mocking, request aliasing, dynamic responses, and network error simulation, Cypress Component Testing — the built-in component testing support for React, Vue, and Angular and when to use it over E2E tests, flaky test diagnosis in Cypress — the test retry mechanism, Test Isolation mode, cy.clock() and cy.tick() for timer control, and the structural causes of flakiness, Cypress Dashboard and CI/CD integration — parallelisation strategies, GitHub Actions and Cypress Cloud integration, Smart Orchestration, and the pipeline gating decisions that demonstrate seniority, and the 8 most common Cypress interview traps that eliminate candidates — from misunderstanding the async execution queue to abusing cy.wait() with arbitrary timeouts. Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where Cypress questions have moved from 'can you write a login test?' to 'explain the Cypress command queue execution model and when you'd choose Cypress over Playwright for a greenfield project.' The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated Cypress testing topics — with AI mock interview rounds covering Cypress architecture, command chaining, network stubbing, component testing, and CI/CD integration at five seniority levels.",
