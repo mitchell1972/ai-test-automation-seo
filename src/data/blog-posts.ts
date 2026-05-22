@@ -14,6 +14,522 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "git-github-sdet-interview-questions-2026",
+    title: "Git and GitHub for SDET Interviews 2026 — Git Workflows for Test Automation (Feature Branches, PR Reviews for Test Code, Trunk-Based Development with Test Gates), Common Git Commands Interviewers Ask About (Rebase vs Merge, Cherry-Pick, Bisect, Stash, Interactive Rebase, Reset vs Revert), GitHub Actions for Test CI/CD (Test Matrix Strategies, Parallel Execution, Flakiness Detection in CI, Artifact Management), Managing Test Branches Alongside Feature Branches, .gitignore for Test Artifacts (Reports, Screenshots, Videos, Logs, Temporary Data), Git Hooks for Pre-Commit Test Runs (Husky, lint-staged, Pre-Commit Test Selection), Monorepo Git Strategies for Test Code (Shared Test Utilities, Versioning Test Packages, Cross-Package Test Dependencies), and Resolving Merge Conflicts in Test Files with Practical Code Examples in Bash and YAML",
+    description: "The definitive Git and GitHub interview guide for SDET candidates in 2026 — covering every dimension of version control that modern interview panels probe, from Git workflows for test automation to GitHub Actions CI/CD pipelines, merge conflict resolution, Git hooks, monorepo strategies, and the Git commands every SDET must know cold. Packed with bash and YAML code examples, real interview scenarios, and practical strategies that demonstrate operational maturity beyond just 'git commit and push.'",
+    date: "2026-05-22",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Git and GitHub for SDET interviews 2026",
+      "Git workflows test automation feature branches PR reviews",
+      "Git commands SDET interview rebase merge cherry-pick bisect stash",
+      "GitHub Actions test CI/CD pipeline YAML configuration SDET",
+      "Git hooks pre-commit test runs Husky lint-staged automation",
+      "monorepo Git strategy test code shared utilities versioning",
+      "resolving merge conflicts test files Git SDET best practices",
+      "gitignore test artifacts reports screenshots videos logs SDET",
+    ],
+    content: `
+<section class="content-section">
+  <p>Picture this. You're in the SDET interview of your life. The panel is nodding along as you explain your test automation framework architecture. You're nailing it. Then the lead engineer leans forward and says: <em>"Walk me through a Git workflow you've used for test automation. When do you branch? How do you handle PR reviews for test code? What's your strategy for keeping test branches in sync with feature branches? And while we're at it — rebase vs merge: which do you use, and why? What about when things go wrong — walk me through git bisect to find which commit introduced a flaky test."</em> Your mind goes blank. You use Git every day — commit, push, pull, maybe a branch here and there. But you've never <em>engineered</em> a Git workflow. You've never thought about Git as a <em>testing tool</em>. And in 2026, that gap is exactly what interview panels are probing — because version control isn't just where you store code. It's where you enforce quality. It's where you trace failures to their source commits. It's where test automation lives alongside application code, and the maturity of your Git strategy signals the maturity of your entire testing approach.</p>
+  <p>Here's the reality: most SDET candidates can commit, push, and create a pull request. But interview panels in 2026 want the candidate who can <em>design</em> a Git strategy for test automation — someone who can explain why trunk-based development with test gates catches failures faster than long-lived test branches, who can configure GitHub Actions to run a test matrix across 12 browser-OS combinations in under 10 minutes, who can use git bisect to pinpoint the exact commit that introduced a regression in 3 minutes instead of 3 hours. This guide covers every Git and GitHub topic that SDET interview panels probe — not the basics you learned in your first week, but the operational maturity that separates testers who use Git from test engineers who <em>leverage</em> Git. Complement it with our deep-dive on <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a> for the broader pipeline context, our <a href="/blog/docker-test-automation-interview-questions-2026">Docker Test Automation Interview Questions</a> for the containerization layer underneath your Git workflows, and our <a href="/blog/typescript-for-sdet-interviews-2026">TypeScript for SDET Interviews 2026</a> for the language most of your test code will live in. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated Git and version control mock interview rounds — with AI-scored questions covering Git workflows, branching strategies, CI/CD configuration, hooks, and real-world disaster recovery scenarios at five seniority levels.</p>
+</section>
+
+<section class="content-section">
+  <h2>Git Workflows for Test Automation — The Branching Strategies Interviewers Actually Want to Hear</h2>
+  <p>When an interviewer asks "what Git workflow do you use for test automation?" they're not asking whether you know how to create a branch. They're testing whether you've thought about the <em>relationship</em> between application code branches and test code branches — because that relationship determines how quickly tests can validate changes, how much merge debt you accumulate, and whether your test suite reflects the state of the application at any given commit.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Strategy 1: Colocated Test Code — Tests Live in the Same Repo as the Feature Code</h3>
+      <p><strong>Workflow:</strong> Test files sit alongside application code in the same repository. When a developer creates a feature branch for a new feature, the test code is created or updated in the same branch. PR reviews include both the feature code and the test code. <strong>Branch naming convention for test work:</strong> when the SDET is adding tests for an existing feature, branch names like <code>test/add-checkout-flow-e2e-tests</code> or <code>test/fix-flaky-login-test</code> clearly signal that the PR is test-only. <strong>PR review checklist for test code:</strong> (1) Does every new test have a clear purpose stated in the description? (2) Are selectors robust (data-testid, not nth-child)? (3) Is test data isolated (unique IDs, no hard-coded dependencies)? (4) Does the test clean up after itself? (5) Are timeouts reasonable for the operation being tested? (6) Is the test idempotent — can it run three times in a row and produce the same result? <strong>When this works best:</strong> small-to-medium teams where developers and SDETs collaborate closely, and test code changes naturally accompany feature changes. <strong>When it breaks down:</strong> large teams where test code churn is high and test branches need independent release cadences, or when test infrastructure (frameworks, fixtures, utilities) needs versioning separate from application code.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Strategy 2: Separate Test Repository — Test Code Lives in Its Own Repo</h3>
+      <p><strong>Workflow:</strong> Test automation code lives in a dedicated repository (e.g., <code>myapp-e2e-tests</code>), with its own branching strategy, release cycle, and CI/CD pipeline. The test repo references the application repo as a dependency — typically via Git submodules, a versioned Docker image, or a deployment URL. <strong>Branching strategy:</strong> the test repo maintains a <code>main</code> branch that tests the production version of the app, and feature branches like <code>tests/sprint-23-new-checkout-flow</code> that test upcoming features against staging environments. <strong>Versioning challenge:</strong> how does the test repo know which version of the app to test? Solutions: (a) test against a deployed staging environment (the test repo's <code>main</code> tests staging, and a scheduled pipeline tests production hourly), (b) use Git submodules to pin a specific application commit in the test repo, (c) use Docker tags — the test repo's CI pulls <code>myapp:staging</code> before running tests. <strong>When this works best:</strong> large organisations where the test team operates independently from feature teams, or when tests against multiple services need a unified repository. <strong>When it breaks down:</strong> tight coupling between feature changes and test changes creates constant cross-repo coordination overhead, or when test failures don't clearly map to application commits because the version relationship is fuzzy.</p>
+    </div>
+  </div>
+
+  <div class="comparison-card" style="margin-top: 1.5rem;">
+    <h3>Strategy 3: Trunk-Based Development with Test Gates — The Gold Standard for 2026</h3>
+    <p>Trunk-based development (TBD) means all developers commit to short-lived branches (ideally &lt;24 hours) that merge directly into <code>main</code>. There are no long-lived feature branches. For test automation, TBD means: (1) Every commit to <code>main</code> triggers the full test suite in CI — unit, integration, and E2E. (2) The test suite must pass before the commit is accepted to <code>main</code> — this is the "test gate." (3) If the test suite fails, the commit is reverted or fixed immediately — there's no "we'll fix the tests later." (4) Because branches are short-lived, merge conflicts in test files are rare and small — you're never resolving a two-week-old branch's test changes against a heavily-diverged main. <strong>The SDET's role in TBD:</strong> the SDET is responsible for making the test suite <em>fast enough</em> for TBD. If the full test suite takes 45 minutes, developers won't tolerate waiting for it on every commit — and TBD collapses. The SDET must design test parallelism (splitting tests across 10, 20, 30 parallel CI workers), implement test selection (only run tests affected by the changed files), and evangelise test performance as a feature. <strong>The interview answer that wins:</strong> "I advocate for trunk-based development with test gates. Every commit triggers the test suite. If tests pass, the commit is accepted. If tests fail, the commit is reverted within 5 minutes. This means the test suite <em>must</em> be fast — and that's my job as an SDET. I design test parallelism using GitHub Actions matrices, implement test impact analysis so we only run tests affected by changed files, and maintain a dashboard that tracks test suite duration over time. When the test suite gets slower, I treat it as a production incident — because a slow test suite kills TBD, and without TBD, merge debt accumulates and test quality decays."</p>
+  </div>
+
+  <pre><code># Git workflow: creating a test-only branch with proper naming and scope
+# Scenario: Adding Playwright E2E tests for the new checkout flow
+
+# 1. Start from latest main
+git checkout main
+git pull origin main
+
+# 2. Create test branch with clear naming convention
+git checkout -b test/add-checkout-e2e-payment-flow
+
+# 3. Write your tests (example: e2e/checkout/payment-flow.spec.ts)
+# ... coding ...
+
+# 4. Commit with descriptive messages — not just "added tests"
+git add e2e/checkout/payment-flow.spec.ts test-fixtures/checkout-data.ts
+git commit -m "test(checkout): add E2E coverage for payment flow
+
+- Credit card payment happy path
+- PayPal payment integration
+- Payment failure recovery and retry
+- Invalid card details validation
+- Timeout handling for slow payment gateways
+
+Uses data-testid selectors exclusively for selector stability.
+All test data is generated with faker for isolation.
+
+Relates to: JIRA-4567 (Checkout v2 redesign)"</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Git Commands Every SDET Must Know Cold — The Interviewer's Favourite Questions</h2>
+  <p>Interview panels love Git command questions because they're fast to ask, unambiguous in their answers, and they separate candidates who <em>use</em> Git from candidates who <em>understand</em> Git. Here's the canonical list — with the answers that demonstrate depth, not just memorisation.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Rebase vs Merge — The Eternal Debate, Decoded for SDETs</h3>
+      <p><strong>Merge:</strong> <code>git merge feature-branch</code> creates a new merge commit that joins two branches. The commit history shows the exact point where the branches converged. <strong>Rebase:</strong> <code>git rebase main</code> rewrites your branch's commit history so it appears as though you started from the latest commit on main — your commits are replayed on top of main's commits, creating a linear history. <strong>The difference that matters for test code:</strong> when you're working on a test branch that's behind main by several application commits, <code>git merge main</code> creates a merge commit that says "I merged main's changes into my test branch." That's fine — it preserves the truth of what happened. <code>git rebase main</code> rewrites history to make it look like you started from the latest main. That's cleaner — but it rewrites history, which is dangerous if your branch is already pushed and others are working on it. <strong>The SDET-specific answer:</strong> "I use merge for shared test branches where multiple SDETs are collaborating — because merge preserves the shared history and doesn't force-push chaos. I use interactive rebase (<code>git rebase -i</code>) on my personal test branches before creating a PR — to squash 'WIP: fixing selector' and 'actually fix selector' and 'selector still broken' into a single clean commit. The principle: rebase for presentation, merge for collaboration." <strong>Golden rule interviewers want to hear:</strong> "Never rebase a branch that's been pushed and others are working on. The force-push required after rebase will corrupt their local copies and create merge hell. Rebase is for local history cleanup before sharing."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Git Bisect — The SDET's Secret Weapon for Finding Regression Commits</h3>
+      <p><strong>What it does:</strong> <code>git bisect</code> performs a binary search through your commit history to find the exact commit that introduced a bug. You tell it a "good" commit (where the bug doesn't exist) and a "bad" commit (where the bug exists), and it checks out commits halfway between them — you mark each one good or bad until it narrows down to the single commit that introduced the regression. <strong>Why it's an SDET superpower:</strong> imagine a flaky test started failing 3 days ago, and there were 200 commits in that window. Without git bisect, you're reading through 200 diffs trying to guess which one affected your test. With git bisect, you automate the search: (1) mark the current commit as "bad" (test fails), (2) mark a commit from 4 days ago as "good" (test passed), (3) git bisect checks out the midpoint, (4) you run the failing test — pass or fail? (5) repeat — within log₂(200) ≈ 8 iterations, you've found the exact commit. <strong>Automated bisect with test script:</strong> "I create a bash script that runs the specific failing test. Then <code>git bisect run ./find-flaky-commit.sh</code> — Git automatically bisects, runs the script at each commit, and reports the first bad commit without any manual intervention. This turns a 3-hour manual investigation into a 5-minute automated one." <strong>Interview nuance:</strong> "Bisect works best with atomic commits — one logical change per commit. If commits are large and messy ('updated everything'), bisect finds the commit but you still can't identify the specific change. This is why I advocate for small, focused commits — they make bisect actionable."</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Cherry-Pick, Stash, Interactive Rebase, Reset vs Revert</h3>
+      <p><strong>Cherry-Pick:</strong> <code>git cherry-pick &lt;commit-hash&gt;</code> applies a specific commit from another branch onto your current branch. <strong>SDET use case:</strong> a test fix committed to the release branch needs to be applied to main without merging the entire release branch. <strong>Pitfall:</strong> cherry-pick creates a new commit with a different hash — if the original commit is later merged into main, Git sees two different commits with the same changes and may create conflicts. <strong>Rule:</strong> cherry-pick sparingly; prefer merging.</p>
+      <p><strong>Stash:</strong> <code>git stash</code> temporarily shelves your uncommitted changes so you can switch branches, pull, or deal with an emergency without committing half-done work. <strong>SDET use case:</strong> you're in the middle of writing a complex test when a production incident requires you to switch to the hotfix branch immediately. <code>git stash</code> saves your work-in-progress, you fix the incident, then <code>git stash pop</code> restores your test code exactly as you left it. <strong>Pro tip:</strong> <code>git stash save "WIP: login flow E2E test — selector refactoring"</code> gives your stash a descriptive name — 3 weeks later, <code>git stash list</code> shows you exactly what each stash contains instead of auto-generated messages like "WIP on test/add-login-e2e: a1b2c3d."</p>
+      <p><strong>Interactive Rebase:</strong> <code>git rebase -i HEAD~5</code> opens an editor showing your last 5 commits. You can reorder them, squash multiple commits into one, edit commit messages, or drop commits entirely. <strong>SDET use case:</strong> before creating a PR for your test code, squash your 8 "wip" commits into 1-3 logical commits with clean messages. The PR reviewer sees "test: add checkout E2E coverage" and "refactor: extract login helper" instead of "wip," "fix," "actually fix," "still fixing," "selector," "typo," "please work," "🤞."</p>
+      <p><strong>Reset vs Revert:</strong> <code>git reset &lt;commit&gt;</code> moves your branch pointer backward, optionally keeping or discarding changes. It rewrites history — dangerous on shared branches. <code>git revert &lt;commit&gt;</code> creates a new commit that undoes the changes from a previous commit — preserving history and safe on shared branches. <strong>The SDET answer:</strong> "I use <code>git revert</code> on shared test branches when a test change broke CI — it creates a clean 'undo' commit that everyone can see. I only use <code>git reset</code> on my local branch when I've made a mess and want to start over from a known good state. The rule: revert for shared history, reset for local cleanup."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Git Log as an Investigation Tool — Beyond git log --oneline</h3>
+      <p>When a test starts failing, your first question is: "what changed recently that could have affected this test?" <code>git log</code> with the right flags answers that question in seconds. <strong>Essential git log commands for SDETs:</strong></p>
+      <p><code>git log --since="3 days ago" -- e2e/checkout/</code> — show all commits from the last 3 days that touched the checkout E2E test directory.</p>
+      <p><code>git log -S "payment-gateway" -- e2e/</code> — find commits that added or removed the string "payment-gateway" in e2e test files (the "pickaxe" search).</p>
+      <p><code>git log -G "click\\(.*Save" -- e2e/</code> — regex search for commits that changed lines matching a pattern — e.g., any click on a "Save" button.</p>
+      <p><code>git log --diff-filter=D -- e2e/checkout/old-payment-flow.spec.ts</code> — find the commit that deleted a specific test file.</p>
+      <p><code>git log --author="mitchell" --since="1 week ago" -- e2e/</code> — show test changes by a specific author.</p>
+      <p><strong>The interview answer:</strong> "When a test starts failing, I don't manually scan through commits. I use targeted git log queries to narrow down the candidate commits in 30 seconds — then git bisect to pinpoint the exact commit in 5 minutes. This is systematic debugging, not guessing."</p>
+    </div>
+  </div>
+
+  <pre><code>#!/bin/bash
+# Automated git bisect for test regression — find the commit that broke a test
+# Usage: ./bisect-flaky-test.sh "e2e/login.spec.ts:42" "main~50"
+
+TEST_FILE="$1"
+GOOD_COMMIT="$2"
+
+# Create a test script that bisect will execute at each commit
+cat > /tmp/bisect-test.sh << 'SCRIPT'
+#!/bin/bash
+# Install dependencies at this commit (if needed)
+npm ci --silent 2>/dev/null
+
+# Run just the failing test with a tight timeout
+npx playwright test "$TEST_FILE" --timeout=30000 --max-failures=1
+
+# Exit 0 if test passes (git good), exit 1-127 if test fails (git bad)
+exit $?
+SCRIPT
+
+chmod +x /tmp/bisect-test.sh
+
+# Start bisect
+git bisect start
+git bisect bad HEAD            # Current commit — test fails
+git bisect good "$GOOD_COMMIT" # Known-good commit
+
+# Run automated bisect
+git bisect run /tmp/bisect-test.sh
+
+# Cleanup
+git bisect reset
+rm /tmp/bisect-test.sh
+
+echo "Bisect complete. First bad commit shown above."</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>GitHub Actions for Test CI/CD — Building the Pipeline That Interviewers Respect</h2>
+  <p>GitHub Actions is the default CI/CD platform for most teams in 2025-2026, and SDET interview panels expect you to configure it — not just trigger it. The difference between "I've used GitHub Actions" and "I've designed GitHub Actions workflows for test automation" is the difference between a test executor and a test infrastructure engineer.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Test Matrix Strategies — Running Hundreds of Tests in Parallel</h3>
+      <p>A test matrix runs the same test suite across multiple configurations in parallel — different browsers, operating systems, screen sizes, or API versions. <strong>Example:</strong> a Playwright E2E suite that must pass on Chrome, Firefox, Safari, and Edge — on both macOS and Windows — across mobile and desktop viewports. That's a 4 × 2 × 2 = 16-configuration matrix. Running them sequentially would take 16 × 10 minutes = 160 minutes. Running them in parallel with GitHub Actions matrix strategy takes ~12 minutes (the longest single configuration, plus setup overhead). <strong>Key GitHub Actions features SDETs must know:</strong> (1) <code>strategy.matrix</code> — define the dimensions (browser, OS, viewport) and Actions spawns a parallel job for each combination. (2) <code>strategy.fail-fast</code> — when set to <code>false</code>, all matrix jobs run to completion even if one fails — critical for getting the full picture of failures. (3) <code>strategy.max-parallel</code> — limit concurrency to avoid overwhelming shared resources (e.g., a shared test database that can handle 10 connections). (4) <code>include</code> and <code>exclude</code> — add specific combinations or remove nonsensical ones (e.g., exclude Safari on Windows — it doesn't exist). <strong>The interview nuance:</strong> "I design matrices that balance coverage with cost. Running 48 combinations uses 48 GitHub Actions runner-minutes per push — that adds up fast. I use test impact analysis to run the full matrix only when test code changes, and a subset (smoke tests on 2 browsers) for application code changes."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Flakiness Detection in CI — Catching Flaky Tests Before They Erode Trust</h3>
+      <p>CI pipelines generate the raw data for flakiness detection — every test run, every pass, every failure. <strong>GitHub Actions flakiness workflow pattern:</strong> (1) Run the test suite. (2) On failure, retry only the failed tests (not the entire suite). (3) If a test passes on retry, flag it as "potentially flaky" and log it to a flakiness report — don't fail the build. (4) If a test fails on retry, it's a real failure — fail the build. (5) Publish flakiness data as a CI artifact — a JSON file recording every test run result, retry count, and flakiness status. (6) A separate scheduled workflow (daily at midnight) consumes the accumulated flakiness data and generates a flakiness report — identifying tests that have been "potentially flaky" more than N times in the past week. <strong>GitHub Actions artifact management:</strong> use <code>actions/upload-artifact</code> to save test reports, screenshots, videos, and traces from failed tests. Use <code>actions/download-artifact</code> in a reporting workflow to aggregate data across runs. <strong>The interview answer:</strong> "I design CI pipelines that detect flakiness at the infrastructure level — not by asking testers to manually report flaky tests. The pipeline automatically retries failures once, classifies them as flaky or real, and publishes the data. A scheduled job generates weekly flakiness reports. This makes flakiness visible and measurable — and visibility is the first step toward remediation."</p>
+    </div>
+  </div>
+
+  <pre><code># .github/workflows/e2e-tests.yml — Production-grade Playwright workflow
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'e2e/**'
+      - 'src/**'
+      - '.github/workflows/e2e-tests.yml'
+
+concurrency:
+  group: e2e-tests-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: E2E — \${{ matrix.browser }} on \${{ matrix.os }}
+    runs-on: \${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false  # Run all matrix jobs, don't cancel on first failure
+      max-parallel: 10
+      matrix:
+        browser: [chromium, firefox, webkit]
+        os: [ubuntu-latest, windows-latest]
+        exclude:
+          # Safari (webkit) on Windows doesn't exist
+          - browser: webkit
+            os: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps \${{ matrix.browser }}
+
+      - name: Run E2E tests
+        id: test-run
+        run: |
+          npx playwright test \
+            --project=\${{ matrix.browser }} \
+            --reporter=json > test-results.json || true
+
+      - name: Retry failed tests (flakiness detection)
+        if: failure() && steps.test-run.outcome == 'failure'
+        run: |
+          npx playwright test \
+            --project=\${{ matrix.browser }} \
+            --last-failed \
+            --reporter=json > retry-results.json || true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-\${{ matrix.browser }}-\${{ matrix.os }}
+          path: |
+            test-results.json
+            retry-results.json
+            playwright-report/
+            test-results/
+          retention-days: 7</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>.gitignore for Test Artifacts — What to Exclude and Why It Matters</h2>
+  <p>A well-crafted <code>.gitignore</code> for test automation isn't just housekeeping — it prevents accidental commits of sensitive data, binary bloat, and machine-specific artifacts that break CI. Interview panels notice when a candidate can articulate <em>why</em> each entry belongs in <code>.gitignore</code> — not just that it's there.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Test Artifacts You Must Ignore — With the Reasoning Behind Each</h3>
+      <p><strong>Test reports and output directories:</strong> <code>test-results/</code>, <code>playwright-report/</code>, <code>allure-results/</code>, <code>cypress/videos/</code>, <code>cypress/screenshots/</code>. Reports are generated per-run and are machine-specific — committing them creates unnecessary churn and bloats the repository. Reports belong in CI artifacts (GitHub Actions artifact storage), not version control.</p>
+      <p><strong>Screenshots and videos from test failures:</strong> <code>**/test-results/**/*.png</code>, <code>**/test-results/**/*.webm</code>. These are binary files that can be megabytes each. A single CI run with 12 failed tests could generate 50MB of screenshots. Committing them would make every clone and fetch significantly slower. Store them as CI artifacts with a retention policy.</p>
+      <p><strong>Traces and HAR files:</strong> <code>*.har</code>, <code>trace.zip</code>, <code>playwright/.auth/</code>. Playwright traces can contain request payloads and response bodies — potentially including authentication tokens, session cookies, and test user credentials. Committing trace files is a security risk. HAR files contain full HTTP request/response data — equally sensitive.</p>
+      <p><strong>Auth state files:</strong> <code>playwright/.auth/</code>, <code>auth.json</code>, <code>storageState.json</code>. These contain cookies, local storage, and session tokens for authenticated test runs. Committing them means anyone with repository access can impersonate your test users — a security incident, not just bad practice.</p>
+      <p><strong>Local environment files:</strong> <code>.env.local</code>, <code>.env.test</code>, <code>cypress.env.json</code>. These may contain API keys, database credentials, or test environment URLs. They're environment-specific — the CI pipeline should provide these as secrets, not as committed files.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>What SHOULD Be Committed — The Positive .gitignore Rule</h3>
+      <p><strong>Test fixtures and test data templates:</strong> <code>test-fixtures/*.json</code>, <code>cypress/fixtures/example.json</code>. These are reference data files used to generate dynamic test data — they contain structure, not real data. Commit them so tests produce consistent results across environments.</p>
+      <p><strong>Test configuration files:</strong> <code>playwright.config.ts</code>, <code>jest.config.ts</code>, <code>cypress.config.ts</code>. These define the test framework's behavior — browser selection, timeouts, retries, reporter configuration. Every test run needs them, and they should be versioned alongside the test code they configure.</p>
+      <p><strong>Test utility code:</strong> <code>test-utils/</code>, <code>helpers/</code>, <code>assertions/</code>. These are shared helper functions used across tests — login helpers, data generators, custom matchers. They're application code (just for testing) and should be versioned, reviewed, and tested like any other code.</p>
+      <p><strong>Docker and CI configuration:</strong> <code>docker-compose.test.yml</code>, <code>Dockerfile.test</code>, <code>.github/workflows/*.yml</code>. These define the test infrastructure — the database version, the message broker, the mocked services. Versioning them ensures every test run uses the same infrastructure, eliminating environmental non-determinism.</p>
+      <p><strong>The interview answer:</strong> "My .gitignore rule for test automation: commit configuration, ignore output. Commit the code that generates test results; ignore the results themselves. Commit the framework configuration that defines how tests run; ignore the artifacts that tests produce. And specifically for Playwright — never commit auth state files or traces. They're security-sensitive and environment-specific."</p>
+    </div>
+  </div>
+
+  <pre><code># .gitignore — Comprehensive template for Playwright/TypeScript test automation repo
+# Rule: commit configuration, ignore output
+# Rule: commit code, ignore artifacts
+# Rule: never commit auth state or traces (security)
+
+# === Test Reports and Output ===
+test-results/
+playwright-report/
+allure-results/
+allure-report/
+junit.xml
+coverage/
+.nyc_output/
+
+# === Screenshots and Videos from Failures ===
+**/test-results/**/*.png
+**/test-results/**/*.webm
+cypress/videos/
+cypress/screenshots/
+
+# === Traces and HAR Files (CONTAINS SENSITIVE DATA) ===
+*.har
+trace.zip
+traces/
+
+# === Auth State (CONTAINS SESSION TOKENS — SECURITY RISK) ===
+playwright/.auth/
+auth.json
+storageState.json
+*-auth-state.json
+
+# === Environment-Specific Config (may contain credentials) ===
+.env.local
+.env.test
+.env.staging
+.env.production
+cypress.env.json
+
+# === Temporary and Cache Files ===
+*.log
+node_modules/
+dist/
+.turbo/
+.next/
+
+# === OS-Specific ===
+.DS_Store
+Thumbs.db
+
+# === IDE-Specific ===
+.vscode/settings.json
+.idea/</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Git Hooks for Pre-Commit Test Runs — Automating Quality at Commit Time</h2>
+  <p>Git hooks are scripts that Git executes before or after specific events — commit, push, rebase, merge. For SDETs, the pre-commit hook is the most powerful: it runs checks <em>before</em> a commit is created, preventing bad code from entering the repository in the first place. The key is making hooks fast enough that developers don't disable them — a 30-second pre-commit hook is useful; a 5-minute one is a productivity killer that developers will bypass.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Husky + lint-staged — The Standard Pre-Commit Stack for 2026</h3>
+      <p><strong>Husky</strong> is a Node.js library that manages Git hooks in your project's <code>.husky/</code> directory — no manual hook scripting required. <strong>lint-staged</strong> runs linters and formatters against <em>only the staged files</em> — not the entire codebase. Together, they create a pre-commit workflow that's fast (only staged files), consistent (every developer runs the same checks), and version-controlled (the hook configuration lives in the repo, not on individual machines). <strong>SDET-specific pre-commit checks:</strong> (1) Lint test code with ESLint — catch syntax errors, unused variables, and code style violations before they reach CI. (2) Format test code with Prettier — prevent formatting-only diffs that complicate code reviews. (3) Type-check test files — run <code>tsc --noEmit</code> against staged test files to catch type errors. (4) Run unit tests for modified test utilities — if you changed <code>test-utils/login-helper.ts</code>, run the tests that exercise that helper. (5) Check for forbidden patterns — e.g., <code>.only</code> in test files (<code>test.only</code>, <code>it.only</code>, <code>describe.only</code>) that would prevent the full suite from running in CI. <strong>Critical design principle:</strong> "Pre-commit hooks must complete in under 30 seconds. Anything slower, and developers will find ways to skip them. That's why I use lint-staged (only staged files) and limit pre-commit to linting, formatting, and fast checks. Full test suites belong in CI, not in pre-commit."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Pre-Commit Test Selection — Running the Right Tests Fast</h3>
+      <p>The hardest pre-commit challenge: running test checks that are both <em>fast</em> and <em>relevant</em>. Running all 2,000 tests takes 20 minutes — impossible pre-commit. Running no tests means type errors and broken assertions reach CI — wasting everyone's time. <strong>The solution: test impact analysis at commit time.</strong> (1) Identify which test files import or depend on the staged files. (2) Run only those test files. (3) If the staged files are test utilities or helpers, run the tests that use those utilities. (4) If no tests are affected, skip test execution entirely. <strong>Tools:</strong> Jest's <code>--findRelatedTests</code> flag runs only the tests that import the changed files. Playwright doesn't have native impact analysis, but you can implement it: parse the dependency graph, identify affected spec files, and pass them to <code>npx playwright test &lt;affected-files&gt;</code>. <strong>Fallback for safety:</strong> if test impact analysis can't determine affected tests (e.g., a config file change), fall back to running a fast smoke test suite — 20-30 critical-path tests that complete in under 60 seconds.</p>
+    </div>
+  </div>
+
+  <pre><code>#!/bin/bash
+# .husky/pre-commit — SDET-optimised pre-commit hook
+# Runs: lint-staged (ESLint + Prettier on staged files), forbidden patterns check,
+# TypeScript type-check, and test impact analysis
+
+set -e
+
+echo "🔍 Pre-commit checks running..."
+
+# 1. Lint and format staged files only (fast — &lt;10s)
+echo "  → Linting and formatting staged files..."
+npx lint-staged
+
+# 2. Check for .only in staged test files (prevents CI disasters)
+echo "  → Checking for .only in test files..."
+STAGED_TEST_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(spec|test)\.(ts|js)$' || true)
+if [ -n "$STAGED_TEST_FILES" ]; then
+  if grep -rn "\.only" $STAGED_TEST_FILES; then
+    echo "❌ ERROR: .only found in staged test files. Remove .only before committing."
+    echo "   This prevents the full test suite from running in CI."
+    exit 1
+  fi
+fi
+
+# 3. Type-check staged TypeScript files
+echo "  → Type-checking staged files..."
+STAGED_TS_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.ts$' || true)
+if [ -n "$STAGED_TS_FILES" ]; then
+  npx tsc --noEmit --pretty $STAGED_TS_FILES || {
+    echo "❌ TypeScript errors found. Fix before committing."
+    exit 1
+  }
+fi
+
+# 4. Test impact analysis — run only affected tests
+echo "  → Running affected tests..."
+if [ -n "$STAGED_TS_FILES" ]; then
+  # Use Jest's findRelatedTests for unit tests
+  npx jest --findRelatedTests $STAGED_TS_FILES --passWithNoTests --silent || {
+    echo "❌ Affected tests failed. Fix before committing."
+    exit 1
+  }
+fi
+
+echo "✅ Pre-commit checks passed!"</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Monorepo Git Strategies for Test Code — When Your Tests Span Multiple Packages</h2>
+  <p>Monorepos — repositories containing multiple related projects — are the default in 2026 for mid-to-large engineering organisations. For SDETs, monorepos create unique Git challenges: where do shared test utilities live? How do you version test helpers used by multiple packages? What happens when a test in package A depends on a utility in a shared test package?</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Monorepo Structure for Test Code — The Patterns That Scale</h3>
+      <p><strong>Pattern 1 — Shared test utilities package:</strong> create a dedicated package (e.g., <code>packages/test-utils</code>) containing page objects, custom matchers, authentication helpers, data generators, and mock servers. Every application package imports from <code>@myorg/test-utils</code>. Changes to test utilities are versioned and reviewed independently, and downstream packages can pin specific versions. <strong>Pattern 2 — Test code colocated with packages:</strong> each package has its own <code>__tests__/</code> or <code>e2e/</code> directory. Test utilities that are package-specific live in the package; utilities used by 2+ packages are extracted to the shared test-utils package. <strong>Pattern 3 — Federated test configuration:</strong> a root-level <code>jest.config.base.ts</code> or <code>playwright.config.base.ts</code> defines the common configuration (timeouts, retries, reporters). Each package extends the base config for its specific needs.</p>
+      <p><strong>Git branching in monorepos — the SDET-specific challenge:</strong> when Feature Team A modifies the shared test utilities package, their change affects every team's tests. A breaking change to <code>login(page)</code> in <code>@myorg/test-utils</code> could break 40 test suites across 8 packages. <strong>The solution:</strong> (1) Require PR approval from the test infrastructure team for changes to shared test packages. (2) Run the full cross-package test suite when shared test utilities change — not just the affected package's tests. (3) Version the shared test utilities package semantically — major version bumps for breaking changes, minor for additions, patch for fixes. (4) Use <code>changesets</code> or similar tooling to manage version bumps and changelogs across the monorepo.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Cross-Package Test Dependencies and Git Sparse Checkout</h3>
+      <p><strong>The dependency problem:</strong> in a monorepo with 20 packages, a full <code>git clone</code> might be 2GB with 50,000 files. CI pipelines cloning the entire monorepo just to run tests for a single package waste time and resources. <strong>Git sparse checkout:</strong> a Git feature that lets you check out only a subset of the repository's files. In CI, you can configure GitHub Actions to use sparse checkout — cloning only the package under test plus its dependencies. <strong>Example:</strong> the checkout E2E test CI job for <code>packages/checkout</code> uses sparse checkout to include only <code>packages/checkout/</code>, <code>packages/test-utils/</code>, <code>packages/shared-types/</code>, and root-level config files — ignoring the other 17 packages. This reduces clone time from 3 minutes to 30 seconds and disk usage from 2GB to 200MB.</p>
+      <p><strong>GitHub Actions sparse checkout example:</strong> use <code>actions/checkout@v4</code> with <code>sparse-checkout</code> and <code>sparse-checkout-cone-mode</code> to specify paths. <strong>The interview answer:</strong> "In monorepos, I optimise CI by using Git sparse checkout — cloning only the packages relevant to the test job. For shared test utilities, I treat them as first-class packages with semantic versioning, dedicated code owners, and cross-package test runs on every change. The principle: a change to shared test code is a change to every package that depends on it — so every dependent package's tests must pass."</p>
+    </div>
+  </div>
+
+  <pre><code># Example monorepo structure with test code strategy
+#
+# myorg-ecommerce/
+# ├── packages/
+# │   ├── test-utils/          # Shared test utilities (published as @myorg/test-utils)
+# │   │   ├── src/
+# │   │   │   ├── page-objects/
+# │   │   │   ├── helpers/
+# │   │   │   ├── matchers/
+# │   │   │   └── fixtures/
+# │   │   ├── package.json
+# │   │   └── CHANGELOG.md
+# │   ├── checkout/
+# │   │   ├── src/             # Application code
+# │   │   ├── __tests__/       # Unit tests (colocated)
+# │   │   ├── e2e/             # E2E tests (colocated)
+# │   │   └── package.json
+# │   ├── product-catalog/
+# │   │   ├── src/
+# │   │   ├── __tests__/
+# │   │   ├── e2e/
+# │   │   └── package.json
+# │   └── auth/
+# │       ├── src/
+# │       ├── __tests__/
+# │       ├── e2e/
+# │       └── package.json
+# ├── jest.config.base.ts      # Shared Jest configuration
+# ├── playwright.config.base.ts # Shared Playwright configuration
+# ├── .github/
+# │   └── workflows/
+# │       ├── checkout-e2e.yml  # Sparse checkout for checkout package E2E
+# │       └── shared-utils-ci.yml # Full checkout when test-utils changes
+# └── .gitignore</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Resolving Merge Conflicts in Test Files — The Skill That Separates Juniors from Seniors</h2>
+  <p>Merge conflicts in application code are relatively straightforward — two developers changed the same function, you reconcile the logic. Merge conflicts in test files are trickier because they often involve intent, not just code — two SDETs wrote different tests for the same feature, or one SDET refactored a test helper while another added a new test that uses the old helper, or two branches both added test data that now conflicts. The conflict isn't just in the code — it's in the testing strategy.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Common Test File Merge Conflict Scenarios — And How to Resolve Them</h3>
+      <p><strong>Scenario 1 — Both branches added tests at the same position in the file:</strong> Branch A added three tests at the end of <code>checkout.spec.ts</code>. Branch B also added two tests at the same position. Resolution: accept both sets of tests (they test different things), ensure they don't share mutable state, and check that both run independently. If the tests conflict logically (e.g., they interact with the same test data), refactor to use unique data per test.</p>
+      <p><strong>Scenario 2 — One branch refactored a test helper; another branch added a test using the old helper:</strong> Branch A renamed <code>login(page, user)</code> to <code>authenticate(page, credentials)</code> and changed the parameter structure. Branch B added a test that calls <code>login(page, { email, password })</code>. Resolution: update Branch B's test to use <code>authenticate(page, { email, password })</code> — the new API. This is a straightforward API migration conflict, resolved by adopting the refactored interface.</p>
+      <p><strong>Scenario 3 — One branch removed a test; another branch modified the same test:</strong> Branch A deleted <code>test('payment with expired card', ...)</code> because the payment provider no longer supports that scenario. Branch B modified the same test to add a new assertion. Resolution: the test was deleted for a reason — accept the deletion. If Branch B's assertion is valuable, extract it into a new test for the current payment flow.</p>
+      <p><strong>Scenario 4 — Both branches modified the same test selector:</strong> Branch A changed <code>page.locator('#submit-btn')</code> to <code>page.getByTestId('submit-button')</code>. Branch B changed it to <code>page.getByRole('button', { name: 'Submit' })</code>. Resolution: data-testid selectors are more robust than role selectors (they don't break when the button text changes). Accept Branch A's change. But consider: why are both changes happening? Is there ambiguity about the project's selector strategy? Document the preferred selector approach in the project's testing guide.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Merge Conflict Resolution Workflow for Test Files</h3>
+      <p><strong>Step 1 — Understand both sides before resolving:</strong> <code>git log --merge</code> shows the commits involved in the conflict. Read the commit messages on both branches to understand intent. <strong>Step 2 — Resolve conflicts at a semantic level, not a text level:</strong> don't just accept "both" or "theirs" blindly. Ask: "Does accepting both tests maintain isolation? Does one test's data affect the other? Is the refactored helper compatible with the new test?" <strong>Step 3 — Run the resolved tests before committing:</strong> after resolving conflicts, run the affected test file locally. A merge conflict resolution that compiles but produces failing tests is a time bomb for CI. <strong>Step 4 — Validate isolation:</strong> run the resolved tests twice in sequence. If they pass the first time but fail the second, there's a shared state problem introduced by the merge.</p>
+      <p><strong>Visual conflict resolution:</strong> VS Code, IntelliJ, and most modern editors have built-in 3-way merge tools that show the common ancestor, your changes, and their changes side by side. Use them — they reduce cognitive load compared to raw <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers in a terminal. <strong>Command-line tips:</strong> <code>git checkout --theirs path/to/test.ts && git checkout --ours path/to/test.ts</code> — quickly accept one side entirely to see what it looks like, then manually merge. <code>git mergetool</code> — opens your configured visual merge tool (VS Code, Meld, Beyond Compare).</p>
+      <p><strong>The interview answer:</strong> "Merge conflicts in test files require semantic resolution, not just text resolution. I read the commit messages on both branches to understand intent, resolve conflicts in a visual merge tool, run the affected tests locally before committing, and always run them twice to validate isolation. The most common mistake is accepting both sides without checking for shared state conflicts — two tests that individually pass but together corrupt each other's data. I accept both only after confirming isolation."</p>
+    </div>
+  </div>
+
+  <pre><code># Merge conflict resolution workflow for test files — step by step
+
+# 1. Start the merge (or rebase)
+git checkout main
+git merge feature/test-new-checkout-flow
+# CONFLICT in e2e/checkout.spec.ts
+
+# 2. See which commits are involved
+git log --merge --oneline
+# Output:
+# a1b2c3d test: add E2E coverage for payment flow (feature branch)
+# d4e5f6g refactor: extract login helper to test-utils (main)
+
+# 3. Check what each side changed
+git diff main...feature/test-new-checkout-flow -- e2e/checkout.spec.ts
+git diff feature/test-new-checkout-flow...main -- e2e/checkout.spec.ts
+
+# 4. Resolve using visual merge tool
+git mergetool  # Opens VS Code with 3-way merge view
+
+# 5. After resolving, run the affected tests
+git add e2e/checkout.spec.ts
+npx playwright test e2e/checkout.spec.ts
+
+# 6. Validate isolation — run twice
+npx playwright test e2e/checkout.spec.ts  # Second run — passes?
+
+# 7. If both runs pass, complete the merge
+git commit -m "merge: resolve test file conflicts — payment flow + login helper refactor"
+
+# 8. Push the resolved merge
+git push origin main
+echo "✅ Merge complete — all tests passing"</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Git and GitHub for SDETs — Frequently Asked Interview Questions</h2>
+  <p>These are the Git and GitHub questions that keep coming up in 2026 SDET interviews — with the answers that demonstrate operational maturity and real-world experience.</p>
+</section>
+    `,
+    faqs: [
+      {
+        q: "What's the difference between git merge and git rebase, and when would you use each in test automation?",
+        a: "Git merge creates a merge commit that joins two branches, preserving the exact history of when and where branches diverged and converged. Git rebase rewrites your branch's commit history so it appears as though you started from the latest commit on the target branch — creating a linear history with no merge commits. In test automation, I use merge for shared test branches where multiple SDETs collaborate — because merge preserves shared history and doesn't require force-pushes. I use interactive rebase on my personal test branches before creating a PR — to squash WIP commits into clean, logical commits with descriptive messages. The iron rule: never rebase a branch that has been pushed and others are working on — the force-push will corrupt their local copies. Rebase is for local history cleanup; merge is for shared collaboration."
+      },
+      {
+        q: "How do you use git bisect to find which commit introduced a test regression?",
+        a: "Git bisect performs a binary search through commit history to find the exact commit that introduced a bug. Start by marking the current commit as 'bad' (the test fails) and a known-good commit from before the regression as 'good'. Git checks out the midpoint commit. Run the failing test — if it passes, mark it 'good'; if it fails, mark it 'bad'. Git narrows the range by half each iteration. With 200 commits in the suspect window, bisect finds the culprit in about 8 iterations. For automation, I create a shell script that runs the specific failing test and use 'git bisect run ./find-regression.sh' — Git automatically bisects, runs the script at each commit, and reports the first bad commit without manual intervention. This turns a 3-hour manual investigation into a 5-minute automated one. The prerequisite: commits must be atomic (one logical change per commit) — if commits are large and messy, bisect finds the commit but you still can't identify the specific change that caused the failure."
+      },
+      {
+        q: "How do you configure GitHub Actions for test CI/CD with parallel execution and flakiness detection?",
+        a: "I design GitHub Actions workflows with three layers. Layer 1 — Matrix strategy: define a test matrix across browsers and operating systems using strategy.matrix, with fail-fast set to false so all matrix jobs complete even if one fails. This gives full visibility into failures across environments. Layer 2 — Flakiness detection: on test failure, automatically retry only the failed tests (not the entire suite). If a test passes on retry, classify it as 'potentially flaky' and log it — don't fail the build. If it fails on retry, it's a real failure. Upload test results as CI artifacts using actions/upload-artifact with a 7-day retention policy. Layer 3 — Scheduled reporting: a separate daily workflow consumes accumulated test result artifacts and generates a flakiness report — identifying tests that have been flagged as flaky more than N times in the past week. This makes flakiness visible and measurable, which is the first step toward remediation."
+      },
+      {
+        q: "What should go in .gitignore for a Playwright test automation project?",
+        a: "My rule is: commit configuration, ignore output. Commit the code that generates test results; ignore the results themselves. Specifically for Playwright: ignore test-results/, playwright-report/, and any allure-results/ directories — these are generated per-run and create unnecessary repo churn. Ignore screenshots and videos (**/test-results/**/*.png, **/test-results/**/*.webm) — they're binary bloat that belongs in CI artifacts, not version control. Critically, never commit auth state files (playwright/.auth/, auth.json, storageState.json) or trace files (*.har, trace.zip) — these contain session tokens, cookies, and request payloads that are security-sensitive. Also ignore environment-specific config files (.env.local, .env.test, cypress.env.json) — CI should provide these as secrets, not committed files. On the flip side, DO commit: test configuration files (playwright.config.ts), test fixtures/templates (not real data), test utility code (helpers, custom matchers), and Docker/CI configuration (docker-compose.test.yml)."
+      },
+      {
+        q: "How do you set up Git hooks for pre-commit test runs without slowing down development?",
+        a: "The golden rule: pre-commit hooks must complete in under 30 seconds, or developers will bypass them. I use Husky to manage hooks and lint-staged to run checks against only staged files — not the entire codebase. My pre-commit pipeline: (1) ESLint + Prettier on staged files for code quality and formatting consistency (under 10 seconds). (2) Check for .only in staged test files — test.only, it.only, describe.only — because .only silently skips all other tests in CI, which is a disaster (under 2 seconds). (3) TypeScript type-check on staged files with tsc --noEmit (5-15 seconds depending on project size). (4) Test impact analysis — use Jest's --findRelatedTests to run only unit tests that import or depend on the staged files (10-20 seconds). Full test suites run in CI, not in pre-commit. The pre-commit hook catches syntax errors, type errors, and .only disasters before they waste CI minutes — without slowing down the commit workflow."
+      },
+      {
+        q: "How do you handle merge conflicts in test files when two SDETs have been working on the same test suite?",
+        a: "Merge conflicts in test files require semantic resolution, not just text resolution — because conflicts often involve testing intent, not just code. My workflow: (1) Understand both sides: git log --merge to see the commits involved, and read the commit messages to understand what each branch was trying to achieve. (2) Resolve in a visual merge tool (VS Code's 3-way merge) rather than raw conflict markers — it's easier to reason about. (3) Apply conflict-specific strategies: if both branches added tests at the same position, accept both but validate isolation (unique test data, no shared state). If one branch refactored a helper and another added a test using the old helper, update the test to use the refactored API. If one branch deleted a test and another modified it, accept the deletion (it was deleted for a reason) and extract any valuable assertions into a new test. (4) Run the resolved tests locally before committing — a merge that compiles but produces failing tests is a CI time bomb. (5) Run the tests twice to validate isolation — if they pass the first time but fail the second, there's a shared state problem introduced by the merge. The most common mistake is blindly accepting both sides without checking for data coupling."
+      },
+    ],
+    relatedSlugs: [
+      "cicd-pipeline-testing-interview-questions",
+      "docker-test-automation-interview-questions-2026",
+      "typescript-for-sdet-interviews-2026",
+    ],
+  },
+  {
     slug: "test-flakiness-stability-interview-questions-2026",
     title: "Test Flakiness and Stability Interview Questions 2026 — Root Causes of Flaky Tests (Timing, State, Environment, Data), Flakiness Detection Strategies and Quarantine Patterns, Retry Strategies and When They Help vs Hurt, Flakiness Metrics and Dashboards for Engineering Visibility, Communicating About Flakiness with Stakeholders and Leadership, Playwright Auto-Wait and How It Reduces Flakiness at the Framework Level, and Test Stability as a First-Class Design Principle for SDET and QA Roles",
     description: "The definitive test flakiness and stability interview guide for 2026 — covering every dimension of the problem that modern SDET and QA interview panels now probe, from root cause analysis to organisational strategy. Covers the taxonomy of flakiness root causes (timing races, shared mutable state, environmental determinism failures, test data coupling and leakage, network non-determinism, and infrastructure variability) with diagnostic frameworks that interviewers test, flakiness detection strategies (statistical analysis of pass/fail patterns, flakiness scoring algorithms, the difference between flaky and intermittently failing, and CI-level detection with rerun analysis), quarantine patterns (automatic quarantine on N consecutive failures, manual quarantine workflows, quarantined test dashboards, and the critical distinction between quarantining and ignoring — how quarantine systems prevent test suite trust erosion), retry strategies (the mathematics of retry amplification — when retrying multiplies CI time without improving signal, exponential backoff for environment races, per-test vs suite-level retry, the retry paradox where retries mask real bugs, and the Playwright approach of auto-wait vs retry), flakiness metrics and dashboards (flakiness rate by test, by suite, by team, by environment; time-to-detect flakiness; flakiness cost in CI minutes and engineer-hours; the dashboard that makes flakiness visible to engineering leadership), communicating about flakiness with stakeholders (translating 'the test is flaky' into business impact — delayed releases, eroded confidence, increased escape rate; the one-page flakiness report for VPs; how to make the case for dedicated flakiness remediation sprints), Playwright auto-wait and how it fundamentally reduces entire categories of flakiness (actionability checks, auto-waiting for elements before interaction, web-first assertions with built-in retry, and why Playwright's design philosophy treats flakiness as a framework concern, not a test author concern), test stability as a design principle (idempotent tests, hermetic test environments, deterministic test data, isolated test state, and the architectural patterns — service virtualization, test containers, snapshots — that eliminate flakiness at design time rather than detecting it at runtime), and common flakiness interview questions with answering frameworks (from 'what's the difference between a flaky test and a bug?' to 'design a flakiness remediation strategy for a suite with 30% flakiness rate' to 'how do you convince your engineering manager to invest two sprints in fixing flaky tests?'). Code examples in TypeScript (Playwright retry configuration, flakiness detection scripts, CI pipeline quarantine logic) and YAML (GitHub Actions flakiness reporting). Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where flakiness has moved from an annoyance to a strategic conversation about testing ROI, engineering velocity, and the trustworthiness of the CI/CD pipeline. The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated flakiness and test stability mock interview rounds — with AI-scored questions covering root cause analysis, quarantine strategies, retry policies, stakeholder communication, and framework-level stability design at five seniority levels.",
