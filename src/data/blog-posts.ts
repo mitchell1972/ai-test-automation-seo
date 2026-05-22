@@ -14,6 +14,571 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "postman-newman-api-testing-interview-questions-2026",
+    title: "Postman and Newman API Testing Interview Questions 2026 — Collections and Environments for Organised API Testing, Pre-Request and Test Scripts in JavaScript, Newman CLI for CI/CD Integration, API Chaining and Data-Driven Testing with CSV/JSON, Postman Variables (Global, Collection, Environment, Data), Postman Monitors and Mock Servers, Authentication Handling (OAuth 2.0, API Keys, Bearer Tokens, Basic Auth), Writing Assertions with Chai and pm.expect, Common Postman Interview Traps and How to Avoid Them, and Postman vs Other API Testing Tools (REST Assured, Supertest, and Bruno) for SDET and QA Roles",
+    description: "The definitive Postman and Newman API testing interview guide for 2026 — covering every topic that modern QA and SDET interview panels now probe, from Postman collections and environments to Newman CLI for CI/CD pipelines, API chaining and data-driven testing, Postman variables across all four scopes, mock servers and monitors, authentication strategies, writing robust assertions with the Chai-based pm.expect syntax, and the most common interview traps that trip up candidates. Covers Postman fundamentals interviewers test (collections, folders, requests, environments, the Collection Runner, and the request-response lifecycle), pre-request and test scripts (the pm.* object model, pm.sendRequest for API chaining, pm.environment for dynamic state, pm.test and pm.expect for assertions, and the execution order — pre-request → request → test script), Newman CLI for CI/CD (running collections from the command line, integrating Newman with GitHub Actions, Jenkins, and GitLab CI, generating HTML and JUnit reports with newman-reporter-htmlextra, passing environment and data files, handling exit codes for build failure, and the --delay-request and --bail flags for production-safe runs), Postman variables in depth (global, collection, environment, and data scopes — the variable resolution order, dynamic variables like $randomInt and $guid, and the critical difference between initial and current values that candidates get wrong in interviews), API chaining and data-driven testing (extracting response data with pm.response.json() and setting it as an environment variable for the next request, running collections with CSV and JSON data files via the Collection Runner and Newman -d flag, and the ReadableStream already read error when pm.response is called twice), authentication handling (OAuth 2.0 with auto-refresh tokens, API keys in headers, Bearer tokens with pre-request script injection, Basic Auth, and the security consideration of never committing credentials to collections), Postman monitors and mock servers (scheduled collection runs for production health checks, mock servers for contract testing and front-end development, and the limitations of Postman's free tier), writing assertions (pm.test with descriptive names, pm.expect with Chai BDD syntax, common assertions — status codes, response time, JSON schema validation, header checks, and nested property assertions with .to.have.nested.property), common Postman interview traps (the initial-vs-current values confusion, the in-memory variable scope pitfall in Collection Runner, the cannot read properties of undefined error from malformed JSON, the silent variable collision when the same key exists in multiple scopes, and the scope leakage where variables persist across unrelated collections), and Postman vs other API testing tools — REST Assured for Java SDETs, Supertest and Jest for Node.js/TypeScript engineers, Bruno for Git-native API clients, and how to answer the 'why Postman?' question with nuance rather than tool tribalism. Code examples in JavaScript (Postman-style pm.* scripts and Newman CLI commands) and YAML (GitHub Actions CI/CD configuration). Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where API testing has moved from a checkbox item to a deep technical discussion about chaining, data-driven testing, CI/CD integration, and contract testing that separates junior testers from senior SDETs. The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated API testing mock interviews — with AI-scored rounds covering Postman, Newman, REST Assured, API chaining, authentication, and CI/CD integration at five seniority levels.",
+    date: "2026-05-22",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Postman Newman API testing interview questions 2026",
+      "Postman collections environments pre-request test scripts QA interview",
+      "Newman CLI CI/CD API testing GitHub Actions Jenkins pipeline",
+      "Postman variables global collection environment data-driven testing",
+      "API chaining Postman pm.sendRequest authentication OAuth interview",
+      "Postman mock servers monitors assertions pm.expect Chai JavaScript",
+      "Postman vs REST Assured Supertest API testing tools comparison SDET",
+      "common Postman interview traps mistakes initial current values variables",
+    ],
+    content: `
+<section class="content-section">
+  <p>You've built API tests. You've got a Postman collection — maybe two or three, scattered across different workspaces. You know how to send a GET request and check the status code is 200. Then the interview panel leans forward and says: <em>"Walk me through how you'd design a Postman collection for a microservices application with 50 endpoints. Explain your variable strategy — which variables go in environments, which in collections, and which in globals. Now: your API tests run fine in Postman, but when you run them via Newman in CI, one test fails with 'Cannot read properties of undefined.' Walk me through your debugging process. And while we're at it — your collection uses OAuth 2.0 authentication. How does token refresh work when the collection runs for 45 minutes in CI? What happens when the token expires mid-run? And since you mentioned data-driven testing — you're running your collection with a CSV file of 10,000 test cases. What's the memory model for Newman with large data files, and at what point do you risk a crash?"</em> And suddenly you realise: you've been <em>using</em> Postman, but you haven't been <em>engineer</em>ing API tests. You've been clicking, not crafting.</p>
+  <p>Postman is the world's most-used API testing tool — downloaded by over 30 million developers — which makes it the most common API testing interview topic in QA and SDET roles. But in 2026, interview panels have moved past "can you send a request?" They're probing: <em>Can you architect a collection structure that scales across teams? Can you debug a Newman CI failure from the CLI output alone? Do you understand the variable resolution order well enough to predict which value a request will use — without running it? Can you chain 5 API calls together, extracting tokens and IDs at each step, and make the chain robust against intermittent failures?</em> These are the questions that separate candidates who've got Postman experience from candidates who understand Postman deeply. And in a market where 500 candidates apply for every mid-level SDET role, depth is the differentiator.</p>
+  <p>This guide covers every Postman and Newman topic that interview panels probe in 2026 — from the collection architecture decisions that signal seniority, to the Newman CLI flags that demonstrate CI/CD integration experience, to the variable scope traps that expose gaps in mental models, to the assertion strategies that prove you can write tests that fail for the right reasons. Complement it with our broader API testing deep-dive at <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a>, our CI/CD pipeline coverage at <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>, and our TypeScript for SDETs guide at <a href="/blog/typescript-for-sdet-interviews-2026">TypeScript for SDET Interviews 2026</a>. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated API testing mock interview rounds — covering Postman, Newman, REST Assured, and Supertest, with AI scoring across technical accuracy, completeness, and communication at five seniority levels.</p>
+</section>
+
+<section class="content-section">
+  <h2>Postman Fundamentals — Collections, Environments, and the Request-Response Lifecycle</h2>
+  <p>Every Postman interview starts with fundamentals. But in 2026, interviewers aren't asking "what's a collection?" — they're asking questions that reveal whether you've built and maintained production API test suites. A candidate who can explain the difference between environment and collection variables with a real-world example — and articulate <em>why</em> they chose one scope over the other — demonstrates something the click-through candidate can't: production experience.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Collections and Folders — The Architecture Interviewers Probe</h3>
+      <p><strong>Collections</strong> are the organising unit of Postman — a group of saved requests that can be run sequentially via the Collection Runner or Newman. But interviewers don't care that you can create a collection. They care about your collection <em>architecture</em>: How do you structure a collection for a microservices application with 50 endpoints? The answer reveals your thinking about separation of concerns, reusability, and test maintenance. A strong answer: organise by domain or service (Auth, Users, Orders, Payments, Notifications), with sub-folders for CRUD operations within each service (GET /users, POST /users, GET /users/:id, PATCH /users/:id, DELETE /users/:id), and a dedicated folder for workflow tests that chain across services (register → login → create order → checkout). This structure means a developer working on the Payments service only needs to run the Payments folder to validate their changes — not the entire 200-request collection. <strong>Folders</strong> allow nested organisation within collections, and they inherit collection-level settings (auth, pre-request scripts, tests). The interview nuance: folders can have their own pre-request scripts and tests that run <em>before</em> and <em>after</em> every request in that folder — making them the ideal place for service-specific setup (like generating a unique order ID prefix for the Orders folder) and teardown (like cleaning up test data after the Users CRUD folder completes).</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Environments — The Configuration Layer Interviewers Test</h3>
+      <p><strong>Environments</strong> are sets of key-value pairs that make collections portable across different setups — dev, staging, production. But interviewers probe deeper: "What's the difference between a Postman environment and a .env file?" The answer: environments are Postman's native configuration mechanism — they're selectable in the UI, switchable at runtime in Newman via the <code>-e</code> flag, and their variables are accessible in any request, pre-request script, or test script via <code>pm.environment.get("key")</code>. Unlike .env files, Postman environments can be exported as JSON, shared across teams, and used to drive CI/CD pipelines. The critical interview distinction: <strong>initial values</strong> vs <strong>current values</strong>. Initial values are the template — the values you see when you first import an environment. Current values are the active values — what's actually used during execution, including any overrides you've made locally. <em>Initial values are shared when you export the environment. Current values are not.</em> This is the single most common Postman interview trap: candidates who don't understand this distinction will accidentally share credentials in initial values, or wonder why their exported environment doesn't contain the tokens they updated during testing.</p>
+    </div>
+  </div>
+
+  <pre><code>// Example: Pre-request script that sets up environment dynamically
+// This runs before every request in the Users folder
+
+// Generate a unique test run identifier
+const runId = pm.variables.replaceIn('{{$guid}}');
+pm.environment.set('testRunId', runId);
+
+// Set the base URL from environment, with a fallback
+const baseUrl = pm.environment.get('base_url') || 'http://localhost:3000';
+pm.variables.set('resolvedBaseUrl', baseUrl);
+
+// Only set auth token if it doesn't already exist (avoid unnecessary login calls)
+if (!pm.environment.get('auth_token')) {
+    console.log('No auth token found — login will be triggered');
+}
+
+console.log(\`Test run \${runId} starting against \${baseUrl}\`);</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Pre-Request and Test Scripts — The pm.* Object Model</h2>
+  <p>The pm object is the engine of every Postman script. If you can't fluently navigate pm.* — pm.environment, pm.collectionVariables, pm.globals, pm.variables, pm.sendRequest, pm.test, pm.expect, pm.response, pm.request, pm.info — you can't write sophisticated Postman tests. And in 2026 interviews, "sophisticated" is the baseline.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Pre-Request Scripts — What Runs Before the Request</h3>
+      <p>Pre-request scripts execute before Postman sends the HTTP request. Their primary use cases: (1) <strong>Dynamic authentication</strong> — generating or refreshing tokens before each request. A pre-request script at the collection level that calls the /auth/login endpoint, extracts the token, and stores it in an environment variable ensures every request in the collection has a fresh token. (2) <strong>Dynamic request body generation</strong> — constructing payloads with unique values (timestamps, GUIDs, random strings) so tests are idempotent. (3) <strong>Conditional logic</strong> — skipping requests based on environment flags (don't run payment tests in the dev environment). (4) <strong>Data transformation</strong> — encrypting payloads, generating hashes, or formatting dates before the request is sent. <strong>The execution order that interviewers test:</strong> Collection-level pre-request → Folder-level pre-request → Request-level pre-request → Request sends → Request-level test script → Folder-level test script → Collection-level test script. Understanding this hierarchy — and that folder-level scripts apply to every request in that folder — is the difference between organised test suites and chaos.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Test Scripts — What Runs After the Response Arrives</h3>
+      <p>Test scripts execute after Postman receives the HTTP response. They have access to <code>pm.response</code> — the full response object with status, headers, body, response time, and response size. The assertion framework is built on Chai JS (BDD syntax), accessed via <code>pm.expect</code>. The interview-critical API: <code>pm.test("descriptive name", function() { ... })</code> wraps assertions in a named test case — if any assertion inside fails, the test is marked failed. <code>pm.expect(value).to.*</code> chains Chai assertions. <code>pm.response.json()</code> parses the response body as JSON (returns a JavaScript object — call it once, store the result, because calling it twice throws a "ReadableStream already read" error). <code>pm.response.text()</code> returns the raw response body as a string. <code>pm.response.to.have.status(200)</code> is a convenience assertion for status codes. <strong>The key interview nuance:</strong> test scripts can also set environment variables (pm.environment.set) and collection variables (pm.collectionVariables.set) — meaning a test script for the login request can extract the auth token and make it available to every subsequent request. This is the foundation of <strong>API chaining</strong>.</p>
+    </div>
+  </div>
+
+  <pre><code>// Example: Complete test script for a POST /users endpoint
+// Demonstrates status code, response time, JSON schema, headers, and chaining
+
+// 1. Status code check
+pm.test("Status code is 201 Created", () => {
+    pm.response.to.have.status(201);
+});
+
+// 2. Response time SLA check
+pm.test("Response time is under 500ms", () => {
+    pm.expect(pm.response.responseTime).to.be.below(500);
+});
+
+// 3. Parse the response body (once — store it!)
+const responseBody = pm.response.json();
+
+// 4. Schema validation — the response has the expected shape
+pm.test("Response body has required user fields", () => {
+    pm.expect(responseBody).to.have.property('id');
+    pm.expect(responseBody).to.have.property('email');
+    pm.expect(responseBody).to.have.property('createdAt');
+    pm.expect(responseBody.id).to.be.a('string');
+    pm.expect(responseBody.email).to.match(/^[\\w.-]+@[\\w.-]+\\.\\w+$/);
+});
+
+// 5. Header checks
+pm.test("Response includes Content-Type header", () => {
+    pm.response.to.have.header('Content-Type');
+    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');
+});
+
+// 6. API Chaining — extract the user ID for the next request
+pm.test("Extract and store user ID for downstream requests", () => {
+    const userId = responseBody.id;
+    pm.expect(userId).to.not.be.undefined;
+    pm.environment.set('createdUserId', userId);
+    console.log(\`Stored createdUserId: \${userId}\`);
+});
+
+// 7. Deep assertion on nested properties
+pm.test("User profile is correctly structured", () => {
+    pm.expect(responseBody).to.have.nested.property('profile.firstName');
+    pm.expect(responseBody).to.have.nested.property('profile.lastName');
+    pm.expect(responseBody.profile.firstName).to.be.a('string').and.not.empty;
+});</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Postman Variables in Depth — The Four Scopes and Resolution Order</h2>
+  <p>Postman has four variable scopes, each with a different priority and use case. Understanding the resolution order — and the gotchas it creates — is one of the most reliable indicators of Postman expertise in an interview. A candidate who says "I just use environment variables for everything" reveals they've never debugged a variable collision in a complex collection.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>The Four Variable Scopes — When to Use Each</h3>
+      <p><strong>1. Global Variables (pm.globals):</strong> Available across all collections in the workspace. Lowest priority in resolution. Use sparingly — only for truly workspace-wide values like a default timeout or a company-wide API key that's the same across all projects. The interview red flag: using globals for environment-specific values (base URLs, auth tokens) — because globals persist across collection switches and can silently poison unrelated tests. <strong>2. Collection Variables (pm.collectionVariables):</strong> Scoped to a single collection. Available to every request in that collection. Third priority in resolution. Use for collection-wide constants — like the API version prefix (/v1/) or a schema enum that all requests in the collection share. Collection variables travel with the collection when exported, making them ideal for shared configuration. <strong>3. Environment Variables (pm.environment):</strong> Scoped to the active environment. Second priority in resolution. Use for environment-specific values: base URLs, credentials, feature flags. This is the most-used scope in practice — and the one candidates most commonly misuse by storing values that should be at the collection or data level. <strong>4. Data Variables:</strong> Loaded from CSV or JSON data files via the Collection Runner or Newman -d flag. Highest priority in resolution. Use for data-driven testing — each iteration of the collection run uses a different row of data. Data variables override everything else: if a variable named "username" exists in both an environment and a CSV data file, the CSV value wins. This override behaviour is the source of at least three common interview questions.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Variable Resolution Order and Dynamic Variables</h3>
+      <p><strong>Resolution order (lowest to highest priority):</strong> Global → Collection → Environment → Data → Local (variables set within the current request's scripts via pm.variables.set). This means: a variable set in the environment overrides the same-named variable in the collection, and a variable in a data file overrides the environment. The interview trap: you set an environment variable called "token" during test execution, but your CSV data file also has a "token" column — at the start of the next iteration, the CSV value overwrites your in-memory token, breaking the entire run. This is the data-driven testing collision that catches candidates who've never run data-driven tests in CI. <strong>Dynamic variables:</strong> Postman provides built-in dynamic variables that generate values at runtime: <code>{{$guid}}</code> (UUID v4), <code>{{$timestamp}}</code> (current Unix timestamp), <code>{{$randomInt}}</code> (random integer 0–1000), <code>{{$randomFirstName}}</code>, <code>{{$randomEmail}}</code>, <code>{{$randomPhoneNumber}}</code>, <code>{{$randomUUID}}</code>, <code>{{$isoTimestamp}}</code>. These are evaluated at request time and are invaluable for generating unique test data — but interviewers want to hear that you understand they cannot be used in pre-request scripts via pm.variables.replaceIn (which requires runtime rather than dynamic variables), only in the request URL, headers, and body fields.</p>
+    </div>
+  </div>
+
+  <pre><code>// Demonstrating variable scope and resolution in practice
+
+// In Collection pre-request script:
+pm.collectionVariables.set('api_version', 'v2');  // Collection-level: shared across all environments
+
+// In Environment (dev environment):
+pm.environment.set('base_url', 'https://dev-api.example.com');  // Environment-level: dev-specific
+pm.environment.set('api_version', 'v1');  // This WILL override the collection variable!
+
+// In a CSV data file (data-driven testing):
+// Row 1: username=alice, password=pass123
+// Row 2: username=bob, password=pass456
+
+// At request runtime, the resolution order ensures:
+// {{username}} → comes from CSV (data scope, highest priority)
+// {{base_url}} → comes from environment (no CSV or collection variable for this key)
+// {{api_version}} → comes from environment ('v1'), NOT collection ('v2') — environment wins
+
+// Common interview question: "How do you read a variable without Postman resolving it?"
+// Answer: Use pm.variables.get() to get the resolved value,
+// or pm.environment.get() / pm.collectionVariables.get() / pm.globals.get() 
+// to get the raw value from a specific scope.</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Newman CLI — Running Postman Collections in CI/CD</h2>
+  <p>Newman is Postman's command-line collection runner — and it's the bridge from local API testing to automated CI/CD pipelines. In 2026 interviews, "I run my collections in Postman" is no longer sufficient. Interviewers expect you to explain how you integrate Newman into GitHub Actions, Jenkins, or GitLab CI — including reporter configuration, exit code handling, data file management, and failure debugging from CLI output alone.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Newman Fundamentals — Flags Every Candidate Must Know</h3>
+      <p><strong>newman run collection.json:</strong> The basic command. Run a collection from an exported JSON file. <strong>-e environment.json:</strong> Specify an environment file. <strong>-g globals.json:</strong> Specify a globals file (rarely needed — environments are usually sufficient). <strong>-d data.csv or data.json:</strong> Specify a data file for data-driven testing. Newman will iterate over each row/entry, running the full collection once per row. <strong>-n 3:</strong> Number of iterations (without a data file, runs the collection N times; with a data file, this is implied by the number of data rows). <strong>--delay-request 500:</strong> Add a delay between requests in milliseconds — critical for rate-limited APIs and production smoke tests where you don't want to trigger rate limiting or overload downstream services. <strong>--bail:</strong> Stop the entire run after the first test failure. Useful for CI pipelines where you want fast failure feedback. <strong>--timeout 30000:</strong> Set the request timeout in milliseconds. <strong>-r htmlextra,junit,cli:</strong> Reporter configuration — htmlextra generates a rich HTML report, junit generates XML for CI tools (Jenkins, GitLab), cli is the default console output. <strong>--env-var "base_url=https://staging.example.com":</strong> Override individual environment variables from the command line — the most common use case is setting environment-specific URLs without maintaining separate environment files.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>GitHub Actions Integration — Production-Grade Examples</h3>
+      <p>The GitHub Actions integration is the most common CI/CD interview scenario. A complete pipeline: (1) Check out the repository. (2) Set up Node.js. (3) Install Newman and reporters globally. (4) Run Newman with the collection, environment, and data files. (5) Upload the HTML report as a build artifact. (6) Parse the JUnit report to surface test results in the GitHub UI. <strong>Exit codes:</strong> Newman exits with 0 if all tests pass, 1 if any test fails, and 2 if there's a configuration error (invalid JSON, missing file). CI pipelines should use the exit code to determine build status — and the Newman --bail flag to fail fast. <strong>The interview nuance:</strong> Newman stores all variables in memory during a run. For runs with 10,000+ data rows, this can cause memory exhaustion. The solution: use the -n flag with --iteration-data to process data in batches, or split the data file and run multiple Newman instances in parallel. <strong>Secret management:</strong> Never commit credentials to collection or environment files. Instead, use CI secrets: in GitHub Actions, <code>\${{ secrets.API_KEY }}</code> can be injected via <code>--env-var</code> at runtime. This pattern — secrets in CI, never in Git — is a must-mention in any Newman CI/CD interview answer.</p>
+    </div>
+  </div>
+
+  <pre><code># Install Newman and reporters
+yarn add -D newman newman-reporter-htmlextra newman-reporter-junitfull
+
+# Basic Newman run against an environment
+newman run collections/users-api.postman_collection.json \\
+  -e environments/staging.postman_environment.json \\
+  --reporters cli,htmlextra,junit \\
+  --reporter-htmlextra-export reports/newman-report.html \\
+  --reporter-junit-export reports/newman-junit.xml
+
+# Data-driven run with CSV and custom iteration count
+newman run collections/users-api.postman_collection.json \\
+  -e environments/staging.postman_environment.json \\
+  -d testdata/users.csv \\
+  -n 50 \\
+  --delay-request 200 \\
+  --timeout 15000 \\
+  --bail
+
+# Run with environment variable overrides (for CI secret injection)
+newman run collections/users-api.postman_collection.json \\
+  -e environments/ci.postman_environment.json \\
+  --env-var "api_key=\$API_KEY" \\
+  --env-var "base_url=\$STAGING_URL" \\
+  -r cli,junit \\
+  --reporter-junit-export reports/newman-results.xml</code></pre>
+
+  <pre><code># .github/workflows/api-tests.yml — GitHub Actions integration
+name: API Tests (Postman/Newman)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1-5'  # Run every weekday at 6 AM for production smoke tests
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install Newman and reporters
+        run: |
+          yarn global add newman newman-reporter-htmlextra newman-reporter-junitfull
+
+      - name: Run API tests
+        id: newman
+        run: |
+          newman run collections/api-tests.postman_collection.json \\
+            -e environments/ci.postman_environment.json \\
+            -d testdata/ci-test-users.csv \\
+            --env-var "api_key=\${{ secrets.API_KEY }}" \\
+            --env-var "admin_password=\${{ secrets.ADMIN_PASSWORD }}" \\
+            -r cli,junit,htmlextra \\
+            --reporter-junit-export reports/junit.xml \\
+            --reporter-htmlextra-export reports/report.html \\
+            --delay-request 100 \\
+            --timeout 30000 \\
+            --bail
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-html-report
+          path: reports/report.html
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Newman API Tests
+          path: reports/junit.xml
+          reporter: java-junit</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>API Chaining and Data-Driven Testing — The Advanced Patterns</h2>
+  <p>API chaining and data-driven testing are the two patterns that elevate Postman from a manual exploration tool to an automated test framework. Interviewers at the senior level will ask you to whiteboard a chaining scenario — and then ask what happens when step 3 fails. Your answer to the failure-mode question reveals whether you've run chained tests in production or only in tutorials.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>API Chaining — Making Requests Depend on Previous Responses</h3>
+      <p>API chaining is the pattern where one request's response provides the input for the next request. The classic example: Register a user → Extract the user ID → Create a profile for that user → Upload a profile picture → Query the user to verify all data was saved. Each step depends on the output of the previous step. In Postman, the mechanism is: the test script of request N extracts data from the response and stores it in an environment variable via <code>pm.environment.set('key', value)</code>, and request N+1 references that variable via <code>{{key}}</code> in its URL, headers, or body. <strong>The interview-critical failure modes:</strong> (1) If step 3 fails, do all subsequent steps still execute? By default, yes — Newman runs all requests in sequence regardless of failures (unless --bail is set). If step 3's test script fails to set the variable, step 4 will send a request with an empty or undefined variable — producing confusing errors. (2) The ordering problem: Postman collections run requests in the order they appear in the UI. Newcomers often don't realise this and place requests out of order. (3) The stale variable problem: if step 1 sets authToken and step 7 also needs a fresh token, but nothing refreshes it, step 7 uses a potentially expired token — and the test fails with a 401 for no apparent reason. Senior candidates proactively solve this with conditional pre-request scripts that check token freshness (by decoding the JWT and checking exp) and refresh only when necessary.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Data-Driven Testing — Running the Same Requests with Different Data</h3>
+      <p>Data-driven testing runs a collection once per row of a CSV or JSON data file, substituting data variables into requests. It's the Postman equivalent of parameterised tests — and it's the most common way to test edge cases at scale. <strong>CSV format:</strong> column headers become variable names, each row becomes one iteration. <strong>JSON format:</strong> an array of objects, where keys are variable names and values are the data for each iteration. <strong>Newman command:</strong> <code>newman run collection.json -d data.csv</code>. <strong>The interview nuances:</strong> (1) Data variables take the highest priority — they override environment, collection, and global variables. If your CSV has a column called "base_url", it will override the environment's base_url for every iteration. (2) The data file is loaded into memory entirely before the run begins. For a 10,000-row CSV with 50 columns, this can consume hundreds of megabytes. (3) Newman processes iterations sequentially by default — one row at a time. There's no built-in parallelism for data-driven runs. (4) The CSV delimiter is detected automatically (comma, tab, semicolon) — but the encoding must be UTF-8. Non-UTF-8 CSVs produce silent data corruption that's notoriously difficult to debug. (5) Variables set during iteration N (via pm.environment.set) persist into iteration N+1 — so you need to deliberately reset state between iterations if your tests depend on a clean environment at the start of each iteration.</p>
+    </div>
+  </div>
+
+  <pre><code>// Advanced API chaining with error handling and conditional logic
+// Test script for POST /auth/login — robust chaining with failure handling
+
+const response = pm.response.json();
+
+pm.test("Login returns 200 with valid token", () => {
+    pm.response.to.have.status(200);
+    pm.expect(response).to.have.property('accessToken');
+    pm.expect(response).to.have.property('refreshToken');
+    pm.expect(response.accessToken).to.be.a('string').and.not.empty;
+});
+
+// Only set the auth token if the test passed — prevents poisoning downstream requests
+if (pm.response.code === 200 && response.accessToken) {
+    pm.environment.set('authToken', response.accessToken);
+    pm.environment.set('refreshToken', response.refreshToken);
+    pm.environment.set('tokenExpiry', Date.now() + (response.expiresIn * 1000));
+
+    // Decode the JWT to extract the user ID (for the next request in the chain)
+    const tokenPayload = JSON.parse(atob(response.accessToken.split('.')[1]));
+    pm.environment.set('userId', tokenPayload.sub);
+    pm.environment.set('userRole', tokenPayload.role);
+
+    console.log(\`Token stored. User: \${tokenPayload.sub}, Role: \${tokenPayload.role}\`);
+} else {
+    // Clean up on failure — prevents stale tokens from being used
+    pm.environment.unset('authToken');
+    pm.environment.unset('userId');
+    throw new Error(\`Login failed with status \${pm.response.code}: \${JSON.stringify(response)}\`);
+}
+
+// Conditional pre-request script for subsequent requests:
+// Check if token is still valid before sending
+// if (pm.environment.get('tokenExpiry') && Date.now() > pm.environment.get('tokenExpiry')) {
+//     console.log('Token expired — refreshing...');
+//     // Use pm.sendRequest to call the refresh endpoint
+// }</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Authentication Handling — OAuth 2.0, API Keys, Bearer Tokens, and Basic Auth</h2>
+  <p>Authentication is the first hurdle for any API test suite — and in 2026 interviews, it's one of the highest-signal topics. A candidate who can explain OAuth 2.0 token refresh in a Newman CI pipeline demonstrates production API testing experience. A candidate who says "I hard-code my bearer token" reveals they've never tested an API with token expiration.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Authentication Methods — Postman's Built-In Support</h3>
+      <p><strong>No Auth:</strong> For public APIs or testing locally with no authentication layer. <strong>API Key:</strong> Pass a key-value pair in the header or query parameters. The Postman UI lets you configure the key name, value, and placement (header or query param). The interview trap: storing API keys as collection-level auth means every exported collection contains the key — a security risk if the collection is shared or committed to Git. The solution: use environment variables for API keys so they're never embedded in the collection JSON. <strong>Bearer Token:</strong> A token inserted into the Authorization header (<code>Authorization: Bearer {{token}}</code>). The simplest auth method — but the most commonly misused. The interview question: "How do you handle token expiration in a long-running collection?" The answer: a pre-request script at the collection level that checks the token's expiry (by decoding the JWT or checking an expiry timestamp variable) and calls the refresh endpoint via pm.sendRequest if the token is expired or missing. <strong>Basic Auth:</strong> Base64-encoded username:password in the Authorization header. Simple but insecure — sends credentials with every request. Use only over HTTPS. <strong>Digest Auth:</strong> Challenge-response authentication — rarer, but interviewers sometimes ask about it to test breadth. <strong>OAuth 1.0:</strong> Legacy — mention it if the role targets older enterprise systems. <strong>OAuth 2.0:</strong> The most common enterprise auth method — and the one interviewers probe most deeply.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>OAuth 2.0 in Postman — The Full Interview Answer</h3>
+      <p>Postman natively supports OAuth 2.0 with an auth helper that handles the authorization code grant flow — you configure the auth URL, access token URL, client ID, client secret, scopes, and state. Postman opens a browser for the user to authenticate, captures the authorization code from the redirect, exchanges it for tokens, and stores the access token. But the interview expects you to go further: (1) <strong>Token refresh:</strong> Postman can auto-refresh tokens using the refresh token grant type. Configure the "Refresh Token URL" in the auth tab, and Postman will refresh automatically when the access token expires. (2) <strong>Newman and OAuth 2.0:</strong> Newman cannot open a browser — so the OAuth 2.0 authorization code flow cannot complete in CI. The solutions: either (a) use the client credentials grant type (machine-to-machine, no browser required), (b) pre-generate tokens and pass them as environment variables via CI secrets, or (c) use a pre-request script with pm.sendRequest to call a token endpoint using the client credentials flow. (3) <strong>Multi-step OAuth flows:</strong> Some enterprise APIs use custom OAuth flows (like Okta's device authorization grant or Azure AD's on-behalf-of flow). These require custom pre-request scripts with pm.sendRequest for each step. The ability to articulate this — and to explain when each approach applies — is what interviewers look for in senior candidates.</p>
+    </div>
+  </div>
+
+  <pre><code>// Pre-request script: OAuth 2.0 Client Credentials token generation
+// Runs at the collection level — every request gets a fresh token
+
+const getToken = () => {
+    const tokenUrl = pm.environment.get('auth_url');
+    const clientId = pm.environment.get('client_id');
+    const clientSecret = pm.environment.get('client_secret');
+
+    if (!tokenUrl || !clientId || !clientSecret) {
+        throw new Error('Missing OAuth configuration in environment variables');
+    }
+
+    const base64Credentials = btoa(\`\${clientId}:\${clientSecret}\`);
+
+    pm.sendRequest({
+        url: tokenUrl,
+        method: 'POST',
+        header: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': \`Basic \${base64Credentials}\`,
+        },
+        body: {
+            mode: 'urlencoded',
+            urlencoded: [
+                { key: 'grant_type', value: 'client_credentials' },
+                { key: 'scope', value: pm.environment.get('auth_scope') || 'api' },
+            ],
+        },
+    }, (err, res) => {
+        if (err) {
+            console.error('Token request failed:', err);
+            throw err;
+        }
+
+        const tokenData = res.json();
+        pm.environment.set('authToken', tokenData.access_token);
+        pm.environment.set('tokenExpiry', Date.now() + (tokenData.expires_in * 1000));
+
+        console.log(\`Token obtained. Expires in \${tokenData.expires_in}s\`);
+    });
+};
+
+// Only fetch a new token if the current one is missing or expired
+const tokenExpiry = pm.environment.get('tokenExpiry');
+if (!pm.environment.get('authToken') || !tokenExpiry || Date.now() > tokenExpiry) {
+    getToken();
+} else {
+    console.log('Using existing token — still valid');
+}</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Postman Monitors, Mock Servers, and Postman Flows</h2>
+  <p>Postman's ecosystem extends beyond manual request sending and automated collection runs. The platform includes monitors (scheduled collection runs in Postman's cloud), mock servers (simulated API endpoints for contract testing and front-end development), and Postman Flows (a visual, low-code API workflow builder). Interviewers increasingly ask about these features — not to test whether you've memorised the UI, but to test whether you understand their architectural role in a testing strategy.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Monitors — Scheduled Collection Runs in the Cloud</h3>
+      <p>Postman Monitors run collections on a schedule — hourly, daily, weekly — in Postman's cloud infrastructure. They're designed for production health checks and uptime monitoring, not as a replacement for Newman in CI/CD (where you want control over the execution environment). <strong>Interview-worthy details:</strong> Monitors run in Postman's cloud, not on your infrastructure — so they can't access internal/VPN-only endpoints. Monitors have a 25-minute timeout (on the free tier) and a limited number of monthly runs. Monitors send notifications (email, Slack, PagerDuty) on failure. The key interview distinction: Monitors are for <em>observability</em> ("is the production API still working?"), while Newman is for <em>quality gates</em> ("does this code change break the API?"). Candidates who conflate the two reveal they haven't thought about testing strategy — only about tools.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Mock Servers — Simulated Endpoints for Parallel Development</h3>
+      <p>Postman Mock Servers simulate API endpoints based on saved examples in your collection. When a request hits the mock server's URL, Postman returns the saved example response — no backend required. <strong>Use cases interviewers want to hear:</strong> (1) Front-end teams can develop against mock endpoints while the backend is still being built — unblocking parallel development. (2) Contract testing: define the API contract as a collection with expected request/response pairs, share the mock server URL with the front-end team, and validate that the real backend matches the mock responses. (3) Simulating error states: create mock examples with 400, 401, 500 status codes to test how your client handles error responses — scenarios that are difficult to trigger against a real backend. <strong>Limitations to mention in interviews:</strong> Mock servers return static responses — they can't simulate dynamic behaviour, authentication, or stateful workflows. For those, you need a real API or a more sophisticated mock (like WireMock or Mountebank). Mock servers are a development aid, not a replacement for integration testing against the real API.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Writing Assertions — pm.test, pm.expect, and Chai BDD</h2>
+  <p>Assertions turn API responses into pass/fail signals. In Postman, assertions are written in JavaScript using the Chai assertion library, accessed via pm.expect with BDD (Behaviour-Driven Development) syntax. The quality of your assertions — not just their quantity — is what interviewers evaluate.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>The pm.test() Pattern — Named Tests with Descriptive Failure Messages</h3>
+      <p>Every assertion should be wrapped in pm.test() with a descriptive name. The name appears in the test runner output and Newman reports — and a well-named test failure tells you what broke without needing to read the assertion code. <strong>Good:</strong> <code>pm.test("Response status is 200 OK", () => pm.response.to.have.status(200))</code>. <strong>Better:</strong> <code>pm.test("GET /users returns 200 for authenticated admin", () => pm.response.to.have.status(200))</code>. The difference: the better name includes the endpoint and the scenario, making it immediately clear which test failed in a CI run with hundreds of assertions. <strong>Interviewers' pet peeve:</strong> tests named "Status code is 200" on every request in a 200-request collection. That's 200 identical test names — debugging from a Newman report becomes impossible. Use context-rich names that include the endpoint, method, and scenario.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>pm.expect() — The Chai BDD Assertion API</h3>
+      <p><code>pm.expect(value).to.*</code> provides the full Chai BDD assertion chain. <strong>Common assertions:</strong> <code>.to.have.status(code)</code> — status code check (Postman convenience). <code>.to.be.a('string')</code> — type check. <code>.to.equal(value)</code> — strict equality. <code>.to.deep.equal(obj)</code> — deep equality for objects and arrays. <code>.to.include(substring)</code> — string or array inclusion. <code>.to.have.property('key')</code> — property existence. <code>.to.have.nested.property('a.b.c')</code> — deep property existence (without throwing on undefined intermediates). <code>.to.be.above(n), .to.be.below(n)</code> — numeric comparisons. <code>.to.be.null, .to.be.undefined, .to.be.true, .to.be.false</code> — value checks. <code>.to.have.lengthOf(n)</code> — array or string length. <code>.to.match(regex)</code> — regex match. <code>.to.be.oneOf([a, b, c])</code> — value is in a set. <strong>Response-specific assertions:</strong> <code>pm.response.to.have.status(code)</code>, <code>pm.response.to.have.header(name)</code>, <code>pm.response.to.have.jsonBody()</code> (validates response is valid JSON), <code>pm.response.to.have.jsonSchema(schema)</code> (Ajv-based JSON schema validation — powerful for contract testing). <strong>The interview nuance:</strong> pm.expect is the preferred assertion style in 2026. The older Chai assert syntax (pm.expect(value).to.be.true) has replaced the even older should syntax, and Postman's documentation now defaults to the expect BDD style.</p>
+    </div>
+  </div>
+
+  <pre><code>// Advanced assertion examples for a comprehensive API test
+const response = pm.response.json();
+
+// 1. Status code
+pm.test("GET /users/:id returns 200 for valid user", () => {
+    pm.response.to.have.status(200);
+});
+
+// 2. Response time SLA — critical for performance SLAs
+pm.test("GET /users/:id responds within 200ms (p95 SLA)", () => {
+    pm.expect(pm.response.responseTime).to.be.below(200);
+});
+
+// 3. Response body is valid JSON
+pm.test("GET /users/:id response body is valid JSON", () => {
+    pm.response.to.have.jsonBody();
+});
+
+// 4. Required properties exist with correct types
+pm.test("GET /users/:id returns all required user properties", () => {
+    pm.expect(response).to.have.property('id');
+    pm.expect(response).to.have.property('email');
+    pm.expect(response).to.have.property('name');
+    pm.expect(response).to.have.property('role');
+    pm.expect(response).to.have.property('createdAt');
+    pm.expect(response.id).to.be.a('string');
+    pm.expect(response.email).to.be.a('string');
+    pm.expect(response.role).to.be.oneOf(['admin', 'user', 'viewer']);
+    pm.expect(response.createdAt).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}/);
+});
+
+// 5. Nested property assertions
+pm.test("GET /users/:id profile information is complete", () => {
+    pm.expect(response).to.have.nested.property('profile.firstName');
+    pm.expect(response).to.have.nested.property('profile.lastName');
+    pm.expect(response.profile.firstName).to.be.a('string').and.not.empty;
+    pm.expect(response.profile.lastName).to.be.a('string').and.not.empty;
+});
+
+// 6. Array length assertions for list endpoints
+pm.test("GET /users response is a paginated list", () => {
+    pm.expect(response).to.have.property('data');
+    pm.expect(response.data).to.be.an('array');
+    pm.expect(response.data.length).to.be.at.most(50); // Default page size
+    pm.expect(response).to.have.property('total');
+    pm.expect(response).to.have.property('page');
+    pm.expect(response.total).to.be.a('number');
+});
+
+// 7. JSON Schema validation for contract testing
+const userSchema = {
+    type: 'object',
+    required: ['id', 'email', 'name', 'role', 'createdAt'],
+    properties: {
+        id: { type: 'string' },
+        email: { type: 'string', format: 'email' },
+        name: { type: 'string', minLength: 1 },
+        role: { type: 'string', enum: ['admin', 'user', 'viewer'] },
+        createdAt: { type: 'string', format: 'date-time' },
+    },
+};
+
+pm.test("GET /users/:id response matches the User schema contract", () => {
+    pm.response.to.have.jsonSchema(userSchema);
+});
+
+// 8. Content-Type header validation
+pm.test("GET /users/:id response Content-Type is application/json", () => {
+    pm.response.to.have.header('Content-Type');
+    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');
+});</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Postman vs Other API Testing Tools — The Comparison Interviewers Expect</h2>
+  <p>"Why Postman?" is a question that appears in almost every API testing interview — and it's one of the easiest questions to answer poorly. Tool tribalism ("Postman is the best, everything else is terrible") signals immaturity. A nuanced answer that compares trade-offs signals engineering maturity. Here's the comparison matrix interviewers want to hear.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Postman vs REST Assured (Java)</h3>
+      <p><strong>Postman:</strong> GUI-first, JavaScript-based, low barrier to entry, excellent for exploration and manual testing, Newman enables CI/CD. Best for: API exploration, manual QA, teams with mixed technical skills, rapid prototyping. <strong>REST Assured:</strong> Java-based, code-first, JUnit/TestNG integration, fluent BDD assertion syntax, full programmatic control. Best for: Java SDET teams building maintainable, version-controlled API test suites with complex test data generation and deep integration with Java-based test frameworks. The interview answer: use Postman for exploration, prototyping, and manual regression — use REST Assured for the automated test suite that runs in CI. They're complementary, not competitors.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Postman vs Supertest + Jest (Node.js/TypeScript)</h3>
+      <p><strong>Supertest + Jest:</strong> Code-first, TypeScript-native, runs alongside unit tests in the same test runner, zero GUI dependency. Best for: full-stack JavaScript/TypeScript teams where API tests live in the same repo as the application code, developers write tests, and the test suite runs as part of the standard CI pipeline alongside unit and integration tests. <strong>Postman's advantage:</strong> The GUI makes it faster to prototype and explore APIs. Non-developers (QA, product, support) can create and run tests without writing code. Newman bridges the gap to CI. <strong>Supertest's advantage:</strong> Tests are code — they're version-controlled, reviewable in PRs, and benefit from IDE tooling (autocomplete, type checking, refactoring). The interview nuance: at companies where developers own API testing, Supertest + Jest is often preferred. At companies where QA owns API testing and developers focus on unit/integration tests, Postman is the pragmatic choice. Senior candidates can articulate this trade-off without picking a side.</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Postman vs Bruno (Git-Native API Client)</h3>
+      <p><strong>Bruno:</strong> An open-source, offline-first API client that stores collections as plain text files (Bru format) in your Git repository — enabling PR reviews, merge conflicts, and full version control of API requests. No cloud sync, no account required. <strong>Postman vs Bruno — the interview answer:</strong> Bruno's Git-native approach solves Postman's biggest pain point: collaboration and version control. Postman collections are JSON blobs that produce unreadable diffs and painful merge conflicts. Bruno's plain-text collection format enables standard Git workflows. However, Postman's ecosystem (monitors, mock servers, workspaces, team collaboration, the 30M+ user community) is far more mature. <strong>The interview verdict:</strong> If your team values Git-native workflows and doesn't need Postman's cloud features, Bruno is a compelling alternative. If you need full platform capabilities (monitoring, mocks, team workspaces), Postman remains the pragmatic choice. Mentioning Bruno in an interview demonstrates awareness of the tooling landscape beyond the dominant player.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Common Postman Interview Traps — And How to Avoid Them</h2>
+  <p>Every experienced Postman user has been burned by at least five of these traps. Interviewers know this — and they deliberately structure questions to test whether you've hit these sharp edges. A candidate who pre-emptively mentions these gotchas demonstrates the scar tissue that only comes from production experience.</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>The Initial vs Current Values Confusion.</strong> Initial values are shared when you export an environment. Current values are local overrides and are NOT exported. If you set a secret (password, API key) as a current value and export the environment for your teammate, they get the initial value — which is empty or a placeholder. Their tests fail. The fix: use initial values for templates and non-sensitive defaults; use current values for environment-specific secrets that should never be exported. Or better: never store secrets in Postman environments at all — inject them at runtime via CI secrets and Newman's --env-var flag.</li>
+    <li><strong>The ReadableStream Already Read Error.</strong> Calling <code>pm.response.json()</code> twice throws: "TypeError: ReadableStream is locked / already read." The response body stream can only be consumed once. The fix: call <code>const body = pm.response.json()</code> once at the top of your test script, then assert against body throughout. Every seasoned Postman user has this burned into muscle memory.</li>
+    <li><strong>Variable Collision from Scope Resolution.</strong> You set <code>pm.collectionVariables.set('base_url', 'https://prod.example.com')</code> in your collection, but your environment also has <code>base_url = https://staging.example.com</code>. The environment variable wins (higher priority). Your collection — which you thought pointed to staging — silently runs against production. The fix: use distinct variable names across scopes (e.g., <code>collection_base_url</code> vs <code>env_base_url</code>) or be explicit about which scope you're reading from (<code>pm.collectionVariables.get()</code> instead of <code>pm.variables.get()</code>).</li>
+    <li><strong>State Leakage Across Iterations in Data-Driven Runs.</strong> In iteration 1, you set <code>pm.environment.set('userId', '123')</code>. In iteration 2, you expect <code>userId</code> to come from the CSV data file — but the environment variable from iteration 1 still exists and has higher priority than collection variables. Your test uses '123' for every subsequent iteration instead of the CSV value. The fix: unset environment variables at the end of each iteration (<code>pm.environment.unset('userId')</code>) or use collection variables (which don't persist across Newman runs) for transient state.</li>
+    <li><strong>The Export Collection With secrets Trap.</strong> You configure OAuth 2.0 on your collection with client ID and client secret. You export the collection as JSON and commit it to Git. Now your OAuth credentials are in version history — forever. The fix: use environment variables for all credentials and auth parameters. The collection JSON should contain variable references (<code>{{client_id}}</code>, <code>{{client_secret}}</code>), not actual values. Add <code>*.postman_environment.json</code> to .gitignore.</li>
+    <li><strong>The 401 Mid-Run (Token Expiration).</strong> Your collection has 50 requests. Your auth token has a 15-minute expiry. Request 35 fails with 401 because the token expired during the run. The fix: add a pre-request script at the collection level that checks token expiry and refreshes proactively. Or set the OAuth 2.0 "Auto-refresh token" option in Postman's auth tab.</li>
+    <li><strong>The Silent String Coercion in Variables.</strong> Postman stores all variables as strings. If you set <code>pm.environment.set('count', 5)</code> and later use <code>{{count}}</code> in a request body that expects a JSON number, Postman sends <code>"count": "5"</code> (string) instead of <code>"count": 5</code> (number) — which might be accepted or rejected depending on your API's strictness. The fix: use <code>JSON.parse()</code> in pre-request scripts to convert back to numbers, or use dynamic bodies with pm.variables.replaceIn in a pre-request script to construct the JSON body programmatically.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">These seven traps are essentially a checklist of Postman production experience. If you can describe each one — what causes it, how to debug it, and how to prevent it — you've demonstrated more depth than 90% of candidates. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated API testing mock interviews that cover all these traps, with scenario-based questions that test whether you can diagnose and resolve each one under interview pressure.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your Postman API Testing Interview — Starting Today</h2>
+  <p>Postman is a tool you learn by doing, not by reading. Here's the preparation plan that works — whether your interview is tomorrow or next month:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Build a real collection from scratch.</strong> Pick a public API (JSONPlaceholder, REST Countries, or the GitHub API) and build a 20-request collection with: collection-level auth, environment variables for the base URL, pre-request scripts for dynamic request bodies, test scripts with at least 3 assertions per request, and API chaining across at least 3 sequential requests. Export the collection, run it via Newman, and verify the HTML report. If you can do this comfortably, you've covered 80% of what junior and mid-level interviews ask.</li>
+    <li><strong>Run Newman in a real CI pipeline.</strong> Fork a public repo, add your Postman collection and environment files, set up a GitHub Actions workflow that runs Newman, uploads the HTML report, and surfaces test results in the PR. The CI integration is the gap between "I've used Postman" and "I've integrated API testing into my team's workflow" — and it's the gap interviewers are most interested in.</li>
+    <li><strong>Download SDET Interview Coach</strong> and run the API Testing topic mock interview. Select your target seniority level — Junior, Mid, Senior, or Lead — and answer the AI-generated Postman and Newman questions out loud. The AI scoring gives you immediate feedback on where your gaps are: are you strong on assertions but weak on variables? Strong on Postman but weak on Newman CI/CD? The app's Job Match feature generates 50 questions from any SDET job description that mentions API testing, Postman, or Newman — so you're practising the exact topics your target role tests.</li>
+    <li><strong>Practise the variable scope explanation out loud.</strong> In 30 seconds, explain the four variable scopes and their resolution order to an imaginary colleague. If you can do this without stumbling, you've mastered the single most common Postman interview question. Most candidates freeze because they've never had to articulate the mental model — they just use variables intuitively.</li>
+    <li><strong>Prepare for the "Postman vs X" question.</strong> Know the trade-offs between Postman, REST Assured, Supertest, and Bruno. The key is not to declare a winner — it's to explain when you'd choose each tool and why. Tool selection reveals architectural thinking; tool tribalism reveals inexperience.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The Postman and Newman interview isn't about whether you can send an API request. It's about whether you understand the mental models — variables, chaining, CI/CD integration, authentication, assertions — that turn API testing from a manual task into an automated quality gate. Candidates who can explain <em>why</em> they chose a particular variable scope, <em>how</em> they handle token expiration in a 45-minute Newman run, and <em>what</em> they do when the CI pipeline reports a 500 error at 3 AM — those are the candidates who get offers. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes everything you need to build that depth: mock interviews, model answers, spaced-repetition flashcards, and Job Match for role-specific preparation. If you're coming from a manual QA background, start with our guide on <a href="/blog/manual-qa-to-sdet-career-change">transitioning from manual QA to SDET</a> for the full career-change roadmap. For broader API testing coverage, see our guide on <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a>. For CI/CD pipeline integration, see <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What are the most common Postman interview questions for SDET and QA roles in 2026?",
+        a: "The most common Postman interview questions in 2026 cover five core areas: (1) Variables — 'Explain the four variable scopes in Postman and their resolution order. What's the difference between initial and current values?' (2) API Chaining — 'How do you extract data from one response and use it in the next request? What happens when step 3 of a 5-step chain fails?' (3) Newman and CI/CD — 'How do you run Postman collections in a CI/CD pipeline? Walk me through your GitHub Actions setup. How do you handle secret injection in Newman?' (4) Authentication — 'How do you handle OAuth 2.0 token refresh in a long-running Newman collection? What's the difference between Bearer Token and OAuth 2.0 in Postman?' (5) Assertions — 'Write me a test script that validates the response status, schema, response time, and a nested property — and explain your assertion choices.' Senior candidates are also asked about collection architecture, data-driven testing at scale, and Postman vs other tools.",
+      },
+      {
+        q: "How do I run Postman collections from the command line with Newman?",
+        a: "Install Newman globally via npm: <code>npm install -g newman</code>. Then run: <code>newman run collection.json -e environment.json</code>. For CI/CD, install reporters: <code>npm install -g newman-reporter-htmlextra newman-reporter-junitfull</code> and run: <code>newman run collection.json -e environment.json -r cli,htmlextra,junit --reporter-htmlextra-export report.html --reporter-junit-export junit.xml</code>. For data-driven testing, add <code>-d data.csv</code>. For secret injection, use <code>--env-var \"api_key=$API_KEY\"</code>. Newman exits with code 0 (all pass), 1 (test failure), or 2 (configuration error) — use this for CI build status. Key flags: <code>--bail</code> (stop on first failure), <code>--delay-request 500</code> (throttle requests), <code>--timeout 30000</code> (request timeout), <code>--iteration-count 10</code> (run N times).",
+      },
+      {
+        q: "What's the difference between Postman's environment variables and collection variables?",
+        a: "The four Postman variable scopes, from lowest to highest priority, are: Global (workspace-wide, available to all collections) → Collection (scoped to a single collection) → Environment (scoped to the active environment) → Data (loaded from CSV/JSON data files, highest priority). Environment variables are designed for environment-specific values — like base URLs (dev vs staging vs prod), credentials, and feature flags — that change depending on which environment you're testing. Collection variables are designed for collection-wide constants — like API version prefixes, default pagination sizes, or schema enums — that are the same regardless of environment. The critical interview distinction: environment variables are stored in environment JSON files (separate from the collection), while collection variables are embedded in the collection JSON itself. Initial values are the template values shared on export; current values are local overrides that are never exported.",
+      },
+      {
+        q: "How do you handle OAuth 2.0 authentication in Postman and Newman?",
+        a: "In Postman's UI: Configure OAuth 2.0 in the Authorization tab — set the Auth URL, Access Token URL, Client ID, Client Secret, Scopes, and grant type. Postman opens a browser for user authentication and automatically exchanges the authorization code for tokens. Enable 'Auto-refresh token' to handle token expiration. In Newman (CI/CD): Newman cannot open a browser — so the authorization code grant flow cannot complete. Solutions: (1) Use the client credentials grant type (machine-to-machine, no browser required) — configure it in Postman and it works in Newman. (2) Write a pre-request script using pm.sendRequest to call the token endpoint with client credentials and store the access token. (3) Pre-generate a long-lived token and inject it via <code>--env-var \"access_token=$TOKEN\"</code>. The pre-request script approach is the most robust — it handles token refresh automatically and works identically in Postman and Newman.",
+      },
+      {
+        q: "What are the most common Postman interview traps candidates fall into?",
+        a: "The seven most common Postman interview traps are: (1) Initial vs Current Values confusion — candidates don't know that current values are never exported, causing teammates to receive environments with empty placeholders. (2) Calling pm.response.json() twice — throws 'ReadableStream already read' because the response body can only be parsed once. (3) Variable scope collision — setting a variable in the environment that silently overrides a collection variable with the same name. (4) State leakage across data-driven iterations — environment variables set in iteration 1 persist into iteration 2, overriding the CSV data. (5) Committing secrets to Git — exporting a collection with hard-coded OAuth credentials or API keys and committing it to version control. (6) Token expiration mid-run — a long-running collection (50+ requests) exceeds the token's 15-minute lifetime, causing 401 errors on later requests. (7) Silent string coercion — Postman stores all variables as strings, so numeric values from pm.environment.set() become strings when referenced via {{variable}} in request bodies, potentially causing API validation failures.",
+      },
+      {
+        q: "Does SDET Interview Coach cover Postman and Newman API testing interview preparation?",
+        a: "Yes. SDET Interview Coach includes a dedicated API Testing topic area covering Postman, Newman, REST Assured, Supertest, and API testing fundamentals. The Postman-specific content covers collections and environments, the four variable scopes, pre-request and test scripts, API chaining, data-driven testing, Newman CLI and CI/CD integration, authentication (OAuth 2.0, API Keys, Bearer Tokens, Basic Auth), mock servers and monitors, assertion writing with pm.expect and Chai, and the common interview traps. Questions are calibrated to five seniority levels — Junior candidates get fundamentals (collections, basic assertions), while Lead candidates face complex scenarios (data-driven testing at scale, multi-service chaining, custom OAuth flows). Use Job Match to generate 50 bespoke questions from any SDET job description that mentions Postman, API testing, or Newman.",
+      },
+    ],
+    relatedSlugs: ["api-testing-interview-questions-2026", "cicd-pipeline-testing-interview-questions", "typescript-for-sdet-interviews-2026"],
+  },
+  {
     slug: "docker-test-automation-interview-questions-2026",
     title: "Docker for SDET Test Automation Interviews 2026 — Dockerfile Best Practices and Multi-Stage Builds for Test Images, Docker Compose for Local Test Stacks (Selenium Grid, Databases, API Services), Containerising Playwright and Selenium Tests for CI/CD Consistency, TestContainers for Integration Testing with Real Dependencies, Docker Volumes and Networks for Multi-Container Test Environments, Docker in CI/CD Pipelines (GitHub Actions, Jenkins, GitLab CI), Docker vs Kubernetes for Test Infrastructure Scaling Decisions, and How to Answer Docker Questions That Test Infrastructure Thinking at Senior SDET Panels",
     description: "The complete Docker for SDET test automation interview guide for 2026 — covering every containerisation topic that modern interview panels now probe, from Dockerfile fundamentals and multi-stage builds to Docker Compose for local test stacks, TestContainers for integration testing, and Docker-vs-Kubernetes infrastructure decisions. Covers Docker fundamentals interviewers test (Dockerfile instructions — FROM, RUN, COPY, ENTRYPOINT, CMD, multi-stage builds for lean test images; image layering and cache optimisation; container lifecycle — run, exec, logs, inspect), containerising Selenium and Playwright tests (headless browser containers, Selenium Grid with Docker Compose, Playwright's official Docker image, mounting test reports as volumes, the --network=host vs bridge networking decision), TestContainers for integration testing (the Java and Node.js/TypeScript TestContainers libraries, spinning up real PostgreSQL, Redis, Kafka, and Selenium containers from test code, the @Testcontainers JUnit 5 integration, GenericContainer patterns, and how TestContainers eliminates 'it works on my machine' for integration tests), Docker in CI/CD pipelines (GitHub Actions service containers, Docker layer caching strategies, running Playwright and Selenium tests in CI with Docker, multi-stage Dockerfiles that separate build from execution, and the artifact extraction pattern for test reports and screenshots), multi-container test environments with Docker Compose (declaring PostgreSQL + Redis + Selenium Hub + Chrome Node + your test runner in a single docker-compose.yml, wait-for-it and healthcheck patterns for service readiness, the depends_on vs healthcheck distinction interviewers probe, and Compose profiles for dev vs CI configurations), Docker vs Kubernetes for test infrastructure (when Docker Compose suffices, when Kubernetes adds value — dynamic test environments, namespace isolation, auto-scaling test runners, and the k8s Job/CronJob pattern for scheduled test execution), and common Docker interview questions for SDETs — from 'what's the difference between ENTRYPOINT and CMD?' to 'how do you debug a containerised test that only fails in CI?' to 'explain Docker layer caching and how you'd optimise a test image build time from 5 minutes to 30 seconds.' Code examples in TypeScript (Playwright, TestContainers Node) and YAML (Docker Compose, GitHub Actions). Built from Mitchell's 20 years of SDET interview panels at HMRC, MoD, Nationwide, and Accenture — where infrastructure and containerisation questions have moved from 'have you used Docker?' to 'design a containerised test infrastructure that supports 50 parallel test suites across 3 cloud regions.' The <a href=\"/blog/sdet-interview-coach-app-guide\">SDET Interview Coach iOS app</a> includes dedicated infrastructure and CI/CD interview topics — with AI mock interview rounds covering Docker, TestContainers, Docker Compose, and CI/CD containerisation patterns at five seniority levels.",
