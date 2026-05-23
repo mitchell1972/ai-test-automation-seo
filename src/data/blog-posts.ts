@@ -14,6 +14,563 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "tdd-bdd-testing-methodology-interview-questions-2026",
+    title: "TDD and BDD for SDET Interviews 2026 — Red-Green-Refactor Cycle, TDD vs BDD vs ATDD Methodology Deep-Dive, Test Doubles and Mocking Strategies, TDD for Test Automation (Testing the Tests), When NOT to Use TDD (The Interview Curveball), TDD with Playwright and Selenium (Can You Test-First for UI?), and BDD/Cucumber Quick Recap with Real Panel Questions",
+    description: "The definitive TDD and BDD methodology guide for SDET interviews in 2026. Interview panels aren't asking 'what is TDD' — they're asking 'when have you NOT used TDD and why?' This guide covers every methodology question that separates engineers who've practised test-first development from those who've only read about it: the red-green-refactor cycle explained at the depth panels expect, the TDD vs BDD vs ATDD comparison that reveals architectural thinking, test doubles (mocks, stubs, fakes, spies, dummies) and when to use each, TDD for test automation code itself (how to test your tests), the honest answer on whether test-first works for UI automation with Playwright and Selenium, the anti-patterns that signal inexperience, and a concise BDD/Cucumber recap that complements our full BDD deep-dive. Every section maps to real panel questions from UK government and enterprise interviews. Includes interview coach app guidance for methodology-specific mock rounds.",
+    date: "2026-05-23",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "TDD BDD SDET interview questions 2026",
+      "red-green-refactor test-driven development interview answers",
+      "TDD vs BDD vs ATDD methodology comparison SDET",
+      "test doubles mocking stubbing fakes TDD interview questions",
+      "TDD for test automation testing the tests SDET",
+      "when not to use TDD interview question answer",
+      "TDD Playwright Selenium test-first UI automation",
+      "BDD Cucumber recap SDET interview 2026",
+    ],
+    content: `
+<section class="content-section">
+  <p>You're fifteen minutes into the SDET interview. The panel has warmed up — asked about your current role, your tech stack, a bit about your CI/CD pipeline. You're comfortable. Then the technical lead leans forward: <em>"You mentioned you practise TDD. Walk me through a time when you deliberately chose NOT to use TDD — and what drove that decision."</em> Your brain freezes. You've been doing TDD for two years. You've never thought about <em>not</em> doing it. You mumble something about time pressure, about legacy codebases, about trade-offs you've never actually had to make. The lead nods, but you can see them making a note — and you know it's not the good kind.</p>
+  <p>This is the methodology curveball. In 2026, SDET interview panels have stopped asking "what is TDD" and started asking questions that separate engineers who <em>think</em> about methodology from those who simply <em>follow</em> it. They want to know whether you understand TDD deeply enough to know its limits. Whether you can discuss BDD as a collaboration practice, not just a Cucumber tutorial. Whether you've encountered the situations where test-first breaks down — and what you did about it. Whether you use test doubles strategically or just mock everything because the blog post told you to. This guide covers every methodology question that modern SDET panels are probing — from the red-green-refactor cycle at architectural depth, to the TDD-vs-BDD-vs-ATDD comparison that reveals whether you think in trade-offs, to the honest, experience-backed answers on when TDD works, when it doesn't, and what to do instead. Complement this with our deep-dive on <a href="/blog/bdd-cucumber-interview-questions-2026">BDD and Cucumber Interview Questions 2026</a> for the full Cucumber and Gherkin side, our <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview</a> guide for the architecture decisions that methodology ultimately serves, and our <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a> for the UI automation tool where TDD's applicability gets genuinely interesting. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated TDD and methodology mock interview rounds — with AI-scored questions covering red-green-refactor, test doubles strategy, TDD-vs-BDD trade-offs, and the "when not to use TDD" curveball at five seniority levels.</p>
+</section>
+
+<section class="content-section">
+  <h2>TDD vs BDD vs ATDD — The Methodology Map Every Panel Expects You to Navigate</h2>
+  <p>There's a question that appears in nearly every methodology discussion in SDET interviews, phrased differently depending on the panel but always testing the same thing: do you understand the purpose of each approach, or do you just use whichever one your team adopted before you arrived? The question is some variation of: <em>"Explain the difference between TDD, BDD, and ATDD — and when you'd pick each."</em> Here's what a high-scoring answer covers — and what separates an engineer who's thought about methodology from one who's only executed it.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>TDD — Test-Driven Development</h3>
+      <p>TDD is a <strong>developer discipline</strong>. The red-green-refactor cycle: write a failing test (red), write the minimum code to pass (green), improve the design without changing behaviour (refactor). TDD's primary audience is <em>developers</em> — it drives code design at the unit and integration level. Its core benefit is <strong>design quality</strong>: because you write the test before the implementation, you're forced to think about interfaces, dependencies, and edge cases before you've committed to an implementation. TDD produces modular, testable code because untestable code is impossible to write test-first. <strong>The interview answer that scores:</strong> "TDD is about <em>building the thing right</em>. I use it when I'm writing business logic, data transformations, service classes, and any code where the interface is clear but the implementation could go several ways. The test-first constraint forces me to define the contract before I implement it — and that constraint produces better-designed code than I'd write if I started with the implementation."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>BDD — Behaviour-Driven Development</h3>
+      <p>BDD is a <strong>collaboration practice</strong> that extends TDD's "write tests first" with "write tests in language the business understands." BDD's primary audience is the <em>whole team</em> — product owner, developer, tester — collaborating through the Three Amigos pattern. Its core benefit is <strong>shared understanding and living documentation</strong>. Scenarios are written in Gherkin (Given/When/Then) before development, serving as both acceptance criteria and automated tests. <strong>The interview answer that scores:</strong> "BDD is about <em>building the right thing</em>. It's a conversation first, automation second. I use BDD for business-critical user journeys where misunderstanding the requirement would be costly — checkout flows, compliance rules, multi-step workflows involving multiple systems. The Gherkin scenarios become executable specifications that the product owner can read and verify, while the automation layer runs them as acceptance tests. For a deeper dive on BDD and Cucumber specifically — Gherkin syntax, step definitions, hooks, and the Cucumber interview questions panels actually ask — see our full <a href="/blog/bdd-cucumber-interview-questions-2026">BDD and Cucumber Interview Questions 2026</a> guide."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>ATDD — Acceptance Test-Driven Development</h3>
+      <p>ATDD sits between TDD and BDD — and it's the one candidates most often confuse. ATDD is about <strong>defining acceptance criteria as executable tests before development begins</strong>, but it doesn't prescribe the Gherkin format or the Three Amigos collaboration pattern that BDD does. ATDD's primary audience is the <em>team and stakeholders</em> focused on acceptance criteria. Its core benefit is <strong>unambiguous requirements</strong>: instead of "the system should handle invalid input gracefully" in a JIRA ticket, you have an executable test that defines exactly what "gracefully" means. <strong>The interview answer that scores:</strong> "ATDD is the bridge between business requirements and TDD. With ATDD, the team defines acceptance tests — often as automated checks at the API or integration level — before development starts. Those acceptance tests define 'done' unambiguously: the feature isn't complete until the ATDD tests pass. TDD then drives the internal implementation that makes those acceptance tests pass. ATDD and BDD overlap significantly — BDD adds the Gherkin language and structured collaboration. Some teams do ATDD with plain test frameworks like pytest or JUnit without the Gherkin layer, and that's valid when the business stakeholders aren't reading the test files. The key distinction: ATDD is about executable acceptance criteria. BDD is about executable specifications in business language. TDD is about executable unit-level design constraints."</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The follow-up that panels use to test depth: <strong>"Can you use all three on the same project, or do you pick one?"</strong> The strong answer: "They're complementary, not competing. On a typical project, I'd use BDD scenarios (written collaboratively with the product owner in Gherkin) to define the critical user journeys — maybe 10-15 high-value scenarios. ATDD acceptance tests define the remaining acceptance criteria at the API or integration level — tests that define 'done' without the Gherkin layer. TDD drives the unit-level implementation of every component that makes those acceptance tests pass — potentially hundreds or thousands of unit tests. BDD validates the user sees the right thing. ATDD validates the system does the right thing. TDD validates each component is built the right way. Together they form a layered verification strategy — not a pick-one menu."</p>
+</section>
+
+<section class="content-section">
+  <h2>The Red-Green-Refactor Cycle — Beyond the Mantra, Into the Engineering</h2>
+  <p>Every candidate knows the three words: Red, Green, Refactor. But in 2026, panels aren't testing whether you can recite them — they're testing whether you've internalised enough to know what each phase really means, what traps hide in each, and what happens when the cycle breaks. Here's what interviewers are actually probing at each stage:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>🔴 Red — Write a Failing Test (The Hardest Phase)</h3>
+      <p>Everyone thinks Red is easy — you write a test, it fails, done. But a strong Red phase is the hardest part of TDD because it forces you to define the <em>interface</em> before the <em>implementation</em>. The interview question: "Walk me through what a good Red test looks like." The strong answer: "A good Red test is <strong>specific</strong> (it tests one behaviour, not 'the system works'), <strong>isolated</strong> (it doesn't require a database, network, or filesystem to fail), <strong>named well</strong> (the test name describes the behaviour and expected outcome — <code>shouldReturnEmptyListWhenNoOrdersExist</code> not <code>testGetOrders</code>), and <strong>minimal</strong> (it tests the simplest case that drives the next implementation step). The trap is writing a Red test that's too ambitious — testing the entire feature at once. TDD works in tiny increments: test one behaviour, implement it, refactor, repeat. A Red test that takes more than a few minutes to write is probably trying to test too much at once." <strong>Deeper insight:</strong> "The Red phase also forces you to confront design problems early. If you can't write a test for a behaviour because the dependencies are too tangled, that's feedback about your design — not a reason to skip the test. TDD surfaces coupling and cohesion problems before you've invested in an implementation."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🟢 Green — Write the Minimum Code to Pass (The Discipline Phase)</h3>
+      <p>The Green phase isn't about writing good code — it's about writing <em>just enough</em> code to make the test pass, even if it's ugly. The interview question: "Why does TDD insist on writing the minimum code?" The strong answer: "Because writing the minimum forces you to only implement what's tested. Any code you write beyond what the test requires is untested code — and untested code is where bugs hide. The discipline of 'minimum code to pass' also prevents over-engineering: you don't build abstractions you might need later, factories for objects you might create, extensibility hooks for requirements that haven't arrived. You only build what the failing test demands. The trap in Green is writing production code in the test first — making the test overly specific so it 'guides' the implementation into a particular design. The test should define the behaviour, not the architecture." <strong>Bonus points:</strong> "Sometimes the minimum code to pass is literally <code>return 42;</code> for a test expecting 42. That feels absurd, but it's correct TDD — the next test (expecting a different value) will force you to generalise. TDD is a conversation between test and code: each new test drives the implementation toward generality one increment at a time. Skipping increments — jumping from hardcoded return to a full implementation — is how TDD produces over-engineered code."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🔵 Refactor — Improve Design Without Changing Behaviour (The Skill Phase)</h3>
+      <p>Refactor is where most TDD practitioners spend the least time — and where the most interview depth hides. The interview question: "How do you know when to refactor, and when to stop?" The strong answer: "Refactoring in TDD is driven by <strong>code smells</strong>, not by arbitrary 'clean code' rules. After Green, I scan for: duplication (same logic appearing in multiple places — extract it), poor names (methods or variables that don't describe their purpose — rename them), long methods (methods doing more than one thing — extract smaller methods), and violation of the Single Responsibility Principle (the class or method has multiple reasons to change). I stop refactoring when the code is simple, the tests still pass, and there are no obvious smells. The discipline: <strong>I never add new behaviour during Refactor</strong>. Refactoring changes structure, not functionality. If the tests pass before refactoring, they must pass after. If I add behaviour during Refactor, I've broken the cycle — that behaviour needs its own Red-Green-Refactor iteration." <strong>Deeper insight:</strong> "The Refactor phase is where TDD's design benefit materialises. Without Refactor, TDD is just 'write tests before code' — better than nothing, but missing the point. With Refactor, TDD produces code that's not just tested, but well-designed. The tests give you the safety net to refactor aggressively — you can restructure entire class hierarchies, extract interfaces, and invert dependencies, all while knowing your tests will catch any regression."</p>
+    </div>
+  </div>
+
+  <pre><code>// TDD in Practice: Red-Green-Refactor for a ShoppingBasket total calculation
+
+// ─── RED: Write a failing test first ───
+// Test: should return zero for an empty basket
+
+describe('ShoppingBasket', () => {
+  it('should return zero total for an empty basket', () => {
+    const basket = new ShoppingBasket();
+    expect(basket.getTotal()).toBe(0);
+  });
+});
+
+// ─── GREEN: Minimum code to pass ───
+
+class ShoppingBasket {
+  getTotal(): number {
+    return 0; // Hardcoded — but the test passes!
+  }
+}
+
+// ─── RED: Next test drives generalisation ───
+// Test: should return item price for a basket with one item
+
+it('should return item price for a basket with one item', () => {
+  const basket = new ShoppingBasket();
+  basket.addItem({ name: 'Widget', price: 9.99 });
+  expect(basket.getTotal()).toBe(9.99);
+});
+
+// ─── GREEN: Now generalise — the test forces it ───
+
+class ShoppingBasket {
+  private items: Array<{ name: string; price: number }> = [];
+
+  addItem(item: { name: string; price: number }): void {
+    this.items.push(item);
+  }
+
+  getTotal(): number {
+    return this.items.reduce((sum, item) => sum + item.price, 0);
+  }
+}
+
+// ─── REFACTOR: Extract magic constant, improve naming ───
+
+const EMPTY_TOTAL = 0;
+
+class ShoppingBasket {
+  private items: Item[] = [];
+
+  addItem(item: Item): void {
+    this.items.push(item);
+  }
+
+  getTotal(): number {
+    if (this.items.length === 0) return EMPTY_TOTAL;
+    return this.items.reduce((sum, item) => sum + item.price, 0);
+  }
+}
+
+// The key insight: every line of production code was demanded by a failing test.
+// The refactor improved readability without changing behaviour.
+// Tests stay green through every refactor — that's the safety net.
+
+// ─── RED: Next increment — apply a discount ───
+
+it('should apply a 10% discount when promo code is valid', () => {
+  const basket = new ShoppingBasket();
+  basket.addItem({ name: 'Widget', price: 100.00 });
+  basket.applyPromoCode('SAVE10');
+  expect(basket.getTotal()).toBe(90.00);
+});
+
+// This cycle continues — each test drives one behaviour,
+// each implementation is the minimum to pass,
+// each refactor keeps the design clean.</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>"When Have You NOT Used TDD?" — The 2026 Methodology Curveball and How to Answer It</h2>
+  <p>This is the question that separates TDD practitioners from TDD dogmatists — and it's appearing in more SDET interviews in 2026 than ever before. Panels are tired of candidates who recite "TDD is always the answer" without having encountered the real-world situations where test-first doesn't work or isn't worth the cost. Here's how to answer this question with the nuance that panels are listening for:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Scenario 1: Exploratory Spikes and Prototypes</h3>
+        <p><strong>"I don't use TDD during exploratory spikes where I'm investigating feasibility, not building production code."</strong> When you're exploring a new library, testing a third-party API, or prototyping an uncertain architecture, writing tests first slows down the learning loop. The goal is to understand the technology's behaviour — and that understanding often invalidates the initial tests. The nuance panels want: "I write the spike without tests to learn quickly. Then I throw the spike code away — I mean literally delete it — and rewrite it with TDD now that I understand the domain. Keeping spike code in production is technical debt. TDD on the rewrite produces clean, tested code, informed by what I learned from the spike." The insight: knowing <em>when to throw away code</em> is as important as knowing when to test it.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Scenario 2: UI Layout and Styling Changes</h3>
+        <p><strong>"I don't use TDD for CSS changes, visual layout adjustments, or purely presentational UI work."</strong> Writing a failing test before changing a margin or adjusting a colour is a poor return on investment — visual changes are better validated by visual regression testing tools (Percy, Chromatic, Playwright's <code>toHaveScreenshot</code>) or manual review. The nuance: "I distinguish between UI <em>behaviour</em> — 'clicking submit with empty fields shows validation errors' — which I absolutely test-drive, and UI <em>presentation</em> — 'the error message should be red and 14px' — which is better validated by visual snapshot tests or design review. Conflating behaviour and presentation is how teams end up with brittle UI tests that break on every CSS refactor."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Scenario 3: Legacy Code Without Tests</h3>
+        <p><strong>"I don't start with TDD when adding a feature to a legacy codebase that has no existing test coverage."</strong> Legacy code without tests is typically not designed for testability — it's tightly coupled, depends on global state, and resists isolation. Writing a unit test first, in this context, requires massive refactoring before you've written a single line of new behaviour. The pragmatic approach: "I use the <em>Characterisation Test</em> pattern from Michael Feathers' Working Effectively with Legacy Code. First, I write tests that capture the <em>current</em> behaviour — even if it's buggy — to create a safety net. Then I refactor to introduce seams and break dependencies. Only then do I add the new feature with TDD. The characterisation tests tell me if my refactoring changed existing behaviour, while the new TDD tests drive the new feature. Without characterisation tests, refactoring legacy code is surgery without a heart monitor."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Scenario 4: Configuration, Glue Code, and Boilerplate</h3>
+        <p><strong>"I don't TDD pure configuration files, wiring code, or framework boilerplate that has no logic to verify."</strong> Testing that a configuration value equals its literal definition is testing the language runtime, not your application. Testing dependency injection wiring verifies the framework, not your logic. The nuance: "I distinguish between code with <em>behaviour</em> — branching logic, data transformation, state management — and code that's pure <em>declaration</em>. Behaviour gets TDD. Declaration gets integration or smoke tests at the boundary — 'does the application start with this configuration?' — rather than unit tests that test the configuration syntax. The goal is coverage of risk, not coverage of lines."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Scenario 5: When the Test Is More Complex Than the Code</h3>
+        <p><strong>"When the test setup requires more code and complexity than the implementation it's testing, I question whether TDD is the right approach."</strong> If you need five mocks, three stubs, and a complex test fixture to test a three-line delegation method, the test is probably more likely to contain bugs than the code. The nuance: "This is often a design smell — if the test is complex, maybe the code under test is too coupled. But sometimes it's genuinely the case that the behaviour is simple delegation with no branching logic. In those cases, I'll write an integration test that verifies the delegation works end-to-end, rather than a unit test that recreates the entire dependency graph in mocks. TDD's value is proportional to the code's complexity. For trivial code, the safety net costs more than it saves."</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The meta-answer that panels reward: <strong>"TDD is a tool, not a religion. I use it when it adds net value — which is most of the time for business logic, service layers, and algorithmic code — and I'm explicit about why I'm not using it when the situation calls for a different approach. Dogmatic 'always TDD' is as unconvincing as 'never TDD.' The skill is knowing the difference."</strong> This demonstrates judgement, pragmatism, and real-world experience — exactly what senior panels are hiring for.</p>
+</section>
+
+<section class="content-section">
+  <h2>Test Doubles in TDD — Mocks, Stubs, Fakes, Spies, and Dummies Explained with Interview-Ready Precision</h2>
+  <p>If TDD is the engine, test doubles are the transmission — they're how you isolate the code under test from its dependencies so you can test one thing at a time. In 2026, panels aren't asking "what's a mock?" — they're asking <em>when</em> you'd use a stub vs a mock, <em>why</em> over-mocking is a design smell, and <em>how</em> test doubles in TDD differ from test doubles in traditional test-after development. Here's the complete taxonomy, with the nuance that scores:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Dummy — The Placeholder</h3>
+      <p>A dummy is an object passed around but never actually used. It exists to satisfy the compiler or runtime — filling a parameter slot that the test doesn't exercise. Example: passing <code>null</code> or an empty object for a logger parameter when the test doesn't exercise the logging path. <strong>When to use:</strong> When a method requires a dependency that the specific test scenario doesn't interact with. <strong>Interview insight:</strong> "If you're passing dummies frequently, it might signal that your classes have too many dependencies — a design smell that TDD would catch if you were writing the tests first. A class that takes five constructor parameters where three are dummies in most tests is probably violating the Interface Segregation Principle."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Stub — The Pre-Programmed Responder</h3>
+      <p>A stub provides canned answers to calls made during the test. It doesn't record what was called or verify interactions — it just returns pre-configured values. Example: a <code>UserRepository</code> stub that always returns a pre-built user object when <code>findById</code> is called. <strong>When to use:</strong> When the test needs the dependency to provide data, but you don't care how many times or in what order it's called. Stubs are for <strong>state verification</strong> — you assert on the final state, not on the interactions. <strong>Interview insight:</strong> "Stubs are the right choice for most TDD tests because TDD focuses on behaviour and outcomes, not implementation details. If I stub the database and assert that the service returns the correct transformed data, I'm testing the service's behaviour. If I mock the database and assert that <code>findById</code> was called exactly once, I'm testing the service's implementation — which makes refactoring harder because changing the implementation breaks the test."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Mock — The Expectation Setter</h3>
+      <p>A mock is pre-programmed with expectations about which calls will be made, with which arguments, in which order, and how many times. It fails the test if the expectations aren't met. Example: a mock <code>EmailService</code> that expects <code>sendWelcomeEmail</code> to be called exactly once with a specific user object. <strong>When to use:</strong> When the side effect <em>itself</em> is the behaviour you're testing — sending an email, publishing an event, calling an external API. <strong>Interview insight — the critical nuance:</strong> "Mocks test <em>interactions</em>, not <em>outcomes</em>. This is a double-edged sword. Use mocks for <strong>commands</strong> — methods that produce side effects (send an email, publish a message, write to a queue) — because the side effect is the behaviour. Use stubs for <strong>queries</strong> — methods that return data — because the returned data is what matters, not how it was retrieved. Mocking queries couples your tests to implementation details and makes refactoring painful. This is the 'mock roles, not objects' principle from Steve Freeman and Nat Pryce's GOOS book — and candidates who can articulate it demonstrate depth beyond memorising a mocking library's API."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Fake — The Lightweight Implementation</h3>
+      <p>A fake is a working implementation with shortcuts — it behaves like the real thing but isn't suitable for production. Example: an in-memory database instead of PostgreSQL, an in-memory queue instead of Kafka. <strong>When to use:</strong> When stubbing every interaction would be more complex than writing a simple working implementation, or when you need to test behaviour that spans multiple interactions with the same dependency. <strong>Interview insight:</strong> "Fakes are underused. In TDD for test automation, I frequently write fake API servers, fake databases, and fake message brokers. A fake HTTP server — using Python's <code>http.server</code> or Node's <code>nock</code> — lets me test my API client's behaviour (retries, timeouts, error handling) against a real-ish server, which stubs can't simulate. The trade-off: fakes are code you have to maintain and test. If the fake becomes complex enough to have bugs, it's no longer serving its purpose. The rule: if your fake needs its own tests, it's too complex — use stubs or an integration test against the real thing."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Spy — The Recording Observer</h3>
+      <p>A spy records the calls it receives so the test can inspect them afterward — but doesn't fail the test automatically like a mock does. Example: a spy on a <code>NotificationService</code> that records every notification sent, which the test then asserts against. <strong>When to use:</strong> When you want to verify interactions but want the assertions at the end of the test (Arrange-Act-Assert style) rather than pre-programmed in setup. <strong>Interview insight:</strong> "Spies are more readable than mocks for complex interaction verification because the assertions are explicit at the end of the test. But the same caution applies: verifying interactions couples tests to implementation. I use spies sparingly — primarily for audit trails, logging verification, and event publishing where the list of published events is the behaviour I'm testing. For most tests, state verification with stubs is simpler and more maintainable."</p>
+    </div>
+  </div>
+
+  <pre><code>// Test Doubles in TDD: A concrete example in TypeScript with Jest
+
+// ─── The System Under Test: OrderService ───
+
+class OrderService {
+  constructor(
+    private orderRepo: IOrderRepository,    // Query: stub this
+    private paymentGateway: IPaymentGateway, // Command: mock this
+    private emailService: IEmailService,     // Command: mock this
+    private logger: ILogger                  // Usually a dummy
+  ) {}
+
+  async placeOrder(order: Order): Promise&lt;OrderResult&gt; {
+    // Query existing orders (stub the repo)
+    const existing = await this.orderRepo.findByCustomerId(order.customerId);
+    
+    // Business logic: check duplicate
+    if (existing.some(o => o.productId === order.productId && o.isRecent())) {
+      return { success: false, reason: 'DUPLICATE_ORDER' };
+    }
+
+    // Command: charge payment (mock the gateway — side effect matters)
+    const payment = await this.paymentGateway.charge(order.amount, order.paymentMethod);
+    
+    if (!payment.success) {
+      return { success: false, reason: 'PAYMENT_FAILED' };
+    }
+
+    // Command: send confirmation (mock the email — side effect matters)
+    await this.emailService.sendOrderConfirmation(order, payment.transactionId);
+
+    // Log — use a dummy in most tests
+    this.logger.info('Order placed', { orderId: order.id });
+
+    return { success: true, orderId: order.id };
+  }
+}
+
+// ─── TDD Test: Stubs for queries, Mocks for commands, Dummy for logger ───
+
+describe('OrderService.placeOrder', () => {
+  it('should reject duplicate orders for the same product within 24 hours', async () => {
+    // Arrange
+    const orderRepoStub = {
+      findByCustomerId: jest.fn().mockResolvedValue([
+        { productId: 'P123', createdAt: new Date() } // Recent duplicate
+      ])
+    };
+    
+    // Payment and email are mocks — we expect them to NOT be called
+    const paymentMock = { charge: jest.fn() };
+    const emailMock = { sendOrderConfirmation: jest.fn() };
+    
+    // Logger is a dummy — not used in assertions
+    const loggerDummy = { info: jest.fn(), error: jest.fn(), warn: jest.fn() };
+
+    const service = new OrderService(
+      orderRepoStub as any,
+      paymentMock as any,
+      emailMock as any,
+      loggerDummy
+    );
+
+    // Act
+    const result = await service.placeOrder({
+      id: 'ORD-002', customerId: 'C1', productId: 'P123',
+      amount: 49.99, paymentMethod: 'card'
+    });
+
+    // Assert: state verification (stub) + interaction verification (mocks)
+    expect(result.success).toBe(false);
+    expect(result.reason).toBe('DUPLICATE_ORDER');
+    
+    // Verify side-effect commands were NOT called (important!)
+    expect(paymentMock.charge).not.toHaveBeenCalled();
+    expect(emailMock.sendOrderConfirmation).not.toHaveBeenCalled();
+  });
+});
+
+// The pattern: stub queries, mock commands, dummy everything else.
+// This test is resilient to refactoring — change the repo call pattern
+// and the test still works because we only assert on outcomes + side effects.</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>TDD for Test Automation — How to Test Your Tests (And Why Panels Ask This)</h2>
+  <p>This is the methodology question that catches even experienced SDETs off guard: <strong>"Do you apply TDD to your test automation code? How do you test your tests?"</strong> It sounds meta — and it is. But it's a legitimate question that reveals whether you treat test automation as engineering or as scripting. Here's how to answer it with the depth that panels reward:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Testing Page Objects and Helper Utilities</h3>
+      <p><strong>"Yes — I apply TDD to the reusable components of my test framework."</strong> Page Objects, API clients, data factories, custom assertions, and utility functions are production code — they just happen to live in the test project. If a Page Object's <code>login()</code> method has branching logic (valid credentials → dashboard, invalid → error message), that logic should be test-driven. The interview answer: "I unit-test my Page Objects' <em>logic</em> methods — the methods that transform data, make decisions, or encapsulate complex workflows. I don't unit-test the locator declarations or the Playwright/Selenium API calls themselves — that would be testing the framework. The distinction: if I wrote the logic, I test it. If the framework provides it, I trust it." <strong>Example:</strong> A <code>parseTableToJSON()</code> helper that extracts data from an HTML table — pure logic, no browser dependency — is perfect for TDD. You can write tests for it without a browser, iterate through Red-Green-Refactor, and have high confidence it works before you use it in an end-to-end test.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Testing Custom Assertions and Matchers</h3>
+      <p><strong>"Custom assertions are logic — they deserve TDD."</strong> If you've written a custom Playwright matcher like <code>toBeAccessible()</code> or a custom API response validator, that's code with behaviour that can be wrong. TDD it. Write tests for your custom matchers that verify: the matcher passes when it should, the matcher fails when it should, the failure message is clear and actionable, edge cases (null, undefined, empty). <strong>Interview insight:</strong> "A bug in a custom assertion is worse than a bug in application code because it silently passes or fails tests incorrectly — eroding trust in the entire test suite. I test custom assertions more thoroughly than most production code because their failure mode (false confidence) is the most expensive kind of bug in testing."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Testing Test Data Factories</h3>
+      <p><strong>"Test data factories that generate domain objects — users, orders, accounts — are logic I test-drive."</strong> A factory that creates a user with randomised but valid data has rules: email format, password complexity, role assignments. Those rules should be tested — ideally through TDD — so you know your test data is valid before you use it to test the application. <strong>Example:</strong> A <code>createTestUser({ role: 'admin' })</code> factory should have tests verifying: it produces a user with the admin role, it produces a user with valid email format, it produces different emails on each call (randomisation works), and it handles invalid role inputs gracefully. If your test data factory is buggy, every test that uses it is unreliable — you're debugging test data problems instead of application problems.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>What You Don't TDD in Test Automation</h3>
+      <p><strong>"I don't TDD the test scripts themselves."</strong> The end-to-end test that calls <code>page.goto('/login')</code>, fills fields, clicks buttons, and asserts outcomes — that test <em>is</em> the test. Writing a unit test for it is circular. The interview nuance: "The test script is the specification. It defines what the application should do. You don't TDD the specification — you use the specification to TDD the implementation. Similarly, I don't TDD Playwright's <code>page.click()</code> or Selenium's <code>WebDriver.findElement()</code> — those are framework APIs with their own test suites. What I do test-drive is every piece of <em>my</em> code that sits between the test script and the framework: Page Objects, API clients, data factories, custom matchers, and test utilities."</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;"><strong>The panel's real question:</strong> When they ask "do you test your tests?" they're probing whether you see test automation as <em>software engineering</em> or as <em>scripting</em>. The engineer writes testable test code. The scripter writes scripts and hopes. Your answer should make clear which one you are.</p>
+</section>
+
+<section class="content-section">
+  <h2>Can You Do TDD for UI Automation? — The Playwright and Selenium Test-First Question</h2>
+  <p>This is one of the most debated methodology questions in test automation — and it comes up in SDET interviews because it tests whether you can think critically about methodology rather than applying it dogmatically. <strong>"Do you do TDD with Playwright or Selenium? Can you write a UI test before the UI exists?"</strong> Here's the honest, experience-backed answer that panels reward:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>The Short Answer: It Depends on the Layer</h3>
+        <p>Pure TDD — write a failing UI test, watch it fail because the page doesn't exist, implement the page, watch the test pass — is <strong>mostly impractical</strong> for end-to-end UI automation. The feedback loop is too slow (browser startup, page load, element rendering — seconds or minutes vs milliseconds for unit TDD), the test is too brittle (a missing button and a missing CSS class both fail the same way), and you can't test-drive visual design (you can't assert "the button should look good"). <strong>But</strong> — and this is the nuance panels want — TDD <em>principles</em> apply to UI test automation at different layers. The candidate who says "TDD doesn't work for UI, period" misses the opportunity. The candidate who says "I do TDD everywhere, including UI" signals they've never actually tried it at scale. The candidate who can articulate <em>where</em> TDD principles add value in UI testing — and where they don't — demonstrates the judgement panels are hiring for.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Where Test-First Works for UI: Component-Level Testing</h3>
+        <p>At the component level — testing individual UI components in isolation with tools like Testing Library, React Testing Library, or Vue Test Utils — TDD works well. You can write a test for a <code>&lt;LoginForm&gt;</code> component that asserts "when the form is submitted with empty fields, validation errors appear" before the validation logic exists. The feedback loop is fast (milliseconds, no browser), the test is specific (one component, one behaviour), and the test drives the component's design. <strong>Interview answer:</strong> "I use TDD for component-level UI testing — testing individual React, Angular, or Vue components in isolation using jsdom or similar in-memory environments. The Red-Green-Refactor cycle works because the feedback is instant. For end-to-end flows that require a real browser, I use Playwright or Selenium <em>after</em> the UI exists — writing tests that validate user journeys, not driving the initial implementation." For a comprehensive Playwright guide covering the end-to-end side, see our <a href="/blog/playwright-interview-questions-2026">Playwright Interview Questions 2026</a> deep-dive.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>The Pragmatic Middle Ground: Test-After with TDD-Inspired Design</h3>
+        <p>The most honest and effective approach for UI automation: <strong>write end-to-end tests after the UI exists, but design them with TDD principles.</strong> What that means in practice: (1) Write the test before you automate it — define the scenario, the steps, the assertions on paper or in a test plan. (2) Keep tests focused on one user journey per test — TDD's "test one behaviour" principle applies perfectly to E2E tests. (3) Design the Page Objects and test helpers <em>before</em> writing the tests that use them — this is TDD thinking applied to test architecture. (4) Use the Arrange-Act-Assert pattern rigorously — it's the E2E equivalent of Red-Green-Refactor. <strong>Interview answer:</strong> "For end-to-end UI tests with Playwright or Selenium, I practise what I call 'specification-first' rather than 'test-first.' I define the user journeys and acceptance criteria before the test automation exists — often collaboratively with the product owner if we're doing BDD. Then I write the automation to match the specification. The specification drives the automation, even if the automation doesn't drive the implementation. The thinking is TDD. The execution order is different because browser automation's feedback loop doesn't support Red-Green-Refactor at the E2E level."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>What About Visual Regression? — The Exception That Proves the Rule</h3>
+        <p>Visual regression testing — using Playwright's <code>toHaveScreenshot()</code>, Percy, or Chromatic — is one area where "test-first" genuinely doesn't apply. You can't take a screenshot of a page that doesn't exist. Visual tests are inherently test-after: you build the UI, capture the approved baseline, and future test runs compare against it. The interview nuance: "Visual regression tests are a different category — they're change-detection tools, not behaviour-specification tools. I don't try to apply TDD to them. Instead, I treat the baseline screenshot as the specification: the design team approves it, and the test ensures the implementation matches. If the implementation changes, we update the baseline. It's a conversation between design and code, not between test and code."</p>
+      </div>
+    </div>
+  </div>
+
+  <pre><code>// TDD for Component-Level UI Testing (works well)
+// vs End-to-End Playwright Testing (test-after, TDD-principled)
+
+// ─── COMPONENT TDD: LoginForm (React + Testing Library) ───
+// Fast, isolated, drives component design
+
+// RED: Write the test first
+describe('LoginForm', () => {
+  it('should show validation error when email is empty on submit', async () => {
+    render(&lt;LoginForm onSubmit={jest.fn()} /&gt;);
+    
+    // Submit with empty fields
+    await userEvent.click(screen.getByRole('button', { name: /log in/i }));
+    
+    // Assert validation message appears
+    expect(screen.getByText('Email is required')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /email/i }))
+      .toHaveAttribute('aria-invalid', 'true');
+  });
+});
+
+// GREEN: Implement minimum validation
+// REFACTOR: Extract validation rules, improve error messages
+
+// ─── E2E TEST: Checkout Flow (Playwright — test-after, TDD-principled) ───
+// The UI exists. The test validates the user journey.
+
+test('should complete checkout with valid payment', async ({ page }) => {
+  // Arrange: Navigate and add item to basket (precondition)
+  await page.goto('/products');
+  await page.click('[data-testid="add-to-basket-001"]');
+  
+  // Act: Complete checkout
+  await page.click('[data-testid="checkout-button"]');
+  await page.fill('[data-testid="card-number"]', '4242424242424242');
+  await page.fill('[data-testid="card-expiry"]', '12/28');
+  await page.fill('[data-testid="card-cvc"]', '123');
+  await page.click('[data-testid="pay-button"]');
+  
+  // Assert: Confirmation page appears
+  await expect(page.locator('[data-testid="confirmation"]'))
+    .toContainText('Order confirmed');
+  await expect(page.locator('[data-testid="order-number"]'))
+    .toBeVisible();
+});
+
+// The TDD principle: one user journey per test.
+// The pragmatic reality: the UI existed before the test.
+// Both are valid. Knowing which applies where is the skill.</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>BDD and Cucumber — A Concise Recap for Methodology-Focused Interviews</h2>
+  <p>Since BDD invariably comes up alongside TDD in methodology discussions, here's the essential recap every SDET should have ready — focused on how BDD relates to and differs from TDD, rather than the full Cucumber deep-dive (which we cover in our dedicated <a href="/blog/bdd-cucumber-interview-questions-2026">BDD and Cucumber Interview Questions 2026</a> guide).</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>BDD in 30 Seconds — The Interview Elevator Pitch</h3>
+      <p>BDD (Behaviour-Driven Development) is a collaboration methodology where the team defines system behaviour through concrete examples <em>before</em> development begins. Those examples are written in Gherkin — a structured natural language using Given/When/Then — and automated as executable specifications using tools like Cucumber, SpecFlow, or Behave. BDD's core practice is the Three Amigos: product owner, developer, and tester sitting together to define scenarios. Its primary output isn't automated tests — it's shared understanding. The automated tests are a valuable by-product, not the goal. <strong>The one-line distinction for interviews:</strong> "TDD is about building the thing right. BDD is about building the right thing."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>How TDD and BDD Fit Together — The Layered Testing Strategy</h3>
+      <p><strong>BDD at the acceptance layer, TDD at the unit layer.</strong> BDD scenarios define what the system should do from the user's perspective — "Given I'm a registered user, When I log in with valid credentials, Then I should see my dashboard." TDD unit tests define how each component achieves that behaviour — testing the authentication service, the session manager, the dashboard renderer individually. The layers reinforce each other: BDD scenarios catch integration failures (component A works, component B works, but they don't work together). TDD unit tests catch component failures (this function returns the wrong value when the input is null). Together they provide confidence at multiple levels. See our <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview</a> guide for the architectural patterns that make this layered strategy maintainable at scale.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The BDD Anti-Pattern That Links Back to TDD</h3>
+      <p>The most common BDD failure mode: teams write Cucumber scenarios but skip the TDD unit tests underneath. The result is a test suite shaped like an inverted pyramid — lots of slow, brittle end-to-end Cucumber scenarios and almost no fast, focused unit tests. This is exactly what the Test Pyramid warns against. <strong>The interview insight:</strong> "A healthy test strategy uses BDD for the critical user journeys — maybe 10-15% of the total test count — and TDD for everything else. If your Cucumber scenarios outnumber your unit tests, you're building a test suite that will be slow, hard to debug, and resistant to refactoring. The pyramid isn't optional — it's survival."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>6 Common TDD and Methodology Mistakes That Cost SDET Candidates Offers</h2>
+  <p>After watching hundreds of candidates navigate methodology questions, these are the specific mistakes that cause interviewers to lean back and mentally move on to the next candidate. They're not knowledge gaps — they're articulation gaps. You might know the material, but if you present it the wrong way, the panel won't hear it.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #1: Reciting the Textbook Definition Without Personal Experience</h3>
+        <p>"TDD is the practice of writing tests before production code to ensure code quality and enable refactoring." This answer is technically correct and completely useless in an interview. It tells the panel you've read about TDD — not that you've done it. The fix: anchor every methodology answer in a specific project. "On the payment processing service at my last role, I used TDD to build the refund calculation engine. Writing the test first forced me to define the refund rules — partial refunds, pro-rated refunds, minimum refund amounts — before I wrote the calculation logic. That test-first constraint caught three edge cases my initial mental model had missed." Specific experience beats textbook definitions every time.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #2: Claiming 100% TDD Without Acknowledging Its Limits</h3>
+        <p>When a candidate says "I use TDD for everything I write," the panel hears one of two things: either you've never worked on a real project (where legacy code, tight deadlines, and UI work make 100% TDD impossible), or you're overstating to impress them. Neither helps. The fix: "I aim for TDD on business logic, service layers, and algorithmic code — probably 70-80% of what I write. For the rest — configuration, boilerplate, exploratory spikes, and legacy code refactoring — I use other verification strategies like characterisation tests, integration tests, and code review. The goal isn't 100% TDD coverage. It's the right verification strategy for each type of code."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #3: Confusing TDD with Test Automation</h3>
+        <p>"I do TDD — I write all my Playwright tests before the release." This isn't TDD. It's writing tests before a release — which is completely different from writing tests before the code. TDD is about the <em>order</em> of test and code at the development level — test first, then code, then refactor, within minutes. Writing tests before a release is just good testing practice, not TDD. The fix: "TDD is a development discipline operating at the minute-by-minute level. Each Red-Green-Refactor cycle takes 2-10 minutes. It's not about having tests before the release — it's about having tests before every line of production code. The tests <em>drive</em> the code, they don't just <em>verify</em> it after the fact."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #4: Over-Mocking Everything in Your Description of TDD</h3>
+        <p>If your answer to "how do you handle database dependencies in TDD?" is "I mock the database," you've told the panel you mock by default — which signals you might not distinguish between queries and commands, or between test doubles you should use and those you shouldn't. The fix: "I distinguish between dependencies I should replace with test doubles — external services, payment gateways, email providers — and dependencies I should test against real instances — databases, file systems, in-memory caches. For a database, I prefer an in-memory or Dockerised instance over mocking. Mocking a database means my tests pass against my assumptions about how the database works, not against how it actually works. That's a false sense of security. I mock only the boundaries I don't control."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #5: Skipping the Refactor Step When Walking Through TDD</h3>
+        <p>When asked to walk through a TDD cycle, most candidates describe Red and Green in detail — then mumble "and then you refactor" and move on. But Refactor is where TDD's design value lives. Skipping it tells the panel you do Test-First Programming, not Test-Driven Development. The fix: "After Green, I specifically look for: duplication (extract method/class), unclear names (rename for intent), long methods (extract until each method does one thing), and missing abstractions (introduce interfaces where the tests reveal coupling). I commit after Refactor, not after Green. The commit should contain clean, well-designed code that happens to be test-covered — not working code that I'll 'clean up later.'"</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Mistake #6: Treating BDD as "TDD with Different Words"</h3>
+        <p>"BDD is basically TDD but with Gherkin syntax" — this answer signals you've used Cucumber as a test runner without understanding BDD as a methodology. BDD's collaboration practice (Three Amigos, shared understanding, living documentation) is fundamentally different from TDD's development discipline (Red-Green-Refactor, design pressure, fast feedback). Conflating them tells the panel you've never participated in a real BDD process. The fix: "TDD solves the 'are we building it correctly?' problem through test-first design pressure. BDD solves the 'are we building the correct thing?' problem through collaborative specification before development. They address different risks at different stages. They complement each other — they don't replace each other."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real TDD and Methodology SDET Interview Looks Like — Timed Breakdown</h2>
+  <p>Drawing from panels conducted across UK government and enterprise environments, here's how TDD and methodology questions typically appear in a 60-minute SDET interview — and what the panel is evaluating at each stage:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Experience Probe — "Tell Us About Your Development Practices"</h3>
+        <p>This opener is deceptively casual. The panel is listening for whether you mention methodology unprompted — and <em>how</em> you mention it. A candidate who says "we write tests" has a different profile from one who says "we practise TDD for our service layer, with BDD scenarios for the critical user journeys — the product owner writes the Gherkin with us during Three Amigos sessions." The first describes activity. The second describes <em>intentional practice</em>. Be specific about what you actually do — don't claim practices your team doesn't follow. If your team does test-after with decent coverage, say so and explain why: "We don't practise TDD formally, though I've used it on side projects and understand the cycle. Our current test strategy is test-after with a strong review culture that catches design issues. I'm looking for a team where TDD is part of the engineering culture." Honesty about your current level plus demonstrated understanding of the practice you're aiming for is a strong combination.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>Methodology Deep-Dive — The Comparison Question</h3>
+        <p>"Explain the difference between TDD and BDD — and tell us when you'd use each." This is where the panel tests whether your methodology understanding is theoretical or experiential. Structure your answer: (1) Define each clearly — TDD as developer discipline, BDD as collaboration practice. (2) Compare their audiences and goals — TDD for code design, BDD for shared understanding. (3) Contrast their feedback cycles — TDD in seconds/minutes, BDD scenarios running in minutes across multiple systems. (4) Describe how you've used each — specific project examples. (5) Articulate how they complement each other — BDD at acceptance layer, TDD at unit layer. The panel isn't testing your ability to recite definitions. They're testing your ability to <em>reason about methodology</em> — to discuss trade-offs, contexts, and fit.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>Practical Exercise — "Walk Me Through a TDD Cycle for This Requirement"</h3>
+        <p>The panel gives you a simple requirement — "build a function that validates a UK postcode" or "design a service that calculates shipping costs" — and asks you to walk through how you'd TDD it. They're evaluating: (1) Do you start with the simplest test case or jump to the complex one? (Start with the simplest — an empty postcode, a zero-weight shipment.) (2) Do you describe the Red, Green, AND Refactor steps — or skip Refactor? (3) Do you discuss test doubles naturally — "I'd stub the shipping rate API because we don't control it" — or avoid the topic? (4) Do you increment sensibly — one behaviour per test, building up complexity gradually — or try to test everything at once? The candidate who says "first I'd write a test for an empty postcode returning an error, then I'd implement the validation, then I'd refactor to extract the validation rules into a separate function, then I'd test a valid postcode, then I'd test edge cases like special postcodes..." demonstrates TDD fluency. The candidate who jumps straight to "I'd test all the validation rules at once" demonstrates they've never actually done it.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–55 min</div>
+      <div class="timeline-content">
+        <h3>The Curveball — "When Doesn't This Work?"</h3>
+        <p>The panel asks the question this guide opened with: "Tell us about a time you chose NOT to use TDD" or "When would BDD be the wrong approach?" They're testing for dogma vs judgement. The strong candidate gives specific scenarios — not vague "when there's no time" cop-outs: "When we were integrating with a third-party SDK whose behaviour we didn't fully understand, I spiked the integration without tests first, learned how the SDK actually behaved (which differed from the docs), then rewrote with TDD. If I'd TDD'd from the start against the documented behaviour, I'd have built tests for behaviour that didn't match reality." This demonstrates you make methodology decisions based on context, not habit — exactly what senior panels are evaluating.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">55–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions — Demonstrate Methodology Thinking</h3>
+        <p>When the panel says "any questions for us?" use this to reinforce your methodology depth: "What's your team's approach to testing — do you practise TDD, BDD, or a mix? How do you handle test data in your TDD cycle — do you use factories, fixtures, or something else? What's the biggest methodology challenge your team faces — is it adoption, consistency, or something else?" These questions show you're thinking about how you'd fit into their engineering culture — not just whether they'll hire you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Methodology Questions Are Strategy Questions — Treat Them That Way</h2>
+  <p>TDD, BDD, and ATDD aren't testing techniques. They're <strong>engineering strategies</strong> — decisions about how your team builds software, verifies correctness, and communicates about behaviour. In 2026, panels are probing methodology not because they want you to recite the Red-Green-Refactor mantra, but because they want to know whether you'll make good engineering decisions when the context is ambiguous and the trade-offs are real.</p>
+  <p>The candidate who can discuss TDD's limits alongside its strengths, who knows when to stub and when to mock, who understands that BDD is a collaboration practice with a testing tool attached — not the other way around — that candidate demonstrates the kind of engineering judgement that scales across teams, projects, and seniority levels. Methodology isn't dogma. It's decision-making under uncertainty. Show the panel you can make those decisions, and you've shown them you're ready for the senior seat.</p>
+  <p style="margin-top: 1.5rem;">For structured preparation, <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> includes a dedicated TDD and Methodology topic area with AI-scored questions covering the red-green-refactor cycle, test doubles classification (dummies, stubs, mocks, fakes, spies), TDD vs BDD vs ATDD trade-offs, TDD for test automation code, and the "when not to use TDD" curveball — calibrated across five seniority levels. Pair it with our <a href="/blog/bdd-cucumber-interview-questions-2026">BDD and Cucumber Interview Questions 2026</a> guide for the Gherkin and step definition side, and our <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview</a> guide for the architectural patterns that methodology ultimately serves.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What's the difference between TDD, BDD, and ATDD — and how do I explain it in an interview?",
+        a: "TDD (Test-Driven Development) is a developer discipline — Red-Green-Refactor at the unit level, driving code design through test-first constraints. Its audience is developers and its goal is 'building the thing right.' BDD (Behaviour-Driven Development) is a collaboration practice — the whole team (Three Amigos) defines system behaviour in Gherkin scenarios before development. Its audience is the whole team including product owners, and its goal is 'building the right thing.' ATDD (Acceptance Test-Driven Development) sits between them — defining executable acceptance criteria before development, but without prescribing Gherkin or the Three Amigos format. In an interview, structure your answer around audience, goal, and output: 'TDD produces well-designed code through rapid feedback. BDD produces shared understanding through collaborative specification. ATDD produces unambiguous acceptance criteria through executable tests. They're complementary layers — BDD at the acceptance level, TDD at the unit level, ATDD bridging the gap.' SDET Interview Coach covers all three methodologies with AI-scored mock questions that specifically evaluate whether you're discussing methodology or just reciting definitions.",
+      },
+      {
+        q: "How do I answer 'when have you NOT used TDD' in an SDET interview?",
+        a: "This is the methodology curveball that separates practitioners from dogmatists in 2026. Give specific, experience-backed scenarios — not vague 'when there's no time' answers. Strong responses include: (1) Exploratory spikes — 'When investigating a third-party API whose documented behaviour didn't match reality, I spiked without tests to learn quickly, then threw the spike away and rewrote with TDD.' (2) Legacy code — 'When adding features to a codebase with no existing tests, I wrote characterisation tests first to create a safety net, then refactored to introduce seams, then TDD'd the new feature.' (3) UI styling — 'For CSS and visual layout changes, visual regression testing and design review are more appropriate than test-first unit tests.' (4) Configuration and boilerplate — 'Pure declarations with no logic to verify get integration smoke tests, not TDD unit tests.' (5) When the test is more complex than the code — 'If testing a simple delegation method requires five mocks, the test is more likely to contain bugs than the code — I use an integration test instead.' The meta-point panels reward: 'TDD is a tool, not a religion. I use it when it adds net value and I'm explicit about why when I don't.' This demonstrates real-world judgement, not textbook recitation.",
+      },
+      {
+        q: "What are test doubles and how do they fit into TDD for test automation?",
+        a: "Test doubles are objects that stand in for real dependencies during testing. The five types — and when to use each in TDD: (1) Dummies — placeholders passed around but never used (a logger in a test that doesn't exercise logging). (2) Stubs — provide canned answers to queries (a UserRepository that always returns a pre-built user). Use stubs for queries — methods that return data. (3) Mocks — pre-programmed with expectations about calls (an EmailService that expects sendWelcomeEmail to be called exactly once). Use mocks for commands — methods that produce side effects. The key principle: 'mock roles, not objects.' (4) Fakes — lightweight working implementations (an in-memory database instead of PostgreSQL). Use when stubbing every interaction would be more complex than a simple implementation. (5) Spies — record calls for later assertion (a NotificationService spy that records every notification sent). Use for audit trails and complex interaction verification where explicit assertions are more readable than pre-programmed mock expectations. The critical interview insight: over-mocking is a design smell. If your TDD tests require five mocks per test, your code under test is probably too coupled. TDD should surface this — if testing is painful, the design is wrong. For test automation specifically, apply test doubles to Page Objects, API clients, data factories, and custom assertions — the test infrastructure code that has logic worth testing.",
+      },
+      {
+        q: "Can you really do TDD with Playwright or Selenium for UI testing?",
+        a: "Pure TDD — write a failing browser test, implement the UI, watch it pass — is mostly impractical for end-to-end UI automation because the feedback loop is too slow (seconds to minutes vs milliseconds for unit tests) and the tests are too brittle to drive implementation. However, TDD principles apply at multiple levels: (1) Component-level TDD works well — testing individual React, Angular, or Vue components in isolation with Testing Library. Fast feedback, specific tests, drives component design. (2) Test helpers and Page Objects should be TDD'd — the parsing, transformation, and decision logic in your test infrastructure is code with behaviour worth testing. (3) Custom assertions and matchers should be TDD'd — a bug in a custom assertion silently passes or fails tests incorrectly, eroding trust in the entire suite. (4) For end-to-end Playwright/Selenium tests, I practise 'specification-first' rather than 'test-first' — define user journeys and acceptance criteria before writing automation, then implement the tests to match. The thinking is TDD; the execution order is different. Visual regression testing (screenshot comparison) is inherently test-after — you can't screenshot a page that doesn't exist. The panel is testing whether you can apply methodology thoughtfully rather than dogmatically. See our full Playwright guide for the end-to-end implementation side.",
+      },
+      {
+        q: "How do I explain the Red-Green-Refactor cycle with enough depth for a senior interview?",
+        a: "Go beyond the three words. Red: 'I write a failing test for the simplest possible behaviour — not the entire feature. The test must be specific (one behaviour), isolated (no external dependencies), well-named (describes behaviour and expected outcome), and fast (milliseconds). If I can't write a simple Red test, the design is probably too coupled — TDD is surfacing a design problem.' Green: 'I write the absolute minimum code to pass — even if it's ugly, even if it's hardcoded. The discipline prevents untested code. The next test will force generalisation. Skipping increments — jumping from hardcoded to a full implementation — is how TDD produces over-engineered code.' Refactor: 'I improve design without changing behaviour, driven by code smells (duplication, poor names, long methods, SRP violations). I never add behaviour during Refactor. I commit after Refactor, not after Green. The Refactor phase is where TDD's design benefit materialises — without it, TDD is just test-first programming, not test-driven development.' Then connect to a real example: 'On the refund calculator at my last role, the first Red test checked zero-amount refunds return zero. Green was literally return 0. The test felt absurdly simple, but within five iterations I had a clean implementation covering partial refunds, pro-rated amounts, and minimum thresholds — all driven incrementally by tests, never over-built.'",
+      },
+      {
+        q: "Does SDET Interview Coach cover TDD and methodology interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated TDD and Methodology topic area covering: the red-green-refactor cycle at architectural depth, TDD vs BDD vs ATDD comparison and trade-off analysis, test doubles taxonomy (dummies, stubs, mocks, fakes, spies) with usage guidance, TDD for test automation code (testing Page Objects, data factories, custom assertions), the 'when not to use TDD' curveball with context-driven answers, mocking strategies and over-mocking anti-patterns, TDD with Playwright and Selenium at component vs E2E levels, and BDD/Cucumber integration with TDD in a layered testing strategy. Questions are calibrated to five seniority levels — Junior candidates get Red-Green-Refactor fundamentals and basic test doubles usage, while Lead candidates face enterprise methodology adoption strategy, TDD at scale across multiple teams, and legacy code transformation questions. The AI mock interviewer can run a dedicated methodology round with adaptive follow-ups that probe for dogma vs judgement. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions TDD, BDD, ATDD, or testing methodology. Available on the iOS App Store.",
+      },
+    ],
+    relatedSlugs: ["bdd-cucumber-interview-questions-2026", "test-automation-framework-design-interview", "playwright-interview-questions-2026"],
+  },
+  {
     slug: "python-for-sdet-interviews-2026",
     title: "Python for SDET Interviews 2026 — Python Fundamentals Interviewers Test (Decorators, Generators, Context Managers, List Comprehensions), pytest for Test Automation (Fixtures, Parametrize, Markers, conftest), Python for Selenium and Appium (Page Object Pattern Done Right), Python API Testing (requests, httpx with Async), Python vs TypeScript vs Java for Test Automation — When Each Wins, and Common Python Interview Traps for SDETs with Production-Grade Code Examples",
     description: "The complete Python for SDET interviews guide for 2026 — covering every Python concept that modern interview panels probe for depth, not just surface-level syntax. From decorators and generators that power real test frameworks, to pytest mastery (fixtures, parametrize, markers, conftest.py architecture), Python Page Object patterns for Selenium and Appium, API testing with requests and httpx, the definitive Python vs TypeScript vs Java comparison for test automation decision-making, and the Python-specific traps and gotchas that catch even experienced SDETs in whiteboard sessions. Every section includes production-grade Python code examples you might be asked to write, critique, or extend during a pairing exercise. Whether you're a Python-first SDET or adding it as a second language, this guide covers what interviews actually probe — not what tutorials teach.",
