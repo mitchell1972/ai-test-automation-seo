@@ -14,6 +14,680 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "linux-command-line-sdet-interview-questions-2026",
+    title: "Linux Command Line for SDET Interview Questions 2026 — Essential Linux Commands for Test Automation (grep, awk, sed, find, xargs), Log Analysis with Linux Tools, Process Management (ps, top, kill, nohup) for Test Runners, File Permissions and Test Artifact Management, Shell Scripting Basics for CI/CD Test Runners, SSH and Remote Test Execution, Cron Jobs for Scheduled Test Suites, Environment Variables and Config Management, and Disk/Memory Monitoring for Test Environments",
+    description: "The definitive Linux command line guide for SDET interviews in 2026. Panels aren't asking 'can you use the terminal?' — they're asking 'how did you debug a production test failure by tailing container logs, grepping stack traces, and killing orphaned processes on a remote CI node at 2 AM?' This guide covers every Linux interview scenario that separates SDETs who click buttons in a CI dashboard from those who SSH into a failing node and fix it themselves: essential text-processing commands (grep, awk, sed, find, xargs) with real test automation use cases, log analysis patterns for test failure investigation, process management (ps, top, kill, nohup, jobs, bg/fg) when test runners crash or hang, file permissions (chmod, chown, umask) for secure test artifact handling, shell scripting fundamentals with parameterised test runners, SSH key management and remote execution patterns, cron and systemd timers for scheduled test runs, environment variable and dotenv management across CI stages, and disk/memory/CPU monitoring to prevent test environment resource exhaustion. Every section includes bash code examples drawn from real CI and test infrastructure workflows. The SDET Interview Coach iOS app includes Linux terminal simulation mock rounds that test your command-line problem-solving under pressure.",
+    date: "2026-05-24",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Linux command line for SDET interview questions 2026",
+      "essential Linux commands test automation grep awk sed find xargs",
+      "shell scripting for CI CD test runners SDET interview",
+      "log analysis Linux tools test failure debugging 2026",
+      "SSH remote test execution cron jobs scheduled test suites",
+      "process management ps top kill nohup test automation",
+      "file permissions test artifact management Linux SDET",
+      "disk memory CPU monitoring test environments Linux commands",
+    ],
+    content: `
+<section class="content-section">
+  <p>You're in the third round of the SDET interview. The hiring manager nods at your CI/CD pipeline diagram on the whiteboard. "Nice architecture," they say, then lean forward. <em>"Your pipeline just failed. The test runner process on the CI node is consuming 100% CPU and hasn't produced output in 40 minutes. You SSH in. What commands do you run — and in what order?"</em> This is not a hypothetical. This is Tuesday. And it's the moment where your Linux fluency — or lack of it — becomes visible to everyone in the room. You can explain page objects, design patterns, and AWS architecture all day. But when a test infrastructure issue is live and the build is blocked, the panel wants to know: can you get your hands on the terminal and fix it, or do you need to escalate to DevOps?</p>
+  <p>Linux command-line proficiency is one of the most underrated yet highest-signal skills in SDET interviews in 2026. A candidate who can navigate a remote CI node, parse test logs with awk, find and kill hung processes, and write a bash one-liner that extracts failure rates from a JSON report communicates something powerful: <em>I don't need a GUI dashboard to understand my test infrastructure. I can troubleshoot at any level of the stack.</em> This guide covers every Linux topic that modern SDET panels probe — from essential text-processing commands applied to real test automation workflows, to process management when test runners crash, to shell scripting patterns you'll actually use in CI/CD. Complement this with our <a href="/blog/docker-test-automation-interview-questions-2026">Docker Test Automation Interview Questions 2026</a> for containerised test environments, our <a href="/blog/git-github-sdet-interview-questions-2026">Git and GitHub SDET Interview Questions 2026</a> for version-control fluency, and our <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a> for the pipeline orchestration layer. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes Linux terminal simulation rounds — interactive mock interviews where you're given a live server scenario and must choose the right commands under time pressure, with AI-scored feedback on your terminal problem-solving.</p>
+</section>
+
+<section class="content-section">
+  <h2>Essential Linux Commands Every SDET Must Know — Beyond the Basics</h2>
+  <p>Every candidate knows <code>ls</code>, <code>cd</code>, and <code>cat</code>. But in 2026, panels are probing the text-processing stack — the commands that turn raw log output into actionable insights. Here are the five commands that appear in virtually every SDET Linux interview, with the real test-automation use cases interviewers expect you to articulate:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>grep — The Universal Log Filter</h3>
+      <p><strong>The interview question:</strong> "Your test suite produced 50,000 lines of console output. How do you find only the lines containing test failures and the ten lines after each failure?" <strong>The answer that scores:</strong> "<code>grep -A 10 'FAILED' test-output.log</code> shows each failed test line plus the next ten lines of context. <code>grep -B 5</code> gives context before the match, and <code>grep -C 5</code> gives surrounding context. For multi-file searches: <code>grep -r 'NullPointerException' ./test-results/ --include='*.log' -l</code> lists only filenames containing the pattern — critical when you have 200 spec files and need to find which one produced the NullPointer. <code>grep -v 'SKIPPED'</code> excludes lines you don't want. <code>grep -c 'PASSED'</code> counts occurrences — useful for a quick pass-rate check. The production move: pipe grep results into further processing — <code>grep 'FAILED' test-output.log | awk '{print $3}' | sort | uniq -c | sort -rn</code> — extracts the third field (the test name), counts occurrences, and ranks by frequency, giving you an instant 'most-flaky tests' report without opening any dashboard."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>awk — The Field-Based Log Parser</h3>
+      <p><strong>The interview question:</strong> "You have a CSV test report with columns: test_name, duration_ms, status. How do you extract the average duration of failed tests from the command line?" <strong>The answer:</strong> "<code>awk -F',' '$3 == \"FAILED\" { sum += $2; count++ } END { if (count > 0) print sum/count }' report.csv</code>. awk splits each line by the field separator (<code>-F','</code>), applies the condition (status is FAILED), accumulates the duration in a variable, and prints the average when processing is complete. For structured log analysis — say your test runner outputs 'Test: LoginFlow Duration: 2345ms Status: PASSED' — <code>awk '/Duration:/ { gsub(/ms/, \"\", $4); sum += $4; count++ } END { print sum/count }' log.txt</code> strips the 'ms' suffix and computes the average. The architectural insight: awk is a programming language that happens to be great at one-liners. Understanding <code>BEGIN</code>, <code>END</code>, and the pattern-action model separates real Linux users from terminal tourists."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>sed — The Stream Editor for Log Transformation</h3>
+      <p><strong>The interview question:</strong> "Your CI pipeline logs contain absolute file paths like <code>/home/runner/work/my-app/src/tests/login.spec.ts</code> scattered across 10,000 lines. You need to anonymise them to relative paths before sharing logs externally. How?" <strong>The answer:</strong> "<code>sed 's|/home/runner/work/my-app/||g' ci-output.log > sanitised.log</code> — uses a pipe delimiter to avoid escaping forward slashes, replacing every occurrence of the absolute path prefix with nothing. More practically: <code>sed -n '/FAILED/,/---/p' test-output.log</code> prints every line between FAILED and the next delimiter, extracting just the failure blocks. <code>sed -i 's/http:/https:/g' *.json</code> performs in-place substitution across all JSON files — useful for fixing protocol references before a security audit. The SDET angle: sed is your go-to for one-shot log transformations when you need to sanitise, extract, or reformat output before piping it to another tool or sharing it."</p>
+    </div>
+  </div>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>find — The Test Artifact Locator</h3>
+      <p><strong>The interview question:</strong> "Your CI node has accumulated 50 GB of test artifacts — screenshots, videos, traces — across 15 projects over 6 months. How do you identify and clean up files older than 7 days that are larger than 100 MB?" <strong>The answer:</strong> "<code>find /test-artifacts -type f -name '*.png' -mtime +7 -size +100M -exec ls -lh {} \\;</code> lists matching files with human-readable sizes. Replace <code>-exec ls</code> with <code>-delete</code> to remove them — but always list first, delete second. For finer control: <code>find . -type f -name 'trace-*.zip' -mtime +30 -exec rm {} \\;</code> cleans traces older than 30 days — combine with <code>-not -path '*/golden/*'</code> to exclude baseline directories. <code>find . -empty -type d -delete</code> removes empty directories left by previous cleanup runs. The SDET perspective: find is your disk-space toolkit — every test infrastructure grows artifacts, and manual cleanup doesn't scale past two projects."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>xargs — The Batch Processor</h3>
+      <p><strong>The interview question:</strong> "You need to run the same Playwright spec file across 50 different test data JSON files — each defines a different user persona. How do you parallelise this from the command line?" <strong>The answer:</strong> "<code>ls test-data/*.json | xargs -P 10 -I {} npx playwright test login.spec.ts --test-data {} --reporter=json > results-{}.json</code>. <code>xargs</code> reads file paths from stdin, substitutes them into the command template (<code>{}</code> placeholder), and runs up to 10 parallel processes (<code>-P 10</code>). For sequential processing: <code>find . -name '*.spec.ts' | xargs -I {} npx eslint {} --fix</code> lints every spec file. <code>xargs</code> bridges the gap between find's discovery and command execution — without it, you'd write a bash loop, and bash loops handle spaces in filenames poorly (xargs handles them natively with null-delimited input: <code>find ... -print0 | xargs -0 ...</code>). This is the command that transforms manual workflows into automated pipelines."</p>
+    </div>
+  </div>
+
+  <pre><code># Production-Grade Log Analysis Pipeline — Real SDET Patterns
+
+# 1. QUICK TRIAGE: Find all test failures with surrounding context
+grep -A 5 'FAILED\|Error\|timeout' test-output.log > failures.log
+
+# 2. EXTRACT FAILURE COUNTS: Which tests failed most frequently?
+grep 'FAILED' results.json | awk -F'"' '{print $4}' | sort | uniq -c | sort -rn | head -10
+
+# 3. AVERAGE DURATION BY STATUS: Compare passing vs failing test durations
+awk -F, '$3=="PASSED" {p_sum+=$2; p_count++} $3=="FAILED" {f_sum+=$2; f_count++}\
+  END { printf "PASSED avg: %.0fms\\nFAILED avg: %.0fms\\n", p_sum/p_count, f_sum/f_count }' report.csv
+
+# 4. FIND AND ARCHIVE OLD ARTIFACTS: Cleanup before disk fills
+find /test-artifacts -type f -name '*.png' -mtime +14 -size +50M \\\
+  -exec tar -rvf archive.tar {} \\; -exec rm {} \\;
+
+# 5. SANITISE CI LOGS: Replace absolute paths with relative ones
+sed -E 's|/home/runner/work/[^/]+/[^/]+/|./|g' ci-output.log > shareable.log
+
+# 6. BATCH TEST EXECUTION: Run the same spec against 50 data files
+ls test-data/scenario-*.json | xargs -P 8 -I {} \\\
+  sh -c 'npx playwright test checkout.spec.ts --test-data "$1" --output "results/$(basename "$1" .json).json"' _ {}
+
+# 7. COUNT LINES BY TEST STATUS: Quick pass/fail/skip breakdown
+awk '{status[$3]++} END { for (s in status) print s ": " status[s] }' test-output.log</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Process Management — What to Do When Test Runners Crash, Hang, or Leak</h2>
+  <p>Every SDET eventually faces the nightmare scenario: a test runner process that won't die, a CI node at 100% CPU, or a forgotten <code>nohup</code> job consuming memory since last Thursday. Process management isn't optional — it's survival. Here's what interview panels are testing:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>ps, top, htop — The Diagnostic Trinity</h3>
+      <p><strong>The interview question:</strong> "Walk me through how you'd investigate a CI node that's suddenly running slowly during test execution." <strong>The answer:</strong> "Start with <code>top</code> (or <code>htop</code> if installed) — it gives a live view of CPU and memory usage by process. Look for the test runner process consuming excessive resources. <code>ps aux --sort=-%mem | head -20</code> shows the top 20 processes by memory usage — critical for identifying leaks. <code>ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -10</code> shows a tree view with the CPU/memory columns I care about. If the issue is I/O-bound rather than CPU-bound: <code>iotop</code> shows disk read/write rates per process — test runners writing gigabytes of trace files can saturate disk I/O. The architectural insight: <code>top</code> tells you <em>that</em> something's wrong. <code>ps</code> tells you <em>which process</em>. <code>strace -p $(pgrep -f 'playwright')</code> tells you <em>what system calls</em> the process is making — the nuclear option when you need to know if it's waiting on a network socket, stuck in a file read loop, or genuinely compute-bound."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>kill, pkill, killall — The Termination Toolkit</h3>
+      <p><strong>The interview question:</strong> "Your Playwright test runner is hung — it's not responding to SIGTERM (Ctrl+C in the CI log). What's the escalation path?" <strong>The answer:</strong> "First, <code>kill &lt;PID&gt;</code> sends SIGTERM (signal 15) — the polite request, allowing the process to clean up and flush buffers. If it ignores that: <code>kill -9 &lt;PID&gt;</code> sends SIGKILL — the OS forcibly terminates the process, no cleanup allowed. Between them: <code>kill -2 &lt;PID&gt;</code> (SIGINT, the Ctrl+C signal) sometimes works when SIGTERM doesn't because the process might have a SIGINT handler but not a SIGTERM handler. For bulk termination: <code>pkill -f 'playwright'</code> kills all processes whose command line matches 'playwright' — be specific to avoid collateral damage. <code>killall -9 node</code> is the nuclear option — kills every Node.js process, which might also kill your editor and CI agent. Use <code>pgrep -fl node</code> first to see what you're about to terminate. The production pattern: <code>timeout 300 npx playwright test</code> sets a 5-minute hard cap — the <code>timeout</code> command sends SIGTERM after the duration and SIGKILL if the process still hasn't exited after a grace period."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>nohup, disown, jobs, bg/fg — Background Test Runners</h3>
+      <p><strong>The interview question:</strong> "You need to trigger a long-running test suite from an SSH session and close your laptop without killing the tests. How?" <strong>The answer:</strong> "<code>nohup npx playwright test > test-output.log 2>&1 &</code>. <code>nohup</code> makes the process immune to the SIGHUP signal sent when the terminal session ends. <code>&</code> backgrounds it immediately. <code>> test-output.log 2>&1</code> redirects both stdout and stderr to a log file — without this, nohup writes to <code>nohup.out</code> by default. Alternative: run the command normally, then <code>Ctrl+Z</code> to suspend it, <code>bg</code> to resume in the background, and <code>disown</code> to detach it from the terminal. <code>jobs</code> lists background jobs in the current shell — useful to check what's running before you disconnect. The SDET nuance: combine with <code>trap</code> for cleanup: <code>trap 'kill $(jobs -p)' EXIT</code> ensures background processes are terminated when the parent script exits — preventing orphan processes on CI."</p>
+    </div>
+  </div>
+
+  <pre><code># Process Management Patterns for SDET Workflows
+
+# ─── INVESTIGATION ───
+# Find all Node.js processes with their full command line
+ps aux | grep node | grep -v grep
+
+# Which process is eating all the memory? (top 5)
+ps aux --sort=-%mem | head -6
+
+# Tree view: parent-child process relationships
+pstree -p $(pgrep -f 'playwright')
+
+# Real-time process monitoring with custom columns
+htop -p $(pgrep -d, -f 'jest\|playwright\|mocha')
+
+# ─── TERMINATION ───
+# Graceful: ask nicely (SIGTERM)
+kill $(pgrep -f 'playwright')
+
+# Forceful: SIGKILL — no cleanup, no questions
+kill -9 $(pgrep -f 'playwright')
+
+# Kill all Chromium instances spawned by Playwright (common leak)
+pkill -f 'chromium'
+
+# Timeout wrapper: auto-kill after 10 minutes
+timeout 600 npx playwright test --workers=4
+
+# ─── BACKGROUND EXECUTION ───
+# Start tests, log output, survive SSH disconnect
+nohup npx playwright test --workers=4 > results/run-$(date +%Y%m%d-%H%M).log 2>&1 &
+echo $! > test-runner.pid  # Save PID for later management
+
+# Check if the background run is still alive
+kill -0 $(cat test-runner.pid) 2>/dev/null && echo "RUNNING" || echo "DEAD or FINISHED"
+
+# Tail the log from another session (follow mode)
+tail -f results/run-*.log | grep -E 'PASSED|FAILED|Error'</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>File Permissions and Test Artifact Management — The Security-First Approach</h2>
+  <p>This is the Linux topic most SDET candidates skip — and the one that causes the most production incidents. File permissions govern who can read, write, and execute your test artifacts, configuration files, and credential stores. A single misconfigured <code>chmod</code> can expose API keys in CI logs or prevent test runners from writing results. Here's what panels are looking for:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔐</span>
+      <div>
+        <h3>chmod — The Permission Gatekeeper</h3>
+        <p>Understand the octal notation: <code>chmod 644 results.json</code> means owner can read+write (6), group can read (4), others can read (4). <code>chmod 600 .env.ci</code> means owner read+write only — no group, no others. This is critical for credential files. <code>chmod +x run-tests.sh</code> adds execute permission (the symbolic notation). The SDET connection: test artifacts (screenshots, videos) should be world-readable (<code>644</code>) for CI dashboards; config files with secrets should be owner-only (<code>600</code>); test runner scripts should be executable (<code>755</code>). <code>chmod -R go-w /shared/test-data/</code> removes write permission for group and others recursively — preventing one team's test from corrupting another team's baseline data.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📁</span>
+      <div>
+        <h3>chown and umask — Ownership and Default Permissions</h3>
+        <p><code>chown ci-agent:ci-group /test-results/</code> changes ownership to the CI agent user and group — essential when the CI runner creates files but the reporting tool (running as a different user) needs to read them. <code>umask 022</code> sets the default permission mask for new files — it subtracts from 666 (files) or 777 (directories), so <code>umask 022</code> means new files get <code>644</code> and directories get <code>755</code>. The SDET production tip: set <code>umask 007</code> in CI scripts to ensure test artifacts are group-readable but not world-readable — sharing within the project but not exposing to the entire CI node.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🗜️</span>
+      <div>
+        <h3>tar, gzip, and du — Archive and Space Management</h3>
+        <p><code>tar -czf test-results-20260524.tar.gz ./results/</code> creates a compressed archive of all test results — the <code>-c</code> creates, <code>-z</code> gzips, <code>-f</code> specifies the filename. <code>tar -xzf archive.tar.gz -C /tmp/extracted/</code> extracts to a target directory. <code>du -sh ./test-artifacts/*/</code> shows disk usage per subdirectory — identify which project's artifacts are consuming space. <code>du -h --max-depth=1 /var/lib/</code> shows a one-level-deep size breakdown. Combine with find for targeted cleanup: <code>find . -name '*.trace.zip' -mtime +14 -exec du -ch {} + | tail -1</code> shows the total size of old trace files before deleting them.</p>
+      </div>
+    </div>
+  </div>
+
+  <pre><code># File Permission and Artifact Management Patterns
+
+# ─── SECURE CONFIG FILES ───
+# Restrict .env to owner read-only
+chmod 600 .env .env.ci .env.staging
+
+# Test runner script: owner rwx, group rx, others nothing
+chmod 750 scripts/run-regression.sh
+
+# Artifacts directory: owner rwx, group rx (for dashboard access)
+chmod 750 /test-artifacts/
+
+# Individual result files: world-readable for dashboards
+chmod 644 /test-artifacts/*.html
+
+# ─── BULK PERMISSION FIXES ───
+# Remove write permission for group+others on all test data
+chmod -R go-w ./test-data/baselines/
+
+# Ensure all shell scripts are executable
+find ./scripts -name '*.sh' -exec chmod +x {} \;
+
+# ─── ARTIFACT ARCHIVAL ───
+# Compress this run's results (preserving directory structure)
+tar -czf "artifacts-$(date +%Y%m%d-%H%M).tar.gz" ./results/ ./screenshots/ ./traces/
+
+# ─── DISK SPACE AUDIT ───
+# Which test projects are consuming the most space?
+du -sh /test-artifacts/*/ | sort -rh | head -10
+
+# How much space will I save by deleting traces older than 30 days?
+find /test-artifacts -name '*.trace.zip' -mtime +30 -exec du -ch {} + | tail -1
+
+# Clean empty directories only (safe operation)
+find /test-artifacts -type d -empty -delete</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Shell Scripting for Test Runners — From One-Liners to Production Scripts</h2>
+  <p>Shell scripting is the bridge between knowing commands and automating workflows. In SDET interviews, the question isn't "do you know bash?" — it's "write me a script that runs the test suite, collects results, and sends a summary." Here's the shell scripting knowledge that interviewers expect:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Variables, Conditionals, and Exit Codes</h3>
+      <p>A test runner script that doesn't check exit codes is a liability. <code>$?</code> contains the exit code of the last command — <code>0</code> means success, anything else means failure. <code>if [ $? -eq 0 ]; then echo 'PASSED'; else echo 'FAILED' >&2; exit 1; fi</code> is the minimal pattern. <code>set -e</code> at the top of a script makes it exit immediately on any non-zero exit code — preventing a test failure from being silently swallowed. <code>set -u</code> treats unset variables as errors. <code>set -o pipefail</code> propagates failures through pipes — without it, <code>failing_command | tee output.log</code> succeeds because <code>tee</code> always exits 0. The production-grade script starts with <code>set -euo pipefail</code>. Store command output: <code>TEST_RESULT=$(npx playwright test 2>&1)</code> captures both stdout and stderr. Parameter expansion: <code>\${1:-default}</code> uses the first argument or falls back to "default".</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Loops, Arrays, and Functions</h3>
+      <p>Iterate over test suites: <code>for spec in login checkout dashboard; do npx playwright test $spec.spec.ts || break; done</code> — the <code>|| break</code> stops on first failure (fast-fail strategy). Arrays: <code>BROWSERS=('chromium' 'firefox' 'webkit'); for browser in "\${BROWSERS[@]}"; do npx playwright test --browser=$browser; done</code>. Functions encapsulate logic: <code>run_with_retry() { local attempts=0; until "$@" || [ $attempts -ge 3 ]; do ((attempts++)); echo "Retry $attempts/3..."; sleep 5; done; }</code> — a retry wrapper in four lines. The SDET pattern: write small, focused functions (<code>cleanup_artifacts()</code>, <code>send_slack_alert()</code>, <code>check_prerequisites()</code>) and compose them in a main runner function.</p>
+    </div>
+  </div>
+
+  <pre><code>#!/usr/bin/env bash
+# Production-Grade Test Runner Script
+# Usage: ./run-tests.sh [--browser chromium|firefox|webkit] [--workers 4]
+
+set -euo pipefail  # Strict mode: exit on error, undefined vars, pipe failures
+
+# ─── CONFIGURATION ───
+BROWSER="\${1:-chromium}"
+WORKERS="\${2:-4}"
+RESULTS_DIR="./results/$(date +%Y%m%d-%H%M)"
+RETRY_COUNT=3
+TIMEOUT_SECONDS=3600
+
+# ─── PREREQUISITE CHECKS ───
+check_prerequisites() {
+  command -v npx >/dev/null 2>&1 || { echo "ERROR: npx not found" >&2; exit 1; }
+  command -v jq >/dev/null 2>&1 || { echo "WARNING: jq not found — JSON parsing disabled" >&2; }
+  [ -f "playwright.config.ts" ] || { echo "ERROR: playwright.config.ts not found" >&2; exit 1; }
+}
+
+# ─── RUN WITH TIMEOUT AND RETRY ───
+run_test_suite() {
+  local attempt=0
+  local exit_code=0
+  
+  while [ $attempt -lt $RETRY_COUNT ]; do
+    echo "=== Attempt $((attempt + 1))/$RETRY_COUNT — $(date) ==="
+    
+    timeout $TIMEOUT_SECONDS npx playwright test \\\
+      --browser="$BROWSER" \\\
+      --workers="$WORKERS" \\\
+      --reporter=json > "$RESULTS_DIR/results.json" 2>"$RESULTS_DIR/stderr.log"
+    exit_code=$?
+    
+    if [ $exit_code -eq 0 ]; then
+      echo "✓ All tests passed on attempt $((attempt + 1))"
+      return 0
+    elif [ $exit_code -eq 124 ]; then
+      echo "✗ Timeout after \${TIMEOUT_SECONDS}s" >&2
+      return 124
+    fi
+    
+    echo "✗ Attempt $((attempt + 1)) failed (exit code: $exit_code)"
+    ((attempt++))
+    [ $attempt -lt $RETRY_COUNT ] && sleep $((10 * attempt))  # Exponential backoff
+  done
+  
+  return $exit_code
+}
+
+# ─── GENERATE SUMMARY ───
+generate_summary() {
+  if command -v jq >/dev/null 2>&1; then
+    local total=$(jq '.suites | map(.specs | length) | add' "$RESULTS_DIR/results.json" 2>/dev/null || echo "?")
+    local passed=$(jq '.suites[].specs[].tests[] | select(.results[0].status == "passed") | .title' "$RESULTS_DIR/results.json" 2>/dev/null | wc -l | tr -d ' ')
+    local failed=$(jq '.suites[].specs[].tests[] | select(.results[0].status == "failed") | .title' "$RESULTS_DIR/results.json" 2>/dev/null | wc -l | tr -d ' ')
+    
+    cat << EOF > "$RESULTS_DIR/summary.txt"
+=== Test Run Summary ===
+Date:     $(date)
+Browser:  $BROWSER
+Workers:  $WORKERS
+Total:    \${total:-?}
+Passed:   \${passed:-?}
+Failed:   \${failed:-?}
+Results:  $RESULTS_DIR/results.json
+EOF
+    cat "$RESULTS_DIR/summary.txt"
+  else
+    echo "Summary generation skipped — jq not installed" >&2
+  fi
+}
+
+# ─── CLEANUP ───
+cleanup() {
+  local exit_code=$?
+  echo "=== Cleanup (exit code: $exit_code) ==="
+  # Archive traces only if tests failed (save debugging data)
+  if [ $exit_code -ne 0 ]; then
+    find ./test-results -name 'trace.zip' -exec cp {} "$RESULTS_DIR/traces/" \\; 2>/dev/null || true
+  fi
+  # Always generate summary
+  generate_summary
+  exit $exit_code
+}
+
+trap cleanup EXIT  # Run cleanup on any exit (success, failure, or interrupt)
+
+# ─── MAIN ───
+mkdir -p "$RESULTS_DIR/traces"
+check_prerequisites
+echo "Running tests: browser=$BROWSER workers=$WORKERS"
+run_test_suite</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>SSH and Remote Test Execution — The Distributed Testing Backbone</h2>
+  <p>When your test infrastructure spans multiple machines — CI nodes, staging servers, performance test boxes — SSH becomes your primary interface. Interview panels want to see fluency with SSH key management, remote command execution, and the patterns that make distributed test execution reliable:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>SSH Key Management for CI Pipelines</h3>
+      <p><strong>The interview question:</strong> "How do you set up passwordless SSH from a CI runner to a test environment?" <strong>The answer:</strong> "Generate a key pair: <code>ssh-keygen -t ed25519 -C 'ci-runner@project' -f ~/.ssh/ci_runner</code> — ed25519 is preferred over RSA for security and performance. Add the public key to the target server's <code>~/.ssh/authorized_keys</code>: <code>ssh-copy-id -i ~/.ssh/ci_runner.pub user@test-server</code>. Store the private key as a CI secret (GitHub Actions secret, GitLab CI variable), then in the pipeline: <code>echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519</code>. The production nuance: use <code>ssh -o StrictHostKeyChecking=accept-new</code> on first connection to prevent interactive prompts — <code>StrictHostKeyChecking=no</code> is a security risk (MITM attacks), <code>accept-new</code> is the safe default that adds new hosts but warns on changed keys."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Remote Command Execution Patterns</h3>
+      <p><strong>The interview question:</strong> "Your test environment needs a database reset before each test suite run. How do you trigger this remotely from CI?" <strong>The answer:</strong> "<code>ssh ci-runner@staging-server 'docker exec test-db psql -U test_user -d test_db -c \"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE datname = \\"test_db\\\"\" && docker exec test-db psql -U test_user -d test_db -f /reset-scripts/seed.sql'</code> — the command runs on the remote server and the CI pipeline gets the exit code. For multi-command scripts: <code>ssh ci-runner@staging-server 'bash -s' < ./scripts/reset-and-seed.sh</code> — pipes a local script to a remote bash process, avoiding quoting hell. For file transfer: <code>scp ./test-data/fixtures.json ci-runner@staging-server:/var/test-data/</code>. <code>rsync -avz ./test-results/ ci-runner@reporting-server:/reports/$(date +%Y%m%d)/</code> is more efficient for bulk transfer — incremental, compressed, and resumable."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Tunnels and Port Forwarding for Test Access</h3>
+      <p><strong>The interview question:</strong> "Your CI runner needs to test an application running on a staging server that isn't publicly accessible — only accessible from a bastion host. How do you set this up?" <strong>The answer:</strong> "Use an SSH tunnel: <code>ssh -L 8080:staging-internal:80 ci-runner@bastion-host -N &</code> — this forwards local port 8080 through the bastion to the staging server's port 80. Your Playwright tests then target <code>http://localhost:8080</code>. The <code>-N</code> flag tells SSH not to execute a remote command (just maintain the tunnel), and <code>&</code> backgrounds it. To clean up: <code>pkill -f 'ssh -L 8080'</code>. For multi-hop: <code>ssh -J bastion-user@bastion-host ci-runner@internal-server</code> uses the bastion as a jump host — one command reaches the internal network. The production pattern: set up the tunnel in a CI step before tests, tear it down in a post-step — wrapped in a <code>trap</code> to guarantee cleanup even if tests fail."</p>
+    </div>
+  </div>
+
+  <pre><code># SSH Patterns for Distributed Test Execution
+
+# ─── SETUP: Configure CI SSH access ───
+# Generate a deployment key (run once, store private key as CI secret)
+ssh-keygen -t ed25519 -C "ci-tests@project" -f ./ci-test-key -N ""
+# Copy public key to target servers (once per server)
+ssh-copy-id -i ./ci-test-key.pub test-runner@staging-1.example.com
+
+# ─── USAGE IN CI PIPELINE ───
+# 1. Write key from CI secret, set permissions
+mkdir -p ~/.ssh && echo "$CI_SSH_KEY" > ~/.ssh/ci-test-key
+chmod 600 ~/.ssh/ci-test-key
+
+# 2. Add target host to known_hosts (prevent interactive prompt)
+ssh-keyscan -H staging-1.example.com >> ~/.ssh/known_hosts
+
+# 3. Remote command execution
+echo "=== Resetting test database ==="
+ssh -i ~/.ssh/ci-test-key test-runner@staging-1.example.com \\\
+  'cd /app && docker compose -f docker-compose.test.yml up -d --force-recreate test-db'
+
+# 4. Port forwarding for internal services (cleanup with trap)
+ssh -i ~/.ssh/ci-test-key -L 8080:internal-app:80 \\\
+  test-runner@bastion.example.com -N &
+TUNNEL_PID=$!
+trap 'kill $TUNNEL_PID 2>/dev/null' EXIT
+
+# 5. Run tests against the tunnel
+npx playwright test --baseURL=http://localhost:8080
+
+# 6. Copy results back to CI
+scp -i ~/.ssh/ci-test-key \\\
+  test-runner@staging-1.example.com:/app/test-results/*.json ./results/
+
+# ─── MAINTENANCE ───
+# Check which CI keys are on a server
+ssh test-runner@staging-1.example.com 'cat ~/.ssh/authorized_keys | grep ci-test'</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Cron Jobs and Scheduled Test Execution — The Automation Scheduler</h2>
+  <p>Not every test run is triggered by a git push. Smoke tests every hour. Full regression at midnight. Performance tests on weekends. Cron is the Linux scheduler that makes unattended test execution possible — and interview panels want to know you can configure it correctly:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>crontab — The Classic Scheduler</h3>
+      <p><strong>The interview question:</strong> "Write a crontab entry that runs a smoke test suite every 4 hours on weekdays, logs output to a dated file, and sends a Slack alert on failure." <strong>The answer:</strong> "<code>0 */4 * * 1-5 /home/ci/scripts/smoke-tests.sh >> /var/log/tests/smoke-$(date +\\%Y\\%m\\%d-\\%H\\%M).log 2>&1 || /home/ci/scripts/slack-alert.sh 'Smoke tests failed'</code>. Cron's five-field syntax: minute (0-59), hour (0-23), day of month (1-31), month (1-12), day of week (0-7, where 0 and 7 are Sunday). <code>*/4</code> in the hour field means every 4 hours. <code>1-5</code> in the weekday field means Monday through Friday. <code>||</code> chains the alert script to run only on failure. <code>2>&1</code> captures stderr in the log. Management commands: <code>crontab -l</code> (list your crons), <code>crontab -e</code> (edit), <code>crontab -r</code> (remove — dangerous, always <code>crontab -l > backup.cron</code> first). Environmental gotcha: cron runs with a minimal environment — no <code>$PATH</code>, no user profile. Always use absolute paths in cron scripts."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>systemd Timers — The Modern Alternative</h3>
+      <p><strong>The interview question (senior-level):</strong> "Why would you choose systemd timers over cron for scheduled test execution on modern Linux?" <strong>The answer:</strong> "systemd timers offer features cron lacks: randomised start times (<code>RandomizedDelaySec=300</code>) to prevent thundering herd when 50 VMs all trigger at midnight; failure handling with <code>OnFailure=</code> to trigger a notification unit; execution time tracking with <code>systemctl list-timers</code> — you can see when the timer last ran and when it will run next without deciphering crontab syntax; and proper logging through journald — <code>journalctl -u smoke-tests.service</code> shows all runs in one place. The trade-off: systemd timers require two unit files (a timer unit and a service unit), which is more boilerplate than a one-line crontab entry. For CI nodes and test infrastructure servers where reliability and observability matter, systemd timers are the better choice. For quick user-level scheduling, cron remains simpler."</p>
+    </div>
+  </div>
+
+  <pre><code># ─── CRONTAB PATTERNS ───
+# Edit your crontab: crontab -e
+# List your crontab: crontab -l
+
+# Smoke tests every 4 hours on weekdays
+0 */4 * * 1-5 /opt/scripts/smoke-tests.sh >> /var/log/tests/smoke.log 2>&1
+
+# Full regression every night at 2 AM
+0 2 * * * /opt/scripts/full-regression.sh >> /var/log/tests/regression.log 2>&1
+
+# Clean test artifacts every Sunday at 3 AM
+0 3 * * 0 find /test-artifacts -type f -mtime +30 -delete
+
+# ─── SYSTEMD TIMER EXAMPLE ───
+# /etc/systemd/system/smoke-tests.service
+# [Unit]
+# Description=Hourly Smoke Test Suite
+# After=network.target
+# 
+# [Service]
+# Type=oneshot
+# User=ci-agent
+# WorkingDirectory=/opt/test-automation
+# ExecStart=/opt/scripts/smoke-tests.sh
+# StandardOutput=append:/var/log/tests/smoke.log
+# StandardError=append:/var/log/tests/smoke.log
+# 
+# [Install]
+# WantedBy=multi-user.target
+
+# /etc/systemd/system/smoke-tests.timer
+# [Unit]
+# Description=Run smoke tests every 4 hours
+# 
+# [Timer]
+# OnCalendar=*-*-* 00,04,08,12,16,20:00
+# RandomizedDelaySec=120
+# Persistent=true  # Run immediately if system was off during scheduled time
+# 
+# [Install]
+# WantedBy=timers.target
+
+# systemctl daemon-reload
+# systemctl enable --now smoke-tests.timer
+# systemctl list-timers smoke-tests.timer</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Environment Variables and Config Management — Keeping Secrets Out of Logs</h2>
+  <p>Environment variables are the bridge between CI configuration and test execution. They carry everything from API base URLs to database passwords. Interview panels want to see that you understand not just how to set them, but how to do it securely:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔧</span>
+      <div>
+        <h3>Setting, Exporting, and Inspecting Environment Variables</h3>
+        <p><code>export BASE_URL=https://staging.example.com</code> makes the variable available to child processes — this is what you need before running tests. <code>BASE_URL=https://staging.example.com npx playwright test</code> sets it for just that command without polluting the shell. <code>env</code> lists all current environment variables. <code>printenv PATH</code> prints a specific variable's value. <code>echo "\${DATABASE_URL:-postgres://localhost:5432/test}"</code> uses a default if unset. The SDET pattern: define all environment-specific config in a <code>.env</code> file, load it with a shell script: <code>set -a; source .env; set +a; npx playwright test</code> — <code>set -a</code> auto-exports all variables, <code>set +a</code> restores normal behaviour.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔒</span>
+      <div>
+        <h3>Secrets Management — Never in Plain Text</h3>
+        <p><strong>The interview question:</strong> "How do you handle API keys and database passwords in your test configuration without hard-coding them?" <strong>The answer:</strong> "CI secrets (GitHub Actions secrets, GitLab CI/CD variables) inject via environment variables at runtime — they're never committed to the repository. Locally: <code>.env</code> files in <code>.gitignore</code>. In test code: access via <code>process.env.API_KEY</code> with a runtime check: <code>if (!process.env.API_KEY) throw new Error('API_KEY environment variable is required')</code> — fail fast with a clear message rather than a cryptic authentication error 30 tests later. For shared secrets across a team: use a secrets manager (HashiCorp Vault, AWS Secrets Manager, 1Password CLI) and inject them into the test environment at runtime. Never log environment variables: <code>env | grep -v SECRET\|PASSWORD\|KEY\|TOKEN</code> selectively displays non-sensitive variables."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📋</span>
+      <div>
+        <h3>Environment-Specific Configuration Switching</h3>
+        <p>Tests run differently in local dev, CI, and staging environments. <code>export TEST_ENV=staging</code> and then <code>source ".env.\${TEST_ENV:-local}"</code> loads the right config. <code>export NODE_ENV=test</code> signals to Node.js applications and test frameworks to use test-specific configurations. <code>export DEBUG='playwright:*,pw:api'</code> enables Playwright's debug logging — useful in CI when tests fail mysteriously. The production pattern: a single <code>config.sh</code> file that detects the environment and exports the right variables — called at the beginning of every test runner script.</p>
+      </div>
+    </div>
+  </div>
+
+  <pre><code># Environment Variable Patterns for Test Automation
+
+# ─── LOCAL DEVELOPMENT ───
+# Load .env into current shell
+set -a && source .env && set +a
+
+# Run with specific variables (one-off, no shell pollution)
+BASE_URL=http://localhost:3000 API_KEY=test-key npx playwright test
+
+# ─── CI PIPELINE ───
+# GitHub Actions example: inject secrets as env vars
+# env:
+#   BASE_URL: https://staging.example.com
+#   API_KEY: \${{ secrets.API_KEY }}
+#   DATABASE_URL: \${{ secrets.DATABASE_URL }}
+
+# Validate required variables before running tests
+require_env() {
+  local missing=()
+  for var in "$@"; do
+    [ -z "\${!var:-}" ] && missing+=("$var")
+  done
+  if [ \${#missing[@]} -gt 0 ]; then
+    echo "ERROR: Missing required environment variables: \${missing[*]}" >&2
+    exit 1
+  fi
+}
+require_env BASE_URL API_KEY DATABASE_URL
+
+# ─── MULTI-ENVIRONMENT CONFIG ───
+# config.sh — source this at the start of every script
+#!/usr/bin/env bash
+TEST_ENV="\${TEST_ENV:-local}"
+echo "Loading config for environment: $TEST_ENV"
+
+case "$TEST_ENV" in
+  local)
+    export BASE_URL="http://localhost:3000"
+    export API_KEY="test-key-local"
+    export WORKERS=1
+    ;;
+  staging)
+    export BASE_URL="https://staging.example.com"
+    export API_KEY="\${STAGING_API_KEY}"  # From CI secrets
+    export WORKERS=4
+    ;;
+  production)
+    export BASE_URL="https://example.com"
+    export WORKERS=8
+    echo "WARNING: Running against production!" >&2
+    ;;
+  *)
+    echo "ERROR: Unknown TEST_ENV: $TEST_ENV" >&2
+    exit 1
+    ;;
+esac
+
+# Never log secrets
+echo "Configuration: BASE_URL=$BASE_URL WORKERS=$WORKERS"
+# NOT: echo "API_KEY=$API_KEY" — this would leak the key to CI logs</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Disk, Memory, and CPU Monitoring — Preventing Test Environment Resource Exhaustion</h2>
+  <p>Test infrastructure doesn't have infinite resources. When disk fills up with screenshots, memory leaks from orphaned Chromium processes, or CPU is pegged by parallel test workers — your pipeline grinds to a halt. Interview panels want to know you can detect and prevent these scenarios before they block the team:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Disk Space Monitoring — Don't Let Artifacts Silently Fill the Drive</h3>
+      <p><code>df -h</code> shows filesystem usage in human-readable format — the first command you run when a test writes 'no space left on device.' <code>df -h /test-artifacts</code> checks a specific mount point. <code>ncdu /test-artifacts/</code> (if installed) provides an interactive disk usage explorer — invaluable for finding which project's artifacts are consuming space. The monitoring pattern: <code>df -h / | awk 'NR==2 {print $5}' | tr -d '%'</code> extracts the usage percentage — wrap this in a pre-test check: <code>if [ $(df /test-artifacts --output=pcent | tail -1 | tr -dc '0-9') -gt 85 ]; then echo 'Disk above 85% — aborting test run' >&2; exit 1; fi</code>. The senior move: log disk usage before and after each test run to track artifact accumulation over time.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Memory Monitoring — Catch the Leak Before the OOM Killer Does</h3>
+      <p><code>free -h</code> shows total, used, and available memory. <code>free -h -s 5</code> refreshes every 5 seconds — useful during a test run to watch for memory creep. <code>vmstat 5</code> shows virtual memory statistics refreshed every 5 seconds — the <code>si</code> and <code>so</code> columns (swap in/out) are your early warning that the system is under memory pressure. <code>smem -tk</code> (if installed) shows proportional memory usage — more accurate than <code>ps</code> for understanding shared memory from libraries. The SDET pattern: <code>watch -n 10 'free -h && echo "---" && ps aux --sort=-%mem | head -5'</code> gives you a live dashboard of total memory and top consumers — run this in a separate terminal during test execution to identify which spec file triggers the memory leak. Kill leaking processes before the OOM killer does: <code>ps aux --sort=-%mem | awk 'NR==2 {print $2}' | xargs kill</code> — kills the process consuming the most memory (use with extreme caution).</p>
+    </div>
+    <div class="challenge-card">
+      <h3>CPU Monitoring — When Workers Overwhelm the Node</h3>
+      <p><code>lscpu</code> shows CPU architecture and core count — you need this to decide how many parallel test workers to run (rule of thumb: cores - 1 for test workers, leaving one core for the OS and CI agent). <code>mpstat 5</code> shows per-core CPU usage — if one core is at 100% while others idle, your workload isn't parallelising properly. <code>uptime</code> shows load averages — compare to core count; load > cores means processes are queuing. The SDET diagnostic: <code>ps -eo pid,pcpu,comm --sort=-pcpu | head -10</code> shows the top CPU consumers. <code>nproc</code> returns the number of processing units — use this to dynamically set worker count: <code>npx playwright test --workers=$(( $(nproc) - 1 ))</code>. The production anti-pattern: running 16 workers on an 8-core CI node with 4 GB of RAM — each worker spawns a browser instance, and browser instances are memory-hungry. Worker count must consider both CPU and memory.</p>
+    </div>
+  </div>
+
+  <pre><code># Resource Monitoring Patterns for Test Environments
+
+# ─── PRE-FLIGHT CHECK: Ensure node is healthy before running tests ───
+preflight_check() {
+  local issues=0
+  
+  # Check disk space (> 10% free)
+  local disk_pct=$(df / --output=pcent | tail -1 | tr -dc '0-9')
+  if [ "$disk_pct" -gt 90 ]; then
+    echo "ERROR: Disk \${disk_pct}% full — aborting" >&2
+    ((issues++))
+  fi
+  
+  # Check available memory (> 1 GB free)
+  local mem_free=$(free -m | awk 'NR==2 {print $7}')
+  if [ "$mem_free" -lt 1024 ]; then
+    echo "ERROR: Only \${mem_free}MB memory available — aborting" >&2
+    ((issues++))
+  fi
+  
+  # Check load average vs cores
+  local cores=$(nproc)
+  local load=$(uptime | awk -F'load average:' '{print $2}' | awk -F',' '{print $1}' | tr -d ' ')
+  if (( $(echo "$load > $cores * 2" | bc -l 2>/dev/null || echo 0) )); then
+    echo "WARNING: High load (\${load}) for \${cores} cores — tests may be slow" >&2
+  fi
+  
+  return $issues
+}
+
+# ─── RUNTIME MONITORING: Log resource usage during test execution ───
+monitor_resources() {
+  local pid=$1
+  local log_file="\${2:-/tmp/resource-usage.log}"
+  
+  while kill -0 "$pid" 2>/dev/null; do
+    local mem=$(ps -o rss= -p "$pid" 2>/dev/null | awk '{printf "%.1f", $1/1024}')
+    local cpu=$(ps -o %cpu= -p "$pid" 2>/dev/null)
+    local disk=$(df / --output=pcent | tail -1 | tr -d ' ')
+    echo "$(date +%H:%M:%S) | PID:$pid | MEM:\${mem:-0}MB | CPU:\${cpu:-0}% | DISK:$disk" >> "$log_file"
+    sleep 10
+  done
+}
+
+# Usage:
+# npx playwright test & 
+# TEST_PID=$!
+# monitor_resources $TEST_PID /tmp/playwright-usage.log &
+# wait $TEST_PID
+
+# ─── POST-RUN CLEANUP: Kill orphaned browser processes ───
+cleanup_browsers() {
+  local orphans=$(pgrep -f 'chromium|firefox|webkit' | wc -l | tr -d ' ')
+  if [ "$orphans" -gt 0 ]; then
+    echo "Cleaning up $orphans orphaned browser processes..."
+    pkill -f 'chromium|firefox|webkit'
+  fi
+}</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>How These Linux Skills Map to Real SDET Interview Rounds</h2>
+  <p>Linux isn't tested in isolation — it surfaces in the scenarios interviewers present. Here's how the topics in this guide appear in actual SDET panels, based on interviews Mitchell has conducted at HMRC, Nationwide, and Accenture:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 1</div>
+      <div class="timeline-content">
+        <h3>"Your CI pipeline just failed. Walk me through your debugging process."</h3>
+        <p>They're testing your Linux investigative skills. A strong answer opens the CI log, then progresses through the stack: grep for errors → check process list for hung runners → check disk space → check memory → SSH to the node if needed — all before suggesting a code change. The candidates who say "I'd check the CI dashboard" first show they've never debugged a CI failure that <em>wasn't</em> a straightforward test failure. The candidates who say "I'd SSH to the runner and run <code>dmesg | tail -50</code> to check for OOM kills" show they've been in the trenches.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 2</div>
+      <div class="timeline-content">
+        <h3>"Write me a script that runs the test suite and emails the summary."</h3>
+        <p>This is a live-coding exercise disguised as a Linux question. They hand you a terminal and watch. They're evaluating: do you use <code>set -euo pipefail</code>? Do you check exit codes? Do you handle the case where the test runner doesn't exist? Do you redirect stderr? The candidates who write a one-line <code>npx playwright test && mail -s 'Passed' team@example.com</code> are signalling junior-level thinking. The candidates who write a script with prerequisite checks, error handling, log capture, and a structured summary show senior-level operational awareness.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 3</div>
+      <div class="timeline-content">
+        <h3>"Your test suite takes 45 minutes. How do you parallelise it across 5 CI nodes?"</h3>
+        <p>This asks for Linux-level orchestration. The answer combines SSH (distribute tests to remote nodes), environment variables (each node gets a shard index), process management (start workers, monitor them, collect results), and shell scripting (the orchestration script). Candidates who answer only "use more Playwright workers" miss that a single node has CPU and memory limits. Sharding across nodes is a Linux problem, not just a Playwright problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How SDET Interview Coach Prepares You for Linux Questions</h2>
+  <p>The terminal is not something you learn from a blog post — it's something you learn by using it under pressure. SDET Interview Coach bridges the gap between reading about Linux commands and being able to use them when an interviewer says "open a terminal and show me how you'd debug this":</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Download SDET Interview Coach</strong> and select "Infrastructure & Tooling" as your topic area. The app generates Linux-specific questions calibrated to your seniority level — from basic command recall at Junior to distributed system debugging at Lead.</li>
+    <li><strong>Run the Terminal Simulation rounds.</strong> The app presents you with a scenario — "Your CI node is at 95% CPU. The test runner process (PID 2841) is consuming 8 GB of memory. What do you do?" — and evaluates your command choices against a model answer. You get scored on whether your diagnostic sequence is correct, not just on whether you know the command names.</li>
+    <li><strong>Use Job Match for infrastructure-heavy roles.</strong> If a job description mentions Docker, Kubernetes, CI/CD infrastructure, or Linux, Job Match generates 50 questions that combine these topics with testing — exactly the fusion questions that appear in modern SDET interviews.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">Linux fluency is a career accelerator for SDETs. It's the skill that lets you operate independently — no waiting for DevOps, no blocked pipelines, no "I don't have access to that server." Every Linux command in this guide maps to a production scenario you will face. Start practising today. The terminal doesn't care about your CV — it only cares whether you know the right command. SDET Interview Coach's spaced repetition system ensures the commands stick — you'll review grep flags, awk syntax, and process management patterns on a schedule that optimises for long-term retention.</p>
+
+  <p>If you're building your overall SDET preparation strategy, see our <a href="/blog/sdet-interview-preparation-plan-2026">SDET Interview Preparation Plan 2026</a> for the full roadmap. For the CI/CD layer that your Linux scripts orchestrate, see our <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>. And if you're coming from a manual QA background, start with our <a href="/blog/manual-qa-to-sdet-career-change">Manual QA to SDET Career Change guide</a> — it covers the technical skills you need to build, including the Linux fundamentals.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What Linux commands should I know for an SDET interview?",
+        a: "Beyond basic navigation (ls, cd, cat, cp, mv), SDET interviews focus on text-processing commands for log analysis: grep (search with context flags like -A, -B, -C), awk (field-based extraction and computation), sed (stream editing for log sanitisation), find (locating test artifacts by age, size, or name), and xargs (batch processing pipeline output). Process management commands (ps, top, kill, pkill, nohup, timeout) are essential for handling hung test runners. File permission commands (chmod, chown, umask) are tested for secure artifact handling. Shell scripting fundamentals (exit codes, trap, set -euo pipefail) demonstrate operational awareness. At senior levels, expect questions combining these — for example, 'write a one-liner that finds the 5 most memory-intensive test processes and shows their command lines.'",
+      },
+      {
+        q: "How do I use grep effectively for test log analysis?",
+        a: "The key grep flags for SDET work are: -A N (show N lines after each match — great for seeing stack traces after error lines), -B N (before context), -C N (surrounding context), -v (invert match — exclude lines), -c (count matches), -r (recursive search across directories), -l (list only filenames), -i (case-insensitive), -E (extended regex for complex patterns like 'ERROR|FAILED|timeout'), and --color=auto (highlight matches for visual scanning). Production pattern: grep -r -A 10 'FAILED' ./test-results/ --include='*.log' extracts failure blocks from all log files in the test results directory. Combine with awk for analysis: grep 'FAILED' results.json | awk -F'\"' '{print $4}' | sort | uniq -c | sort -rn ranks tests by failure frequency.",
+      },
+      {
+        q: "How do you kill a hung test runner process on Linux?",
+        a: "Follow the escalation path: 1) Identify the process — pgrep -fl 'playwright' or ps aux | grep 'test-runner' — to find the PID. 2) Send SIGTERM (kill <PID>) — the polite shutdown that allows cleanup. 3) If unresponsive, send SIGINT (kill -2 <PID>) — equivalent to Ctrl+C, sometimes works when SIGTERM doesn't. 4) As a last resort, SIGKILL (kill -9 <PID>) — the OS forcibly terminates with no cleanup. In CI scripts, use the timeout command to enforce a hard limit: timeout 600 npx playwright test — if the runner exceeds 10 minutes, timeout sends SIGTERM then SIGKILL automatically. For bulk cleanup of orphaned browser processes (common after a runner crash): pkill -f 'chromium|firefox|webkit'. Always verify with pgrep before using killall.",
+      },
+      {
+        q: "How do I run tests in the background and disconnect from SSH without killing them?",
+        a: "Three approaches: 1) nohup — nohup npx playwright test > test-run.log 2>&1 & — the process is immune to SIGHUP (terminal hangup) and output is redirected to a file. 2) screen/tmux — screen -S test-run then run your tests inside the screen session; detach with Ctrl+A, D and reattach later with screen -r test-run. This gives you a full terminal session you can reconnect to, not just log output. 3) disown — run the command with &, then press Ctrl+Z to suspend, bg to resume in background, and disown to detach from the shell. Check on background jobs with jobs -l. The production-grade pattern: nohup for scripted CI runs (simple, reliable), tmux for interactive debugging sessions where you might need to reattach and inspect state.",
+      },
+      {
+        q: "How should I set up cron jobs for scheduled test execution?",
+        a: "Use crontab -e to edit your user's cron table. Format: minute hour day-of-month month day-of-week command. Common SDET patterns: '0 */4 * * 1-5 /scripts/smoke-tests.sh' (every 4 hours on weekdays), '0 2 * * * /scripts/full-regression.sh' (daily at 2 AM), '0 3 * * 0 find /test-artifacts -mtime +30 -delete' (cleanup Sundays at 3 AM). Critical gotchas: 1) Cron runs with a minimal environment — always use absolute paths in cron commands and scripts. 2) Redirect output: command >> /var/log/tests.log 2>&1 — without this, cron mails output to the user, which fills up the mail spool. 3) Escape percent signs as \\% in crontab entries. 4) For modern systems, consider systemd timers instead — they offer randomised delays, failure handling, and better logging through journald. 5) Monitor cron execution: grep CRON /var/log/syslog to verify jobs are running.",
+      },
+      {
+        q: "Does SDET Interview Coach help with Linux command-line interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated 'Infrastructure & Tooling' topic area with Linux terminal scenarios and command-line problem-solving questions. The app's Terminal Simulation rounds present you with a live server scenario — a hung CI node, a memory leak, a disk-full condition — and ask you to choose the correct diagnostic and remediation commands. Your answers are AI-scored on correctness, efficiency, and whether your command sequence follows the escalation path that experienced engineers would use. The spaced repetition system ensures grep flags, awk syntax, and process management commands stay in your long-term memory. Job Match can generate Linux-infused questions from any job description that mentions infrastructure, CI/CD, or DevOps skills — ensuring your preparation matches the exact expectations of your target role.",
+      },
+    ],
+    relatedSlugs: ["docker-test-automation-interview-questions-2026", "git-github-sdet-interview-questions-2026", "cicd-pipeline-testing-interview-questions"],
+  },
+  {
     slug: "visual-regression-testing-interview-questions-2026",
     title: "Visual Regression Testing Interview Questions 2026 — Playwright Screenshots and Visual Comparison Deep-Dive, Percy vs Chromatic vs Native Solutions, Pixel-Perfect vs Anti-Aliasing Tolerance, Snapshot Testing vs Visual Regression, Integrating Visual Tests in CI/CD Pipelines, Handling Dynamic Content (Dates, Ads, Animations), Visual Testing Strategy (What to Test Visually vs Functionally), and Common Interview Traps",
     description: "The definitive visual regression testing guide for SDET interviews in 2026. Interview panels aren't asking 'have you used screenshot testing?' — they're asking 'how did you handle false positives from anti-aliasing differences across operating systems?' This guide covers every visual testing question that separates engineers who've run Playwright's toHaveScreenshot() from those who've architected visual quality strategies at scale: Playwright visual comparison internals (pixelmatch, threshold tuning, maxDiffPixels), Percy vs Chromatic vs native solutions — cost, CI integration, and cross-browser rendering trade-offs, the pixel-perfect vs anti-aliasing tolerance false positive problem that plagues visual tests in CI, snapshot testing vs visual regression — two different tools for two different problems, integrating visual tests in CI/CD with baseline management strategies, handling dynamic content (dates, ads, animations, carousels) without masking away the content you actually need to test, building a visual testing strategy — what to test visually vs functionally vs both, and the common interview traps that reveal whether you've done visual testing at production scale or just in a tutorial. Every section maps to real panel questions from UK government and enterprise interviews. Includes Playwright/TypeScript code examples and SDET Interview Coach app guidance for visual-testing-specific mock rounds.",
