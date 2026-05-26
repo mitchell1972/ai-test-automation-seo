@@ -14,6 +14,753 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "kubernetes-sdet-test-infrastructure-interview-questions-2026",
+    title: "Kubernetes for SDET Test Infrastructure Interview Questions 2026 — K8s Fundamentals for Testers (Pods, Deployments, Services, ConfigMaps, Secrets, Namespaces), Running Selenium Grid on Kubernetes with Helm Charts, Playwright on K8s Clusters (Job-Based vs StatefulSet Patterns), Kubernetes vs Docker Compose for Test Environments — When to Graduate to K8s, Scaling Test Execution with Kubernetes (Horizontal Pod Autoscaling, Resource Limits, Node Affinity), CI/CD Integration with K8s — GitOps for Test Infrastructure, Monitoring Test Pods with Prometheus and Grafana, and Common Kubernetes Interview Questions for SDET Candidates",
+    description: "The definitive Kubernetes guide for SDET interviews in 2026. When your interview panel asks 'how do you scale your test infrastructure?' and you answer 'Docker Compose,' you've told them you operate at the single-machine level. The follow-up — 'what about Kubernetes?' — is where the senior SDET conversation begins. Every engineering team at scale is moving test infrastructure to K8s, and panels want to know you've done more than `kubectl get pods` — they want to hear about your Selenium Grid deployment with Helm, your Playwright test jobs running as K8s Jobs, your resource limits and autoscaling strategy, and how you integrated everything into a GitOps pipeline. This guide covers every K8s topic that separates candidates who've run a local minikube tutorial from those who've shipped production test infrastructure on Kubernetes: K8s fundamentals for testers — pods as the atomic unit of test execution, Deployments for Selenium Grid node pools, Services for cross-pod communication, ConfigMaps and Secrets for test configuration without hardcoding, and Namespaces for multi-team test isolation. Running Selenium Grid on Kubernetes — deploying Hub + Node architecture, scaling browser nodes dynamically, and configuring session queues. Playwright on K8s — Job-based patterns for ephemeral test runs, StatefulSet patterns for persistent browser contexts, and browserless/chromium sidecar containers. Kubernetes vs Docker Compose — the hard line where networking complexity (multi-service test environments), resource isolation needs, and parallel execution scale push you past Compose. Scaling strategies — Horizontal Pod Autoscaler for dynamic node scaling, resource requests/limits to prevent noisy-neighbour problems, and node affinity for GPU or browser-specific workloads. Helm charts for test infrastructure — templating your test environment, versioning infrastructure changes, and reusable chart patterns across microservices. CI/CD integration — GitHub Actions with K8s runners, GitOps with ArgoCD for test infrastructure, and canary deployments of test frameworks. Monitoring test pods — Prometheus metrics from Selenium Grid, Grafana dashboards for test execution trends, and log aggregation with Loki. Every section includes YAML manifests and bash commands drawn from real production test infrastructure. The SDET Interview Coach iOS app includes K8s-specific scenario questions and infrastructure design challenges with AI-scored feedback on your scaling decisions, resource management, and CI/CD integration patterns.",
+    date: "2026-05-26",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Kubernetes for SDET test infrastructure interview questions 2026",
+      "K8s fundamentals for testers pods deployments services configmaps",
+      "Selenium Grid on Kubernetes Helm chart deployment interview",
+      "Playwright on Kubernetes cluster job-based testing pattern",
+      "Kubernetes vs Docker Compose test environments scaling comparison",
+      "scaling test execution Kubernetes HPA resource limits node affinity",
+      "CI/CD GitOps Kubernetes test infrastructure ArgoCD GitHub Actions",
+      "Helm charts test infrastructure monitoring Prometheus Grafana interview",
+    ],
+    content: `
+<section class="content-section">
+  <p>You've just explained your Docker-based test infrastructure to the interview panel. Selenium Grid in containers, Playwright running in a sidecar, everything orchestrated with Docker Compose. You're feeling confident. Then the staff engineer leans forward and asks: <em>"That works at 50 parallel tests. What happens at 500? How do you handle node failures? How do you roll out a new browser version without downtime? And what does your Kubernetes migration plan look like?"</em> This is the moment where Docker knowledge meets infrastructure engineering — and it's the exact conversation happening in SDET interviews at every company that runs tests at scale. Kubernetes isn't just 'Docker with more YAML.' It's a fundamentally different operational model where your test infrastructure becomes declarative, self-healing, and horizontally scalable — and panels want to hear that you understand the operational difference, not just the syntax.</p>
+  <p>This guide complements our <a href="/blog/docker-test-automation-interview-questions-2026">Docker Test Automation Interview Questions 2026</a> — read that first if you're still building your container foundations. Once you've mastered single-node container orchestration, this post covers the distributed-systems knowledge that enterprise panels use to identify senior SDET candidates. For the CI/CD pipeline that deploys your K8s test infrastructure, see our <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a>. And for the architectural thinking behind distributed test systems, our <a href="/blog/sdet-system-design-interview-questions-2026">SDET System Design Interview Questions 2026</a> covers the big-picture trade-offs. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes infrastructure design challenges where you describe your K8s scaling strategy and receive AI-scored feedback against real senior SDET interview rubrics.</p>
+</section>
+
+<section class="content-section">
+  <h2>Kubernetes Fundamentals for Testers — What Every SDET Must Know</h2>
+  <p>You don't need to pass the CKA exam. But you do need to speak K8s fluently enough to design test infrastructure — and that means understanding the primitives that map directly to test automation concerns. Here's the K8s mental model, translated for testers:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Pods — The Atomic Unit of Test Execution</h3>
+      <p><strong>The interview question:</strong> "You're running 100 Playwright tests in parallel on Kubernetes. Each test is a pod. One pod hangs indefinitely. How does Kubernetes handle this, and how do you configure it?" <strong>The answer:</strong> Kubernetes doesn't detect application-level hangs automatically — it only knows if a process exits or if a liveness probe fails. You configure a <code>livenessProbe</code> that checks whether the Playwright process is still making progress (e.g., a /healthz endpoint in your test runner, or an exec probe that checks for a heartbeat file). When the liveness probe fails after <code>failureThreshold</code> consecutive attempts, K8s kills the pod and — if it's part of a Job or Deployment — replaces it. <strong>Key pod concepts for testers:</strong> Pods are ephemeral — they can die at any time, and your test framework must tolerate this (retries, idempotent test data setup). Pods can contain multiple containers (sidecar pattern — your test container plus a browserless/chromium container). Pods share a network namespace, so containers within the same pod reach each other via <code>localhost</code> — this is how Playwright connects to its browser sidecar. Pods have a lifecycle: Pending → Running → Succeeded/Failed, and understanding this lifecycle is essential for debugging CI flakes where a pod was OOMKilled (killed by the Out-Of-Memory killer) rather than failing a test assertion.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Deployments — Managing Long-Running Test Services</h3>
+      <p><strong>The interview question:</strong> "Your Selenium Grid hub runs as a Deployment. How do you update the hub image to a new version without dropping in-flight test sessions?" <strong>The answer:</strong> Configure <code>spec.strategy.type: RollingUpdate</code> with <code>maxUnavailable: 0</code> and <code>maxSurge: 1</code> — this ensures the new pod is ready before the old one is terminated. But the deeper answer: for stateful services like Selenium Grid hub (which maintains session queues), a Deployment alone isn't enough — you need graceful shutdown handling. Configure <code>terminationGracePeriodSeconds</code> to 60+ seconds so the old hub can drain its session queue (finish active tests, reject new ones) before Kubernetes force-kills it. Add a <code>preStop</code> lifecycle hook that signals the hub to enter draining mode. <strong>The SDET insight:</strong> Deployments are perfect for stateless components — Selenium Grid hub (stateless router), test reporting dashboards, API mock servers. They provide declarative rollouts, rollbacks (<code>kubectl rollout undo</code>), and self-healing — if a pod crashes, the ReplicaSet controller replaces it automatically. <strong>The gotcha:</strong> Deployments create ReplicaSets, which create Pods — understanding this ownership chain helps when debugging why a pod keeps restarting (check the ReplicaSet and Deployment events with <code>kubectl describe</code>).</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Services — Networking Between Test Components</h3>
+      <p><strong>The interview question:</strong> "Your Playwright tests in one pod need to reach the application-under-test in another pod. How do you configure this without hardcoding IP addresses?" <strong>The answer:</strong> Create a <code>Service</code> — a stable network abstraction that provides a DNS name and load-balanced endpoint for a set of pods selected by labels. Your test code references <code>http://my-app-service:8080</code> instead of a pod IP. The service is a cluster-internal abstraction by default (type: ClusterIP). For external access (e.g., hitting the Selenium Grid hub from your CI pipeline), use type: LoadBalancer (cloud) or NodePort (bare metal). <strong>The panel's follow-up:</strong> "What happens if the app pod restarts during your test?" — The service's endpoints controller watches pods via label selectors. When a pod dies and a new one starts with matching labels, the service automatically updates its endpoint list. Your test might see a brief connection failure during the transition; handle this with retries in your test code. <strong>Services cheat sheet for SDETs:</strong> ClusterIP for internal test services (app-under-test, mock servers, database fixtures), NodePort for local minikube development (exposes service on a high port 30000-32767), LoadBalancer for cloud-hosted Selenium Grid, and headless services (<code>clusterIP: None</code>) when you need pod-to-pod communication without load balancing — useful for StatefulSet-based browser nodes where each pod needs a stable network identity.</p>
+    </div>
+  </div>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>ConfigMaps and Secrets — Test Configuration Without Hardcoding</h3>
+      <p><strong>The interview question:</strong> "Your test framework needs browser configuration (viewport, timeouts, retry count), environment URLs (staging vs production), and API keys. How do you manage this in Kubernetes without baking it into the container image?" <strong>The answer:</strong> <code>ConfigMaps</code> for non-sensitive configuration (browser settings, URLs, parallel worker counts) and <code>Secrets</code> for sensitive data (API keys, database passwords, test user credentials). Both can be consumed as environment variables or mounted as volumes. <strong>The architectural pattern panels love:</strong> Use a ConfigMap per environment (test-config-staging, test-config-production) — your test pod references the ConfigMap by name, and the same container image runs in any environment. Secrets should be base64-encoded (note: not encrypted — for production, integrate with a KMS or use Sealed Secrets or External Secrets Operator). <strong>The follow-up:</strong> "How do you update a ConfigMap without restarting your test run?" — If mounted as a volume, K8s updates the file in the pod within ~60 seconds (kubelet sync period). If consumed as env vars, you must restart the pod. For long-running test suites, mount as a volume. For short-lived test jobs, env vars are fine since each run creates a new pod.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Namespaces — Multi-Team Test Isolation</h3>
+      <p><strong>The interview question:</strong> "Three squads share the same K8s cluster for test infrastructure. How do you prevent Squad A's test run from interfering with Squad B's Selenium Grid?" <strong>The answer:</strong> Create a <code>Namespace</code> per squad — <code>squad-a-test</code>, <code>squad-b-test</code>. Deploy each squad's Selenium Grid, test jobs, and configuration in their namespace. Combine with <code>ResourceQuota</code> to limit CPU/memory per namespace (preventing one squad from starving others) and <code>NetworkPolicy</code> to restrict cross-namespace communication (Squad A's test pods cannot reach Squad B's application-under-test). <strong>The architectural insight:</strong> Namespaces provide logical isolation, not hard security boundaries — they're soft multi-tenancy. For hard multi-tenancy (compliance, security-sensitive workloads), you need separate clusters. <strong>The SDET pattern:</strong> Teams often graduate through three stages: single namespace (startup, <10 engineers) → namespace per squad (scale-up, 10-50 engineers) → namespace per feature branch (mature, dynamic test environments created and destroyed per PR). The panel wants to hear you understand which stage is appropriate for which team size.</p>
+    </div>
+  </div>
+
+  <pre><code># Production K8s Manifest for Test Infrastructure — Real SDET Patterns
+
+---
+# ConfigMap: Browser and test configuration per environment
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-config
+  namespace: qa
+  labels:
+    app: test-infra
+    component: config
+data:
+  browser.json: |
+    {
+      "headless": true,
+      "viewport": {"width": 1920, "height": 1080},
+      "defaultTimeout": 30000,
+      "retryCount": 2
+    }
+  environments.yaml: |
+    staging:
+      base_url: "https://staging.myapp.com"
+      api_url: "https://api.staging.myapp.com"
+    production:
+      base_url: "https://myapp.com"
+      api_url: "https://api.myapp.com"
+
+---
+# Secret: Test credentials (base64-encoded; use Sealed Secrets in prod)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-credentials
+  namespace: qa
+type: Opaque
+data:
+  test-user: dGVzdHVzZXJAZXhhbXBsZS5jb20=    # testuser@example.com
+  test-password: U3VwZXJTZWNyZXQxMjMh           # SuperSecret123!
+  api-key: dGVzdC1hcGkta2V5LTEyMzQ1Njc4OTA=   # test-api-key-1234567890
+
+---
+# Namespace with ResourceQuota for multi-team isolation
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: squad-a-test
+
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: squad-a-quota
+  namespace: squad-a-test
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: "16Gi"
+    limits.cpu: "16"
+    limits.memory: "32Gi"
+    count/jobs.batch: "20"
+    persistentvolumeclaims: "5"</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Selenium Grid on Kubernetes — From Single Node to Auto-Scaling Browser Farm</h2>
+  <p>This is the question that launches the infrastructure track of any senior SDET interview: "Walk me through how you'd deploy Selenium Grid on Kubernetes." The panel doesn't want the Selenium docs repeated. They want your architecture decisions — where you'd put the hub, how you'd scale browser nodes, what happens when nodes die mid-session, and how you handle browser version management across the cluster.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>The Hub — Stateless Router, Not Stateful Database</h3>
+      <p><strong>Deploy as a Deployment</strong> (stateless — the hub routes sessions to nodes but doesn't store session state). Configure a Service (ClusterIP) so test pods discover the hub by DNS name: <code>http://selenium-hub.qa.svc.cluster.local:4444</code>. Set resource requests: at least 0.5 CPU and 512Mi memory for the hub (it's lightweight — session routing is cheap). <strong>The panel's gotcha:</strong> "What happens if the hub pod crashes?" — New sessions are rejected during the restart (~5-10 seconds with a good readiness probe), but active sessions on nodes continue running. When the hub comes back, nodes re-register themselves. The key insight: Selenium Grid 4's distributed mode decouples the hub into separate components (Router, SessionQueue, Distributor, EventBus), making it more resilient to individual component failures. <strong>The modern approach:</strong> Deploy Grid 4 components as separate Deployments, each with its own scaling characteristics — scale the Router for high throughput, the SessionQueue if you have bursty test demand, and the Distributor if you have many node types.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Browser Nodes — The Scaling Challenge</h3>
+      <p><strong>The interview question:</strong> "You have Chrome, Firefox, and Edge browser nodes. How do you deploy them on K8s for maximum resource efficiency?" <strong>The answer:</strong> Deploy each browser type as a separate Deployment with its own scaling parameters. But this is where the real architecture emerges: <strong>Approach 1: Static Deployments</strong> — 10 Chrome pods, 5 Firefox, 3 Edge. Simple but wastes resources during low-demand periods. <strong>Approach 2: Horizontal Pod Autoscaler (HPA)</strong> — Scale each browser Deployment based on a custom metric (e.g., <code>selenium_queue_size</code> per browser type) exported to Prometheus. Chrome scales to 20 pods during peak, back to 3 overnight. <strong>Approach 3: Dynamic Node Registration (Advanced)</strong> — Browser nodes self-register with the hub and report their capabilities. Use KEDA (Kubernetes Event-Driven Autoscaling) to scale based on queue depth: when 50 Chrome sessions are queued, KEDA spins up 10 new Chrome nodes in seconds. <strong>The panel's follow-up:</strong> "Where do browser binaries live?" — In the container image. Use multi-stage Docker builds: start from a slim base (alpine or ubuntu), install the browser, then copy in your node config. Tag images with browser version: <code>selenium-node-chrome:126.0</code>. This gives you version pinning — critical for reproducing CI failures from last month. For storage, browser profiles and downloads are ephemeral; use <code>emptyDir</code> volumes that are deleted when the pod terminates.</p>
+    </div>
+  </div>
+
+  <pre><code># Selenium Grid 4 on Kubernetes — Production-Ready Manifest
+
+---
+# Selenium Hub Service — stable DNS for test pods
+apiVersion: v1
+kind: Service
+metadata:
+  name: selenium-hub
+  namespace: qa
+spec:
+  selector:
+    app: selenium-hub
+  ports:
+    - name: http
+      port: 4444
+      targetPort: 4444
+    - name: grpc       # Grid 4 uses gRPC for node registration
+      port: 4443
+      targetPort: 4443
+  type: ClusterIP
+
+---
+# Selenium Hub Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selenium-hub
+  namespace: qa
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0    # Zero-downtime rollout
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: selenium-hub
+  template:
+    metadata:
+      labels:
+        app: selenium-hub
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: selenium-hub
+          image: selenium/hub:4.20
+          ports:
+            - containerPort: 4444
+            - containerPort: 4443
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 4444
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: 4444
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          env:
+            - name: SE_EVENT_BUS_HOST
+              value: "selenium-hub"
+            - name: SE_EVENT_BUS_PUBLISH_PORT
+              value: "4442"
+
+---
+# Chrome Node Deployment with HPA
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selenium-node-chrome
+  namespace: qa
+  labels:
+    app: selenium-node
+    browser: chrome
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: selenium-node
+      browser: chrome
+  template:
+    metadata:
+      labels:
+        app: selenium-node
+        browser: chrome
+    spec:
+      containers:
+        - name: selenium-node-chrome
+          image: selenium/node-chrome:4.20
+          env:
+            - name: SE_EVENT_BUS_HOST
+              value: "selenium-hub"
+            - name: SE_EVENT_BUS_PUBLISH_PORT
+              value: "4442"
+            - name: SE_EVENT_BUS_SUBSCRIBE_PORT
+              value: "4443"
+            - name: SE_NODE_MAX_SESSIONS
+              value: "5"
+            - name: SE_NODE_SESSION_TIMEOUT
+              value: "300"
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm    # Chrome needs shared memory
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi
+
+---
+# HPA for Chrome Nodes — scale based on CPU
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: selenium-node-chrome-hpa
+  namespace: qa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: selenium-node-chrome
+  minReplicas: 3
+  maxReplicas: 30
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Playwright on Kubernetes — Job-Based vs StatefulSet Patterns</h2>
+  <p>Different from Selenium Grid's persistent node pool, Playwright's architecture maps more naturally to Kubernetes Jobs — ephemeral pods that run a test suite, report results, and terminate. Here's how the architectures differ and when to use each pattern:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Job-Based Pattern — Ephemeral Test Runs</h3>
+      <p><strong>The interview question:</strong> "Design a system where each Playwright test spec runs as an independent K8s Job. How do you handle parallelism, result collection, and failure retries?" <strong>The architecture:</strong> Your CI pipeline (GitHub Actions, Jenkins) triggers a <code>kubectl create job</code> per test spec — or uses a Job template with parallelism. <strong>parallelism: 20</strong> means 20 pods run simultaneously, each executing the spec with a unique index (available as <code>JOB_COMPLETION_INDEX</code> env var or via a work queue). <strong>completions: 100</strong> means the Job is complete once 100 pods have succeeded — if 3 fail and 97 succeed, the Job is still incomplete until those 3 retry (configure <code>backoffLimit: 3</code> for retry count). <strong>Result collection:</strong> Each pod writes its test results (JUnit XML, JSON) to a shared PersistentVolume or pushes to an external service (Allure TestOps, ReportPortal). Alternatively, use an init container that pulls the spec list and distributes via a work queue (Redis, RabbitMQ). <strong>The panel's follow-up:</strong> "How do you prevent the 100th spec from running on a node that ran out of disk from spec #99?" — Configure <code>spec.ttlSecondsAfterFinished</code> to auto-delete completed pods, and use <code>emptyDir</code> volumes with size limits. Each pod gets clean ephemeral storage — no cross-contamination.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>StatefulSet Pattern — Persistent Browser Contexts</h3>
+      <p><strong>The interview question:</strong> "Your tests need persistent browser profiles (cookies, localStorage, service workers) across runs for an authenticated-state pattern. How do you manage stateful browser pods in K8s?" <strong>The answer:</strong> Use a <code>StatefulSet</code> with <code>volumeClaimTemplates</code> — each pod gets a PersistentVolumeClaim that survives pod restarts. Pods have stable network identities: <code>playwright-node-0</code>, <code>playwright-node-1</code>, etc. Useful when tests need warm browser caches (avoid re-downloading assets) or authenticated sessions that are expensive to establish per-run. <strong>The trade-off:</strong> StatefulSets are harder to scale down (volumes persist unless manually deleted) and harder to upgrade (ordered, graceful rolling update — pod N only updates after pod N-1 is healthy). <strong>The modern alternative:</strong> Most Playwright setups don't need StatefulSets — they use the <code>storageState</code> pattern: authenticate once, save the state to a JSON file, and mount it as a ConfigMap or copy it at pod startup. This gives you deterministic, stateless test execution with the speed of pre-authenticated sessions — best of both worlds.</p>
+    </div>
+  </div>
+
+  <pre><code># Playwright Test Job on Kubernetes — Ephemeral, Self-Cleaning
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: playwright-smoke-tests
+  namespace: qa
+  labels:
+    app: playwright-tests
+    suite: smoke
+spec:
+  parallelism: 10          # Run 10 pods concurrently
+  completions: 10          # Job completes when 10 pods succeed
+  backoffLimit: 2          # Retry failed pods twice
+  ttlSecondsAfterFinished: 300  # Auto-delete pod logs after 5 minutes
+  template:
+    metadata:
+      labels:
+        app: playwright-tests
+    spec:
+      restartPolicy: Never  # Don't restart; let backoffLimit handle retries
+      containers:
+        - name: playwright
+          image: mcr.microsoft.com/playwright:v1.48-noble
+          command:
+            - /bin/bash
+            - -c
+            - |
+              npx playwright test \
+                --config=playwright.config.ts \
+                --shard=$JOB_COMPLETION_INDEX/$JOB_COMPLETIONS \
+                --reporter=junit,html
+              echo "Shard $JOB_COMPLETION_INDEX complete"
+          env:
+            - name: BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: base_url
+            - name: JOB_COMPLETION_INDEX
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+            - name: JOB_COMPLETIONS
+              value: "10"
+            - name: TEST_USER
+              valueFrom:
+                secretKeyRef:
+                  name: test-credentials
+                  key: test-user
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+            limits:
+              cpu: "4"
+              memory: "6Gi"
+          volumeMounts:
+            - name: test-results
+              mountPath: /app/test-results
+            - name: playwright-config
+              mountPath: /app/playwright.config.ts
+              subPath: playwright.config.ts
+      volumes:
+        - name: test-results
+          persistentVolumeClaim:
+            claimName: test-results-pvc
+        - name: playwright-config
+          configMap:
+            name: playwright-config</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Kubernetes vs Docker Compose for Test Environments — The Hard Decision</h2>
+  <p>Every SDET infrastructure interview eventually arrives at this question: "When would you choose Docker Compose over Kubernetes for test environments — and when would you make the opposite choice?" The panel is testing whether you understand that K8s isn't universally better — it's a trade-off with real operational costs, and choosing it prematurely is as much of a red flag as never choosing it at all.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Docker Compose Wins When...</h3>
+      <p><strong>Single-machine scale:</strong> Your entire test environment — app, database, mock services, Selenium Grid — fits comfortably on one VM (≤32GB RAM, ≤16 vCPUs). Compose's simplicity is a feature, not a limitation, at this scale. <strong>Team size ≤15 engineers:</strong> The operational overhead of managing a K8s cluster (control plane upgrades, RBAC, ingress controllers, certificate management) isn't justified when a single <code>docker-compose.yml</code> and a Makefile meet 95% of your needs. <strong>Local development:</strong> Compose gives developers a one-command local environment (<code>docker compose up</code>). K8s local tools (minikube, kind, k3d) add 5-10 minutes to onboarding and require cluster-level thinking that distracts from writing tests. <strong>Deterministic CI:</strong> CI runners are single VMs — Compose maps cleanly to this model. Running a K8s cluster inside CI (kind, k3s) adds complexity and flakiness (cluster startup time, resource starvation on shared CI nodes). <strong>Team K8s maturity:</strong> If nobody on the team has operated K8s in production, introducing it for test infrastructure means learning cluster operations, networking policies, and Helm chart authoring before you can even run your first test. Compose lets you defer this learning curve.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Kubernetes Wins When...</h3>
+      <p><strong>Multi-service test environments:</strong> Your integration tests spin up 15 microservices, 3 databases, a message queue, and a Redis cache. Compose networks become fragile at this complexity; K8s Services, Ingress, and NetworkPolicies give you production-like networking with declarative configuration. <strong>Parallel execution at scale (≥100 concurrent tests):</strong> A single VM cannot vertically scale to 100 simultaneous browser instances (100 × 2GB RAM = 200GB minimum). K8s distributes the workload across multiple nodes — your 100 Playwright pods run on a 10-node cluster, 10 per node. <strong>Multi-team isolation:</strong> Three squads need isolated test environments. With Compose, you'd need three VMs or port-range gymnastics. With K8s, three Namespaces with ResourceQuotas give isolated, governed environments on a shared cluster. <strong>Dynamic per-PR environments:</strong> Every PR gets its own test environment. K8s + Helm + a GitOps operator (Argo CD, Flux) can create and destroy PR environments automatically — something Compose can't do at scale without manual orchestration. <strong>Production parity:</strong> If your application runs on K8s in production, running tests on K8s catches environment-specific bugs (network policies, resource limits, DNS resolution quirks) that Compose would miss. This is the "shift-left infrastructure validation" argument that senior panels love hearing.</p>
+    </div>
+  </div>
+
+  <div class="challenge-card">
+    <h3>The Graduation Path — How to Answer "When Should We Migrate?"</h3>
+    <p><strong>The panel's synthesis question:</strong> "Your team is on Docker Compose today. Make the business case for when and how to migrate to Kubernetes." <strong>The answer that demonstrates engineering maturity:</strong> "I'd define triggers, not timelines. Migrate when: (1) Test suite runtime exceeds CI timeout because serial execution is too slow — you need horizontal scaling. (2) You hit the 'Three Bug Pattern' — you've had three incidents where a Compose environment passed but production (K8s) failed because of environment mismatches. (3) Infrastructure cost becomes the bottleneck — you're paying for idle VMs that sit unused between PRs; K8s bin-packing and cluster autoscaling reclaim that spend. (4) Team velocity is blocked by environment contention — Squad A waits for Squad B to finish with the test VM. The migration itself should be incremental: start with a single Namespace for CI-only execution (no developer-facing change), add dynamic PR environments second, then migrate local development to K8s last — only when the team is operational on the cluster. This staged approach minimises blast radius and lets the team learn K8s incrementally rather than burning an entire sprint on migration."</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Helm Charts for Test Infrastructure — Templating, Versioning, and Reusability</h2>
+  <p>"You've been asked to standardise the test infrastructure deployment across 12 microservice teams. How do you do it?" The answer is Helm — Kubernetes' package manager — and the panel wants to hear that you understand chart structure, value overrides, and the operational patterns that make Helm more than just <code>kubectl apply</code> with variables.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Chart Structure for Test Infrastructure</h3>
+      <p><strong>The interview question:</strong> "Walk me through a Helm chart that deploys a complete test environment — Selenium Grid, Playwright test runner, mock services, and reporting dashboard." <strong>The structure:</strong> <code>charts/test-infra/</code> — templates/ contains the K8s manifests templated with Go template syntax. values.yaml holds defaults (browser types, replica counts, resource limits, test config). Each microservice team overrides team-specific values in their own <code>values-team-a.yaml</code>. <strong>Key files:</strong> <code>values.yaml</code> (shared defaults), <code>Chart.yaml</code> (version, dependencies), <code>templates/_helpers.tpl</code> (reusable template functions — name prefix, labels, selector match logic), <code>templates/selenium-hub.yaml</code>, <code>templates/selenium-nodes.yaml</code>, <code>templates/playwright-job.yaml</code>, <code>templates/test-reporting.yaml</code>. <strong>The SDET insight:</strong> Use <code>helm template</code> to render manifests without deploying — your CI pipeline can validate chart syntax before applying, catching YAML errors before they reach the cluster. Use <code>helm lint</code> for static validation. Use <code>helm test</code> to run smoke tests after deployment — a dedicated test pod that verifies Selenium Grid is reachable before the main test suite starts.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Value Overrides and Environment-Specific Configurations</h3>
+      <p><strong>The interview question:</strong> "How do you configure different browser versions for staging vs production without maintaining duplicate charts?" <strong>The answer:</strong> Helm's value override hierarchy: <code>values.yaml</code> (base) → <code>values-staging.yaml</code> (override file) → <code>--set</code> flags (CLI overrides). Your staging values file specifies Chrome 127 (latest beta), production specifies Chrome 126 (stable). Deploy with: <code>helm upgrade --install test-infra ./charts/test-infra -f values-production.yaml</code>. <strong>The architectural pattern:</strong> Create a library chart (Helm 3 chart dependencies) that contains shared templates (Selenium Grid, Playwright runner, resource defaults). Each team's chart depends on the library and overrides only team-specific values. This eliminates copy-paste drift — when you update the library's resource defaults (e.g., increase Chrome memory from 2Gi to 4Gi), all 12 teams get the update on their next <code>helm upgrade</code>. <strong>The panel's follow-up:</strong> "How do you handle secrets in Helm charts?" — Don't put plaintext secrets in values.yaml (they get stored in the Helm release history in the cluster). Use <code>helm install</code> with <code>--set-file</code> for secret values, or use External Secrets Operator / Sealed Secrets to manage secrets outside the chart. Your chart template references a Secret name, and the Secret is provisioned separately by your security tooling.</p>
+    </div>
+  </div>
+
+  <pre><code># Helm Chart — values.yaml for Test Infrastructure
+# Deploy with: helm upgrade --install test-infra ./charts/test-infra \\\n#   -f values-production.yaml --namespace qa
+
+# Global settings
+global:
+  environment: staging
+  namespace: qa
+  imagePullPolicy: IfNotPresent
+
+# Selenium Grid Configuration
+seleniumGrid:
+  enabled: true
+  hub:
+    image:
+      repository: selenium/hub
+      tag: "4.20"
+    replicas: 1
+    service:
+      type: ClusterIP
+      port: 4444
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+  nodes:
+    chrome:
+      enabled: true
+      image:
+        repository: selenium/node-chrome
+        tag: "4.20"
+      replicas: 5
+      maxSessions: 5
+      resources:
+        requests:
+          cpu: "1"
+          memory: "2Gi"
+        limits:
+          cpu: "2"
+          memory: "4Gi"
+      autoscaling:
+        enabled: true
+        minReplicas: 3
+        maxReplicas: 30
+        targetCPUUtilization: 70
+    firefox:
+      enabled: false  # Disabled in this env; enable via override
+      replicas: 0
+
+# Playwright Test Runner
+playwright:
+  enabled: true
+  parallelism: 10
+  completions: 50
+  backoffLimit: 3
+  image:
+    repository: mcr.microsoft.com/playwright
+    tag: "v1.48-noble"
+  resources:
+    requests:
+      cpu: "2"
+      memory: "4Gi"
+    limits:
+      cpu: "4"
+      memory: "6Gi"
+  config:
+    retries: 2
+    timeout: 60000
+    workers: 4  # Per-pod parallelism
+
+# Test Configuration
+testConfig:
+  baseUrl: "https://staging.myapp.com"
+  apiUrl: "https://api.staging.myapp.com"
+  headless: true
+
+# Monitoring
+monitoring:
+  enabled: true
+  prometheus:
+    scrapeInterval: "30s"
+  grafana:
+    dashboardLabel: "test-infra"</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>CI/CD Integration with Kubernetes — GitOps for Test Infrastructure</h2>
+  <p>The panel wants to hear that you don't just deploy YAML manually — you integrate test infrastructure into a GitOps pipeline where every change is versioned, reviewed, and automatically applied. Here's what that looks like in practice:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>GitHub Actions + kubectl — The Direct Approach</h3>
+      <p><strong>The architecture:</strong> Your CI workflow (triggered by push to main or PR) authenticates to the K8s cluster, applies manifests, and triggers test execution. Steps: (1) Checkout code, (2) Configure kubectl with cluster credentials from GitHub Secrets, (3) <code>kubectl apply -f k8s/test-infra/</code> or <code>helm upgrade --install</code>, (4) Wait for Selenium Grid to be ready (<code>kubectl wait --for=condition=ready pod -l app=selenium-hub</code>), (5) Create Playwright Job (<code>kubectl create -f playwright-test-job.yaml</code>), (6) Wait for Job completion with timeout (<code>kubectl wait --for=condition=complete job/playwright-smoke-tests --timeout=30m</code>), (7) Collect results (<code>kubectl logs job/playwright-smoke-tests > results.log</code>). <strong>The panel's follow-up:</strong> "What's the weakness of this approach?" — It's CI-push driven, meaning the CI pipeline needs direct cluster access. If your CI provider is down, test infrastructure can't be updated. It also creates a snowflake — if someone manually runs <code>kubectl edit deployment selenium-node-chrome</code> to fix a production issue, that manual change drifts from the repo and is overwritten on the next CI run.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Argo CD / Flux — GitOps Pull Model</h3>
+      <p><strong>The architecture:</strong> Argo CD runs in the cluster and continuously reconciles the desired state (your Git repo's <code>k8s/test-infra/</code> directory) with the actual state (what's running in the cluster). You push a PR that updates Chrome node replicas from 5 to 15 — Argo CD detects the drift and applies the change automatically (or after PR approval if you configure auto-sync with manual approval). <strong>The panel's dream answer:</strong> "We use a GitOps operator. Our test infrastructure repo is the single source of truth. Argo CD monitors it every 3 minutes. Manual <code>kubectl</code> changes are automatically reverted because they drift from Git state. PRs trigger preview environments — Argo CD creates a namespace per PR with the full test stack, runs tests, and destroys the namespace on PR close. This gives us audit trails (every change is a Git commit), disaster recovery (recreate the entire cluster from Git), and multi-cluster consistency (one Argo CD instance manages test infra across dev, staging, and production clusters)." <strong>The SDET-specific pattern:</strong> Use <a href="https://argoproj.github.io/argo-cd/" target="_blank" rel="noopener">Argo CD ApplicationSets</a> to generate test infrastructure per branch automatically. Each branch gets its own Argo CD Application with branch-specific overrides. When a developer pushes a feature branch, Argo CD creates a namespace <code>pr-123-test</code> and deploys the full test stack. The CI pipeline just needs to trigger the test Job — the infrastructure is already waiting. When the branch is deleted, Argo CD prunes the namespace and all resources.</p>
+    </div>
+  </div>
+
+  <pre><code># GitHub Actions Workflow — Deploy Test Infra to K8s and Run Playwright
+
+name: Run Playwright Tests on Kubernetes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NAMESPACE: qa
+  K8S_CONTEXT: test-cluster
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest'
+
+      - name: Set K8s context
+        run: |
+          mkdir -p $HOME/.kube
+          echo "\${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          kubectl config use-context $K8S_CONTEXT
+          kubectl get nodes
+
+      - name: Deploy Selenium Grid via Helm (Upgrade or Install)
+        run: |
+          helm upgrade --install selenium-grid ./charts/selenium-grid \\n            --namespace $NAMESPACE --create-namespace \\n            -f ./charts/selenium-grid/values-ci.yaml \\n            --set seleniumGrid.nodes.chrome.replicas=10 \\n            --wait --timeout 5m
+
+      - name: Wait for Selenium Hub readiness
+        run: |
+          kubectl wait --for=condition=ready pod \\n            -l app=selenium-hub \\n            -n $NAMESPACE \\n            --timeout=120s
+          kubectl wait --for=condition=ready pod \\n            -l browser=chrome \\n            -n $NAMESPACE \\n            --timeout=120s
+
+      - name: Build and push Playwright test image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tests
+          push: true
+          tags: registry.myco.com/playwright-tests:\${{ github.sha }}
+
+      - name: Run Playwright tests as K8s Job
+        run: |
+          # Create the test Job
+          kubectl create job playwright-tests \\n            --image=registry.myco.com/playwright-tests:\${{ github.sha }} \\n            --namespace $NAMESPACE \\n            --dry-run=client -o yaml | \\n            kubectl apply -f -
+
+          # Wait for Job completion (or timeout)
+          if ! kubectl wait --for=condition=complete \\n            job/playwright-tests \\n            -n $NAMESPACE \\n            --timeout=30m; then
+            echo "::error::Playwright tests failed or timed out"
+            kubectl logs job/playwright-tests -n $NAMESPACE --tail=100
+            kubectl delete job playwright-tests -n $NAMESPACE
+            exit 1
+          fi
+
+      - name: Collect test results
+        run: |
+          kubectl logs job/playwright-tests -n $NAMESPACE > test-results.log
+          kubectl cp $NAMESPACE/$(kubectl get pod -l job-name=playwright-tests \\n            -n $NAMESPACE -o jsonpath='{.items[0].metadata.name}'):/app/test-results ./test-results
+
+      - name: Cleanup test Job
+        if: always()
+        run: kubectl delete job playwright-tests -n $NAMESPACE --ignore-not-found</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Monitoring Test Pods — Observability for Test Infrastructure</h2>
+  <p>The panel's infrastructure maturity check: "How do you know your test infrastructure is healthy?" Running tests isn't enough — you need observability into whether pods are crash-looping, nodes are memory-starved, and Selenium Grid queues are backing up. Here's the monitoring stack every SDET at scale needs to describe:</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Prometheus Metrics — The Signal You Actually Need</h3>
+      <p><strong>Cluster-level metrics (kube-state-metrics):</strong> Pod restart counts (<code>kube_pod_container_status_restarts_total</code>) — a spike means crash-looping test pods. Pod phase (<code>kube_pod_status_phase</code>) — how many pods are Pending (waiting for resources) vs Running vs Failed. Node resource usage (<code>node_memory_MemAvailable_bytes</code>) — are your nodes running out of memory from too many browser pods? <strong>Application-level metrics (custom):</strong> Selenium Grid exposes Prometheus metrics natively (Grid 4): <code>selenium_queue_size</code> — the number of sessions waiting for a node (alert when >20). <code>selenium_session_count</code> — active sessions per browser type (alert when Chrome sessions exceed node capacity). <code>selenium_session_duration_seconds</code> — histogram of session duration (bimodal distribution? some tests are taking 10× longer than others). Playwright exposes metrics via a custom exporter or by parsing the JSON report: pass rate per spec, duration p95, flaky test identification. <strong>The panel's follow-up:</strong> "What alert rules would you configure?" — (1) CrashLoopBackOff on any test pod > 3 restarts in 5 minutes (broken test image). (2) Selenium queue depth > 80% of node capacity for > 10 minutes (need to scale). (3) Pod Pending state > 5 minutes (cluster resource exhaustion). (4) Test success rate < 90% in the last hour (application regression or infrastructure issue).</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Grafana Dashboards — Visualising Test Infrastructure Health</h3>
+      <p><strong>The panel's visualisation question:</strong> "Design a Grafana dashboard for the SDET team that shows everything they need at a glance." <strong>Row 1 — Infrastructure Health:</strong> Pod status breakdown (Running/Pending/Failed — stacked bar chart), node CPU and memory utilisation (heatmap), Selenium Grid queue depth (gauge with thresholds). <strong>Row 2 — Test Execution:</strong> Test pass rate over time (line graph with alert threshold), test duration p50/p95/p99 (time series), test count per browser (bar chart — spot if Chrome tests are 10× Firefox tests). <strong>Row 3 — Resource Efficiency:</strong> Cost per test execution (compute cost / test count — track over time), idle vs utilised nodes (scaling efficiency), pod scheduling latency (how long from Job creation to pod Running). <strong>Row 4 — Flaky Test Tracking:</strong> Flaky test count over time (tests that passed on retry), flaky tests by spec file (table — identify the worst offenders), pass rate trend per test suite. <strong>The architectural insight:</strong> Grafana dashboards should be provisioned as code (dashboard JSON in Git, deployed via ConfigMap or Grafana operator). This ensures dashboard consistency across environments and prevents "Bob's custom dashboard that only Bob understands" from becoming a bus-factor risk.</p>
+    </div>
+  </div>
+
+  <pre><code># Prometheus ServiceMonitor for Selenium Grid 4
+# Requires prometheus-operator installed in the cluster
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: selenium-grid
+  namespace: qa
+  labels:
+    release: prometheus
+    app: selenium-grid
+spec:
+  selector:
+    matchLabels:
+      app: selenium-hub
+  namespaceSelector:
+    matchNames:
+      - qa
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+
+---
+# PrometheusRule — Alerting Rules for Test Infrastructure
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: test-infra-alerts
+  namespace: qa
+spec:
+  groups:
+    - name: test-infrastructure
+      rules:
+        - alert: TestPodCrashLooping
+          expr: rate(kube_pod_container_status_restarts_total{namespace="qa",container=~"playwright.*"}[5m]) > 0.1
+          for: 5m
+          labels:
+            severity: critical
+            team: sdet
+          annotations:
+            summary: "Test pod {{ $labels.pod }} is crash-looping"
+            description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has restarted {{ $value }} times in 5 minutes."
+
+        - alert: SeleniumQueueDepthHigh
+          expr: selenium_queue_size{namespace="qa"} > 50
+          for: 10m
+          labels:
+            severity: warning
+            team: sdet
+          annotations:
+            summary: "Selenium Grid queue depth is {{ $value }}"
+            description: "Queue depth exceeds 50 sessions. Consider scaling browser nodes."
+
+        - alert: TestPassRateLow
+          expr: (sum(rate(playwright_tests_passed{namespace="qa"}[1h])) / sum(rate(playwright_tests_total{namespace="qa"}[1h]))) < 0.9
+          for: 15m
+          labels:
+            severity: critical
+            team: sdet
+          annotations:
+            summary: "Playwright test pass rate dropped below 90%"
+            description: "Current pass rate is {{ $value | humanizePercentage }}. Check for application regressions or infrastructure issues."</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Common Kubernetes Interview Questions for SDETs — The Panel's Playbook</h2>
+  <p>Beyond the architecture discussions, panels ask tactical K8s questions to verify hands-on experience. Here are the most common ones, with the answers that signal genuine cluster time:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"How do you debug a pod that's stuck in CrashLoopBackOff?"</h3>
+      <p><strong>Steps that signal competence:</strong> (1) <code>kubectl describe pod &lt;name&gt;</code> — check Events at the bottom for the crash reason (OOMKilled, Error, Evicted). (2) <code>kubectl logs &lt;pod&gt; --previous</code> — view logs from the crashed container instance. (3) <code>kubectl get events --sort-by='.lastTimestamp'</code> — cluster-level events (did the node run out of disk? Was the image pull rate-limited?). (4) Check resource limits — was the pod OOMKilled because the memory limit was too low? Increase limits in the Deployment spec. (5) Check ConfigMaps and Secrets — are they missing or malformed? <code>kubectl get configmap &lt;name&gt; -o yaml</code> to verify. <strong>The panel's bonus question:</strong> "What's the difference between CrashLoopBackOff and ImagePullBackOff?" — ImagePullBackOff means K8s can't pull the container image (wrong registry, auth failure, image doesn't exist). CrashLoopBackOff means the image pulled successfully but the container exits immediately after starting. Check logs for the application error.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"What's a readiness probe, and how would you configure one for a Selenium node?"</h3>
+      <p><strong>The answer:</strong> A readiness probe determines whether a pod is ready to receive traffic — if it fails, the pod is removed from the Service's endpoints. For a Selenium node, configure an <code>httpGet</code> probe on the node's status endpoint: <code>GET /status</code> returns 200 when the node is registered with the hub and ready to accept sessions. <strong>The critical config:</strong> <code>initialDelaySeconds: 30</code> (give the node time to register), <code>periodSeconds: 10</code> (check every 10s), <code>failureThreshold: 3</code> (3 consecutive failures before marking Unready). <strong>The difference from a liveness probe:</strong> Liveness probes restart unhealthy pods. Readiness probes stop traffic to unhealthy pods without restarting them. A Selenium node that's running but can't reach the hub (network partition) should fail readiness (stop sending sessions to it) but pass liveness (don't restart it — the network will recover). <strong>The SDET gotcha:</strong> Without readiness probes, a pod becomes a Service endpoint the moment it's Running — even if the application inside hasn't started yet. Your Playwright test connects to the hub, the hub routes to the "ready" node, the node returns 502 because the browser driver isn't up, and your test fails with a confusing error. Readiness probes prevent this entire class of flake.</p>
+    </div>
+  </div>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"Explain resource requests vs limits. What happens when you set only limits?"</h3>
+      <p><strong>Requests:</strong> The minimum guaranteed resources the pod needs — the scheduler uses this to decide which node has capacity. If your Chrome node requests 2Gi memory, it will only be scheduled on a node with ≥2Gi available. <strong>Limits:</strong> The maximum the pod is allowed to use — if exceeded on CPU, the pod is throttled (slower, but not killed). If exceeded on memory, the pod is OOMKilled (terminated). <strong>The gotcha:</strong> Setting only limits without requests makes requests = limits by default. This means every pod claims its maximum resources even when idle — your 10 Chrome nodes each claim 4Gi memory (limits) regardless of whether they're running tests or sitting idle. This wastes cluster capacity. Better pattern: requests at 2Gi (idle memory), limits at 4Gi (peak memory during test execution), HPA scales based on actual usage. <strong>The panel's favourite nuance:</strong> CPU is compressible (pod gets throttled, not killed) — memory is not. Your Chrome node hitting its CPU limit runs slowly; hitting its memory limit dies mid-test and produces a Selenium session timeout instead of a test result — a much harder failure to diagnose.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"How do you handle persistent storage for test artifacts in K8s?"</h3>
+      <p><strong>The answer:</strong> Use <code>PersistentVolumeClaims</code> (PVCs) backed by a storage class appropriate for your cloud provider (AWS EBS, GCP Persistent Disk, Azure Disk). For test results (screenshots, videos, reports), mount a <code>ReadWriteMany</code> PVC so multiple test pods can write to the same volume. But the <strong>better pattern</strong> is: don't persist to K8s volumes at all. Push test results to an external artifact store (S3, GCS, Azure Blob) from within the test pod, or stream them to a test reporting service (Allure TestOps, ReportPortal). This avoids the operational headache of managing persistent volumes (snapshots, backups, cross-AZ replication) and makes results accessible from outside the cluster (developers don't need kubectl to see test reports). <strong>The report-then-delete pattern:</strong> Each test pod writes results to a shared PVC, a sidecar container uploads them to S3, then TTL (<code>ttlSecondsAfterFinished</code>) deletes the pod and its ephemeral storage. PVC is only needed if multiple pods write concurrently and you want to aggregate before uploading.</p>
+    </div>
+  </div>
+
+  <pre><code># Debugging Cheat Sheet — K8s Commands Every SDET Should Know
+
+# Pod debugging
+kubectl get pods -n qa --sort-by=.status.startTime          # Pods by age
+kubectl describe pod selenium-node-chrome-7d9f8b-abcde     # Full pod details + events
+kubectl logs selenium-node-chrome-7d9f8b-abcde --tail=50   # Last 50 log lines
+kubectl logs selenium-node-chrome-7d9f8b-abcde --previous  # Logs from crashed container
+kubectl exec -it selenium-node-chrome-7d9f8b-abcde -- /bin/bash  # Shell into pod
+kubectl top pod -n qa                                        # Real-time CPU/memory usage
+kubectl get events -n qa --sort-by='.lastTimestamp' | tail -20  # Recent cluster events
+
+# Resource diagnosis
+kubectl describe nodes | grep -A5 "Allocated resources"      # Node capacity
+kubectl get pods -n qa --field-selector=status.phase=Pending # Stuck pods
+kubectl get pvc -n qa                                         # Persistent volume status
+
+# Selenium Grid debugging
+kubectl port-forward svc/selenium-hub 4444:4444 -n qa        # Access hub locally
+curl http://localhost:4444/status                             # Grid status API
+curl http://localhost:4444/grid/api/overview                  # Session overview (Grid 3)
+
+# Helm operations
+helm list -n qa                                                # All releases
+helm history test-infra -n qa                                  # Release history
+helm rollback test-infra 3 -n qa                               # Rollback to revision 3
+helm get values test-infra -n qa --revision 5                  # Values used at revision 5
+
+# Scale operations
+kubectl scale deployment selenium-node-chrome --replicas=20 -n qa    # Manual scale
+kubectl get hpa -n qa                                                  # Autoscaler status
+kubectl delete pod selenium-node-chrome-7d9f8b-abcde -n qa            # Force restart</code></pre>
+</section>
+`,
+    faqs: [
+      {
+        q: "Do I need to be a Kubernetes expert to pass an SDET interview?",
+        a: "No — but you need to be conversationally fluent. Panels aren't expecting you to configure a multi-cluster service mesh or write a custom Kubernetes operator. They are expecting you to: (1) explain the difference between a Pod, Deployment, and Service and when you'd use each; (2) describe how you'd deploy Selenium Grid on K8s and scale browser nodes; (3) articulate when you'd choose Kubernetes over Docker Compose for test infrastructure; (4) debug common issues (CrashLoopBackOff, OOMKilled, ImagePullBackOff); and (5) explain how test execution integrates with a CI/CD pipeline that uses K8s. If you can discuss these five areas with confidence — including the trade-offs and failure modes — you're at the right level for most senior SDET roles. If you can also discuss Helm chart authoring, Prometheus monitoring, and GitOps with Argo CD, you're positioning yourself at the staff engineer level.",
+      },
+      {
+        q: "How is running Playwright on Kubernetes different from running it on a normal CI runner?",
+        a: "There are three fundamental differences. First, horizontal scaling — on a CI runner, you're limited to a single VM's CPU and memory (typically 4-16 vCPUs, 16-64GB RAM). On K8s, each Playwright test spec can run in its own pod, and the cluster scheduler distributes pods across 10+ nodes with 200+ total vCPUs. Second, browser management — on CI, you install browsers in the runner image. On K8s, you either bundle them in the test image (Playwright's Docker image includes Chromium, Firefox, and WebKit) or use a sidecar container with browserless/chromium. Third, resource isolation — on CI, one memory-hungry test can starve all other parallel tests. On K8s, resource limits per pod prevent noisy-neighbour problems. The trade-off is complexity: you now need to manage container images, K8s manifests, and cluster access, which adds operational overhead compared to a managed CI runner.",
+      },
+      {
+        q: "What are the most common Kubernetes mistakes SDETs make when deploying test infrastructure?",
+        a: "(1) No resource requests/limits — test pods consume all node resources, causing OOMKills on other pods. Always set requests and limits. (2) No liveness/readiness probes — pods are added to Services before they're ready, causing connection failures in tests. (3) Using latest image tags — your tests break because a new browser image was pushed overnight. Pin image tags to specific versions. (4) Not handling graceful shutdown — pods are killed mid-test without `terminationGracePeriodSeconds`, leaving orphaned browser sessions. (5) Storing secrets in ConfigMaps or hardcoded in YAML — use Secrets or External Secrets Operator. (6) No pod disruption budget for Selenium nodes — a cluster autoscaler event kills all 5 Chrome nodes simultaneously during a test run. Configure PodDisruptionBudget with `minAvailable: 1`. (7) Not setting `ttlSecondsAfterFinished` on test Jobs — completed pods accumulate and waste cluster resources. (8) Assuming K8s solves all problems — it introduces new failure modes (network partitions, scheduler latency, image pull failures) that your test framework must be resilient to.",
+      },
+      {
+        q: "Can I run a production-grade Selenium Grid on a local Kubernetes cluster (minikube/kind) for practice?",
+        a: "Absolutely — and this is the best way to build K8s skills for interviews. Use kind (Kubernetes in Docker) for a local cluster that closely mirrors production: `kind create cluster --config kind-config.yaml` with 3 worker nodes. Deploy Selenium Grid via Helm, scale browser nodes with HPA, and run Playwright tests against it. The only things you won't get locally: LoadBalancer Services (use `kubectl port-forward` instead), persistent volumes that survive cluster deletion (use hostPath or local-path provisioner for practice), and multi-AZ node distribution (irrelevant for learning). Pro tip: Practice the full debugging flow — intentionally misconfigure a ConfigMap, delete a Secret, set memory limits too low, and work through the debugging commands until the grid is healthy again. This builds the troubleshooting muscle memory that interviewers recognise as real experience. Consider setting up a free-tier cloud cluster (AWS EKS, GKE Autopilot, or Azure AKS) for a month to experience cloud-specific features like LoadBalancer Services and managed node groups.",
+      },
+      {
+        q: "How do I handle browser version management across multiple teams using the same K8s cluster?",
+        a: "Use a combination of image tagging strategy and Helm value overrides. Tag Selenium node images with the browser version: `selenium/node-chrome:126.0`, `selenium/node-chrome:127.0-beta`. In your Helm chart's values.yaml, define `seleniumGrid.nodes.chrome.image.tag` as a configurable parameter. Each team's override file specifies their required version. For enterprise consistency, maintain a 'golden image' registry where only pre-approved browser versions are available — teams can't accidentally deploy an untested version. Implement a browser version upgrade pipeline: (1) New browser version is released → (2) Golden image is built and pushed to the internal registry → (3) A smoke-test suite validates the image in a sandbox namespace → (4) If smoke tests pass, the image is promoted to the team-accessible registry with a stable tag → (5) Teams update their Helm values to the new tag when ready. For teams that need multiple browser versions simultaneously (testing against Chrome 126 and 127), deploy separate node Deployment sets with distinct labels and reference them as different Selenium capabilities in your test code.",
+      },
+      {
+        q: "What's the relationship between Docker knowledge and Kubernetes knowledge for SDETs?",
+        a: 'Docker is the prerequisite; Kubernetes is the scaling layer. Your Docker knowledge gives you: container image creation (Dockerfiles, multi-stage builds), container networking (how services within a Compose network communicate), and volume management. Kubernetes builds on these concepts but adds: orchestration (declarative desired state vs imperative commands), service discovery (DNS-based vs Compose network aliases), scaling (HPA vs manual Compose scaling), self-healing (automatic pod replacement vs manual restart), and configuration management (ConfigMaps/Secrets vs environment files). In interviews, demonstrate this layered understanding: "I containerised our test framework with Docker — here is the multi-stage Dockerfile. Then I graduated to Kubernetes when we needed horizontal scaling — here is the Helm chart." This progression signals real infrastructure evolution experience, not just tutorial knowledge. For deep Docker fundamentals, see our companion guide: Docker Test Automation Interview Questions 2026 at /blog/docker-test-automation-interview-questions-2026.',
+      },
+    ],
+    relatedSlugs: ["docker-test-automation-interview-questions-2026", "cicd-pipeline-testing-interview-questions", "sdet-system-design-interview-questions-2026"],
+  },
+  {
     slug: "java-for-sdet-interviews-2026",
     title: "Java for SDET Interviews 2026 — Java Fundamentals Interviewers Test (Streams, Lambdas, Collections, Exception Handling), TestNG vs JUnit 5 Comparison for Test Automation Frameworks, Selenium with Java Patterns (PageFactory, WebDriverWait, FluentWait), Java Build Tools (Maven vs Gradle) for Test Projects, Java for API Testing with RestAssured, Java vs Python vs TypeScript for Test Automation — Which Language to Choose, and Common Java Interview Traps for SDET Candidates",
     description: "The definitive Java guide for SDET interviews in 2026. Enterprise automation teams aren't asking 'do you know Java?' — they're asking 'show me how you used Java streams to filter a list of WebElements by visibility, then group them by tag name and assert counts in one fluent chain.' Java remains the lingua franca of enterprise test automation, and panels at banks, insurers, and large-scale SaaS companies expect SDETs to demonstrate more than syntax memorisation. This guide covers every Java topic that separates candidates who've watched a tutorial from those who've built production automation frameworks: Java fundamentals interviewers actually test (streams, lambdas, functional interfaces, the Collections framework, checked vs unchecked exceptions, try-with-resources), TestNG vs JUnit 5 — the annotation differences, parallel execution models, and when to choose which, Selenium with Java patterns (PageFactory initialisation, WebDriverWait vs FluentWait, the Factory and Strategy patterns in framework design), Java build tools deep dive (Maven pom.xml structure, Gradle build scripts, dependency management, plugin configuration), Java for API testing with RestAssured (request/response specification patterns, JSONPath and Hamcrest matchers, schema validation), the Java vs Python vs TypeScript language comparison every SDET should be ready to articulate in a system-design round, and the common Java interview traps — equals vs ==, String immutability, ConcurrentModificationException, and autoboxing edge cases — that reveal whether you've written real Java or just watched a bootcamp. Every section includes Java code examples drawn from real automation frameworks. The SDET Interview Coach iOS app includes Java-specific coding challenges with AI-scored feedback on your stream operations, exception handling, and framework design decisions.",
