@@ -14,6 +14,831 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "java-for-sdet-interviews-2026",
+    title: "Java for SDET Interviews 2026 — Java Streams, Lambdas, and Collections Interviewers Probe for Depth, TestNG vs JUnit 5 Architecture Decision-Making (Annotations, Parallel Execution, Data Providers, Listeners), Selenium with Java Done Right (PageFactory, WebDriverWait, FluentWait, Explicit Waits), Maven vs Gradle for Test Automation Projects, RestAssured API Testing Patterns (Request/Response Specification, Serialisation, Authentication), and Common Java Interview Traps for SDETs with Production-Grade Code Examples",
+    description: "The definitive Java for SDET interviews guide for 2026 — covering every Java concept that senior interview panels test at architecture depth, not surface-level syntax. From Java 8+ streams, lambdas, and the Collections Framework that power modern test automation pipelines, to the TestNG vs JUnit 5 debate (annotations, parallel execution strategies, data providers, listeners, and extension models), Selenium WebDriver with Java using PageFactory and WebDriverWait patterns, the Maven vs Gradle build tool comparison with real pom.xml and build.gradle examples, RestAssured for API testing with request/response specifications, serialisation, and authentication flows, and the Java-specific traps — checked exceptions, NullPointerException, mutable state, and generics erasure — that trip up even experienced SDETs in live coding rounds. Every section includes production-grade Java code you might be asked to write, refactor, or extend during a pairing exercise. Whether you're a Java-first SDET or adding it to your toolkit for enterprise roles, this guide covers what FAANG and Fortune 500 panels actually probe — not what tutorials teach.",
+    date: "2026-05-27",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Java for SDET interviews 2026",
+      "Java streams lambdas collections SDET test automation interview",
+      "TestNG vs JUnit 5 test automation framework comparison 2026",
+      "Selenium Java PageFactory WebDriverWait FluentWait SDET",
+      "Maven vs Gradle build tool test automation project comparison",
+      "RestAssured API testing Java request response specification patterns",
+      "common Java interview traps SDET NullPointerException checked exceptions",
+      "senior SDET Java test framework architecture enterprise interview 2026",
+    ],
+    content: `
+<section class="content-section">
+  <p>You write Java tests. You annotate methods with <code>@Test</code>, instantiate a <code>WebDriver</code>, call <code>driver.get()</code>, assert with TestNG or JUnit, and your CI pipeline goes green. You've been working in Java for years — maybe you came up through enterprise QA, or you learned it specifically for Selenium automation. Then the interview panel leans forward and asks: <em>"When would you use a parallel stream over a sequential one — and what are the thread-pool implications you need to account for in a test suite? Compare TestNG's IInvokedMethodListener with JUnit 5's TestExecutionListener — when would you choose one extension model over the other? Walk me through the difference between <code>WebDriverWait</code> and <code>FluentWait</code> and how you'd implement a custom wait condition for a Shadow DOM element. And while you're at it — explain how Java's type erasure interacts with your RestAssured response deserialisation when you're dealing with generic API responses."</em> Your mind goes blank. You've used every one of these features daily — but you've never thought about <em>how</em> they work under the hood or <em>why</em> you'd choose one pattern over another. You've been writing Java that compiles. But in 2026, SDET interview panels aren't testing whether your Java passes <code>javac</code> — they're testing whether you understand the language deeply enough to architect a multi-module test framework for a Fortune 500 engineering org, debug concurrency failures in a CI pipeline at 2 AM, and make build-tool decisions that affect a team of 40 engineers for years.</p>
+  <p>Java remains the undisputed heavyweight of enterprise test automation. It powers Selenium WebDriver (the most mature browser automation binding), RestAssured (the de facto Java API testing library), TestNG and JUnit 5 (the most battle-tested test frameworks in existence), and countless internal test platforms at banks, insurers, and large tech companies where the JVM ecosystem is non-negotiable. In 2026, interview panels at these organisations — Barclays, JPMorgan, Goldman Sachs, SAP, Oracle — have raised the bar: they expect Java-fluent SDETs to demonstrate language depth that goes well beyond writing a <code>@Test</code> method. This guide covers every Java-for-SDET question senior panels are asking in 2026 — from the streams and lambdas knowledge that signals modern Java fluency, to the TestNG vs JUnit 5 architectural debate that reveals whether you've architected a test suite at scale, to the RestAssured patterns that separate script-writers from test-platform engineers. Complement this with our deep-dives on <a href="/blog/python-for-sdet-interviews-2026">Python for SDET Interviews 2026</a> and <a href="/blog/typescript-for-sdet-interviews-2026">TypeScript for SDET Interviews 2026</a> for the full language trifecta comparison, our <a href="/blog/selenium-interview-questions-2026">Selenium Interview Questions 2026</a> for the browser-automation layer where Java shines, and our <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> for the API testing patterns you'll implement with RestAssured. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated Java-for-SDET mock interview rounds — with AI-scored questions covering Java language fundamentals, TestNG/JUnit architecture, Selenium PageFactory patterns, RestAssured API testing, and Maven/Gradle build decisions at five seniority levels.</p>
+</section>
+
+<section class="content-section">
+  <h2>Java Streams, Lambdas, and Collections — The Modern Java SDET's Toolkit</h2>
+  <p>The Java 8 release in 2014 transformed the language — streams, lambdas, method references, and the Optional type brought functional programming patterns to the JVM. In 2026, any JDK older than 17 is end-of-life, and interview panels expect you to write modern Java — not Java-1.4-style for-loops that signal you stopped learning a decade ago. Here are the streams, lambdas, and collections questions that separate the modern Java SDET from the legacy one.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Streams API — Declarative Test Data Transformation at Scale</h3>
+      <p>Streams are Java's functional pipeline for processing collections — <code>filter</code>, <code>map</code>, <code>flatMap</code>, <code>collect</code>, <code>reduce</code>. They're everywhere in modern test automation: filtering test data, transforming API responses, aggregating test results, and generating reports. <strong>The interview question:</strong> "Given a list of 50,000 API test results, filter to failures, extract the endpoint name and response time, group by endpoint, and compute the 95th percentile response time per endpoint — using streams. Now refactor it to use parallel streams. What's the performance trade-off?" <strong>The answer that scores:</strong> "I'd use <code>stream().filter().collect(Collectors.groupingBy(...))</code> with a downstream collector for the percentile computation. For the 95th percentile, I'd collect to a sorted list per group and index into it. On the parallel stream question: parallel streams use the common ForkJoinPool, which by default has <code>Runtime.getRuntime().availableProcessors() - 1</code> threads. For 50,000 items with non-trivial per-item computation, parallel streams can give 3-4x speedup on an 8-core machine. But the trap: if the pipeline has blocking I/O or if the per-item computation is trivial (sub-microsecond), the thread-management overhead makes parallel streams <em>slower</em> than sequential. In a test suite context, I avoid parallel streams entirely — the test runner (TestNG/JUnit) already manages parallelism, and introducing a second layer of parallelism via the common pool creates thread-contention that produces flaky, non-deterministic test behaviour. Use sequential streams for test data transformation; let the test framework handle concurrency."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Lambdas and Functional Interfaces — Concise, Composable Test Logic</h3>
+      <p>Lambdas are anonymous functions — <code>(a, b) -> a + b</code> — that implement functional interfaces (interfaces with a single abstract method). They replace anonymous inner classes, making test code dramatically more concise. But interviewers test depth: <strong>"Write a custom <code>ExpectedCondition</code> for Selenium's <code>FluentWait</code> that waits for a Shadow DOM element to contain specific text. Why does this work with a lambda?"</strong> <strong>The answer:</strong> "<code>ExpectedCondition</code> is a functional interface — it has a single abstract method <code>apply(WebDriver)</code> — so I can pass a lambda directly. My custom condition would use <code>driver.executeScript()</code> to pierce the Shadow DOM and return <code>true</code> when the text matches. The lambda works because Java's compiler infers the target type from the context — it knows <code>FluentWait.until()</code> expects an <code>ExpectedCondition<T></code>, so it checks that the lambda's signature matches <code>apply(WebDriver)</code>. <strong>Deeper insight panels want:</strong> "Method references — <code>this::isElementReady</code> — are even more concise than lambdas when you're delegating to an existing method. But they hide the logic, so use them for delegation, not for inline logic that a reviewer needs to read. And <code>java.util.function</code> — <code>Predicate<T></code>, <code>Function<T,R></code>, <code>Consumer<T></code>, <code>Supplier<T></code> — is the vocabulary of modern Java. Knowing when to compose <code>Predicate.and()</code> and <code>Predicate.or()</code> for compound wait conditions signals you think in functional terms, not procedural ones."</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Collections Framework — Choosing the Right Data Structure for Test Performance</h3>
+      <p>Java's Collections Framework — <code>List</code>, <code>Set</code>, <code>Map</code>, <code>Queue</code>, <code>Deque</code> — is the foundation every test data structure sits on. But interviewers don't ask trivia about the hierarchy; they test whether you make <em>performance-conscious</em> choices. <strong>The interview question:</strong> "You're building a test data registry that maps test-case IDs to expected results. You need O(1) lookups by test-case ID, and you need to iterate in insertion order when generating a report. Which collection do you use, and why?" <strong>The answer:</strong> "<code>LinkedHashMap</code> — it combines O(1) hash-based lookup with a doubly-linked list that maintains insertion order. <code>HashMap</code> gives O(1) lookup but doesn't guarantee iteration order; <code>TreeMap</code> gives sorted iteration (O(log n) lookup) but not insertion order. <code>LinkedHashMap</code> is the Goldilocks choice for this use case. If I needed thread safety, I'd wrap it with <code>Collections.synchronizedMap()</code> or use <code>ConcurrentHashMap</code> — but <code>ConcurrentHashMap</code> doesn't maintain insertion order, so I'd need to weigh thread safety against ordering guarantees. <strong>Performance-aware bonus:</strong> "For a deduplication use case — 'I need to collect all unique test tags across 100,000 test results' — <code>HashSet</code> is the right choice because it offers O(1) <code>add</code> and <code>contains</code>. But if I need the unique tags in sorted order for report display, I'd use <code>TreeSet</code> — O(log n) per operation, which is acceptable for a few hundred unique tags. If I need both deduplication and insertion order, <code>LinkedHashSet</code> is the answer. The interviewer is testing whether you think about the trade-off between lookup speed, ordering guarantees, and thread safety — not whether you memorised the Collections class hierarchy diagram."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Optional — Banishing NullPointerException from Test Code</h3>
+      <p><code>Optional<T></code> is Java's container for values that may or may not be present — it replaces null checks with declarative chains: <code>optional.map().filter().orElseThrow()</code>. <strong>The interview question:</strong> "Refactor this null-check-heavy test helper method to use Optional. What are the rules for when to use Optional vs when to return null?" <strong>The answer:</strong> "Use <code>Optional</code> as a return type when a method might not return a value — it signals to the caller that absence is expected. Never use <code>Optional</code> as a field type or method parameter — it adds boxing overhead and breaks serialisation. Never call <code>Optional.get()</code> without <code>isPresent()</code> — use <code>orElse()</code>, <code>orElseGet()</code>, or <code>orElseThrow()</code> instead. <code>orElseGet()</code> is preferred over <code>orElse()</code> when the fallback is expensive because it's lazily evaluated. In test code specifically: <code>Optional</code> is excellent for page-object methods that return optional elements — <code>Optional<WebElement> findBanner()</code> — because it forces the test author to handle the 'element might not exist' case explicitly, rather than getting an NPE three stack frames later with no context."</p>
+    </div>
+  </div>
+
+<pre><code>// Java for SDETs: Streams, Lambdas, and Collections that panels test for depth
+
+import java.util.*;
+import java.util.stream.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+
+// ─── STREAMS: API test result analytics pipeline ───
+
+public class ApiTestAnalytics {
+
+    record TestResult(String endpoint, int responseTimeMs, boolean passed) {}
+
+    public static Map&lt;String, Double&gt; computeP95ByEndpoint(List&lt;TestResult&gt; results) {
+        // Partition by endpoint, then compute 95th percentile per group
+        return results.stream()
+            .filter(TestResult::passed)                    // Only passed tests
+            .collect(Collectors.groupingBy(
+                TestResult::endpoint,                       // Key: endpoint name
+                Collectors.collectingAndThen(
+                    Collectors.mapping(
+                        TestResult::responseTimeMs,
+                        Collectors.toList()
+                    ),
+                    times -&gt; {
+                        List&lt;Integer&gt; sorted = times.stream()
+                            .sorted()
+                            .toList();
+                        int idx = (int) Math.ceil(0.95 * sorted.size()) - 1;
+                        return (double) sorted.get(Math.max(0, idx));
+                    }
+                )
+            ));
+    }
+
+    // NEVER use parallel streams in test code — the test framework owns concurrency
+    public static Map&lt;String, Double&gt; computeP95SequentialOnly(List&lt;TestResult&gt; results) {
+        return computeP95ByEndpoint(results);  // Sequential = deterministic = non-flaky
+    }
+}
+
+
+// ─── LAMBDAS: Custom ExpectedCondition for Shadow DOM ───
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
+
+public class ShadowDomConditions {
+
+    public static ExpectedCondition&lt;Boolean&gt; shadowDomContainsText(
+            WebElement shadowHost, String cssSelector, String expectedText) {
+        return driver -&gt; {  // Lambda implementing ExpectedCondition.apply(WebDriver)
+            try {
+                // Pierce the Shadow DOM via JavaScript
+                WebElement shadowRoot = (WebElement) ((JavascriptExecutor) driver)
+                    .executeScript("return arguments[0].shadowRoot", shadowHost);
+                WebElement target = shadowRoot.findElement(By.cssSelector(cssSelector));
+                return target.getText().contains(expectedText);
+            } catch (NoSuchElementException | JavascriptException e) {
+                return false;  // Element not ready yet — keep waiting
+            }
+        };
+    }
+
+    // Usage in a test:
+    // FluentWait&lt;WebDriver&gt; wait = new FluentWait&lt;&gt;(driver)
+    //     .withTimeout(Duration.ofSeconds(10))
+    //     .pollingEvery(Duration.ofMillis(200))
+    //     .ignoring(NoSuchElementException.class);
+    // wait.until(ShadowDomConditions.shadowDomContainsText(
+    //     shadowHost, "span.message", "Success"));
+}
+
+
+// ─── COLLECTIONS: Choosing the right data structure ───
+
+public class TestDataRegistry {
+
+    // LinkedHashMap: O(1) lookup + insertion-order iteration
+    private final Map&lt;String, Object&gt; expectedResults = new LinkedHashMap&lt;&gt;();
+
+    // HashSet: O(1) deduplication
+    private final Set&lt;String&gt; testTags = new HashSet&lt;&gt;();
+
+    // TreeSet: sorted unique tags for report display
+    private final Set&lt;String&gt; sortedTags = new TreeSet&lt;&gt;(testTags);
+
+    // Optional: banishing null from page-object return types
+    public Optional&lt;WebElement&gt; findCookieBanner(WebDriver driver) {
+        List&lt;WebElement&gt; elements = driver.findElements(By.id("cookie-banner"));
+        return elements.isEmpty() ? Optional.empty() : Optional.of(elements.get(0));
+    }
+}
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>TestNG vs JUnit 5 — The Architecture Decision That Defines Your Test Suite</h2>
+  <p>This is the question every Java SDET interview eventually reaches. Not "which one do you prefer?" — that's a junior question. The senior question is: "You're starting a greenfield test automation project for a microservices platform with 15 teams. Each team needs parallel test execution with their own configuration. Walk me through your choice between TestNG and JUnit 5 — be specific about the features that drove your decision."</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>TestNG — The Enterprise Workhorse with Built-in Parallelism and Data Providers</h3>
+      <p><strong>Strengths:</strong> Native parallel execution via XML suite files — no plugins needed. Data providers (<code>@DataProvider</code>) are first-class citizens with two-dimensional <code>Object[][]</code> returns, making data-driven testing trivial. Dependency management between test methods (<code>dependsOnMethods</code>, <code>dependsOnGroups</code>). Built-in test grouping with regex/include/exclude at the suite level. The <code>ITestListener</code>, <code>IReporter</code>, <code>IAnnotationTransformer</code> interfaces give deep hooks into the test lifecycle. <strong>The interview insight:</strong> "TestNG shines when you have complex test orchestration — multi-threaded parallel execution configured declaratively via XML, cross-browser testing where each browser instance is a parallel thread, and test dependencies where method B should only run if method A passes. The XML suite file becomes the single source of truth for test configuration — thread counts, included/excluded groups, parameter injection. But the trade-off is verbosity: XML configuration is opaque and hard to debug compared to code-first approaches. And TestNG's listener model — while powerful — is callback-hell when you have 5+ listeners interacting. Panel asks: 'How would you debug a race condition in a TestNG parallel suite?' Answer: <code>ITestListener.onTestFailure()</code> with thread-dump logging, combined with <code>verbose</code> logging levels that print thread IDs in test output."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>JUnit 5 — The Modular, Extensible Modern Choice</h3>
+      <p><strong>Strengths:</strong> JUnit Platform + Jupiter + Vintage architecture — the Platform is the test engine, Jupiter is the programming model, Vintage runs JUnit 4 tests. Extensions model (<code>@ExtendWith</code>) replaces the monolithic Runner/TestRule model of JUnit 4 — each extension does one thing (parameter resolution, lifecycle callbacks, test templating). <code>@ParameterizedTest</code> with <code>@ValueSource</code>, <code>@CsvSource</code>, <code>@MethodSource</code> for data-driven testing. <code>@TestFactory</code> for dynamic tests generated at runtime. <code>@Nested</code> classes for hierarchical test organisation. <code>@Tag</code> for test filtering. <strong>The interview insight:</strong> "JUnit 5's extension model is more composable than TestNG's listener model because each extension is a single-responsibility class — you can mix and match extensions without them stepping on each other. The <code>TestExecutionListener</code>, <code>BeforeTestExecutionCallback</code>, <code>ParameterResolver</code> interfaces give fine-grained control. But JUnit 5's parallel execution requires <code>junit-platform.properties</code> configuration — it's less mature than TestNG's parallel support, especially for cross-browser parallelism where you need per-thread WebDriver instances. Panel asks: 'When would you choose JUnit 5 over TestNG?' Answer: When starting a new project where the team values code-over-configuration, when you need dynamic test generation via <code>@TestFactory</code>, or when you're migrating from JUnit 4 (Vintage engine provides backward compatibility). When you need enterprise-grade parallel execution with complex grouping and dependency management, TestNG is the stronger choice."</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Data-Driven Testing — DataProvider vs ParameterizedTest</h3>
+      <p><strong>TestNG's @DataProvider:</strong> Returns <code>Object[][]</code> — each inner array is one set of parameters. Can be parameterised itself (the DataProvider method can accept arguments like the test method name). Supports parallel data-provider execution. Can be defined in a separate class and referenced by name. <strong>JUnit 5's @ParameterizedTest:</strong> Uses <code>@MethodSource</code> (returns <code>Stream&lt;Arguments&gt;</code>), <code>@CsvSource</code>, <code>@CsvFileSource</code>, <code>@ValueSource</code>, <code>@EnumSource</code>. More type-safe than TestNG (generics-aware). <code>@ArgumentsSource</code> for custom argument providers. <strong>The interview verdict:</strong> "TestNG's DataProvider is more battle-tested for data-heavy enterprise scenarios — think 10,000+ test data rows with parallel execution. JUnit 5's parameterised tests are more ergonomic for most scenarios and the <code>Stream<Arguments></code> return type is more idiomatic modern Java. If you're building a test suite that reads from databases, spreadsheets, or APIs and feeds thousands of data rows to tests, TestNG's DataProvider ecosystem (including integration with tools like Apache POI for Excel) has the edge. For everything else, JUnit 5's parameterised tests are the cleaner choice."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>The Hybrid Approach — TestNG with JUnit's Best Ideas (and Vice Versa)</h3>
+      <p>Senior panels appreciate nuance: "In a large org, you might run TestNG for integration and end-to-end tests (where parallel execution, grouping, and dependency management matter most), and JUnit 5 for unit and component tests (where modularity and the extension model shine). Both frameworks can coexist in the same Maven/Gradle project — Maven Surefire for JUnit 5 unit tests, Maven Failsafe for TestNG integration tests. The key is <em>not</em> forcing one framework to do everything — it's choosing the right tool for each test layer. This is the answer of someone who's actually built a multi-module test suite at scale — not someone who read a Medium article comparing annotations."</p>
+    </div>
+  </div>
+
+<pre><code>// TestNG vs JUnit 5: Architecture comparison with production code
+
+// ═══════════════════════════════════════════════════════════
+// TESTNG: Parallel cross-browser suite with data providers
+// ═══════════════════════════════════════════════════════════
+
+import org.testng.annotations.*;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+import org.testng.ITestListener;
+
+public class CrossBrowserTest {
+
+    private ThreadLocal&lt;WebDriver&gt; driver = new ThreadLocal&lt;&gt;();
+
+    @DataProvider(name = "browsers", parallel = true)
+    public Object[][] browserProvider() {
+        return new Object[][] {
+            { "chrome", "120.0" },
+            { "firefox", "121.0" },
+            { "edge", "120.0" },
+            { "safari", "17.0" }
+        };
+    }
+
+    @BeforeMethod
+    public void setUp(@Optional("chrome") String browser, @Optional("120.0") String version) {
+        driver.set(WebDriverFactory.create(browser, version));
+    }
+
+    @Test(dataProvider = "browsers")
+    public void loginTest(String browser, String version) {
+        driver.get().get("https://example.com/login");
+        // Test logic using thread-local driver — no cross-thread contamination
+        System.out.printf("[%s] Running on %s %s%n",
+            Thread.currentThread().getName(), browser, version);
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        driver.get().quit();
+        driver.remove();
+    }
+
+    // Custom listener for thread-dump on failure — debugs parallel race conditions
+    @Listener
+    public static class DebugListener implements ITestListener {
+        @Override
+        public void onTestFailure(ITestResult result) {
+            System.err.printf("[FAIL] %s on thread %s%n",
+                result.getName(), Thread.currentThread().getName());
+            // Log full thread dump for post-mortem analysis
+            for (Thread t : Thread.getAllStackTraces().keySet()) {
+                System.err.println(t.getName() + " → " + t.getState());
+            }
+        }
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════
+// JUNIT 5: Modular tests with extensions and dynamic generation
+// ═══════════════════════════════════════════════════════════
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
+import java.util.stream.Stream;
+
+// Custom extension: injects a WebDriver and cleans up after each test
+public class WebDriverExtension implements BeforeEachCallback, AfterEachCallback {
+
+    private final ThreadLocal&lt;WebDriver&gt; driver = new ThreadLocal&lt;&gt;();
+
+    @Override
+    public void beforeEach(ExtensionContext ctx) {
+        driver.set(new ChromeDriver());
+        ctx.getStore(ExtensionContext.Namespace.GLOBAL)
+           .put("driver", driver.get());
+    }
+
+    @Override
+    public void afterEach(ExtensionContext ctx) {
+        driver.get().quit();
+        driver.remove();
+    }
+}
+
+@ExtendWith(WebDriverExtension.class)
+public class JUnit5ApiTests {
+
+    // Parameterised test with CSV source — type-safe, readable
+    @ParameterizedTest
+    @CsvSource({
+        "admin, superSecret123, 200",
+        "user,  password456,   200",
+        "guest, wrongPass,     401"
+    })
+    void loginReturnsExpectedStatus(String username, String password, int expectedStatus) {
+        // Test logic
+    }
+
+    // Dynamic test factory — generates tests at runtime from an API response
+    @TestFactory
+    Stream&lt;DynamicTest&gt; testAllUserRoles() {
+        List&lt;String&gt; roles = apiClient.getAllRoles();  // Fetched at runtime
+        return roles.stream()
+            .map(role -&gt; DynamicTest.dynamicTest(
+                "Role: " + role,
+                () -&gt; assertRoleAccessWorks(role)
+            ));
+    }
+
+    // Nested tests for hierarchical organisation
+    @Nested
+    @DisplayName("When the user is authenticated")
+    class AuthenticatedTests {
+        @Test void canAccessDashboard() { /* ... */ }
+        @Test void canViewProfile() { /* ... */ }
+    }
+
+    @Nested
+    @DisplayName("When the user is anonymous")
+    class AnonymousTests {
+        @Test void redirectedToLogin() { /* ... */ }
+        @Test void cannotAccessDashboard() { /* ... */ }
+    }
+}
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Selenium with Java — PageFactory, WebDriverWait, and Production Patterns</h2>
+  <p>Java is Selenium's native language — the WebDriver protocol was implemented in Java first, and the Java bindings remain the most feature-complete and battle-tested. But in 2026, interview panels don't ask you to write a basic Selenium script — they probe your understanding of wait strategies, page-object architecture, and the Java-specific patterns that make Selenium maintainable at scale.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>PageFactory — Lazy Initialisation and the @FindBy Annotation Model</h3>
+      <p>PageFactory is Selenium's built-in implementation of the Page Object Model — it uses <code>@FindBy</code> annotations and <code>PageFactory.initElements()</code> to initialize WebElement fields lazily. <strong>The interview question:</strong> "Explain how PageFactory's lazy initialisation works under the hood. When would you use it vs manual <code>driver.findElement()</code>?" <strong>The answer:</strong> "PageFactory uses Java's <code>Proxy</code> class — when you annotate a field with <code>@FindBy</code> and call <code>PageFactory.initElements()</code>, it replaces each annotated field with a proxy that intercepts method calls and resolves the element lazily using <code>driver.findElement()</code>. The element isn't located when the page object is constructed — it's located when you first interact with it. This is called lazy initialisation, and it means your page-object constructor doesn't throw <code>NoSuchElementException</code> for elements that exist on a later page — only when you actually try to use them. <strong>The trade-off:</strong> PageFactory adds magic — the proxy layer makes debugging harder because stack traces don't show where the element was defined. For large page objects with 50+ elements, PageFactory reduces boilerplate dramatically. For small pages or component objects, manual <code>driver.findElement()</code> is more transparent. And PageFactory's <code>@CacheLookup</code> annotation caches the element reference — useful for static elements, dangerous for dynamic ones that get re-rendered (use it only when you're certain the DOM node never changes)."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>WebDriverWait vs FluentWait — Precision Control Over Wait Strategy</h3>
+      <p><strong>WebDriverWait</strong> extends <strong>FluentWait</strong> and adds WebDriver-specific convenience — it defaults to polling every 500ms and ignores <code>NotFoundException</code>. <strong>FluentWait</strong> is the generic version — you can configure polling interval, timeout, which exceptions to ignore, and a custom message for timeout failures. <strong>The interview question:</strong> "When would you use FluentWait directly instead of WebDriverWait? Write a FluentWait that polls every 100ms for an element whose text changes asynchronously, with a 30-second timeout, ignoring StaleElementReferenceException." <strong>The answer:</strong> "I'd use FluentWait directly when I need fine-grained polling (sub-500ms), custom exception handling beyond NotFoundException, or when I'm waiting on something that isn't a WebElement — like a JavaScript condition, a network response, or a custom application state. In WebDriverWait, the polling defaults to 500ms and you can't change which exceptions are ignored per-wait — you override it in the constructor. FluentWait gives per-wait control. For an element whose text changes asynchronously (think: a live-updating stock ticker), I'd poll every 100ms with a 30-second timeout, ignore <code>StaleElementReferenceException</code> (the element gets re-rendered on each update), and write a custom <code>Function<WebDriver, Boolean></code> that re-queries the element each poll and checks text equality. <strong>The deeper insight:</strong> The difference between implicit, explicit, and fluent waits trips up candidates who've only used implicit waits. Implicit waits are set once (<code>driver.manage().timeouts().implicitlyWait()</code>) and apply globally — mixing them with explicit waits causes unpredictable timeouts because the implicit wait runs <em>before</em> the explicit wait, compounding delays. Best practice in 2026: set implicit wait to 0, use explicit waits (WebDriverWait or FluentWait) everywhere — deterministic, debuggable, and explicit about intent."</p>
+    </div>
+  </div>
+
+<pre><code>// Selenium with Java: PageFactory, WebDriverWait, and Production Patterns
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.*;
+import java.time.Duration;
+import java.util.List;
+import java.util.function.Function;
+
+// ─── PAGEFACTORY: Lazy-initialised Page Object ───
+
+public class LoginPage {
+
+    @FindBy(id = "username")
+    private WebElement usernameField;
+
+    @FindBy(id = "password")
+    private WebElement passwordField;
+
+    @FindBy(id = "login-button")
+    private WebElement loginButton;
+
+    @FindBy(css = ".error-message")
+    @CacheLookup  // Static error container — safe to cache
+    private WebElement errorMessage;
+
+    @FindBy(css = ".dashboard-widget")  // Dynamic content — DO NOT cache
+    private List&lt;WebElement&gt; dashboardWidgets;
+
+    private final WebDriver driver;
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), this);
+        // AjaxElementLocatorFactory: elements time out individually after 10s
+        // Default ElementLocatorFactory: no per-element timeout
+    }
+
+    public DashboardPage login(String username, String password) {
+        usernameField.sendKeys(username);   // Element located NOW, not at construction
+        passwordField.sendKeys(password);
+        loginButton.click();
+        return new DashboardPage(driver);
+    }
+
+    public String getErrorMessage() {
+        return errorMessage.getText();  // @CacheLookup — cached after first access
+    }
+}
+
+
+// ─── FLUENTWAIT: Custom wait for async-updating text element ───
+
+public class AsyncWaitExamples {
+
+    public boolean waitForLiveText(WebDriver driver, By locator,
+                                   String expectedText, Duration timeout) {
+        FluentWait&lt;WebDriver&gt; wait = new FluentWait&lt;&gt;(driver)
+            .withTimeout(timeout)                      // Max wait: e.g. 30s
+            .pollingEvery(Duration.ofMillis(100))       // Poll every 100ms for live updates
+            .ignoring(StaleElementReferenceException.class)  // Element re-renders on update
+            .ignoring(NoSuchElementException.class)          // Element not yet in DOM
+            .withMessage("Timed out waiting for text: " + expectedText);
+
+        return wait.until((Function&lt;WebDriver, Boolean&gt;) d -> {
+            WebElement el = d.findElement(locator);     // Re-query each poll (stale-safe)
+            String actualText = el.getText();
+            System.out.println("Polled: " + actualText);
+            return expectedText.equals(actualText);
+        });
+    }
+
+    // WebDriverWait shortcut — for standard cases where 500ms polling is fine
+    public WebElement waitForVisibility(WebDriver driver, By locator) {
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+}
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Maven vs Gradle — The Build Tool Decision for Test Automation Projects</h2>
+  <p>Every Java test automation project needs a build tool. The choice between Maven and Gradle is an architectural decision that affects dependency management, plugin ecosystems, CI/CD integration, and developer experience for the entire team. Interview panels probe this decision to see if you've thought about project structure beyond your own machine.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Maven — Convention Over Configuration, XML-Based Declarative Builds</h3>
+      <p><strong>Strengths:</strong> Maven's <code>pom.xml</code> is declarative — you describe <em>what</em> you want, not <em>how</em> to build it. The standard directory layout (<code>src/main/java</code>, <code>src/test/java</code>, <code>src/test/resources</code>) is universally understood — any Java developer can navigate a Maven project without documentation. The plugin ecosystem is massive and mature: <code>maven-surefire-plugin</code> for unit tests, <code>maven-failsafe-plugin</code> for integration tests, <code>maven-compiler-plugin</code> for Java version management, <code>allure-maven</code> for Allure reporting. Dependency management with <code>&lt;dependencyManagement&gt;</code> in parent POMs enables consistent versioning across multi-module projects. <strong>The interview insight:</strong> "Maven's strength is its rigidity — the build lifecycle is fixed (validate → compile → test → package → verify → install → deploy), which means every Maven project builds the same way. This is a feature, not a bug, in enterprise environments where you have 50+ test modules across 15 teams — predictability reduces onboarding time and CI debugging. But the trade-off is verbosity: a 200-line <code>pom.xml</code> is common for a moderately complex project, and XML doesn't support conditional logic or imperative build steps without plugins. Panel asks: 'How do you run only a subset of tests in Maven?' Answer: <code>mvn test -Dtest=LoginTest,CheckoutTest -Dsurefire.excludes=**/Slow*.java</code> — Maven Surefire supports test inclusion/exclusion patterns, and you can combine with TestNG groups or JUnit 5 tags via <code>&lt;configuration&gt;</code> in the POM."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Gradle — Flexibility, Groovy/Kotlin DSL, and Incremental Builds</h3>
+      <p><strong>Strengths:</strong> Gradle uses a Groovy or Kotlin DSL (<code>build.gradle</code> or <code>build.gradle.kts</code>) — it's code, not configuration, so you can write conditional logic, loops, and custom tasks directly in the build script. Incremental builds: Gradle tracks task inputs and outputs, skipping tasks whose inputs haven't changed — for a multi-module test project, this means only changed modules get recompiled. The dependency resolution uses a rich version-conflict resolution strategy (newest-wins by default, configurable). Parallel task execution and the build cache make large-project builds significantly faster than Maven. <strong>The interview insight:</strong> "Gradle's flexibility is its strength and its weakness — a Groovy <code>build.gradle</code> can become an unreadable mess of imperative logic if the team doesn't enforce conventions. Kotlin DSL (<code>build.gradle.kts</code>) is preferred in 2026 because it provides IDE autocompletion and type safety — you know at edit-time whether a configuration property exists, not at build-time. For test automation specifically: Gradle's <code>Test</code> task supports <code>filter</code> for test selection, <code>maxParallelForks</code> for JVM-level parallelism, and <code>testLogging</code> for fine-grained output control. The <code>gradle-build-scan</code> plugin produces shareable build scans for debugging test failures in CI. But: Gradle's learning curve is steeper, and the flexibility means two Gradle projects can look completely different — which hurts when you're onboarding a new SDET to your test framework."</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>The Decision Framework — When to Choose What</h3>
+      <p><strong>Choose Maven when:</strong> You're in a large enterprise with standardised build pipelines. Your team values predictability and convention over flexibility. You have 10+ modules and need a parent POM for consistent dependency versioning. Your CI/CD pipeline (Jenkins, GitLab CI, GitHub Actions) has mature Maven integration with caching for <code>.m2/repository</code>. Your team includes SDETs who are newer to Java — Maven's strict structure reduces cognitive load. <strong>Choose Gradle when:</strong> You need fast incremental builds (only recompile changed modules). You have complex build logic that would require multiple Maven plugins and XML gymnastics. You're building a monorepo with shared test utilities across teams — Gradle's composite builds and build cache shine here. Your team is comfortable with the JVM ecosystem and values build-speed over convention. <strong>The senior answer:</strong> "I've used both at scale. For a greenfield test-automation project in 2026, I'd lean Gradle with Kotlin DSL — the build-speed advantage in CI (especially with Gradle Enterprise's remote build cache) pays for the learning curve within weeks. But if I'm joining an existing Maven project, I wouldn't advocate for migration unless the build time is a measurable bottleneck — the cost of rewriting CI pipelines and retraining the team usually outweighs the incremental build-speed gains."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Dependency Management Traps — Version Conflicts and Transitive Dependencies</h3>
+      <p>A common interview scenario: "Your Selenium tests suddenly throw <code>NoSuchMethodError</code> after adding a new reporting library. Walk me through your diagnosis." <strong>The answer:</strong> "This is a classic transitive dependency conflict — the reporting library pulled in an incompatible version of a shared dependency (likely Selenium itself, Guava, or Jackson). I'd start with <code>mvn dependency:tree</code> (Maven) or <code>gradle dependencies</code> (Gradle) to see the full dependency graph. The <code>NoSuchMethodError</code> means a class was found at compile time with a method that doesn't exist in the runtime version — Maven/Gradle resolved the wrong version. The fix: add an <code>&lt;exclusion&gt;</code> in Maven or a <code>constraints</code> block in Gradle to force the correct version. In Maven, I'd use <code>&lt;dependencyManagement&gt;</code> to set a consistent version across all modules. In Gradle, I'd use a platform BOM or <code>resolutionStrategy.force()</code>. <strong>Deep bonus:</strong> 'I'd also check the classpath order — in some scenarios, duplicate JARs on the classpath (from a fat JAR plus a direct dependency) cause the wrong class to load first. Tools like <code>maven-enforcer-plugin</code> with <code>&lt;dependencyConvergence&gt;</code> rule catch version conflicts at build time before they become runtime surprises.'"</p>
+    </div>
+  </div>
+
+<pre><code>// Maven vs Gradle: Build tool comparison for test automation projects
+
+// ═══════════════════════════════════
+// MAVEN: pom.xml — Declarative, XML
+// ═══════════════════════════════════
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.aitestplaybook&lt;/groupId&gt;
+    &lt;artifactId&gt;test-automation&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;selenium.version&gt;4.27.0&lt;/selenium.version&gt;
+        &lt;testng.version&gt;7.10.2&lt;/testng.version&gt;
+        &lt;rest-assured.version&gt;5.5.0&lt;/rest-assured.version&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+            &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+            &lt;version&gt;\${selenium.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.testng&lt;/groupId&gt;
+            &lt;artifactId&gt;testng&lt;/artifactId&gt;
+            &lt;version&gt;\${testng.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.rest-assured&lt;/groupId&gt;
+            &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;
+            &lt;version&gt;\${rest-assured.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;!-- Surefire runs unit tests (JUnit 5) --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.5.2&lt;/version&gt;
+            &lt;/plugin&gt;
+            &lt;!-- Failsafe runs integration tests (TestNG) --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.5.2&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;suiteXmlFiles&gt;
+                        &lt;suiteXmlFile&gt;testng.xml&lt;/suiteXmlFile&gt;
+                    &lt;/suiteXmlFiles&gt;
+                    &lt;parallel&gt;classes&lt;/parallel&gt;
+                    &lt;threadCount&gt;4&lt;/threadCount&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+
+// ═════════════════════════════════════
+// GRADLE: build.gradle.kts — Kotlin DSL
+// ═════════════════════════════════════
+
+plugins {
+    java
+    id("io.qameta.allure") version "2.12.0"
+}
+
+group = "com.aitestplaybook"
+version = "1.0.0"
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+val seleniumVersion = "4.27.0"
+val testngVersion = "7.10.2"
+val restAssuredVersion = "5.5.0"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("org.seleniumhq.selenium:selenium-java:$seleniumVersion")
+    testImplementation("org.testng:testng:$testngVersion")
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
+}
+
+tasks.test {
+    useTestNG {
+        suites("testng.xml")
+    }
+    maxParallelForks = 4                 // JVM-level parallelism
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+// Gradle build scan for CI debugging
+tasks.register("ciBuild") {
+    dependsOn(tasks.test)
+    doLast {
+        println("CI build complete — check build scan for test results")
+    }
+}
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>RestAssured API Testing — Java's De Facto API Testing Library, Done Right</h2>
+  <p>RestAssured is the most popular Java library for API testing — it provides a fluent, Given-When-Then DSL that reads like BDD and integrates seamlessly with TestNG and JUnit 5. But in 2026, interview panels expect more than calling <code>get("/users").then().statusCode(200)</code>. They want to see request/response specification patterns, serialisation strategies, authentication handling, and the architectural decisions that separate a script from a test platform.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Request and Response Specifications — Reusable, Composable API Test Configuration</h3>
+      <p><strong>The interview question:</strong> "Your API uses OAuth 2.0 with bearer tokens that expire every hour. How do you structure your RestAssured tests so that token management doesn't pollute every test method?" <strong>The answer:</strong> "I'd use <code>RequestSpecBuilder</code> to create a reusable request specification that includes the base URI, content type, and a token-extraction mechanism. The token would be fetched lazily — either before the suite runs (in a <code>@BeforeSuite</code> method) or via a custom <code>RequestFilter</code> that intercepts requests, checks token expiry, and refreshes if needed. The request spec is set as the default via <code>RestAssured.requestSpecification = spec</code>, so every test inherits it. For response validation, I'd use <code>ResponseSpecBuilder</code> to define common expectations — response time under 2s, content type JSON — and compose them with test-specific assertions. <strong>Deeper insight:</strong> 'The <code>RequestFilter</code> and <code>ResponseFilter</code> interfaces in RestAssured are the extension points that let you build a test platform, not just write tests. A custom filter can automatically log request/response bodies on failure, attach API traces to Allure reports, or inject correlation IDs for distributed tracing across microservices. This is the pattern you graduate to when your API test suite grows beyond 100 tests and you need observability into what's actually happening across the wire.'"</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Serialisation and Deserialisation — POJOs, Jackson, and Generic Response Types</h3>
+      <p><strong>The interview question:</strong> "You receive an API response with a generic wrapper: <code>{ 'status': 'ok', 'data': [...] }</code> where <code>data</code> can be a list of users, orders, or any entity type. How do you deserialise this in RestAssured with full type safety?" <strong>The answer:</strong> "This is where Java's type erasure becomes relevant. I'd define a generic wrapper class <code>ApiResponse<T> { String status; T data; }</code>. RestAssured's <code>as()</code> method can't handle generic types directly because of erasure — <code>as(ApiResponse.class)</code> would lose the type parameter. Instead, I'd use Jackson's <code>TypeReference</code> or RestAssured's <code>javaType()</code>: <code>response.then().extract().body().jsonPath().getObject("data", User.class)</code> for simple cases, or <code>response.as(new TypeRef<ApiResponse<List<User>>>() {})</code> using an anonymous subclass that preserves the generic type at runtime via Jackson's <code>TypeReference</code> trick. <strong>Production pattern:</strong> 'For large projects, I abstract this into a reusable <code>ResponseDeserializer</code> utility that handles the generic unwrapping, error checking, and logging — so individual tests just call <code>ApiClient.getUsers()</code> which returns <code>List<User></code> with all the serialisation complexity hidden behind a clean interface. Lombok or Java records (<code>record User(String name, String email) {}</code>) dramatically reduce POJO boilerplate for test data classes.'"</p>
+    </div>
+  </div>
+
+<pre><code>// RestAssured API Testing: Production patterns with specifications and auth
+
+import io.restassured.*;
+import io.restassured.builder.*;
+import io.restassured.filter.*;
+import io.restassured.http.*;
+import io.restassured.response.*;
+import io.restassured.specification.*;
+import java.time.*;
+import java.util.*;
+
+// ─── REQUEST/REPONSE SPECIFICATIONS: Reusable configuration ───
+
+public class ApiTestConfig {
+
+    private static String cachedToken;
+    private static Instant tokenExpiry;
+
+    public static RequestSpecification getRequestSpec() {
+        return new RequestSpecBuilder()
+            .setBaseUri("https://api.example.com")
+            .setContentType(ContentType.JSON)
+            .addFilter(new OAuth2Filter())        // Auto-refresh token
+            .addFilter(new FailureLoggingFilter()) // Log on failure
+            .build();
+    }
+
+    public static ResponseSpecification getResponseSpec() {
+        return new ResponseSpecBuilder()
+            .expectContentType(ContentType.JSON)
+            .expectResponseTime(Matchers.lessThan(2000L))
+            .build();
+    }
+
+    // Custom filter: auto-refreshes OAuth 2.0 token before expiry
+    static class OAuth2Filter implements Filter {
+        @Override
+        public Response filter(FilterableRequestSpecification requestSpec,
+                               FilterableResponseSpecification responseSpec,
+                               FilterContext ctx) {
+            if (cachedToken == null || Instant.now().isAfter(tokenExpiry)) {
+                refreshToken();
+            }
+            requestSpec.header("Authorization", "Bearer " + cachedToken);
+            return ctx.next(requestSpec, responseSpec);
+        }
+
+        private void refreshToken() {
+            Response authResponse = RestAssured.given()
+                .contentType(ContentType.URLENC)
+                .formParam("grant_type", "client_credentials")
+                .formParam("client_id", System.getenv("OAUTH_CLIENT_ID"))
+                .formParam("client_secret", System.getenv("OAUTH_CLIENT_SECRET"))
+                .post("/oauth/token");
+
+            cachedToken = authResponse.jsonPath().getString("access_token");
+            int expiresIn = authResponse.jsonPath().getInt("expires_in");
+            tokenExpiry = Instant.now().plusSeconds(expiresIn - 60);  // Buffer 60s
+        }
+    }
+
+    // Custom filter: logs full request/response on failure only
+    static class FailureLoggingFilter implements Filter {
+        @Override
+        public Response filter(FilterableRequestSpecification requestSpec,
+                               FilterableResponseSpecification responseSpec,
+                               FilterContext ctx) {
+            Response response = ctx.next(requestSpec, responseSpec);
+            if (response.statusCode() >= 400) {
+                System.err.println("=== API FAILURE ===");
+                System.err.println("Request: " + requestSpec.getMethod()
+                    + " " + requestSpec.getURI());
+                System.err.println("Response: " + response.statusCode()
+                    + " — " + response.body().asPrettyString());
+                System.err.println("====================");
+            }
+            return response;
+        }
+    }
+}
+
+
+// ─── TEST CLASS: Clean, readable, inherits config ───
+
+public class UserApiTests {
+
+    @BeforeClass
+    public static void setup() {
+        RestAssured.requestSpecification = ApiTestConfig.getRequestSpec();
+        RestAssured.responseSpecification = ApiTestConfig.getResponseSpec();
+    }
+
+    @Test
+    public void createUserReturns201() {
+        String requestBody = """
+            {
+                "name": "Jane Doe",
+                "email": "jane@example.com",
+                "role": "tester"
+            }
+            """;
+
+        given()
+            .body(requestBody)
+        .when()
+            .post("/api/v2/users")
+        .then()
+            .statusCode(201)
+            .body("name", equalTo("Jane Doe"))
+            .body("id", notNullValue());
+    }
+
+    @Test
+    public void getUsersSupportsPagination() {
+        Response response = given()
+            .queryParam("page", 1)
+            .queryParam("limit", 10)
+        .when()
+            .get("/api/v2/users");
+
+        response.then()
+            .statusCode(200)
+            .body("data.size()", lessThanOrEqualTo(10))
+            .body("totalPages", greaterThan(0));
+    }
+
+    // Schema validation with JSON Schema
+    @Test
+    public void userResponseMatchesSchema() {
+        given()
+        .when()
+            .get("/api/v2/users/1")
+        .then()
+            .statusCode(200)
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/user.json"));
+    }
+}
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Common Java Interview Traps for SDETs — The Gotchas That Trip Up Experienced Engineers</h2>
+  <p>These are the Java-specific traps that interview panels set deliberately — not because they're sadistic, but because they reveal whether you understand the JVM at the level needed to debug production test failures. Each one below is a real scenario that interviewers have seen candidates stumble on.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Trap 1: Checked Exceptions in Lambda Bodies</h3>
+      <p><strong>The scenario:</strong> "Write a stream pipeline that reads test data files — each file read throws <code>IOException</code>. Why doesn't this compile?" <strong>The trap:</strong> Most functional interfaces in <code>java.util.function</code> (<code>Function<T,R></code>, <code>Consumer<T></code>, <code>Predicate<T></code>) don't declare checked exceptions. If your lambda throws a checked exception, the compiler rejects it because the functional interface's single abstract method doesn't declare that exception. <strong>The fix:</strong> Wrap the checked exception in an unchecked one inside the lambda — <code>catch (IOException e) { throw new UncheckedIOException(e); }</code> — or write a custom functional interface that declares the checked exception. <strong>The interview signal:</strong> If you recognise this immediately and explain the interface-contract mismatch, you've written non-trivial Java with streams. If you stare at it wondering why <code>throws IOException</code> doesn't work in a lambda, you've only used streams in tutorials.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Trap 2: NullPointerException from Boxed Primitives</h3>
+      <p><strong>The scenario:</strong> "This test helper returns <code>Integer</code> but your calling code uses <code>int</code>. The test passes 99% of the time but throws <code>NullPointerException</code> in production. Why?" <strong>The trap:</strong> Auto-unboxing — when Java automatically converts <code>Integer</code> to <code>int</code> — throws NPE if the <code>Integer</code> is <code>null</code>. This is a classic flaky-test scenario: the test data happens to always return non-null values in the test environment, but production data has nullable fields. <strong>The fix:</strong> Use <code>Optional<Integer></code> for nullable return types, or defensively check <code>Objects.requireNonNull()</code> before unboxing. <strong>The deeper pattern:</strong> In page objects and API response DTOs, prefer <code>Integer</code> over <code>int</code> for fields that might genuinely be absent — but then handle the null everywhere the value is consumed. Better yet: use Java records or Lombok <code>@Value</code> with validation in the constructor so null values are caught at creation time, not three method calls later.</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Trap 3: Mutable State in Parallel Test Execution</h3>
+      <p><strong>The scenario:</strong> "Your TestNG suite runs fine with 1 thread but produces random failures with 4 threads. All your WebDriver instances are thread-local. What else could be causing it?" <strong>The trap:</strong> Shared mutable state beyond WebDriver — a static <code>HashMap</code> used as a test-data cache, a <code>SimpleDateFormat</code> (which isn't thread-safe), a shared <code>ArrayList</code> that tests append results to, or even a static <code>Random</code> instance used across threads. <strong>The fix:</strong> Every shared resource must either be immutable, thread-safe (using <code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code>, <code>AtomicInteger</code>), or scoped per-thread using <code>ThreadLocal</code>. <strong>The diagnostic approach panels want to hear:</strong> "I'd start by running the suite with <code>-Dtestng.thread.affinity=true</code> to pin tests to threads and check if failures correlate with specific threads. Then I'd audit static fields and singletons in the test codebase — any mutable static field is a suspect. Then I'd add thread-ID logging to the test output and look for shared-object hashCodes appearing across different threads. If I can reproduce it locally, I'd attach a debugger with a breakpoint that triggers on field modification and captures the thread stack."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Trap 4: Generics Type Erasure and RestAssured Deserialisation</h3>
+      <p><strong>The scenario:</strong> "You write <code>response.as(ApiResponse.class)</code> and get <code>ClassCastException: LinkedHashMap cannot be cast to User</code> when accessing the generic <code>data</code> field. Explain why and fix it." <strong>The trap:</strong> Java generics are erased at runtime — <code>ApiResponse<User></code> and <code>ApiResponse<Order></code> are both just <code>ApiResponse</code> at the bytecode level. When Jackson deserialises without type information, it doesn't know that <code>data</code> should be <code>User</code>, so it deserialises it as a <code>LinkedHashMap</code>. <strong>The fix:</strong> Use Jackson's <code>ObjectMapper</code> with a <code>TypeReference</code>: <code>new TypeReference<ApiResponse<User>>() {}</code>. The anonymous subclass preserves the generic type in the class file — Jackson can introspect this at runtime and deserialise correctly. <strong>The deeper insight:</strong> "This is why I avoid generic response wrappers in API test code where possible. When I control the API, I advocate for unwrapped responses — <code>[{ ... }]</code> instead of <code>{ data: [{ ... }] }</code> — because it eliminates the serialisation gymnastics. When I don't control the API, I abstract the deserialisation behind a typed utility method so individual tests never see the wrapper."</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Trap 5: assertEquals on Floating-Point in Test Assertions</h3>
+      <p><strong>The scenario:</strong> "Your performance test asserts that response time is exactly 200ms. It passes locally but fails intermittently in CI. The measured time is 200.0000000001ms or 199.9999999999ms. Diagnose and fix." <strong>The trap:</strong> Floating-point arithmetic (<code>double</code>, <code>float</code>) is inherently imprecise — 200.0 in your code might be 199.9999999999 in the JVM's IEEE 754 representation. Exact equality assertions (<code>assertEquals(expected, actual)</code>) on floating-point values are a guaranteed source of flaky tests. <strong>The fix:</strong> Use delta-based assertions: <code>assertEquals(expected, actual, delta)</code> in JUnit or <code>Assert.assertEquals(actual, expected, delta)</code> in TestNG — where delta is the acceptable margin (e.g., 1.0 for millisecond measurements). <strong>Better fix:</strong> "For response-time assertions, I'd use percentile-based thresholds — '95th percentile response time must be under 500ms' — rather than asserting exact values. This is more meaningful operationally (users experience percentiles, not exact measurements) and eliminates floating-point precision issues entirely."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Trap 6: equals() and hashCode() in Test Data Classes</h3>
+      <p><strong>The scenario:</strong> "Your test creates two <code>User</code> objects with identical fields. <code>assertEquals(user1, user2)</code> fails. The class has 15 fields and you just added the 16th. What happened?" <strong>The trap:</strong> If you manually wrote <code>equals()</code> and <code>hashCode()</code> methods, the new field isn't included in the equality check — the objects compare as equal only on the original 15 fields, but the 16th field differs. Or if you didn't override <code>equals()</code> at all, you're getting Object's reference equality — two different objects are never equal. <strong>The fix:</strong> Use Java records (<code>record User(String name, String email, ...) {}</code>) — the compiler generates <code>equals()</code>, <code>hashCode()</code>, and <code>toString()</code> from all components automatically. Or use Lombok's <code>@Data</code> or <code>@Value</code> annotation. Never manually write <code>equals()</code> for test data classes in 2026 — it's a maintenance liability. <strong>The interview signal:</strong> "If you reach for records before I finish the question, I know you've written Java post-16 and understand that the problem isn't the comparison — it's the manual boilerplate that caused the drift."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Java SDET Interview Strategy — What Panels Actually Score You On</h2>
+  <p>After conducting hundreds of Java SDET interviews, patterns emerge. Here's what senior interview panels at enterprise and FAANG-adjacent companies are actually scoring — beyond whether your code compiles.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Language Depth Signals — Modern Java Fluency</h3>
+      <p>Panels track: Do you use streams or for-loops? Lambdas or anonymous classes? Records or POJOs with boilerplate? <code>var</code> for local variables (signals Java 10+ comfort)? Pattern matching for <code>instanceof</code> (Java 16+)? Text blocks for multi-line strings (Java 15+)? Switch expressions (Java 14+)? Sealed classes for modelling test states (Java 17+)? Virtual threads for concurrent test execution (Java 21+)? Each modern feature you use naturally signals that you keep your Java skills current — and that you'll write maintainable, idiomatic code rather than Java-8-style patterns that junior engineers struggle to understand. The 2026 expectation: you should be comfortable with at least Java 17 features. Java 21 (virtual threads, record patterns, pattern matching for switch) is a differentiator that signals you're ahead of the curve.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Framework Architecture Intuition — Beyond @Test Annotations</h3>
+      <p>Panels probe: Can you explain <em>why</em> you chose TestNG over JUnit 5 (or vice versa) with specific, architectural reasons — not just preference? Do you understand the extension/listener model well enough to write a custom one? Can you debug a parallel-execution failure without randomly changing thread counts? Do you structure your page objects for maintainability across 200+ tests? Do you use specification builders in RestAssured, or do you copy-paste base URIs? These are the signals that separate SDETs who've built a framework from those who've just written tests within one. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> includes framework architecture scenarios with follow-up questions that mirror exactly this style of depth probing.</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Problem-Solving Under Pressure — The Live Coding Round</h3>
+      <p>Java live-coding rounds in SDET interviews follow a pattern: you're given a real test-automation problem and 30-45 minutes. The panel watches for: (1) Do you ask clarifying questions before writing code? (2) Do you write a failing test first (TDD approach)? (3) Do you handle edge cases — empty input, null values, timeouts, network failures? (4) Do you structure your code with clear method names and separation of concerns, or do you write one 100-line method? (5) Do you explain your thinking as you code, or do you go silent? (6) When you hit a compilation error (because you will in a high-pressure live-coding environment), do you debug methodically or freeze? Strong candidates talk through the problem, write clean code incrementally, and — critically — self-correct when they spot an issue. The code doesn't need to be perfect; the <em>process</em> needs to be professional. Practice with the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> — it simulates exactly this format with AI-powered code review.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Java-for-SDET Interview Questions — The 2026 Shortlist</h3>
+      <ul>
+        <li><strong>Streams:</strong> "Given a list of test results, compute the failure rate per test class using streams."</li>
+        <li><strong>Concurrency:</strong> "You have parallel tests writing to a shared report file. How do you make it thread-safe without a global lock?"</li>
+        <li><strong>TestNG/JUnit:</strong> "Write a custom extension that retries failed tests and attaches a screenshot to the report."</li>
+        <li><strong>Selenium:</strong> "Your page object has 40 WebElements. The page gets redesigned. How do you minimise the impact on your 200 tests?"</li>
+        <li><strong>RestAssured:</strong> "Design a test that validates an API's pagination — first page, last page, out-of-bounds page."</li>
+        <li><strong>Build Tools:</strong> "Your CI pipeline takes 45 minutes for the full test suite. How do you reduce it to under 15 minutes without removing tests?"</li>
+        <li><strong>Design Patterns:</strong> "Refactor this Selenium script into a maintainable page-object model. Now add a component-object layer for the header and footer."</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Java SDET Interview Resources — The Preparation Toolkit</h2>
+  <p>Java is deep. You can't cram it in a weekend. But you can prepare strategically — focusing on the areas that interview panels consistently probe, with resources that simulate real interview conditions.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>SDET Interview Coach — Java-Specific Mock Interviews</h3>
+      <p>The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes a dedicated Java-for-SDET question bank with 150+ Java-specific questions across five seniority levels. The AI mock interviewer runs full Java coding rounds — it presents a test-automation problem, reviews your solution, asks follow-up questions, and scores your answer on technical accuracy, code quality, and communication. Use Job Match to upload any SDET job description that specifies Java, and the app generates 50 bespoke questions tailored to that role — extracting the Java version, frameworks, and testing libraries from the description. Available on the App Store with tailored interview preparation for Java, TypeScript, and Python SDET roles.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Complementary Guides — The Full SDET Interview Stack</h3>
+      <ul>
+        <li><strong><a href="/blog/python-for-sdet-interviews-2026">Python for SDET Interviews 2026</a></strong> — the Python counterpart to this guide, covering the language trifecta's other major player with pytest, decorators, and API testing patterns.</li>
+        <li><strong><a href="/blog/typescript-for-sdet-interviews-2026">TypeScript for SDET Interviews 2026</a></strong> — the TypeScript angle with Playwright, Jest, and Cypress testing patterns.</li>
+        <li><strong><a href="/blog/selenium-interview-questions-2026">Selenium Interview Questions 2026</a></strong> — deep-dive on the browser-automation framework where Java PageFactory and WebDriverWait patterns are battle-tested.</li>
+        <li><strong><a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a></strong> — the API layer you'll test with RestAssured, covering contract testing, schema validation, and authentication flows.</li>
+        <li><strong><a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview</a></strong> — the architecture questions that build on the Java patterns in this guide, covering design patterns, reporting, and CI/CD integration at enterprise scale.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+    `,
+    faqs: [
+      {
+        q: "Is Java still relevant for SDETs in 2026?",
+        a: "Absolutely. Java remains the dominant language for enterprise test automation — it powers Selenium WebDriver (the most mature browser automation binding), RestAssured (the de facto Java API testing library), TestNG and JUnit 5 (the most battle-tested test frameworks), and countless internal test platforms at Fortune 500 companies, banks, insurers, and large tech organisations where the JVM ecosystem is non-negotiable. While TypeScript and Playwright have gained ground in the frontend and startup space, Java's stronghold in backend, microservices, and enterprise testing is enduring. The key trend in 2026: modern Java (17+, with virtual threads in 21) has closed the verbosity gap that previously drove SDETs toward Python and TypeScript. Records, pattern matching, text blocks, and the Streams API make modern Java test code as concise as its competitors while retaining the JVM's performance, tooling maturity, and enterprise integration advantages.",
+      },
+      {
+        q: "TestNG or JUnit 5 — which should I focus on for SDET interviews?",
+        a: "Know both — but be prepared to justify a preference with architectural reasoning. TestNG dominates enterprise QA environments because of its native parallel execution, data providers, dependency management, and XML-based suite configuration. JUnit 5 dominates modern microservices and Spring Boot projects because of its modular extension model, dynamic test generation, and seamless integration with the Spring ecosystem. In interviews, say: 'I'd choose TestNG for large-scale cross-browser parallel suites where XML configuration and data providers simplify complex orchestration. I'd choose JUnit 5 for new microservices projects where the extension model, parameterised tests, and nested test organisation produce more maintainable test code. In a multi-module enterprise project, I'd use both — JUnit 5 for unit and component tests, TestNG for integration and end-to-end tests — running them in separate Maven/Gradle build phases.' This answer signals experience with both frameworks at scale, not framework evangelism.",
+      },
+      {
+        q: "How do I prepare for a Java SDET live coding round?",
+        a: "Practice writing Java on a whiteboard or in a plain-text editor without IDE autocompletion — this simulates the interview environment where you won't have IntelliJ's code generation. Focus on three areas: (1) Streams and Collections — be able to write filter/map/collect pipelines without looking up method signatures. (2) TestNG or JUnit 5 test structure — be able to set up a test class with lifecycle methods (@Before/@After or @BeforeEach/@AfterEach) and data-driven tests. (3) Selenium WebDriver basics — be able to write a page object with explicit waits without referencing the API docs. The SDET Interview Coach app includes dedicated Java live-coding practice rounds that give you a problem, a time limit, and AI-scored feedback on your solution — it's the closest thing to a real interview without the stakes. Also review Java-specific gotchas: checked exceptions in lambdas, auto-unboxing NPEs, floating-point assertion precision, and generics type erasure — these are the traps panels set deliberately.",
+      },
+      {
+        q: "What Java version do SDET interviews expect in 2026?",
+        a: "Java 17 is the baseline expectation in 2026 — it's the current LTS release and any organisation running modern Java is on 17 or later. Interviewers expect you to use records (Java 14/16), text blocks (Java 15), pattern matching for instanceof (Java 16), switch expressions (Java 14), and sealed classes (Java 17) where appropriate. Java 21 features — virtual threads for concurrent test execution, record patterns, pattern matching for switch — are differentiators that signal you're ahead of the curve. If you write Java-8-style code (anonymous inner classes, pre-streams for-loops, manual getter/setter boilerplate) in a 2026 interview, your interviewer has already mentally downgraded you to 'legacy Java developer.' The modern Java SDET writes concise, functional-style code that leverages the language features introduced in the last 5 years.",
+      },
+      {
+        q: "What's the difference between Maven Surefire and Failsafe plugins?",
+        a: "Maven Surefire is designed for unit tests — it runs during the <code>test</code> phase of the Maven lifecycle and is designed to fail fast. If a test fails, the build stops. Maven Failsafe is designed for integration tests — it runs during the <code>integration-test</code> phase and is designed to continue on failure: all integration tests run to completion, and the build result is reported at the end. Failsafe also has a <code>verify</code> phase that checks test results and fails the build only after cleanup (<code>post-integration-test</code> phase) has run. In a well-structured test automation project, you'd use Surefire for JUnit 5 unit tests (fast, isolated, fail-fast) and Failsafe for TestNG integration/E2E tests (slower, dependent on external services, needs cleanup). This separation ensures a unit-test failure doesn't block integration-test execution — you get the full test report in CI.",
+      },
+      {
+        q: "How do I handle dynamic waits in Selenium with Java without creating flaky tests?",
+        a: "Set implicit wait to 0 and use explicit waits (WebDriverWait or FluentWait) everywhere. This is the golden rule of Selenium wait strategy in 2026. Implicit waits are set globally and compound with explicit waits in unpredictable ways — a 5-second implicit wait plus a 10-second explicit wait can create 15-second timeouts in edge cases. Explicit waits are deterministic: you wait for a specific condition (element visible, clickable, text present) with a specific timeout, and the wait ends the moment the condition is met. For elements that update asynchronously (live-updating text, WebSocket-driven UI), use FluentWait with a short polling interval (100-200ms) and ignore StaleElementReferenceException. For Shadow DOM elements, write custom ExpectedConditions that pierce the shadow root via JavaScript. And never use Thread.sleep() — it's a code smell that signals you don't understand the Selenium wait API. If a reviewer sees <code>Thread.sleep(3000)</code> in your pull request, expect a comment asking you to replace it with an explicit wait.",
+      },
+      {
+        q: "Does SDET Interview Coach cover Java-specific interview preparation?",
+        a: "Yes. The SDET Interview Coach iOS app includes a comprehensive Java-for-SDET question bank with 150+ questions spanning Java language fundamentals (streams, lambdas, collections, Optional, concurrency), TestNG and JUnit 5 architecture, Selenium WebDriver with Java (PageFactory, WebDriverWait, FluentWait, custom conditions), RestAssured API testing (request/response specifications, serialisation, authentication), and Maven vs Gradle build tool decisions. The AI mock interviewer runs full Java coding rounds with code review, follow-up questions, and scoring. Use Job Match to upload any SDET job description that specifies Java — the app generates 50 bespoke questions tailored to that role's Java version, frameworks, and testing libraries. Available on the App Store for iOS with dedicated preparation tracks for Java, TypeScript, and Python SDET interviews.",
+      },
+    ],
+    relatedSlugs: ["selenium-interview-questions-2026", "python-for-sdet-interviews-2026", "api-testing-interview-questions-2026"],
+  },
+  {
     slug: "python-for-sdet-interviews-2026",
     title: "Python for SDET Interviews 2026 — Python Fundamentals Interviewers Test (Decorators, Generators, Context Managers, List Comprehensions), pytest for Test Automation (Fixtures, Parametrize, Markers, conftest), Python for Selenium and Appium (Page Object Pattern Done Right), Python API Testing (requests, httpx with Async), Python vs TypeScript vs Java for Test Automation — When Each Wins, and Common Python Interview Traps for SDETs with Production-Grade Code Examples",
     description: "The complete Python for SDET interviews guide for 2026 — covering every Python concept that modern interview panels probe for depth, not just surface-level syntax. From decorators and generators that power real test frameworks, to pytest mastery (fixtures, parametrize, markers, conftest.py architecture), Python Page Object patterns for Selenium and Appium, API testing with requests and httpx, the definitive Python vs TypeScript vs Java comparison for test automation decision-making, and the Python-specific traps and gotchas that catch even experienced SDETs in whiteboard sessions. Every section includes production-grade Python code examples you might be asked to write, critique, or extend during a pairing exercise. Whether you're a Python-first SDET or adding it as a second language, this guide covers what interviews actually probe — not what tutorials teach.",
