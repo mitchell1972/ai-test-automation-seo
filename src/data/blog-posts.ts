@@ -14,6 +14,750 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "shell-scripting-automation-sdet-interview-questions-2026",
+    title: "Shell Scripting and Automation for SDET Interviews 2026 — Bash Scripting Fundamentals (Variables, Conditionals, Loops, Functions), Writing Test Runner Scripts for Selenium, Playwright, and Cypress, Automation Scripts for Test Setup/Teardown with Docker and Database Fixtures, Error Handling in Bash (trap, Exit Codes, set -e, set -o pipefail), Parsing Test Output with grep, awk, sed, and jq, CI/CD Pipeline Shell Scripts for GitHub Actions and Jenkins, Makefile vs Bash Scripts for Test Automation Orchestration, and Common Shell Scripting Interview Questions with Production-Grade Bash Code Examples",
+    description: "The definitive shell scripting and automation guide for SDET interviews in 2026 — covering every Bash concept that senior interview panels probe at infrastructure depth, not surface-level syntax. From Bash scripting fundamentals (variables, quoting rules, conditionals, loops, and functions) with the gotchas that trip up SDETs who learned Bash from Stack Overflow, to writing production-grade test runner scripts that orchestrate Selenium, Playwright, and Cypress suites with dynamic parallelism and retry logic, to automation scripts for test setup and teardown that provision Docker containers, seed databases, and clean up temporary resources. We cover error handling in depth — the trap builtin, exit codes (0 vs 1 vs 2+), set -e vs set -u vs set -o pipefail, and the defensive scripting patterns that prevent CI pipelines from silently swallowing failures. Parsing test output with grep, awk, sed, and jq is covered with real-world examples: extracting failure counts from JUnit XML reports, transforming test-results JSON into Slack notifications, and aggregating flaky-test metrics with associative arrays. The CI/CD pipeline chapter covers writing reusable shell steps for GitHub Actions and Jenkins, including secrets management, artifact upload, and conditional execution. We compare Makefile vs Bash scripts head-to-head for test automation orchestration — when Make's dependency graph beats a shell script, and when a shell script's imperative control flow wins. Every section includes production-grade Bash code examples you can adapt immediately, plus the common shell scripting interview questions with model answers for junior, mid-level, and senior SDET roles. Whether you're a QA engineer adding shell scripting to your toolkit or a senior SDET preparing for the infrastructure-round grilling, this guide covers what interview panels actually ask — not what tutorials teach.",
+    date: "2026-05-28",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "shell scripting automation SDET interview questions 2026",
+      "bash scripting fundamentals test automation variables conditionals loops functions",
+      "test runner shell scripts Selenium Playwright Cypress parallel execution retry logic",
+      "error handling bash trap exit codes set e set o pipefail SDET",
+      "parsing test output grep awk sed jq JUnit XML JSON SDET automation",
+      "CI CD pipeline shell scripts GitHub Actions Jenkins test automation infrastructure",
+      "Makefile vs bash scripts test automation orchestration comparison 2026",
+      "common shell scripting interview questions SDET junior mid senior role answers",
+    ],
+    content: `
+<section class="content-section">
+  <p>You've written thousands of lines of Java, Python, or TypeScript test code. Your Page Object Models are clean, your API test suites are robust, and your CI pipeline glows green more often than not. Then the interview panel asks: <em>"Write a Bash script that finds all flaky tests from the last 30 days of CI runs, groups them by test class, and outputs a sorted report with failure rates. The test results are in JUnit XML files spread across a directory tree. You have grep, awk, and sed available. Go."</em> Your fingers hover over the keyboard. You know you could solve this in Python in five minutes. But Bash? You've cargo-culted shell scripts from README files, copied one-liners from Stack Overflow, and crossed your fingers every time a pipeline had more than two pipes. You can write a test framework from scratch, but you can't write a shell script that handles a missing directory without crashing. <em>This</em> — the infrastructure glue, the CI pipeline scripting, the automation orchestration layer — is where SDETs who can script the environment outpace those who can only script the tests. And in 2026, with test infrastructure growing more complex (containerised environments, multi-cloud CI, dynamic test data pipelines), the shell-scripting gap is widening into a career-limiting chasm.</p>
+  <p>Shell scripting isn't a legacy skill being replaced by YAML and Terraform — it's the universal automation language that sits underneath every CI/CD platform, every Docker entrypoint, every Kubernetes init container, and every Makefile. When your Playwright tests need a PostgreSQL fixture with specific seed data before they run, someone writes a shell script. When your Jenkins pipeline needs to aggregate test results across 12 parallel matrix jobs, someone writes a shell script. When your on-call rotation needs a health-check script that can be run from any machine with zero dependencies, someone writes a shell script. This guide covers every shell scripting and automation topic that senior SDET interview panels probe in 2026: from Bash fundamentals (with the quoting and expansion gotchas that separate scripters from script-kiddies), to writing production-grade test runner scripts, to error handling patterns that prevent silent CI failures, to parsing test output with the Unix toolkit (grep, awk, sed, jq), to CI/CD pipeline scripting, to the Makefile vs Bash debate, and — critically — the common shell scripting interview questions with model answers at every seniority level. Complement this with our deep-dives on <a href="/blog/linux-command-line-sdet-interview-questions-2026">Linux Command Line for SDET Interviews 2026</a> for the OS fundamentals that shell scripts run on, <a href="/blog/docker-test-automation-interview-questions-2026">Docker for Test Automation Interview Questions 2026</a> for the containerisation layer your scripts orchestrate, and <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD Pipeline Testing Interview Questions</a> for the pipeline infrastructure your scripts power. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated Shell Scripting and Infrastructure mock interview rounds — with AI-scored Bash scripting exercises, real-time syntax feedback, and interview questions calibrated to what AWS, GCP, and enterprise DevOps teams ask SDET candidates in 2026.</p>
+</section>
+
+<section class="content-section">
+  <h2>Bash Scripting Fundamentals — The Core Every SDET Must Know Cold</h2>
+  <p>You don't need to be a kernel hacker. But you do need to write Bash that works the first time, handles edge cases gracefully, and doesn't silently corrupt data when a variable is unset. Here are the fundamentals that interview panels test — and the gotchas that trip up SDETs who learned Bash by copying one-liners.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Variables, Quoting, and Expansion — The Foundation That Breaks Everything</h3>
+      <p><strong>Variable assignment:</strong> No spaces around <code>=</code> — <code>name="playwright"</code>, never <code>name = "playwright"</code> (Bash interprets that as a command called <code>name</code>). <strong>Variable usage:</strong> <code>"$name"</code> — always double-quote unless you explicitly want word splitting and glob expansion. The unquoted <code>$name</code> is the most common source of subtle Bash bugs: if <code>name="my test suite"</code>, unquoted <code>$name</code> becomes two words <code>my</code> and <code>test suite</code> — breaking argument passing, file paths, and conditionals. <strong>The interview question:</strong> "What's the difference between <code>$var</code>, <code>"$var"</code>, <code>'$var'</code>, and <code>\${}var}</code>?" <strong>The answer:</strong> <code>$var</code> — expands the variable then performs word splitting and globbing on the result. <code>"$var"</code> — expands the variable but preserves it as a single word (no splitting, no globbing) — this is what you want 99% of the time. <code>'$var'</code> — single quotes suppress all expansion; the literal string <code>$var</code> is printed. <code>\${}var}</code> — the braces disambiguate the variable name (e.g., <code>\${}var}name</code> vs <code>$varname</code>). <strong>The gotcha SDETs miss:</strong> <code>TEST_SUITE="$TEST_SUITE --grep @smoke"</code> inside a loop accumulates arguments — but if <code>TEST_SUITE</code> was ever unset, the script crashes with <code>set -u</code>. Always initialise accumulator variables: <code>TEST_SUITE="\${}TEST_SUITE:-}"</code> before looping.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Conditionals — test, [[ ]], and the Arithmetic Trap</h3>
+      <p>Bash conditionals are a minefield of syntax rules. <strong>The interview question:</strong> "When would you use <code>[[ ]]</code> over <code>[ ]</code> over <code>(( ))</code>? Write a conditional that checks if a test-results directory exists, has at least one XML file, and was modified in the last hour." <strong>The answer:</strong> <code>[ ]</code> is the POSIX-compliant <code>test</code> command — it works everywhere but requires careful quoting and doesn't support regex or pattern matching. <code>[[ ]]</code> is a Bash keyword (not a command) — it supports <code>=~</code> regex matching, <code>&&</code> and <code>||</code> logical operators without escaping, and doesn't word-split unquoted variables. Use <code>[[ ]]</code> in Bash scripts; use <code>[ ]</code> only when you need POSIX sh compatibility. <code>(( ))</code> is for arithmetic — <code>if (( FAILURES > 0 )); then</code> — it evaluates C-style integer expressions and returns true for non-zero results.</p>
+    </div>
+  </div>
+
+<pre><code>#!/usr/bin/env bash
+# Bash Fundamentals: The patterns every SDET interview panel expects
+
+set -euo pipefail  # Exit on error, undefined variable, and pipe failure
+
+# VARIABLES: Assignment, quoting, and default values
+
+TEST_DIR="\${}1:-./test-results}"       # Positional arg with default
+BASE_URL="\${}BASE_URL:-http://localhost:3000}"  # Env var with fallback
+MAX_RETRIES=3
+
+# CONDITIONALS: [[ ]], (( )), and file tests
+
+# Check directory exists, has XML files, modified in last hour
+if [[ -d "$TEST_DIR" ]] && [[ -n $(find "$TEST_DIR" -name "*.xml" -mmin -60 -print -quit 2>/dev/null) ]]; then
+    echo "Test results ready to parse"
+else
+    echo "No recent test results in $TEST_DIR" >&2
+    exit 1
+fi
+
+# Arithmetic conditional
+PASSED=142
+FAILED=3
+if (( FAILED > 0 )); then
+    echo "WARNING: $FAILED tests failed"
+fi
+
+# Regex match with [[ =~ ]]
+TEST_FILE="TEST-com.example.LoginTest-20260528.xml"
+if [[ "$TEST_FILE" =~ TEST-.+-(.+)-[0-9]{8}\\\.xml$ ]]; then
+    CLASS_NAME="\${}BASH_REMATCH[1]}"
+fi
+
+# LOOPS: for, while, and process substitution
+
+shopt -s nullglob
+for xml_file in "$TEST_DIR"/*.xml; do
+    [[ -f "$xml_file" ]] || continue
+    echo "Processing: $(basename "$xml_file")"
+done
+
+# While-read: use process substitution, NOT pipes (avoids subshell)
+while IFS= read -r line; do
+    if [[ "$line" =~ FAILED ]]; then
+        ((failed_lines++))
+    fi
+done < <(grep "FAILED" "$TEST_DIR"/*.log)
+
+# FUNCTIONS: Return codes, local variables, and output capture
+
+run_test_suite() {
+    local suite_name="$1"
+    local browser="\${}2:-chrome}"
+    local exit_code=0
+
+    echo "[$(date -u +%T)] Running $suite_name on $browser..."
+
+    npx playwright test --project="$browser" --grep="$suite_name" 2>&1 | tee "logs/\${}suite_name}_\${}browser}.log" || exit_code=$?
+
+    if (( exit_code != 0 )); then
+        echo "[FAIL] $suite_name exited with code $exit_code" >&2
+    fi
+    return $exit_code
+}
+
+if run_test_suite "@smoke" "chromium"; then
+    echo "Smoke tests passed"
+else
+    echo "Smoke tests failed — check logs/" >&2
+fi
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Writing Test Runner Scripts — Orchestrating Test Suites Like a Pro</h2>
+  <p>Every test automation framework comes with a CLI — <code>npx playwright test</code>, <code>npx cypress run</code>, <code>mvn test</code>, <code>pytest</code>. But raw CLI invocation is not a test runner. A production test runner script handles: environment detection, parallel execution with dynamic worker allocation, retry logic for flaky tests, result aggregation across parallel shards, failure notifications, and clean exit codes for CI — none of which the framework's CLI gives you out of the box. Interview panels want to see that you can write the orchestration layer, not just invoke the framework.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Playwright Test Runner — Dynamic Parallelism with Sharding</h3>
+      <p><strong>The production pattern:</strong> A shell script that accepts a browser matrix, splits tests across N parallel shards, runs each shard independently, aggregates JUnit XML results, and exits with the correct aggregate status. <strong>Interview question:</strong> "Write a Bash script that runs a Playwright test suite across 4 shards, retries failed shards up to 2 times, and exits with code 0 only if all retried shards eventually pass." <strong>The architecture:</strong> Use <code>playwright test --shard=i/N</code> for built-in sharding, capture per-shard exit codes in an associative array, retry only failed shards with exponential backoff, and aggregate results. Use <code>declare -A shard_results</code> (Bash 4+) for per-shard tracking, <code>trap</code> for cleanup even on SIGTERM, and <code>tee</code> to stream logs to both stdout and a file for post-mortem analysis.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Selenium/Java Test Runner — Maven Integration and Browser Grid Setup</h3>
+      <p><strong>The production pattern:</strong> A shell script that starts Selenium Grid (or a cloud provider tunnel like BrowserStack Local), waits for the grid to be healthy, runs Maven with dynamic test selection, and tears down infrastructure regardless of test outcome. <strong>Interview question:</strong> "Write a script that starts a local Selenium Grid with 3 Chrome nodes via Docker Compose, runs <code>mvn test -Dgroups=regression</code>, and records whether the Grid was healthy at test start." <strong>The architecture:</strong> Use <code>docker compose up -d</code>, poll the Grid status endpoint with <code>curl --retry</code> and an exponential-backoff wrapper, record the health timestamp, run Maven, then <em>always</em> <code>docker compose down</code> in a <code>trap EXIT</code> handler — a zombie container from a failed script is the #1 cause of "it worked on my machine" CI failures.</p>
+    </div>
+  </div>
+
+<pre><code>#!/usr/bin/env bash
+# Production Playwright Test Runner with Sharding and Retry Logic
+
+set -euo pipefail
+
+# Configuration
+
+SHARD_COUNT="\${}SHARD_COUNT:-4}"
+MAX_RETRIES="\${}MAX_RETRIES:-2}"
+BROWSER="\${}BROWSER:-chromium}"
+RESULTS_DIR="test-results/$(date +%Y%m%d_%H%M%S)"
+LOG_DIR="$RESULTS_DIR/logs"
+
+mkdir -p "$RESULTS_DIR" "$LOG_DIR"
+
+# Cleanup trap
+cleanup() {
+    local exit_code=$?
+    echo "[cleanup] Script exiting with code $exit_code"
+    pkill -f "playwright test" 2>/dev/null || true
+    echo "[cleanup] Results saved to $RESULTS_DIR"
+    exit $exit_code
+}
+trap cleanup EXIT INT TERM
+
+# Run single shard with retries
+run_shard() {
+    local shard_num=$1
+    local browser=$2
+    local attempt=0
+    local exit_code=0
+
+    while (( attempt <= MAX_RETRIES )); do
+        echo "[shard $shard_num/$SHARD_COUNT] Attempt $((attempt + 1))..."
+
+        npx playwright test \
+            --project="$browser" \
+            --shard="$shard_num/$SHARD_COUNT" \
+            --reporter=junit,list \
+            2>&1 | tee "$LOG_DIR/shard_\${}shard_num}_attempt_\${}attempt}.log"
+        exit_code=$?
+
+        if (( exit_code == 0 )); then
+            echo "[shard $shard_num] Passed on attempt $((attempt + 1))"
+            return 0
+        fi
+
+        echo "[shard $shard_num] Failed (exit $exit_code), retrying..."
+        ((attempt++))
+        sleep $((2 ** attempt))  # Exponential backoff
+    done
+
+    echo "[shard $shard_num] FAILED after $MAX_RETRIES retries" >&2
+    return 1
+}
+
+# Run all shards in parallel
+echo "Starting test run: $(date)"
+echo "Shards: $SHARD_COUNT | Browser: $BROWSER | Max retries: $MAX_RETRIES"
+
+declare -A shard_exit_codes
+declare -a shard_pids
+total_failures=0
+
+for (( i=1; i<=SHARD_COUNT; i++ )); do
+    run_shard "$i" "$BROWSER" &
+    shard_pids+=($!)
+done
+
+# Wait for all shards
+for i in "\${}!shard_pids[@]}"; do
+    pid="\${}shard_pids[$i]}"
+    shard_num=$((i + 1))
+    wait "$pid" || true
+    shard_exit_codes[$shard_num]=$?
+
+    if (( shard_exit_codes[$shard_num] != 0 )); then
+        ((total_failures++))
+    fi
+done
+
+# Aggregate results
+echo ""
+echo "Run complete: $(date)"
+for (( i=1; i<=SHARD_COUNT; i++ )); do
+    status="PASSED"
+    (( shard_exit_codes[$i] != 0 )) && status="FAILED"
+    printf "%-10s %s\n" "$i/$SHARD_COUNT" "$status"
+done
+echo "Total shard failures: $total_failures"
+echo "Results: $RESULTS_DIR"
+
+exit $(( total_failures > 0 ? 1 : 0 ))
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Error Handling in Bash — trap, Exit Codes, and Defensive Patterns</h2>
+  <p>This is the chapter that separates SDETs who write shell scripts that work on their machine from those who write scripts that work in CI at 2 AM with a production incident in flight. Error handling in Bash is not optional — it's the difference between a script that fails loudly with a clear message and a script that silently skips 80% of the tests and exits 0, leaving you wondering why your coverage report looks suspiciously green.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>The set Flags — Your First Line of Defence</h3>
+      <p><strong>Interview question:</strong> "Explain <code>set -e</code>, <code>set -u</code>, and <code>set -o pipefail</code>. When would you intentionally <em>not</em> use them?" <strong>The answer:</strong> <code>set -e</code> (errexit) — exits immediately if any command returns a non-zero exit status. The gotcha: it doesn't apply to commands in <code>if</code> conditions, <code>while</code>/<code>until</code> conditions, <code>&&</code>/<code>||</code> chains (except the last command), or pipelines (unless <code>pipefail</code> is set). <code>set -u</code> (nounset) — exits if an unset variable is referenced. This catches typos like <code>echo "$RESUTLS_DIR"</code> before they become mysterious empty strings. <code>set -o pipefail</code> — a pipeline's exit code is the exit code of the last (rightmost) command to fail. Without it, <code>false | true</code> exits 0. With pipefail, it exits 1. <strong>When NOT to use set -e:</strong> (1) In scripts that use <code>grep</code> to check for the absence of a pattern — <code>grep</code> exits 1 if no match, which would terminate the script. Use <code>grep ... || true</code> or wrap in an <code>if</code>. (2) In cleanup handlers — a failing cleanup command shouldn't mask the original error. (3) When calling commands where non-zero exit codes are expected and handled explicitly. <strong>The standard header for every production Bash script:</strong> <code>set -euo pipefail</code>. If you can't explain why you'd deviate from this, don't deviate.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>trap — The Cleanup Guarantee That Prevents Zombie Processes</h3>
+      <p><strong>Interview question:</strong> "Your test runner script starts Docker containers for PostgreSQL and Redis before running tests. Write the trap handlers that guarantee these containers are torn down even if the script is killed with SIGTERM (e.g., a CI timeout). What's the trap ordering gotcha?" <strong>The answer:</strong> <code>trap cleanup EXIT INT TERM</code> registers your cleanup function to run on script exit (normal or error), Ctrl+C (SIGINT), and kill (SIGTERM). The gotcha: <code>trap</code> handlers run LIFO (last-in-first-out). Also: the EXIT trap fires after every other signal trap. <strong>Critical pattern:</strong> Inside the trap handler, use <code>local exit_code=$?</code> as the first line — <code>$?</code> is fragile and the very next command will overwrite it. Save the exit code, do your cleanup, then <code>exit $exit_code</code> to propagate the original error. Without this, a script that fails with code 1 but has a successful cleanup exits 0 — and CI thinks the tests passed.</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Exit Codes — The Silent Protocol CI Platforms Depend On</h3>
+      <p>SDETs who don't understand exit codes write scripts that CI can't trust. <strong>The rules:</strong> Exit code 0 means success. Exit code 1 means general error. Exit codes 2–255 are program-specific — use them to encode <em>categories</em> of failure that downstream systems can act on. In test automation: <code>exit 0</code> — all tests passed; <code>exit 1</code> — at least one test failed; <code>exit 2</code> — infrastructure failure (Docker daemon not running, environment variable missing, network unreachable); <code>exit 3</code> — test environment setup failed (database migration error, seed data corruption); <code>exit 4</code> — configuration error (invalid test filter, missing required argument). <strong>Interview question:</strong> "Design an exit-code convention for a CI pipeline that runs 3 test suites (unit, integration, e2e). The pipeline should fail the build on unit-test failures but only warn on integration-test failures. How do you encode this?" <strong>The answer:</strong> Use bitmask exit codes — unit failures = bit 0 (code 1), integration failures = bit 1 (code 2), e2e failures = bit 2 (code 4), infrastructure failures = bit 3 (code 8). The aggregate script exits with the OR of all bits. CI checks <code>if (( exit_code & 1 ))</code> to fail the build, and <code>if (( exit_code & 2 ))</code> to post a warning comment.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Defensive Patterns — Failing Loudly and Early</h3>
+      <p>The golden rule of shell scripting for test automation: <strong>fail fast, fail loud, and never hide an error.</strong> <strong>(1) Always check prerequisites:</strong> Before running a 45-minute test suite, verify the test environment is reachable — <code>curl --retry 3 --retry-delay 2 --max-time 10 "$BASE_URL/health" || { echo "ERROR: App not reachable"; exit 2; }</code>. <strong>(2) Use <code>||</code> to handle expected failures explicitly:</strong> <code>docker stop my-container 2>/dev/null || true</code> — it's fine if the container doesn't exist, we're cleaning up. <strong>(3) Redirect errors to stderr:</strong> <code>echo "ERROR: ..." >&2</code> — this separates errors from data output. <strong>(4) Validate inputs at the top of the script:</strong> <code>if [[ -z "\${}1:-}" ]]; then echo "Usage: $0 <test-suite>" >&2; exit 4; fi</code>. <strong>(5) Use <code>timeout</code> for commands that can hang:</strong> <code>timeout 300 npx playwright test</code> — a hung test suite in CI wastes a build executor. The shell-level timeout gives you a clean exit code (124). <strong>(6) Log everything:</strong> Use <code>exec 2> >(tee -a "$LOG_FILE" >&2)</code> to duplicate stderr to both the terminal and a log file.</p>
+    </div>
+  </div>
+
+<pre><code>#!/usr/bin/env bash
+# Error Handling Patterns Every SDET Must Know
+
+set -euo pipefail
+
+# Named exit codes for downstream CI decisions
+readonly EXIT_OK=0
+readonly EXIT_TEST_FAIL=1
+readonly EXIT_INFRA_FAIL=2
+readonly EXIT_SETUP_FAIL=3
+readonly EXIT_CONFIG_ERR=4
+
+# Logging setup
+LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$LOG_DIR"
+exec 2> >(tee -a "$LOG_DIR/error.log" >&2)
+
+# Trap handler with exit-code preservation
+cleanup() {
+    local exit_code=$?                    # CRITICAL: save immediately
+    set +e                                # Don't die during cleanup
+
+    echo "[cleanup] Shutting down services (exit code: $exit_code)..."
+
+    docker compose -f docker-compose.test.yml down --volumes 2>/dev/null || true
+    rm -rf /tmp/test-$$ 2>/dev/null || true
+
+    if [[ -d "test-results" ]]; then
+        tar -czf "$LOG_DIR/results.tar.gz" test-results/ 2>/dev/null || true
+    fi
+
+    echo "[cleanup] Done. Logs: $LOG_DIR"
+    exit $exit_code                        # Propagate original exit code
+}
+trap cleanup EXIT INT TERM
+
+# Prerequisite checks
+check_prerequisites() {
+    local errors=0
+
+    command -v docker >/dev/null 2>&1 || {
+        echo "ERROR: docker not found in PATH" >&2
+        ((errors++))
+    }
+
+    command -v npx >/dev/null 2>&1 || {
+        echo "ERROR: npx not found in PATH" >&2
+        ((errors++))
+    }
+
+    docker info >/dev/null 2>&1 || {
+        echo "ERROR: Docker daemon not running or not accessible" >&2
+        ((errors++))
+    }
+
+    if (( errors > 0 )); then
+        echo "ERROR: $errors prerequisite check(s) failed — cannot continue" >&2
+        exit $EXIT_INFRA_FAIL
+    fi
+}
+
+# Environment health check with retry
+wait_for_service() {
+    local url="$1"
+    local name="$2"
+    local max_attempts=30
+    local attempt=0
+
+    echo -n "[$name] Waiting for $url "
+    while (( attempt < max_attempts )); do
+        if curl -sf --max-time 2 "$url" >/dev/null 2>&1; then
+            echo " (ready after $((attempt + 1)) attempts)"
+            return 0
+        fi
+        echo -n "."
+        sleep 2
+        ((attempt++))
+    done
+
+    echo " TIMEOUT"
+    echo "ERROR: $name at $url did not become healthy after $max_attempts attempts" >&2
+    return 1
+}
+
+# Run with per-step error handling
+main() {
+    local aggregate_exit=0
+
+    check_prerequisites
+
+    echo "[setup] Starting test infrastructure..."
+    docker compose -f docker-compose.test.yml up -d || exit $EXIT_SETUP_FAIL
+
+    wait_for_service "http://localhost:4444/wd/hub/status" "Selenium Grid" || exit $EXIT_INFRA_FAIL
+    wait_for_service "http://localhost:3000/health" "Application" || exit $EXIT_INFRA_FAIL
+
+    echo "[tests] Running test suite..."
+    timeout 600 npx playwright test --project=chromium || {
+        local test_exit=$?
+        if (( test_exit == 124 )); then
+            echo "ERROR: Test suite timed out after 10 minutes" >&2
+            aggregate_exit=$EXIT_INFRA_FAIL
+        else
+            aggregate_exit=$EXIT_TEST_FAIL
+        fi
+    }
+
+    return $aggregate_exit
+}
+
+main "$@"
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Parsing Test Output with Bash Tools — grep, awk, sed, and jq</h2>
+  <p>Test frameworks emit structured output — JUnit XML, JSON, TAP, or custom formats. CI platforms consume this output to generate reports, track trends, and trigger alerts. The SDET who can parse this output with the Unix toolkit — without reaching for Python or Node.js — is the SDET who can debug a broken pipeline at 2 AM when only BusyBox tools are available on the CI agent. This section covers the real parsing tasks interview panels test.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>grep — Finding Signal in Test-Output Noise</h3>
+      <p><strong>Interview question:</strong> "Your CI log is 50,000 lines. Write a grep pipeline that extracts: (a) all unique test class names that had failures, (b) the count of failures per class, (c) the timestamp of the first failure per class." <strong>The answer:</strong> Use <code>grep -E</code> (extended regex) for pattern matching, <code>grep -o</code> to extract only the matching portion, <code>sort | uniq -c</code> for counting, and <code>grep -n</code> for line numbers. <strong>Key grep flags for SDETs:</strong> <code>-i</code> (case-insensitive), <code>-v</code> (invert match), <code>-A N</code> (after context), <code>-B N</code> (before context), <code>-c</code> (count), <code>-l</code> (files-with-matches), <code>-r</code> (recursive). <strong>Performance trap:</strong> <code>grep pattern $(find . -name "*.log")</code> explodes the argument list for thousands of files — use <code>find . -name "*.log" -exec grep pattern {} +</code> instead.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>awk — The Swiss Army Knife for Structured Text Processing</h3>
+      <p><strong>Interview question:</strong> "Parse a JUnit XML report — extract the test class name, total tests, failures, and skipped count for each test suite, and compute the aggregate pass rate as a percentage. You can't use an XML parser — only grep and awk." <strong>The answer:</strong> While using a proper XML tool like <code>xmllint</code> is the right answer for production, the interview is testing your awk fluency. Use awk's field-splitting, pattern matching, and arithmetic: match lines containing <code>testsuite name=</code> and <code>tests=</code> attributes, split on quotes, accumulate totals in awk variables, and use the <code>END</code> block to print the aggregate. <strong>Key awk concepts for SDETs:</strong> <code>-F</code> sets the field separator, <code>NR</code> and <code>NF</code> are built-in variables, <code>BEGIN {}</code> runs before processing, <code>END {}</code> runs after, and associative arrays — <code>failures[$1]++</code> — compute per-class failure counts without external sorting.</p>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>jq — JSON Transformation for Modern Test Output</h3>
+      <p>Playwright, Cypress, k6, and most modern tools emit JSON results. <code>jq</code> is the command-line JSON processor — it transforms, filters, and aggregates JSON with a concise query language. <strong>Interview question:</strong> "Given a Playwright JSON report, write a jq pipeline that extracts: the 5 slowest tests (name + duration), the flaky tests (tests that passed on retry), and the overall suite duration." <strong>Key jq patterns for SDETs:</strong> <code>jq '.suites[].specs[].tests[] | select(.results[].status == "failed") | .title'</code> — extracts failed test names. <code>jq '[.suites[].specs[].tests[] | select(.results | length > 1)] | length'</code> — counts flaky tests. <code>jq -s 'add' file1.json file2.json</code> — merges JSON arrays from parallel test shards. <strong>The gotcha:</strong> <code>jq</code> is not installed by default on most CI agents — your script should check <code>command -v jq</code> and fall back to a Python one-liner.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>sed — Stream Editing for In-Place File Transformation</h3>
+      <p><strong>Interview question:</strong> "Your test configuration has hardcoded URLs for 3 environments. Write a sed command that replaces all occurrences of the staging URL with the production URL across all <code>.properties</code> files, and backs up the originals." <strong>The answer:</strong> <code>sed -i.bak 's|https://staging.example.com|https://prod.example.com|g' **/*.properties</code> — the <code>-i.bak</code> creates backups, <code>s|pattern|replacement|g</code> uses <code>|</code> as delimiter to avoid escaping slashes in URLs. <strong>Key sed patterns for SDETs:</strong> <code>sed -n '/FAILED/p'</code> — print only matching lines (like grep). <code>sed '5,20d'</code> — delete lines 5–20 (remove verbose preamble from a log). <code>sed '/^$/d'</code> — delete blank lines. <code>sed 's/^ERROR:/[CRITICAL] &/'</code> — prepend text to lines matching a pattern. <code>sed -n 's/.*duration: \\([0-9.]*\\)ms.*/\\1/p'</code> — extract a number from a log line using capture groups. <strong>The gotcha:</strong> <code>sed -i</code> behaves differently on macOS (requires a backup extension argument) vs Linux (optional). For cross-platform scripts, use <code>sed -i.bak</code> and <code>rm *.bak</code>, or use a Perl one-liner: <code>perl -pi -e 's/.../.../'</code> which is consistent across platforms.</p>
+    </div>
+  </div>
+
+<pre><code>#!/usr/bin/env bash
+# Parsing Test Output: grep, awk, sed, and jq in Practice
+
+# GREP: Extract and count test failures
+
+grep -h "FAILED" logs/*.log | \
+    grep -oP '\b[A-Z][a-zA-Z.]+Test\b' | \
+    sort | uniq -c | sort -rn
+
+echo "Passed: $(grep -rc 'PASSED' logs/ | awk -F: '{s+=$2} END {print s}')"
+echo "Failed: $(grep -rc 'FAILED' logs/ | awk -F: '{s+=$2} END {print s}')"
+
+
+# AWK: Parse JUnit-style XML for aggregate metrics
+
+awk -F'"' '
+    /<testsuite / {
+        for(i=1; i<=NF; i++) {
+            if($i ~ /name=/)  name=$(i+1)
+            if($i ~ /tests=/) tests=$(i+1)
+            if($i ~ /failures=/) failures=$(i+1)
+            if($i ~ /skipped=/) skipped=$(i+1)
+            if($i ~ /time=/) time=$(i+1)
+        }
+        printf "%-50s tests=%-6s failures=%-3s skipped=%-3s time=%ss\n", \
+            name, tests, failures, skipped, time
+        total_tests += tests
+        total_failures += failures
+        total_skipped += skipped
+    }
+    END {
+        passed = total_tests - total_failures - total_skipped
+        rate = total_tests > 0 ? (passed / total_tests) * 100 : 0
+        printf "\nAggregate: %d tests | %d passed | %d failed | %d skipped | %.1f%% pass rate\n", \
+            total_tests, passed, total_failures, total_skipped, rate
+    }
+' test-results/*.xml
+
+
+# JQ: Analyse Playwright JSON report
+
+# Top 5 slowest tests
+jq -r '
+    [.suites[].specs[].tests[] | {title: .title, duration: .results[0].duration}]
+    | sort_by(-.duration)
+    | .[0:5]
+    | .[] | "\\(.duration)ms  \\(.title)"
+' playwright-report.json
+
+# Flaky tests (passed on retry)
+jq -r '
+    [.suites[].specs[].tests[]
+    | select(.results | length > 1)
+    | select(.results[-1].status == "passed")
+    | .title] | .[]
+' playwright-report.json
+
+# Overall suite duration in seconds
+jq '.suites[].specs[].tests[].results[].duration | add / 1000' playwright-report.json
+
+
+# SED: Transform test configs for environment switching
+
+find . -name "*.properties" -exec sed -i.bak \
+    's|https://staging.example.com|https://prod.example.com|g' {} +
+
+# Extract test durations from log lines
+sed -n 's/.*completed in \\([0-9.]*\\) seconds.*/\\1/p' test-output.log
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>CI/CD Pipeline Scripts — The Shell That Glues Everything Together</h2>
+  <p>Every CI/CD platform has its own YAML DSL — GitHub Actions workflows, Jenkins pipelines, GitLab CI, CircleCI config. But the actual work is almost always done in shell scripts invoked from <code>run:</code> steps. Writing reusable, debuggable, and platform-agnostic shell scripts is the skill that makes your pipelines reliable and your on-call rotations peaceful.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>GitHub Actions — Reusable Shell Steps with Secrets and Artifacts</h3>
+      <p><strong>Interview question:</strong> "Write a GitHub Actions workflow step script that: (1) pulls test data from an S3 bucket using AWS CLI credentials stored in GitHub Secrets, (2) runs a Playwright test suite, (3) uploads the Playwright HTML report as a GitHub artifact, and (4) posts a Slack notification with the pass/fail status and a link to the artifact. What error-handling gotchas do you need to account for?" <strong>The answer:</strong> Key considerations: (1) GitHub Secrets are injected as environment variables — never echo them (they're masked in logs if referenced correctly, but <code>set -x</code> or <code>env</code> can leak them). (2) Use <code>actions/upload-artifact@v4</code> with an <code>if: always()</code> condition — upload the report even if tests fail, because that's when you need it most. (3) For Slack notifications, use <code>if: always()</code> and a conditional message body. (4) The shell script should exit with the test suite's exit code, not the notification's exit code — use <code>exit_code=$?</code> pattern. (5) Always set a <code>timeout-minutes</code> on the job — a hung test suite on a GitHub Actions runner costs money and blocks the queue.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Jenkins Pipeline — Groovy DSL with Shell Script Integration</h3>
+      <p><strong>Interview question:</strong> "You're migrating a Jenkins Freestyle job with 8 shell build steps to a Declarative Pipeline. How do you preserve the shell scripts' exit-code behaviour and log visibility while taking advantage of Pipeline features like parallel stages and post actions?" <strong>The answer:</strong> Wrap each shell step in a <code>sh</code> directive with <code>returnStatus: true</code> when you want to handle the exit code in Groovy, or <code>returnStdout: true</code> when you need to capture output. Use <code>timestamps { }</code> and <code>ansiColor('xterm') { }</code> wrappers for log readability. Parallel test execution uses <code>parallel { }</code> blocks where each branch is a <code>stage</code> with its own <code>sh</code> steps. The <code>post { always { } }</code> block runs cleanup and notification regardless of stage outcome. <strong>Key Jenkins pattern:</strong> Extract complex shell logic into standalone scripts checked into the repo, and call them from the Jenkinsfile with <code>sh './scripts/run-tests.sh'</code> — this makes scripts testable locally and avoids the Jenkinsfile becoming a 500-line shell script embedded in Groovy.</p>
+    </div>
+  </div>
+
+<pre><code>#!/usr/bin/env bash
+# ci-run-tests.sh — Reusable CI test runner for GitHub Actions, Jenkins, GitLab CI
+# Usage: ./ci-run-tests.sh [--suite smoke|regression|all] [--browser chromium|firefox|webkit]
+
+set -euo pipefail
+
+# Parse arguments
+SUITE="all"
+BROWSER="chromium"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --suite) SUITE="$2"; shift 2 ;;
+        --browser) BROWSER="$2"; shift 2 ;;
+        *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
+
+# Configuration from environment (CI secrets)
+readonly BASE_URL="\${}BASE_URL:?Must set BASE_URL environment variable}"
+readonly API_KEY="\${}API_KEY:?Must set API_KEY environment variable}"
+readonly SLACK_WEBHOOK="\${}SLACK_WEBHOOK:-}"
+
+readonly RESULTS_DIR="test-results/ci-$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$RESULTS_DIR"
+
+# Notify Slack
+notify_slack() {
+    local status="$1"
+    local emoji
+    [[ "$status" == "passed" ]] && emoji="✅" || emoji="❌"
+
+    if [[ -n "$SLACK_WEBHOOK" ]]; then
+        curl -s -X POST "$SLACK_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{"text":"'"$emoji"' Tests '"$status"': '"$SUITE"' on '"$BROWSER"'"}' \
+            >/dev/null 2>&1 || true
+    fi
+}
+
+# Main test execution
+echo "CI Test Runner"
+echo "Suite: $SUITE | Browser: $BROWSER"
+echo "Base URL: $BASE_URL"
+
+test_exit_code=0
+
+npx playwright test \
+    --project="$BROWSER" \
+    --grep="\${}SUITE}" \
+    --reporter=html,json,junit,list \
+    2>&1 | tee "$RESULTS_DIR/test-output.log" || test_exit_code=$?
+
+# Always upload results, regardless of outcome
+cp -r playwright-report "$RESULTS_DIR/" 2>/dev/null || true
+cp -r test-results "$RESULTS_DIR/raw-results" 2>/dev/null || true
+
+# Generate a summary
+{
+    echo "CI Test Run Summary"
+    echo "==================="
+    echo "Suite: $SUITE | Browser: $BROWSER"
+    echo "Status: $([ $test_exit_code -eq 0 ] && echo 'PASSED' || echo 'FAILED')"
+    echo "Date: $(date)"
+    echo "Results: $RESULTS_DIR"
+} | tee "$RESULTS_DIR/summary.txt"
+
+if (( test_exit_code == 0 )); then
+    notify_slack "passed"
+else
+    notify_slack "failed"
+fi
+
+exit $test_exit_code
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Makefile vs Bash Scripts — Choosing the Right Tool for Test Orchestration</h2>
+  <p>One of the most debated architecture decisions in test automation infrastructure: do you orchestrate your test workflows with Make targets or Bash scripts? The answer isn't "always Make" or "always Bash" — it depends on what you're orchestrating. Interview panels probe this decision to assess whether you understand build-system semantics vs imperative scripting.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>When Makefile Wins — Dependency Graphs and Incremental Builds</h3>
+      <p><strong>Make's superpower is the dependency graph.</strong> Make understands that <code>target: prerequisites</code> means "only rebuild target if prerequisites are newer." This is perfect for test workflows where you have expensive setup steps that shouldn't rerun unnecessarily. <strong>Interview question:</strong> "You have a test pipeline where: (a) installing npm dependencies takes 2 minutes, (b) building test fixtures takes 1 minute, (c) running tests takes 10 minutes. Design a Makefile where step (b) reruns only when fixture source files change, and step (a) reruns only when <code>package.json</code> changes."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>When Bash Wins — Imperative Control Flow and Dynamic Logic</h3>
+      <p><strong>Bash's superpower is imperative control flow.</strong> Loops with dynamic exit handling, conditional branching based on runtime state, and integration with the Unix pipeline. <strong>Interview question:</strong> "Your test suite needs to: (1) query an API to determine which test shards to run based on changed files in the PR, (2) run each shard in parallel with a timeout, (3) retry failed shards up to 3 times with exponential backoff, (4) aggregate results. Why would you choose Bash over Make for this?" <strong>The answer:</strong> Bash handles dynamic parallelism (<code>&</code> and <code>wait</code>), complex retry logic, API interactions (<code>curl</code> with JSON parsing), and runtime decision-making — all of which are awkward or impossible in Make's declarative model. Make is for build dependencies; Bash is for runtime orchestration. The right architecture uses both: a Makefile for the top-level target definitions (<code>make test-smoke</code>, <code>make test-regression</code>, <code>make setup</code>), each of which calls a well-tested Bash script that does the actual work.</p>
+    </div>
+  </div>
+
+<pre><code># Makefile — Dependency-aware test orchestration
+# Pair this with ci-run-tests.sh for the heavy lifting
+
+.PHONY: help setup test-smoke test-regression test-all clean
+
+help:  ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "\\033[36m%-20s\\033[0m %s\n", $$1, $$2}'
+
+node_modules: package.json package-lock.json  ## Install deps only when package files change
+	npm ci
+
+test-fixtures/data.json: test-fixtures/generate.ts node_modules  ## Rebuild fixtures only when generator changes
+	npx tsx test-fixtures/generate.ts
+
+setup: node_modules test-fixtures/data.json  ## Full setup (deps + fixtures)
+	@echo "Environment ready"
+
+# Test targets
+test-smoke: setup  ## Run smoke tests
+	./scripts/ci-run-tests.sh --suite @smoke
+
+test-regression: setup  ## Run regression tests
+	./scripts/ci-run-tests.sh --suite @regression
+
+test-all: setup  ## Run all tests
+	./scripts/ci-run-tests.sh --suite all
+
+clean:  ## Remove build artifacts
+	rm -rf node_modules test-results playwright-report test-fixtures/data.json
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Common Shell Scripting Interview Questions for SDETs — By Seniority Level</h2>
+  <p>Shell scripting interview questions vary dramatically by level. Junior candidates are tested on fundamentals; mid-level candidates are tested on scripting patterns and tool fluency; senior candidates are tested on architecture, error handling, and infrastructure reasoning. Here are the questions you're most likely to encounter in 2026, with model answers.</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">Junior SDET</div>
+      <div class="timeline-content">
+        <h3>Fundamentals and Basic Scripting</h3>
+        <p><strong>Q: "Write a Bash script that accepts a directory path as an argument, counts the number of <code>.log</code> files in that directory, and prints the count. Handle the case where no argument is provided."</strong> The panel is testing: positional parameters (<code>$1</code>), default values, globbing, and basic error handling. A passing answer: uses <code>\${}1:-.}</code> for a default directory, <code>shopt -s nullglob</code> to handle empty directories, and <code>echo</code> for output. A strong answer adds: <code>set -euo pipefail</code>, input validation (<code>if [[ ! -d "$dir" ]]</code>), and stderr for errors.</p>
+        <p><strong>Q: "What's the difference between <code>></code> and <code>>></code> redirection? How do you redirect both stdout and stderr to the same file?"</strong> Answer: <code>></code> overwrites, <code>>></code> appends. To redirect both: <code>command &> file</code> (Bash shorthand) or <code>command > file 2>&1</code> (POSIX). The ordering of <code>2>&1</code> matters — it must come after the stdout redirect. <code>command 2>&1 > file</code> redirects stderr to the terminal and stdout to the file — not what you want.</p>
+        <p><strong>Q: "How do you run a script in debug mode to see each command as it executes?"</strong> Answer: <code>bash -x script.sh</code> or <code>set -x</code> inside the script. Use <code>set +x</code> to disable. For selective debugging: wrap specific sections in <code>set -x</code> / <code>set +x</code>. The <code>PS4</code> variable controls the debug prompt — <code>export PS4='+(\${}BASH_SOURCE}:\${}LINENO}): \${}FUNCNAME[0]:+\${}FUNCNAME[0]}(): }'</code> adds file, line, and function context.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Mid-Level SDET</div>
+      <div class="timeline-content">
+        <h3>Scripting Patterns and Tool Integration</h3>
+        <p><strong>Q: "Write a script that monitors a test run in real time: tail the test log, detect when a test fails, and immediately print the failure to stderr with a timestamp. Exit when the test run completes (detected by a 'DONE' marker in the log)."</strong> The panel is testing: <code>tail -f</code>, process substitution, signal handling, and while-read loops. A strong answer uses <code>tail -f logfile | while IFS= read -r line</code> with a break condition, handles SIGPIPE, and uses <code>date</code> for timestamps. A superior answer notes that the <code>tail -f | while</code> pipeline runs the while loop in a subshell, so any variables set inside the loop are lost — and uses process substitution <code>while ... done < <(tail -f logfile)</code> instead.</p>
+        <p><strong>Q: "Your CI agent has a 10GB disk. Test artifacts are consuming 8.5GB and the build is failing. Write a script that finds and deletes the 10 largest files in the test-results directory tree, printing their names and sizes before deletion."</strong> Answer: <code>find test-results -type f -exec du -h {} + | sort -rh | head -10</code> finds the largest files. For deletion: <code>find test-results -type f -exec du -h {} + | sort -rh | head -10 | awk '{print $2}' | xargs rm -f</code> — but always print before deleting. A strong answer adds size-tracking: "I'd also add a pre-build disk-usage check: <code>df -h / | awk 'NR==2 {print $5}'</code> and fail early with a clear error if usage is above 85%."</p>
+        <p><strong>Q: "Compare <code>cron</code> vs <code>systemd timer</code> for scheduling a nightly test suite. When would you choose each?"</strong> Answer: <code>cron</code> is simpler, universal, and requires no configuration beyond the crontab entry — use it for straightforward "run this script at 2 AM" schedules. <code>systemd timer</code> offers: randomised delay windows (<code>RandomizedDelaySec</code>), persistent timers that catch up on missed runs after a reboot, resource control (<code>MemoryMax</code>, <code>CPUQuota</code>), logging via journald, and dependency ordering (<code>After=network.target docker.service</code>). Use systemd timers when you need reliability guarantees.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Senior / Lead SDET</div>
+      <div class="timeline-content">
+        <h3>Architecture, Infrastructure, and Production Reliability</h3>
+        <p><strong>Q: "Design the shell scripting architecture for a test platform that runs 50,000 tests nightly across 20 parallel Jenkins agents. Each agent produces JUnit XML reports. A central aggregator needs to collect all reports, detect flaky tests (tests that pass on retry in the same run), and produce a flakiness trend report. What are the concurrency, partial-failure, and timeout considerations?"</strong> The panel is testing: distributed systems thinking through the lens of shell scripting. Key answer points: (1) Each agent writes results to a shared filesystem (NFS, S3, or artifact storage). (2) The aggregator uses <code>find</code> with <code>-mmin</code> to collect only fresh results, with a <code>timeout</code> wrapper to handle stalled agents. (3) Flaky detection uses jq/awk to compare first-attempt vs final-attempt results per test. (4) Partial failures — if 18 of 20 agents report, the aggregator should still produce a report with a "2 agents missing" warning. (5) The aggregator itself needs a timeout. (6) Log every step with timestamps to a structured log file for post-mortem debugging.</p>
+        <p><strong>Q: "You inherit a 500-line Bash script that orchestrates the entire test infrastructure — Docker Compose, database migrations, test execution, report generation. It has no tests, no error handling, and it's flaky. How do you approach making it reliable without a full rewrite?"</strong> Answer: (1) First, add <code>set -euo pipefail</code> and fix all the failures it exposes. (2) Add <code>set -x</code> temporarily to trace execution and identify where the flakiness occurs. (3) Extract each logical phase (setup, migrate, test, report) into separate functions or sourced files. (4) Add trap handlers for cleanup. (5) Add prerequisite checks at the top. (6) Replace <code>sleep N</code> with proper health-check polling. (7) Add structured logging with timestamps. (8) Consider extracting the most complex logic into a more testable language (Python) while keeping the orchestration layer in Bash. (9) Write integration tests for the script — yes, you can test shell scripts with <code>bats</code> (Bash Automated Testing System). A senior answer always mentions testing shell scripts.</p>
+        <p><strong>Q: "When is a Bash script the wrong tool? What would you use instead?"</strong> Answer: Bash is wrong when: (a) you need complex data structures (nested JSON, graph traversal) — use Python; (b) you need portability to Windows — use Python or Node.js; (c) the script exceeds ~300 lines — beyond this, Bash's lack of types, scoping, and error-handling ergonomics makes maintenance painful; (d) you need proper unit testing and mocking — use a language with a mature testing ecosystem; (e) you're doing floating-point arithmetic or statistical analysis — Bash only does integers. Knowing when <em>not</em> to use Bash is as important as knowing how to use it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Test Setup and Teardown Automation — The Infrastructure Glue</h2>
+  <p>Before a single test runs, someone needs to provision databases, seed test data, start mock services, and configure environment variables. After the tests finish, someone needs to tear everything down. These setup and teardown scripts are where shell scripting delivers its highest ROI for SDETs.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Database Fixture Scripts — Idempotent, Transactional, and Fast</h3>
+      <p><strong>Interview question:</strong> "Write a script that resets a PostgreSQL test database to a known state before each test suite run. It must be idempotent (safe to run multiple times), handle the case where the database doesn't exist yet, and fail fast if the database connection fails." <strong>Key patterns:</strong> Use <code>psql</code> with <code>-v ON_ERROR_STOP=1</code> to halt on the first SQL error. Wrap schema operations in transactions — <code>BEGIN; ... COMMIT;</code>. Use <code>createdb --if-not-exists</code> for idempotency. Store connection strings in environment variables — never hardcode credentials. <strong>Performance tip:</strong> Instead of dropping and recreating the database (slow), use database templates — <code>createdb -T test_template my_test_db</code> — which copies a pre-migrated template in seconds. For very large test datasets, use Docker volumes with pre-seeded data rather than running migrations on every CI run.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Docker Environment Provisioning — Deterministic and Disposable</h3>
+      <p><strong>Interview question:</strong> "Design a test setup script that: (1) starts PostgreSQL, Redis, and a mock API server via Docker Compose, (2) waits for all services to be healthy, (3) applies database migrations, (4) seeds test data, and (5) verifies the environment is ready by running a smoke test. What are the failure modes at each step, and how does your script handle them?" <strong>Key patterns:</strong> Use <code>docker compose up -d --wait</code> (Docker Compose v2) for built-in health-check waiting. Use <code>docker compose run --rm</code> for one-off commands (migrations, seeding) so they run in the same network as the services but clean up after themselves. <strong>Smoke test:</strong> After setup, run a minimal test that exercises the critical path — if this fails, the environment is broken and there's no point running the full 500-test suite. The setup script should exit with a distinct error code for smoke-test failures so CI can distinguish "environment broken" from "tests failed."</p>
+    </div>
+  </div>
+
+<pre><code>#!/usr/bin/env bash
+# setup-test-env.sh — Deterministic test environment provisioning
+
+set -euo pipefail
+
+readonly ENV="\${}1:-local}"
+readonly COMPOSE_FILE="docker-compose.test.yml"
+
+echo "[setup] Provisioning test environment: $ENV"
+
+# Bring up services with health checks
+docker compose -f "$COMPOSE_FILE" down --volumes --remove-orphans 2>/dev/null || true
+docker compose -f "$COMPOSE_FILE" up -d --wait
+
+echo "[setup] All services healthy"
+
+# Run database migrations
+echo "[setup] Running database migrations..."
+if ! docker compose -f "$COMPOSE_FILE" run --rm db-migrate; then
+    echo "FATAL: Database migration failed" >&2
+    docker compose -f "$COMPOSE_FILE" logs db
+    exit 3
+fi
+
+# Seed test data
+echo "[setup] Seeding test data..."
+docker compose -f "$COMPOSE_FILE" run --rm db-seed || {
+    echo "FATAL: Test data seeding failed" >&2
+    exit 3
+}
+
+# Smoke test — verify the critical path works
+echo "[setup] Running smoke test..."
+SMOKE_URL="\${}SMOKE_URL:-http://localhost:3000/api/health}"
+if ! curl -sf --max-time 10 "$SMOKE_URL" >/dev/null; then
+    echo "FATAL: Smoke test failed — API not reachable at $SMOKE_URL" >&2
+    docker compose -f "$COMPOSE_FILE" logs --tail=50
+    exit 2
+fi
+
+echo "[setup] Environment ready"
+</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Putting It All Together — Your Shell Scripting Strategy for 2026 SDET Interviews</h2>
+  <p>Shell scripting is not the star of the SDET interview — Java, Python, or TypeScript usually holds that role. But shell scripting is the stage: it's the infrastructure that makes your test framework run reliably in CI, the glue that connects your tests to databases and Docker containers, and the parsing layer that turns raw test output into actionable dashboards. Interview panels at every level — from mid-level to Principal — probe shell scripting depth because it reveals whether you understand test automation as a systems problem, not just a code problem.</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Master the fundamentals until they're automatic.</strong> Variables (always double-quoted), conditionals ([[ ]] for Bash, (( )) for arithmetic), loops (while-read with process substitution, not pipes), functions (local variables, return codes), and error handling (set -euo pipefail + trap). If you can't write these from muscle memory, everything else will be built on a shaky foundation.</li>
+    <li><strong>Build a personal library of reusable shell scripts.</strong> A test runner, a setup/teardown script, a log parser, a CI entrypoint — these are your building blocks. Store them in your dotfiles or a dedicated <code>scripts/</code> directory. The goal is that when an interviewer asks you to sketch a CI pipeline script, you're drawing from patterns you've used, not inventing syntax on the whiteboard.</li>
+    <li><strong>Learn the Unix toolkit — grep, awk, sed, jq — as first-class tools.</strong> Every SDET should be able to: grep for test failures across a directory tree, awk to aggregate failure counts by test class, sed to transform config files between environments, and jq to extract metrics from JSON test reports. These tools are available on every CI agent, every Docker container, every production server.</li>
+    <li><strong>Practise the common interview questions out loud.</strong> The SDET Interview Coach app includes dedicated Shell Scripting mock interview rounds — with AI-scored Bash scripting exercises that evaluate your syntax, error handling, and edge-case coverage, plus real-time feedback on quoting, trap usage, and exit-code propagation. The app's Infrastructure module covers CI/CD scripting, Docker provisioning, and test-output parsing with progressively difficult scenarios from Junior to Principal level. The difference between reading about shell scripting and writing it under interview pressure is night and day — practise with the app until the syntax flows without conscious thought.</li>
+    <li><strong>Treat your shell scripts as production code.</strong> Version them in Git. Review them in pull requests. Test them with <code>bats</code> or by running them in CI against a known environment. Document the expected inputs, outputs, and exit codes. A shell script that orchestrates $100,000/year of CI infrastructure deserves the same engineering discipline as the test framework it runs. The SDET who treats shell scripts as throwaway glue gets exposed in the infrastructure round; the SDET who treats them as production code gets hired.</li>
+  </ol>
+
+  <p>Shell scripting isn't the flashiest skill on an SDET's CV — but in 2026, when test infrastructure complexity is accelerating and CI/CD pipelines are the backbone of every engineering organisation, it might be the skill that makes the difference between a candidate who can write tests and a candidate who can own the entire quality pipeline. The interview question that reveals this distinction isn't "Write a Selenium test" — it's "Write a Bash script that runs the tests, handles the failures, and tells the team what happened." Be the candidate who can answer it cold. Grab the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a>, fire up the Shell Scripting module, and start practising — because when the whiteboard marker is in your hand and the timer is running, muscle memory beats memorisation every time.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What shell scripting topics do SDET interviews cover in 2026?",
+        a: "SDET shell scripting interviews in 2026 cover a progression from fundamentals to infrastructure architecture depending on seniority. Junior SDETs are tested on Bash basics: variables (with correct quoting — always double-quote), conditionals ([[ ]] for Bash, (( )) for arithmetic), loops (while-read with process substitution, not pipes), functions (local variables, return codes), and basic redirection. Mid-level SDETs are tested on scripting patterns: writing test runner scripts with retry logic and parallel execution, parsing test output with grep/awk/sed/jq, and CI/CD pipeline integration (GitHub Actions step scripts, Jenkins sh blocks). Senior/Lead SDETs are tested on architecture: designing distributed test aggregation with shell scripts across parallel agents, error handling strategies (trap, set -euo pipefail, exit code conventions), choosing Makefile vs Bash for orchestration, and knowing when Bash is the wrong tool. Every level includes practical exercises — expect to write or debug a script on a whiteboard or in a shared editor, not just answer trivia. The SDET Interview Coach app has dedicated Shell Scripting mock rounds with AI-scored Bash exercises for each level."
+      },
+      {
+        q: "What is set -euo pipefail and why should every Bash script start with it?",
+        a: "<code>set -euo pipefail</code> is the standard safety header for production Bash scripts. <code>set -e</code> (errexit) exits immediately if any command returns a non-zero exit status, preventing the script from continuing with a broken state. <code>set -u</code> (nounset) exits if an unset variable is referenced, catching typos like <code>echo $RESUTLS_DIR</code> before they become mysterious empty strings. <code>set -o pipefail</code> makes a pipeline's exit code the exit code of the last command that failed — without it, <code>false | true</code> exits 0 because the pipeline's exit code is the rightmost command's exit code. Together, these three flags prevent the most common classes of silent Bash failures: continuing after an error, using uninitialised variables, and masking failures in pipelines. There are rare cases where you temporarily disable them (e.g., <code>grep || true</code> when grep's non-zero exit for 'no match' is expected), but these should be explicit and documented. As an SDET, scripts that orchestrate your test infrastructure must fail loudly and early — <code>set -euo pipefail</code> is the first line of defence. For a deeper dive into Bash error handling, see our guide on <a href='/blog/linux-command-line-sdet-interview-questions-2026'>Linux Command Line for SDET Interviews 2026</a>."
+      },
+      {
+        q: "How do I use trap in Bash for cleanup in test automation scripts?",
+        a: "<code>trap</code> registers a command or function to run when the script receives a signal or exits. For test automation, the essential pattern is: <code>trap cleanup EXIT INT TERM</code> — this guarantees your cleanup function runs whether the script exits normally, on error, or is killed with Ctrl+C (SIGINT) or SIGTERM (CI timeout). The critical gotcha: save <code>$?</code> immediately as the first line of your trap handler — <code>local exit_code=$?</code> — because every subsequent command overwrites it. Do your cleanup (stop Docker containers, remove temp files, archive results), then <code>exit $exit_code</code> to propagate the original error code. Without this, a script that fails with exit code 1 but has a successful cleanup exits 0, and CI thinks the tests passed. Trap is essential for: stopping Docker containers started by the script (prevents zombie containers from consuming resources), cleaning temporary files (prevents disk exhaustion on CI agents), and archiving test results even when tests fail (so you can debug the failure). Our <a href='/blog/docker-test-automation-interview-questions-2026'>Docker for Test Automation Interview Questions 2026</a> guide covers container lifecycle patterns that pair with trap handlers."
+      },
+      {
+        q: "Should I use Makefile or Bash scripts for test automation orchestration?",
+        a: "The choice depends on what you're orchestrating, and the best production setups often use both. Use <strong>Make</strong> when you have a dependency chain where expensive steps should only rerun when their inputs change — for example, rebuilding test fixtures only when the fixture source changes, or reinstalling npm dependencies only when package.json changes. Make's declarative dependency graph (target: prerequisites) handles this elegantly and is self-documenting — <code>make test-smoke</code> is discoverable via tab completion and <code>make help</code>. Use <strong>Bash</strong> when you need imperative control flow: dynamic parallelism (running N test shards in the background with <code>&</code> and <code>wait</code>), retry logic with exponential backoff, API interactions (querying a service to determine which tests to run), and complex error handling with per-step exit codes. The hybrid approach: a Makefile for the top-level interface (<code>make test-smoke</code>, <code>make setup</code>, <code>make clean</code>) where each target calls a well-tested Bash script that handles the complex logic. This gives you Make's discoverability and dependency tracking plus Bash's runtime flexibility. For CI/CD-specific orchestration, see our <a href='/blog/cicd-pipeline-testing-interview-questions'>CI/CD Pipeline Testing Interview Questions</a> guide."
+      },
+      {
+        q: "How do I parse test results (JUnit XML, JSON) with Bash command-line tools?",
+        a: "The Bash parsing toolkit for SDETs is grep, awk, sed, and jq — each has a specific role. <strong>grep:</strong> Find failures in log files — <code>grep -r 'FAILED' logs/ | wc -l</code> for total failure count, <code>grep -A 20 'FAILED' log.txt</code> to see the full stack trace after each failure. <strong>awk:</strong> Aggregate structured data — extract test counts and compute pass rates from JUnit XML by splitting on attribute delimiters. awk excels at computing sums, averages, and group-bys across multiple files. <strong>sed:</strong> Transform text in-place — switch environment URLs across all config files. <strong>jq:</strong> Process JSON test output — extract failed test names from Playwright JSON, or compute the 5 slowest tests. jq isn't always installed on CI agents — check with <code>command -v jq</code> and fall back to a Python one-liner for environments where it's unavailable. The SDET Interview Coach app's Infrastructure module includes hands-on parsing exercises with all four tools."
+      },
+      {
+        q: "What are the most common shell scripting mistakes SDETs make in interviews?",
+        a: "The five most common shell scripting mistakes SDET candidates make in interviews: (1) <strong>Unquoted variables:</strong> <code>$DIR</code> instead of <code>\"$DIR\"</code> — word-splitting breaks paths with spaces. Always double-quote variable references unless you explicitly want word splitting and globbing. (2) <strong>No <code>set -euo pipefail</code>:</strong> scripts that continue silently after errors, use uninitialised variables, and report pipeline success when a command in the middle failed. (3) <strong>Piping into while loops:</strong> <code>cat file | while read line; do ... done</code> runs the while body in a subshell — any variables set inside the loop are lost. Use process substitution instead: <code>while read line; do ... done < <(command)</code>. (4) <strong>Not saving <code>$?</code> in trap handlers:</strong> the first command in a trap handler overwrites the exit code. Always <code>local ec=$?</code> first, then <code>exit $ec</code> last. (5) <strong>Using <code>sleep</code> for service readiness:</strong> <code>sleep 30</code> is fragile — the service might take 35 seconds (tests fail) or 5 seconds (30 seconds wasted). Use proper health-check polling with <code>curl --retry</code> or a while loop with timeout. Interview panels watch for these specifically because they reveal whether you've actually written production shell scripts or just copied one-liners. Avoid all five, and you'll stand out from most candidates."
+      },
+      {
+        q: "When should I use Python instead of Bash for test automation scripting?",
+        a: "Use Python instead of Bash when: (a) the script exceeds ~300 lines — beyond this, Bash's lack of types, proper scoping, and error-handling ergonomics makes maintenance painful; (b) you need complex data structures (nested dictionaries, graph traversal, recursive algorithms) — Bash only has strings, indexed arrays, and associative arrays (Bash 4+); (c) you need cross-platform compatibility with Windows — Git Bash helps but isn't a production solution; (d) you need proper unit testing with mocking — <code>bats</code> exists for Bash but Python's pytest ecosystem is far more mature; (e) you're doing floating-point arithmetic, statistical analysis, or any non-trivial math — Bash only does integers; (f) you're interacting with REST APIs that return complex JSON — Python's <code>requests</code> + <code>pydantic</code> beats parsing JSON with jq in a shell loop. Bash shines for: orchestrating command-line tools (Docker, npm, curl), file and process management, simple glue scripts under 200 lines, init containers and Docker entrypoints, and environments where zero-dependency execution is critical. The senior SDET knows both and chooses deliberately — not habitually."
+      }
+    ],
+    relatedSlugs: [
+      "linux-command-line-sdet-interview-questions-2026",
+      "docker-test-automation-interview-questions-2026",
+      "cicd-pipeline-testing-interview-questions"
+    ],
+  },
+  {
     slug: "kubernetes-sdet-test-infrastructure-interview-questions-2026",
     title: "Kubernetes for SDET Test Infrastructure Interview Questions 2026 — K8s Architecture Fundamentals for QA Engineers (Pods, Deployments, Services, Ingress, Persistent Volumes), Deploying Selenium Grid on Kubernetes with Production-Grade Helm Charts, Running Playwright at Scale on K8s Clusters (Job Patterns, Sidecar Containers, Parallel Execution Strategies), CI/CD Integration with Argo CD and GitOps for Test Infrastructure, Monitoring Test Pods with Prometheus, Grafana, and Loki, Infrastructure as Code for QA Environments, and the Kubernetes Interview Questions Senior SDET Panels Ask in 2026",
     description: "The definitive Kubernetes for SDET interview guide for 2026 — covering every K8s concept that infrastructure-aware interview panels drill into at architecture depth. When the hiring manager asks 'walk me through your test infrastructure scaling strategy' and your answer stops at Docker Compose, you've signalled you operate at the single-machine level. The follow-up question — 'and what happens when you need to run 500 browser tests in parallel across three geographies?' — is where the senior SDET conversation begins. In 2026, every engineering organisation running tests at scale is migrating — or has already migrated — test infrastructure to Kubernetes. Interview panels at Google, Amazon, Netflix, and fast-growing scale-ups want to hear that you've deployed Selenium Grid with Helm on a multi-node cluster, not just run minikube locally. They want to hear about your Playwright test Jobs with resource limits and liveness probes, your Argo CD-powered GitOps pipeline that syncs test infrastructure from a Git repository, and your Prometheus/Grafana dashboards that surface test execution trends in real time. This guide covers every K8s topic enterprise SDET panels probe in 2026: Kubernetes architecture fundamentals for testers — translating QA concepts into K8s primitives (Pods as atomic test execution units, Deployments for long-running services like Selenium Grid hubs, Services for cross-pod networking, ConfigMaps and Secrets for test configuration, Persistent Volumes for test artifacts and reports), Selenium Grid on Kubernetes — deploying the hub-router-node architecture with Helm, configuring session queues, scaling Chrome/Firefox/Edge node pools independently, and handling browser version lifecycle, Playwright on Kubernetes — Job-based patterns for ephemeral parallel test runs, the browserless/chromium sidecar container pattern, StatefulSet considerations for persistent browser profiles, and sharding strategies for test suites with 1000+ spec files, Helm charts for test infrastructure — templating your test environment, values.yaml overrides per environment, chart versioning and rollback, and reusable library charts for multi-team organisations, CI/CD with Argo CD — GitOps workflow where your test infrastructure is declared in Git and Argo CD reconciles the cluster state, progressive delivery with canary deployments of test framework updates, and GitHub Actions triggering Argo CD syncs, Monitoring with Prometheus, Grafana, and Loki — scraping Selenium Grid metrics, building dashboards for test throughput and failure rates, alerting on infrastructure anomalies, and log aggregation for debugging flaky test pods. Every section includes production-grade YAML manifests and kubectl commands you might be asked to write, explain, or debug during a live infrastructure interview round. The SDET Interview Coach iOS app includes K8s infrastructure design challenges with AI-scored feedback — you describe your scaling architecture, resource management strategy, and CI/CD integration pattern, and the app evaluates your answer against real senior SDET interview rubrics used at top technology companies.",
