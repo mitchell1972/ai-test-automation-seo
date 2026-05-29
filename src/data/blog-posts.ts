@@ -14,6 +14,373 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "sql-database-testing-sdet-interview-questions-2026",
+    title: "SQL and Database Testing for SDET Interviews 2026 — Common SQL Queries Every SDET Should Know: JOINs, Subqueries, Window Functions, and Aggregation Patterns, Database-Specific Testing: Constraints, Transactions, ACID Properties, and Isolation Levels Explained for QA Engineers, How SQL Appears in Real SDET Interviews — Not 'What's a LEFT JOIN' but 'Write a Query to Validate That Every Order Has Exactly One Customer', Data Integrity Validation Patterns: Orphan Checks, Uniqueness Violations, Foreign Key Cascade Verification, and Referential Integrity Testing, ETL Pipeline Testing: How to Validate Data Movement Between Systems, Source-to-Target Reconciliation, and Transformation Logic Verification, Performance Testing Queries: EXPLAIN ANALYZE, Index Usage Analysis, and Query Optimisation for Test Data Generation, and Model Answers for the 4 Most Common SQL Interview Questions Asked in FAANG and Fintech SDET Interviews in 2026",
+    description: "The definitive SQL and database testing interview guide for SDETs, QA engineers, and test automation professionals in 2026 — covering every dimension of SQL proficiency that interview panels probe when assessing whether you can validate data integrity, not just write SELECT statements. SQL is consistently the number-one requested skill in SDET job specifications — appearing in over 70% of listings — yet it's the area most candidates under-prepare for, defaulting to 'I know basic SELECT and JOINs' when interviewers are actually testing whether you can think in sets, write validation queries that catch real data bugs, and reason about database internals when tests behave unexpectedly. This guide treats SQL as an SDET tool, not a DBA tool: we cover common query patterns every SDET should have at their fingertips — JOINs (INNER, LEFT, RIGHT, FULL OUTER, and self-joins for hierarchical data), subqueries (correlated and uncorrelated, with the performance trade-offs interviewers expect you to name), window functions (ROW_NUMBER, RANK, DENSE_RANK, LAG/LEAD for row-by-row comparisons, and running totals with partition strategies), and aggregation patterns (GROUP BY with HAVING filtering, conditional aggregation with CASE inside SUM/COUNT, and the GROUP BY vs DISTINCT distinction that trips up beginners). The database-specific testing section covers constraints (PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, NOT NULL) and how to write tests that verify they're enforced — not just that they exist in the schema — plus transactions and ACID properties (Atomicity, Consistency, Isolation, Durability) with isolation level scenarios (READ COMMITTED vs REPEATABLE READ vs SERIALIZABLE) that explain why your test might see stale data. The centrepiece of the guide is the 'real interview' section: we move beyond textbook definitions to the kinds of questions that actually get asked — 'Write a query to validate that every order has exactly one customer,' 'Find all products that have never been ordered,' 'Identify duplicate email addresses in the users table,' 'Verify that all foreign key values in the orders table reference valid customers' — each with model answers, common pitfalls, and the follow-up questions interviewers use to distinguish mid-level from senior candidates. The data integrity validation patterns section covers the four patterns every SDET should recognise: orphan checks (child records with no parent), uniqueness violations (duplicate values in supposedly unique columns), foreign key cascade verification (confirming that DELETE CASCADE actually cascaded), and cross-table reconciliation (ensuring aggregate values match between related tables). The ETL pipeline testing section addresses the increasingly common scenario where SDETs own data validation between systems — source-to-target row counts, checksum comparisons, transformation logic verification, and handling of incremental vs full-load pipelines. The performance testing section covers EXPLAIN ANALYZE interpretation, index usage analysis for test data generation scripts that need to produce millions of rows, and query optimisation patterns that matter when your test setup is bottlenecked on database writes. Four model answer sections walk through common SQL interview questions with the exact reasoning and verbal explanation that panels expect — not just the correct query but the 'why' behind it. With 7 detailed FAQs and practical code examples throughout, this guide is designed to get you from 'I can query a database' to 'I can validate data integrity at the architectural level' — the SQL proficiency level that correlates with £90K–£130K SDET roles in 2026. Complement with our guides on SDET Test Data Management Interview Questions 2026 for data generation strategies that pair with SQL validation, TypeScript for SDET Interviews 2026 for the language most commonly paired with database testing, and Java for SDET Interviews 2026 for JDBC and Spring Data patterns. The SDET Interview Coach iOS app includes a dedicated SQL and Database Testing mock interview module with AI-scored query-writing exercises, verbal-explanation drills, and questions calibrated to what FAANG, fintech, and scale-up interviewers ask SDET candidates in 2026.",
+    date: "2026-05-29",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "SQL and database testing for SDET interviews 2026",
+      "common SQL queries SDET should know JOINs subqueries window functions",
+      "database testing interview questions constraints transactions ACID isolation levels",
+      "data integrity validation SQL patterns orphan check foreign key cascade verification",
+      "ETL pipeline testing SQL validation data movement source to target reconciliation",
+      "SQL performance testing EXPLAIN ANALYZE index usage query optimisation SDET",
+      "SQL interview questions model answers FAANG fintech SDET 2026",
+      "real SDET SQL interview scenarios validate data integrity write queries not just definitions",
+    ],
+    content: `
+<section class="content-section">
+  <p>Here's a scenario that plays out in SDET interviews every single day. The interviewer opens with: <em>"So, how comfortable are you with SQL?"</em> The candidate — a strong automation engineer who can write Playwright specs in their sleep, design a test framework from scratch, and debug a flaky CI pipeline faster than anyone on their team — replies confidently: <em>"Yeah, I use SQL all the time. SELECT, JOINs, basic stuff — I can query a database."</em> The interviewer nods, pulls up a shared editor, and types: <em>"We have an orders table and a customers table. Write a query that finds all customers who placed exactly three orders in the last 90 days, then for each of those customers, show how their most recent order total compares to their average order total."</em> Silence. The candidate who aced the coding round, who built a multi-browser parallel test grid, who explained the testing trophy with architectural precision — is now staring at a blank query editor, realising that <em>"I can query a database"</em> and <em>"I can validate data integrity with SQL"</em> are two entirely different things. And in 2026, with data-intensive applications, event-driven architectures, and ETL pipelines underpinning every modern system, SDETs who can write validation queries — not just SELECT * — are the ones commanding £90K–£130K roles. SQL isn't a 'nice to have' on the SDET job spec. It's the number-one most-requested skill, appearing in over 70% of SDET job listings, and it's the skill that most candidates leave under-prepared because they mistake 'I've written queries' for 'I can think in sets.'</p>
+  <p>This guide covers SQL and database testing the way it actually appears in SDET interviews — not the way it's taught in DBA certification courses. We're not going to spend three paragraphs defining what a LEFT JOIN is; you can Google that. What we <em>will</em> do is show you how interviewers use SQL to test whether you think like a quality engineer who works with data: can you write a query that proves a business rule is being enforced? Can you spot the data integrity bug that's causing 0.3% of orders to have no associated customer? Can you reason about why your test is seeing stale data when the application swears it committed the transaction? Can you look at an EXPLAIN ANALYZE output and identify that a missing index is why your test data generation script takes 12 minutes instead of 30 seconds? These are the SQL skills that SDET interview panels actually test — and they're the skills this guide teaches. We'll cover six practical dimensions: common query patterns every SDET should have at their fingertips (JOINs, subqueries, window functions, aggregation — but with the trade-offs and pitfalls interviewers probe), database-specific testing concepts (constraints, transactions, ACID, isolation levels — explained through the lens of 'why is my test seeing this behaviour?'), how SQL appears in real interviews (from the simple-but-revealing 'find duplicates' to the senior-level 'validate that every order has exactly one customer with a valid payment method'), data integrity validation patterns (orphan checks, uniqueness violations, cascade verification, cross-table reconciliation), ETL pipeline testing (source-to-target validation, transformation logic, incremental vs full-load), and performance testing queries for test data generation (EXPLAIN ANALYZE, index strategy, query optimisation). Throughout, we include model answers for four of the most common SQL interview questions — not just the correct query, but the verbal reasoning that demonstrates you're operating at senior level. If you've been putting off SQL preparation because you think 'I already know the basics,' this is your wake-up call — and your study guide. Complement this with our deep-dives on <a href="/blog/sdet-test-data-management-interview-questions-2026">SDET Test Data Management Interview Questions 2026</a> for the data lifecycle strategies that pair with SQL validation, <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> for the service-layer testing that often feeds database validation, and <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> — our iOS app that includes a dedicated SQL and database testing mock interview module with AI-scored query-writing exercises and real interview scenarios.</p>
+</section>
+
+<section class="content-section">
+  <h2>Common SQL Queries Every SDET Should Know — Beyond 'I Know SELECT'</h2>
+  <p>Interviewers don't test whether you've memorised syntax. They test whether you can <em>reach for the right pattern</em> when faced with a data validation problem. The difference between a mid-level candidate and a senior candidate isn't that the senior knows more keywords — it's that the senior hears 'find customers who...' and immediately knows whether the solution needs a JOIN, a subquery, a window function, or a combination of all three. Here are the query categories every SDET should command — not just the syntax, but the <em>when to use what</em> reasoning that interviewers probe.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔗</span>
+      <div>
+        <h3>JOINs — The Foundation</h3>
+        <p><strong>INNER JOIN:</strong> Returns rows where there's a match in both tables. Your default for 'show me orders with their customer details.' <strong>LEFT JOIN:</strong> Returns all rows from the left table, plus matches from the right (or NULL). The go-to for 'show me all customers, even those without orders' — and critically, for finding <em>missing</em> relationships. <strong>RIGHT JOIN:</strong> The mirror of LEFT JOIN — rarely used in practice because you can always flip the table order and use LEFT JOIN instead. <strong>FULL OUTER JOIN:</strong> Returns all rows from both tables, with NULLs where there's no match. Useful for reconciliation: 'show me rows that exist in table A but not B, and rows that exist in B but not A' — an ETL validation pattern. <strong>SELF JOIN:</strong> Joining a table to itself, typically for hierarchical data — 'find employees and their managers from the same employees table.' <strong>Interview insight:</strong> The most common SDET SQL interview question pattern is 'find records in table A that don't have a matching record in table B' — which uses a LEFT JOIN with WHERE B.id IS NULL. Candidates who reach for NOT IN or NOT EXISTS without understanding the NULL behaviour lose points.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Subqueries — Correlated vs Uncorrelated</h3>
+        <p><strong>Uncorrelated subqueries</strong> run independently of the outer query: <code>SELECT * FROM orders WHERE customer_id IN (SELECT id FROM customers WHERE country = 'UK')</code>. The database executes the subquery once, then uses the result in the outer query. <strong>Correlated subqueries</strong> reference columns from the outer query and execute once per outer row: <code>SELECT * FROM orders o WHERE order_total > (SELECT AVG(order_total) FROM orders WHERE customer_id = o.customer_id)</code>. <strong>The performance distinction matters in interviews:</strong> uncorrelated subqueries are generally faster because they run once; correlated subqueries can be slow on large datasets because they run N times (once per outer row). Senior candidates mention that you can often rewrite a correlated subquery as a JOIN or a window function for better performance. <strong>EXISTS vs IN:</strong> Interviewers love this. EXISTS checks whether the subquery returns any rows and stops at the first match — it's generally more efficient for large result sets. IN evaluates the entire subquery result set. The senior answer: 'I'd use EXISTS when the subquery might return many rows and I only care about existence; I'd use IN when the list is small and readability matters more than micro-optimisation.'</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🪟</span>
+      <div>
+        <h3>Window Functions — The Senior Differentiator</h3>
+        <p>Window functions perform calculations across a set of rows related to the current row — without collapsing the result set like GROUP BY does. They're the single biggest gap between mid-level and senior SQL proficiency. <strong>ROW_NUMBER(), RANK(), DENSE_RANK():</strong> Number rows within partitions. ROW_NUMBER assigns unique numbers; RANK leaves gaps for ties; DENSE_RANK doesn't. 'Find the top 3 most recent orders per customer' uses ROW_NUMBER() with PARTITION BY customer_id ORDER BY order_date DESC. <strong>LAG() and LEAD():</strong> Access values from previous or next rows without a self-join. 'Compare each order total to the previous order total for the same customer' — LAG(order_total) OVER (PARTITION BY customer_id ORDER BY order_date). <strong>Running totals with SUM() OVER:</strong> 'Show cumulative order value per customer over time.' <strong>Interview pattern:</strong> When an interviewer asks you to compare a row to other rows in the same group — previous orders, averages within the group, rankings — they're testing whether you reach for window functions or try to hack it with self-joins and subqueries. The window function answer is cleaner, faster, and signals senior-level SQL fluency.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>Aggregation — GROUP BY, HAVING, and Conditional Aggregates</h3>
+        <p><strong>GROUP BY with HAVING:</strong> HAVING filters groups after aggregation; WHERE filters rows before aggregation. The classic SDET validation: 'Find customers who have placed more than 5 orders' — <code>SELECT customer_id, COUNT(*) FROM orders GROUP BY customer_id HAVING COUNT(*) > 5</code>. <strong>Conditional aggregation:</strong> Using CASE inside aggregate functions — 'Count the number of orders per customer, split by status: completed, pending, cancelled' — <code>SELECT customer_id, COUNT(CASE WHEN status = 'completed' THEN 1 END) AS completed_orders, COUNT(CASE WHEN status = 'pending' THEN 1 END) AS pending_orders FROM orders GROUP BY customer_id</code>. This pattern is incredibly common in SDET data validation: you're checking that aggregated values in a reporting table match the raw data. <strong>DISTINCT vs GROUP BY:</strong> DISTINCT removes duplicate rows; GROUP BY groups rows for aggregation. They can produce the same result for simple cases, but GROUP BY is more powerful. The interview answer: 'DISTINCT is syntactic sugar for a GROUP BY on all selected columns — they produce identical execution plans in most databases. I use DISTINCT when I just want unique rows; I use GROUP BY when I need to aggregate.'</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>🎯 The Interviewer's SQL Progression</h3>
+    <p>SDET interview panels typically escalate SQL questions through three levels. <strong>Level 1 — Baseline:</strong> 'Write a query to find all orders with their customer names' (INNER JOIN). If you can't do this, the interview is effectively over. <strong>Level 2 — Validation Thinking:</strong> 'Find all customers who have never placed an order' (LEFT JOIN with IS NULL), or 'Find duplicate email addresses in the users table' (GROUP BY with HAVING COUNT > 1). This tests whether you can translate a data-quality requirement into SQL, not just retrieve data. <strong>Level 3 — Senior Differentiator:</strong> 'For each customer, find their most recent order and show how its value compares to their average order value' (window functions: ROW_NUMBER + AVG OVER), or 'Write a query to validate that every order_id in the order_items table has a matching order_id in the orders table' (LEFT JOIN with IS NULL as a validation pattern). This level separates the 'I know SQL' candidates from the 'I use SQL to protect data quality' candidates. If you can handle Level 3 with confidence, you're operating at the senior SDET level.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Database-Specific Testing — Constraints, Transactions, ACID, and Isolation Levels</h2>
+  <p>SDETs don't just query databases — they <em>test</em> them. This means understanding what guarantees the database makes and — critically — how to verify those guarantees are actually being enforced. A constraint in the schema is only useful if it's actually preventing invalid data. A transaction isolation level is only meaningful if your tests account for it. Here's what you need to know, explained through the testing lens that interviewers expect.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Database Constraints — Testing That They Work</h3>
+      <p>Constraints are the database's first line of defence against bad data. As an SDET, your job isn't to trust that they exist — it's to write tests that prove they're enforced. <strong>PRIMARY KEY:</strong> Ensures uniqueness and non-nullability. Test by attempting to insert a duplicate primary key and verifying the database rejects it. <strong>FOREIGN KEY:</strong> Ensures referential integrity — a value in the child table must exist in the parent table. Test by attempting to insert an order with a non-existent customer_id and verifying rejection. Also test the cascade behaviour: if DELETE CASCADE is configured, deleting a customer should delete their orders — verify this actually happens. <strong>UNIQUE:</strong> Ensures no duplicate values in a column or set of columns. Test by inserting a duplicate and verifying constraint violation. <strong>CHECK:</strong> Validates that values meet a condition — e.g., order_total > 0. Test with boundary values: 0, -1, and the smallest allowed positive value. <strong>NOT NULL:</strong> Prevents null values. Test with explicit NULL insert. <strong>The interview answer pattern:</strong> 'I don't just trust the schema — I write tests that attempt to violate each constraint and assert the database rejects the operation with the expected error. This protects against schema drift, migration errors, and the day someone temporarily disables a constraint for a data fix and forgets to re-enable it.'</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Transactions and ACID — Why Your Test Might See Stale Data</h3>
+      <p>ACID stands for Atomicity, Consistency, Isolation, Durability — the four properties that make databases reliable. For SDETs, the practical concern is <strong>Isolation:</strong> what happens when two transactions run concurrently? Understanding isolation levels explains race conditions in your tests — why a test that inserts data and immediately queries for it might not see what it just inserted. <strong>READ UNCOMMITTED:</strong> Transactions can see uncommitted changes from other transactions (dirty reads). Almost never used in production but good to know exists. <strong>READ COMMITTED:</strong> (Default in PostgreSQL and SQL Server) Transactions only see committed data. A query within a transaction sees a snapshot at query time — if another transaction commits between two SELECTs in your transaction, you might see different data. <strong>REPEATABLE READ:</strong> (Default in MySQL/InnoDB) A transaction sees the same data for the entire transaction, even if other transactions commit changes. Prevents non-repeatable reads but allows phantom reads (new rows matching the query can appear). <strong>SERIALIZABLE:</strong> The strictest level — transactions execute as if they were serial, one after another. Prevents all concurrency anomalies but has the highest performance cost. <strong>The SDET testing angle:</strong> When a test says 'insert an order, then query for it' and the query returns empty, the first question is: are you using the same transaction? If not, what's the isolation level? If your application uses connection pooling, is the query hitting a different connection that can't see the uncommitted insert? These are the practical database-testing debugging skills that separate SDETs who blame the test from SDETs who diagnose the actual issue.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2rem;">Testing Transaction Rollback Behaviour</h3>
+  <p>A critical testing pattern that interviewers at senior level expect you to describe: verify that when an operation fails, the database state is correctly rolled back. The test pattern: (1) Begin a transaction, (2) Insert valid data, (3) Attempt an operation that should fail (e.g., violate a constraint), (4) Verify the transaction was rolled back, (5) Query the database to confirm no partial data was persisted. This validates atomicity — the 'A' in ACID. The follow-up interview question: 'What if the database doesn't support transactions on the table engine you're using?' (MySQL MyISAM tables, for example). The answer: 'I'd flag this as a testing risk — any data validation test that relies on rollback behaviour needs a transactional storage engine. If the production table uses a non-transactional engine, I'd document that partial updates are possible and recommend migration to InnoDB or equivalent.'</p>
+</section>
+
+<section class="content-section">
+  <h2>How SQL Appears in Real SDET Interviews — The Scenarios That Actually Come Up</h2>
+  <p>The gap between 'textbook SQL' and 'interview SQL' is enormous. Textbooks ask: 'What is a LEFT JOIN?' Interviews ask: 'Write a query to validate that every order has exactly one customer.' Textbooks define window functions. Interviews ask: 'For each customer, compare their most recent order total to their average — and flag any customer whose most recent order is more than double their average.' This section covers the actual scenarios that come up in SDET interviews, with model answers and the reasoning that panels want to hear.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Scenario 1: 'Find All Orders That Don't Have a Valid Customer'</h3>
+        <p>This is the single most common data-validation SQL question in SDET interviews — and it's deceptively simple. <strong>The query:</strong> <code>SELECT o.* FROM orders o LEFT JOIN customers c ON o.customer_id = c.id WHERE c.id IS NULL</code>. <strong>Why it works:</strong> A LEFT JOIN keeps all orders, matching customers where possible. If an order has no matching customer, all customer columns are NULL — including the join key. Filtering WHERE c.id IS NULL returns only orphaned orders. <strong>The follow-up that separates mid-level from senior:</strong> 'What if customer_id in the orders table is NULL?' A NULL customer_id won't match any customer, but it also won't appear in the LEFT JOIN result with c.id IS NULL — because NULL != NULL in SQL (NULL comparisons always return UNKNOWN). The fix: add <code>OR o.customer_id IS NULL</code> to the WHERE clause. <strong>The senior answer:</strong> 'I'd use this query as part of a data integrity test suite that runs after every deployment. If it returns any rows, the deployment is blocked — because it means we have orders with no associated customer, which breaks downstream reporting and billing.'</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📋</span>
+      <div>
+        <h3>Scenario 2: 'Find Duplicate Records and Identify the Root Cause'</h3>
+        <p>A classic SDET data-quality interview question. <strong>The query:</strong> <code>SELECT email, COUNT(*) as occurrence_count FROM users GROUP BY email HAVING COUNT(*) > 1</code>. <strong>The follow-up:</strong> 'Now show me the duplicate rows themselves so I can investigate.' <strong>The query:</strong> <code>SELECT * FROM users WHERE email IN (SELECT email FROM users GROUP BY email HAVING COUNT(*) > 1) ORDER BY email, created_at</code>. <strong>The senior extension:</strong> 'Now write a query that keeps the earliest-created user per email and flags the rest for deletion.' <strong>The answer:</strong> Use ROW_NUMBER() partitioned by email, ordered by created_at — rows with row_number > 1 are duplicates to be deleted. <strong>The testing insight:</strong> 'In a real SDET context, I wouldn't just write this query once — I'd make it a scheduled validation that runs daily and alerts if duplicates appear. That turns a one-off data fix into a continuous data quality guard.'</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚖️</span>
+      <div>
+        <h3>Scenario 3: 'Validate Cross-Table Consistency'</h3>
+        <p>Your orders table has an order_total column. Your order_items table has individual line items with quantity × unit_price. The business rule: order_total must equal SUM(order_items.quantity × order_items.unit_price) for each order. <strong>The validation query:</strong> <code>SELECT o.id, o.order_total, SUM(oi.quantity * oi.unit_price) AS calculated_total FROM orders o JOIN order_items oi ON o.id = oi.order_id GROUP BY o.id, o.order_total HAVING o.order_total != SUM(oi.quantity * oi.unit_price)</code>. <strong>The senior extension:</strong> 'What about rounding? What if a discount was applied at the order level, not the item level?' The answer demonstrates systems thinking: 'I'd check whether the discrepancy is within an acceptable rounding threshold (e.g., £0.01), and I'd ask whether order-level discounts are stored in a separate field or applied to order_total after line-item calculation. The validation query needs to account for the full business logic, not just the naive column mapping.'</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Scenario 4: 'Time-Window Analysis with Window Functions'</h3>
+        <p>'Find all customers whose order frequency has dropped — specifically, customers who placed at least one order per week for the last 4 weeks but zero orders this week.' This tests whether you can think in time windows and use window functions for cohort analysis. <strong>The approach:</strong> (1) Create weekly buckets using DATE_TRUNC, (2) Count orders per customer per week, (3) Use LAG() to compare consecutive weeks, (4) Identify customers where the most recent week has zero orders but the previous 4 weeks all had at least one. <strong>The senior insight:</strong> 'In a real interview, I'd pause here and ask: what defines a week — Monday to Sunday, or rolling 7-day windows? And what timezone are we using for the cutoff? These clarifying questions show that I'm thinking about edge cases and data semantics, not just SQL syntax. The panel cares more about the questions I ask than the exact query I write.'</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Data Integrity Validation Patterns — The Four Patterns Every SDET Should Recognise</h2>
+  <p>Over hundreds of SDET interviews, four data integrity validation patterns recur constantly. They're not about SQL syntax — they're about the <em>shape</em> of the validation problem. Recognising which pattern applies to a given scenario is half the battle. Here they are, with exact queries and the testing context that makes them meaningful.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>1. The Orphan Check</h3>
+      <p><strong>What it validates:</strong> Every child record has a valid parent. Every order has a customer. Every order_item has an order. Every payment has a corresponding invoice. <strong>The query pattern:</strong> LEFT JOIN child to parent, filter WHERE parent.id IS NULL. <strong>Variations:</strong> For composite foreign keys, join on all key columns. For soft-deleted parents (where deleted_at is not null, not actually removed), the check needs to exclude soft-deleted parents if that's the business rule. <strong>The SDET testing approach:</strong> This isn't a one-off query — it's a test that runs in CI after every migration and after any data-import process. If it returns rows, the pipeline fails. This catches schema changes that accidentally drop foreign key constraints, migration scripts that create orphaned data, and ETL jobs that fail silently.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>2. The Uniqueness Violation</h3>
+      <p><strong>What it validates:</strong> Columns or column combinations that should be unique actually are. Email addresses. Usernames. Order reference numbers. Composite keys like (tenant_id, order_number). <strong>The query pattern:</strong> GROUP BY the unique columns, HAVING COUNT(*) > 1. <strong>Critical nuance:</strong> NULL handling. Multiple NULLs in a UNIQUE-constrained column are typically allowed (because NULL != NULL). Your uniqueness check needs to decide whether NULL duplicates count as violations — usually they don't, but the business rule might say otherwise. <strong>The SDET testing approach:</strong> After a data migration, an ETL run, or a bulk import, run uniqueness checks on every column or column group that the schema declares as UNIQUE. This validates that the constraint is enforced at the application level too — a UNIQUE constraint catches it at insert time, but a batch import that temporarily disables constraints might bypass it. Your test catches what slipped through.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>3. Foreign Key Cascade Verification</h3>
+      <p><strong>What it validates:</strong> When a parent record is deleted, the cascade behaviour actually executes correctly. If orders have ON DELETE CASCADE from customers, deleting a customer should delete all their orders. <strong>The test approach:</strong> (1) Insert a test customer with test orders, (2) Record the order IDs, (3) Delete the customer, (4) Query for the order IDs — they should not exist, (5) Roll back the transaction so the test data doesn't persist. <strong>The senior insight:</strong> 'I also test the inverse — that non-cascaded deletes are rejected. If a table has ON DELETE RESTRICT, I verify that attempting to delete a parent with existing children raises a foreign key violation. This prevents the scenario where someone changes the constraint from RESTRICT to CASCADE during a migration without updating the application logic.'</p>
+    </div>
+    <div class="comparison-card">
+      <h3>4. Cross-Table Reconciliation</h3>
+      <p><strong>What it validates:</strong> Aggregate values in one table match the source data in another. Order totals match the sum of line items. Account balances match the sum of transactions. Report tables match the raw event data they were derived from. <strong>The query pattern:</strong> Join the aggregate table to the source table, GROUP BY the aggregate key, and compare SUM(source values) to the stored aggregate. <strong>The SDET approach:</strong> 'I'd run reconciliation queries as part of a post-deployment smoke test suite. If the orders_summary table shows different totals than the raw orders table, something is wrong — either a bug in the aggregation logic, a race condition in the update, or a data ingestion gap. Reconciliation queries are the canary in the data-quality coal mine.' <strong>ETL-specific:</strong> Source-to-target reconciliation uses FULL OUTER JOIN to find rows that exist in one system but not the other, plus rows that exist in both but with different values. This is the foundational pattern for ETL validation testing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>ETL Pipeline Testing — Validating Data Movement Between Systems</h2>
+  <p>As applications move toward event-driven architectures and data-intensive backends, SDETs increasingly own the testing of data pipelines — Extract, Transform, Load processes that move data between operational databases, data warehouses, analytics platforms, and third-party integrations. ETL testing uses the same SQL skills you already have, but applied to a different class of problems: not 'is the data valid in one place?' but 'did the data arrive correctly in the <em>other</em> place?'</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📥</span>
+      <div>
+        <h3>Source-to-Target Row Count Validation</h3>
+        <p>The simplest and most essential ETL test: did all the rows make it? <strong>The query pattern:</strong> <code>SELECT (SELECT COUNT(*) FROM source_table WHERE extraction_criteria) AS source_count, (SELECT COUNT(*) FROM target_table WHERE load_batch = 'batch_2026_05_29') AS target_count</code>. If the counts don't match, rows were lost or duplicated. <strong>Beyond counts:</strong> Row counts alone don't catch the case where 10 rows were lost but 10 different rows were duplicated. That's why the next check is checksum comparison.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔐</span>
+      <div>
+        <h3>Checksum and Hash-Based Comparison</h3>
+        <p>Generate a hash of key columns on both source and target, then compare. <strong>PostgreSQL example:</strong> <code>SELECT MD5(STRING_AGG(id || '|' || amount || '|' || status, ',' ORDER BY id)) FROM source_table</code>. Run the same on the target. If the hashes match, the data is identical. <strong>Caveat:</strong> This only works when both systems have the same row set. For partial loads, use per-row hash comparison: <code>SELECT s.id FROM source_table s FULL OUTER JOIN target_table t ON s.id = t.id WHERE s.id IS NULL OR t.id IS NULL OR MD5(s.row_data) != MD5(t.row_data)</code>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Transformation Logic Verification</h3>
+        <p>ETL pipelines transform data: currency conversion, field renaming, data type casting, enrichment from lookup tables, deduplication. <strong>The test approach:</strong> Create controlled source data with known expected outputs — including edge cases (nulls, empty strings, maximum-length values, special characters). Run the pipeline. Query the target and assert each field matches the expected transformation. <strong>Common pitfalls:</strong> Timezone conversions (UTC to local), character encoding issues (UTF-8 source, ASCII target), and floating-point precision in financial calculations. The senior SDET approach is to maintain a 'golden dataset' — a small but comprehensive set of source records with pre-calculated expected target values — and run it through the pipeline after every change.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⏱️</span>
+      <div>
+        <h3>Incremental vs Full-Load Validation</h3>
+        <p>Full-load ETL processes the entire dataset every time — validation is straightforward because source and target should match exactly. Incremental ETL only processes changed records — validation is harder because you need to track what changed. <strong>The test pattern:</strong> (1) Run a full load to establish baseline, (2) Make controlled changes to source data (insert 5 rows, update 3, delete 2), (3) Run incremental load, (4) Verify target reflects exactly those changes and nothing else. <strong>The tricky bit:</strong> Deletes in incremental loads. If the source marks records as deleted (soft delete) rather than physically removing them, the target needs to handle this correctly — either soft-deleting or hard-deleting based on the pipeline design. Your test must verify the delete behaviour explicitly.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>🎯 The ETL Testing Question You'll Actually Get</h3>
+    <p>'We have a nightly job that moves order data from our operational PostgreSQL database to our analytics Redshift cluster. Yesterday's run completed successfully but the finance team says their revenue report is £50,000 lower than expected. Walk me through how you'd investigate.' This isn't a SQL question — it's a debugging-through-SQL question. The strong answer: (1) Check the ETL job logs for row counts — did the expected number of rows transfer? (2) Run a source-to-target row count comparison for yesterday's date range. (3) If counts match, run checksum comparison on key monetary columns. (4) If checksums differ, identify specific rows that don't match using a FULL OUTER JOIN. (5) Check for late-arriving data — orders placed before midnight but processed after the ETL window. (6) Check for data type issues — a VARCHAR-to-DECIMAL cast that silently drops precision. (7) Check timezone handling — orders in UTC but reports in local time, causing a boundary issue. This structured debugging approach is what interviewers want to hear, not just 'I'd check the logs.'</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>SQL Performance Testing for SDETs — EXPLAIN ANALYZE, Indexes, and Test Data Generation</h2>
+  <p>Performance isn't just for load testers. SDETs who can diagnose <em>why</em> their test setup is slow — and fix it at the database level — operate at a higher level of technical ownership. Two scenarios come up repeatedly: (1) Your test data generation script takes 12 minutes instead of 30 seconds, and the bottleneck is database writes. (2) Your validation queries that run as part of CI are getting slower as the test dataset grows, and you need to optimise them.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>EXPLAIN ANALYZE — Reading Query Plans</h3>
+      <p>EXPLAIN ANALYZE shows you exactly how the database executed your query: which indexes it used (or didn't), how many rows it scanned, where the time went. <strong>What to look for:</strong> <strong>Seq Scan (Sequential Scan):</strong> The database is reading every row in the table — usually a sign that a missing index is forcing a full table scan. For a table with millions of rows, this is a performance killer. <strong>Index Scan vs Index Only Scan:</strong> Index Scan uses the index to find rows, then fetches the full row from the table. Index Only Scan doesn't need to go to the table at all — it's faster. <strong>Nested Loop vs Hash Join vs Merge Join:</strong> How the database joins tables. Nested Loop is efficient for small outer tables; Hash Join is better for large, unsorted datasets; Merge Join requires sorted input. <strong>Cost and Actual Time:</strong> The cost is the planner's estimate (in arbitrary units); actual time is what really happened. Large discrepancies between estimated and actual rows suggest outdated statistics — run ANALYZE to refresh them. <strong>The interview answer:</strong> 'When my test data generation is slow, I run EXPLAIN ANALYZE on the insert queries. If I see sequential scans on lookup tables that should be using indexes, I check whether the indexes exist and whether the query is sargable — using functions on indexed columns (like WHERE LOWER(email) = ...) prevents index usage.'</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Index Strategy for Test Data Generation</h3>
+      <p>Test data generation scripts often insert millions of rows — and indexes that speed up SELECTs can dramatically slow down INSERTs because every index must be updated on every insert. <strong>The trade-off:</strong> For bulk test data generation, consider: (1) Drop non-essential indexes before the bulk insert, then recreate them afterwards. (2) Use COPY (PostgreSQL) or LOAD DATA INFILE (MySQL) for bulk inserts — they're orders of magnitude faster than individual INSERT statements. (3) Batch inserts in transactions — committing after every row is extremely slow; commit every 10,000 rows instead. <strong>The interview answer:</strong> 'For generating a million-row test dataset, I'd disable triggers and drop indexes (except primary key and unique constraints needed for data integrity), use COPY or bulk INSERT with batched transactions, then re-enable triggers, recreate indexes, and run ANALYZE to update statistics. This can turn a 30-minute data generation script into a 30-second one.' <strong>Warning:</strong> Never do this in production. This is for isolated test databases only.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2rem;">Common Query Optimisation Patterns</h3>
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⚡</span>
+      <div>
+        <h3>Avoid SELECT * in Validation Queries</h3>
+        <p>SELECT * pulls every column, which increases I/O and memory usage. When you're validating data integrity, you typically only need key columns. <code>SELECT id, customer_id FROM orders WHERE ...</code> is faster than <code>SELECT * FROM orders WHERE ...</code> — especially on wide tables with JSON or TEXT columns. This matters when your validation queries run against production-sized datasets.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Sargable Queries — Index-Friendly WHERE Clauses</h3>
+        <p>A sargable query (SARG = Search ARGument) is one where the database can use an index. <strong>Sargable:</strong> <code>WHERE created_at > '2026-01-01'</code>, <code>WHERE status = 'active'</code>, <code>WHERE id IN (1, 2, 3)</code>. <strong>Not sargable:</strong> <code>WHERE YEAR(created_at) = 2026</code> (function on column), <code>WHERE UPPER(email) = 'TEST@EXAMPLE.COM'</code>, <code>WHERE total * 1.2 > 100</code> (expression on column). The fix: rewrite to avoid functions on indexed columns — use a range query instead of YEAR(), or store a normalised version of the email for searching.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>CTEs vs Subqueries for Readability</h3>
+        <p>Common Table Expressions (WITH clauses) make complex validation queries readable and maintainable. Instead of nested subqueries: <code>WITH duplicate_emails AS (SELECT email FROM users GROUP BY email HAVING COUNT(*) > 1) SELECT * FROM users WHERE email IN (SELECT email FROM duplicate_emails)</code>. <strong>Performance note:</strong> In PostgreSQL, CTEs used to be optimisation fences (the database couldn't push predicates into them). Since PostgreSQL 12, non-materialised CTEs can be inlined. In MySQL 8+, CTEs behave similarly to derived tables. The interview insight: 'I prefer CTEs for readability and maintainability in test validation code — other SDETs on my team should be able to understand the query six months later. If performance becomes an issue, I'll check the query plan and consider inlining.'</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Model Answers — 4 Common SQL Interview Questions with the Reasoning Panels Expect</h2>
+  <p>Writing the correct query is table stakes. What separates candidates is the <em>reasoning</em> — the 'why' behind the query, the edge cases you anticipate, the follow-up questions you ask. Here are model answers for four of the most common SQL interview questions in SDET interviews, structured the way panels want to hear them.</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">Question 1</div>
+      <div class="timeline-content">
+        <h3>'Write a Query to Find All Products That Have Never Been Ordered'</h3>
+        <p><strong>The query:</strong></p>
+        <pre style="background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code>SELECT p.*
+FROM products p
+LEFT JOIN order_items oi ON p.id = oi.product_id
+WHERE oi.product_id IS NULL;</code></pre>
+        <p><strong>The reasoning:</strong> 'I'm using a LEFT JOIN to keep all products, then filtering for those where the join found no match. This is an existence check, not a data retrieval — I only need to know whether a row exists in order_items, so I could also use NOT EXISTS: <code>SELECT * FROM products p WHERE NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.product_id = p.id)</code>. NOT EXISTS is often more efficient because the database can stop scanning order_items as soon as it finds a match for each product — it doesn't need to build the full join. The performance difference matters on large catalogues with millions of products and order_items.' <strong>Edge cases I'd ask about:</strong> 'Are soft-deleted products still considered products for this query? Should products with zero stock but active listings count as 'never ordered'? Should we exclude products created in the last 24 hours that haven't had a chance to be ordered yet?' These clarifying questions show the interviewer that I'm thinking about data semantics, not just SQL syntax.'</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Question 2</div>
+      <div class="timeline-content">
+        <h3>'For Each Customer, Find Their Most Recent Order and Compare It to Their Average Order Value'</h3>
+        <p><strong>The query:</strong></p>
+        <pre style="background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code>WITH ranked_orders AS (
+  SELECT
+    customer_id,
+    order_id,
+    order_total,
+    order_date,
+    ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) AS rn,
+    AVG(order_total) OVER (PARTITION BY customer_id) AS avg_order_total
+  FROM orders
+)
+SELECT
+  customer_id,
+  order_id AS most_recent_order,
+  order_total AS most_recent_total,
+  ROUND(avg_order_total, 2) AS avg_order_total,
+  ROUND(order_total - avg_order_total, 2) AS difference,
+  ROUND((order_total / NULLIF(avg_order_total, 0) - 1) * 100, 1) AS pct_difference
+FROM ranked_orders
+WHERE rn = 1
+ORDER BY pct_difference DESC;</code></pre>
+        <p><strong>The reasoning:</strong> 'I'm using a CTE with window functions to calculate both the row ranking and the average in a single pass over the data. ROW_NUMBER() with PARTITION BY customer_id and ORDER BY order_date DESC gives each customer's orders a rank — 1 is the most recent. AVG(order_total) OVER (PARTITION BY customer_id) calculates each customer's average across all their orders without collapsing the result set. Then I filter to rn = 1 to get only the most recent order per customer. I'm using NULLIF(avg_order_total, 0) to avoid division by zero if a customer somehow has zero-value orders. The ORDER BY pct_difference DESC surfaces customers whose spending is most anomalous — potentially useful for fraud detection or customer success follow-up.' <strong>The follow-up interviewers ask:</strong> 'What if two orders have exactly the same order_date? Which one is the most recent?' The answer: 'ROW_NUMBER() will arbitrarily pick one, which is non-deterministic. If the business rule requires consistent behaviour, I'd add a secondary ORDER BY clause — ORDER BY order_date DESC, order_id DESC — to break ties deterministically. Or I'd use RANK() and include all orders tied for first place.' <strong>Senior extension:</strong> 'I'd also consider whether we need RANK() or DENSE_RANK() instead. If I want all orders that are tied for most recent — e.g., two orders placed at exactly the same timestamp — I'd use RANK() and change the WHERE clause to rnk = 1.'</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Question 3</div>
+      <div class="timeline-content">
+        <h3>'Validate That Every Order Has Exactly One Customer and Every Order Item Has a Valid Product'</h3>
+        <p><strong>The query:</strong></p>
+        <pre style="background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code>-- Check 1: Orders without a customer
+SELECT 'orphan_order' AS issue_type, o.id AS record_id
+FROM orders o
+LEFT JOIN customers c ON o.customer_id = c.id
+WHERE c.id IS NULL OR o.customer_id IS NULL
+
+UNION ALL
+
+-- Check 2: Order items without a valid product
+SELECT 'orphan_order_item' AS issue_type, oi.id AS record_id
+FROM order_items oi
+LEFT JOIN products p ON oi.product_id = p.id
+WHERE p.id IS NULL
+
+UNION ALL
+
+-- Check 3: Customers with duplicate order references
+SELECT 'duplicate_order_ref' AS issue_type, order_ref AS record_id
+FROM orders
+GROUP BY order_ref
+HAVING COUNT(*) > 1;</code></pre>
+        <p><strong>The reasoning:</strong> 'I've combined three data integrity checks into a single validation query using UNION ALL — this is the pattern I'd use in a CI pipeline where I want all failures reported at once, not one at a time. Check 1 finds orphaned orders — the LEFT JOIN with IS NULL pattern, plus an explicit NULL check on customer_id because NULL ≠ NULL in SQL. Check 2 validates referential integrity between order_items and products. Check 3 catches duplicate order references that might indicate an idempotency bug in the order processing system. <strong>The structural decision:</strong> I used UNION ALL rather than UNION because the issue types are different — there's no risk of duplicates, and UNION ALL avoids the unnecessary sort-and-deduplicate step. <strong>The testing integration:</strong> In a real SDET context, I'd wrap this in a test that asserts the result set is empty — any returned row means a data integrity violation, and the test fails. The issue_type column tells the on-call engineer exactly what kind of problem to investigate.'</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Question 4</div>
+      <div class="timeline-content">
+        <h3>'You're Testing a Financial System. Write a Query That Verifies Account Balances Match the Sum of All Transactions'</h3>
+        <p><strong>The query:</strong></p>
+        <pre style="background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code>SELECT
+  a.id AS account_id,
+  a.balance AS stored_balance,
+  COALESCE(SUM(t.amount), 0) AS calculated_balance,
+  a.balance - COALESCE(SUM(t.amount), 0) AS discrepancy
+FROM accounts a
+LEFT JOIN transactions t ON a.id = t.account_id
+GROUP BY a.id, a.balance
+HAVING a.balance != COALESCE(SUM(t.amount), 0)
+ORDER BY ABS(a.balance - COALESCE(SUM(t.amount), 0)) DESC;</code></pre>
+        <p><strong>The reasoning:</strong> 'This is a cross-table reconciliation query — the canonical data integrity pattern for financial systems. I'm using a LEFT JOIN because some accounts might have zero transactions (new accounts), and COALESCE ensures those accounts show a calculated balance of 0 rather than NULL. The HAVING clause filters to only accounts where the stored balance doesn't match — if this query returns any rows, it's a data integrity incident. I ORDER BY the absolute discrepancy descending so the worst offenders are at the top. <strong>Questions I'd ask the interviewer:</strong> 'Are pending transactions included in the balance? Are there transaction types that don't affect the balance — like internal transfers that are recorded for audit but net to zero? Are there scheduled or future-dated transactions that should be excluded?' These clarifying questions show that I understand financial systems have nuanced business rules that a naive SUM won't capture. <strong>Performance consideration:</strong> On a large transactions table (millions of rows per account), I'd suggest running this as a daily reconciliation job rather than a real-time validation — or using a materialised view that maintains running balances incrementally.'</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for SQL and Database Testing Interviews — Starting Today</h2>
+  <p>SQL isn't a topic you can cram the night before — it's a skill you build through deliberate practice with real data. Here's the 4-step preparation plan that moves you from 'I know SELECT' to 'I can validate data integrity at the architectural level':</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Install a local database and practise the patterns.</strong> PostgreSQL is free and industry-standard. Create sample tables — customers, orders, order_items, products — and practise every query pattern in this guide. Write the queries yourself before looking at the model answers. Then modify them: what changes if you need the top 5 most recent orders instead of 1? What if the business rule says 'exactly one active customer' and customers can be deactivated?</li>
+    <li><strong>Solve SQL problems on platforms like LeetCode, HackerRank, and StrataScratch.</strong> Filter for 'Database' problems and focus on Medium and Hard difficulty. The key isn't getting the right answer — it's developing the pattern recognition that tells you whether a problem needs a JOIN, a subquery, a window function, or a combination. After a few dozen problems, you'll start seeing the patterns instantly.</li>
+    <li><strong>Download SDET Interview Coach</strong> and complete the SQL and Database Testing module. Select your target seniority level — the app surfaces SQL questions calibrated to your level, from foundational JOIN exercises for junior candidates to multi-table reconciliation scenarios with transaction isolation edge cases for lead candidates. The AI mock interviewer asks follow-up questions and scores your answers across technical accuracy, edge-case awareness, and verbal reasoning — the three dimensions interview panels evaluate.</li>
+    <li><strong>Use Job Match for your target role.</strong> Paste the job description from your target company into Job Match. If the JD mentions PostgreSQL, MySQL, 'data validation,' 'ETL testing,' or 'database testing,' you'll get SQL and database questions specific to that stack and context. Fintech roles get reconciliation and transactions questions; e-commerce roles get order validation and duplicate detection; SaaS roles get tenant isolation and multi-schema query scenarios.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The SQL round in an SDET interview isn't about proving you could be a DBA — it's about proving you can use SQL as a quality engineering tool. The candidates who stand out are the ones who, when shown a data integrity scenario, immediately think in sets, anticipate edge cases, and can explain their reasoning clearly. This guide gives you the patterns, the model answers, and the mental models. The practice gives you the confidence. SDET Interview Coach's spaced repetition system ensures these SQL patterns stay in your long-term memory — so when the interviewer opens that shared editor and says 'write a query that validates...', you're not staring at a blank screen. You're already thinking in LEFT JOINs, window functions, and HAVING clauses.</p>
+
+  <p>If you're building your broader SDET skill set, complement this guide with <a href="/blog/sdet-test-data-management-interview-questions-2026">SDET Test Data Management Interview Questions 2026</a> for the data generation and lifecycle strategies that pair with SQL validation, and <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> for the service-layer testing that often interacts with database state. For the programming languages most commonly paired with database testing, see our guides on <a href="/blog/typescript-for-sdet-interviews-2026">TypeScript for SDET Interviews 2026</a> and <a href="/blog/java-for-sdet-interviews-2026">Java for SDET Interviews 2026</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What SQL skills do I need for SDET interviews in 2026?",
+        a: "SDET interviews test SQL at three levels. Foundation level: INNER JOINs, LEFT JOINs, GROUP BY with HAVING, and basic WHERE clause filtering — if you can't do these, the interview is effectively over. Validation level: using LEFT JOIN ... WHERE IS NULL to find missing relationships, GROUP BY ... HAVING COUNT > 1 to find duplicates, and cross-table reconciliation queries to verify aggregate values match source data. Senior level: window functions (ROW_NUMBER, RANK, LAG/LEAD, running totals with SUM OVER), correlated vs uncorrelated subqueries with performance trade-offs, EXPLAIN ANALYZE interpretation, and transaction isolation level awareness. The single most important distinction: interviewers don't care if you know SQL syntax — they care if you can translate a data-quality requirement ('validate that every order has a customer') into a correct query. This is a mindset shift from 'I can query' to 'I can validate.' SDET Interview Coach's SQL module includes 50+ questions calibrated across all three levels, with AI feedback on both query correctness and verbal reasoning.",
+      },
+      {
+        q: "How is SQL tested differently in SDET interviews compared to data analyst interviews?",
+        a: "Data analyst interviews focus on data extraction and insight generation: 'Write a query to show monthly revenue trends,' 'Find the top 10 customers by lifetime value.' SDET interviews focus on data validation and integrity: 'Write a query to find orders that don't have a valid customer,' 'Verify that account balances match transaction sums,' 'Identify rows that exist in the source database but not the target after an ETL run.' The SDET lens is defensive — you're testing the data, not analysing it. Interviewers also probe database internals more deeply in SDET interviews: transaction isolation levels, constraint enforcement, and index usage. A data analyst needs to know what a LEFT JOIN does; an SDET needs to know that NULL handling in LEFT JOINs can cause false negatives in data integrity checks.",
+      },
+      {
+        q: "Do I need to know multiple database systems for SDET interviews?",
+        a: "PostgreSQL is the safest investment — it's the most commonly used relational database in modern tech stacks and most SDET interview questions assume PostgreSQL syntax. MySQL is common in e-commerce and legacy systems. Knowing both is ideal, but PostgreSQL alone covers 80% of interviews. The key differences to be aware of: PostgreSQL uses ILIKE for case-insensitive pattern matching while MySQL uses LIKE with case-insensitive collation; PostgreSQL has a richer set of window functions; MySQL's default isolation level is REPEATABLE READ while PostgreSQL's is READ COMMITTED; and PostgreSQL's EXPLAIN ANALYZE output format is more detailed. Interviewers won't typically quiz you on implementation-specific syntax, but knowing these differences shows depth. If the job description mentions a specific database (MongoDB, DynamoDB, Cassandra), that's a different conversation — those are NoSQL systems and warrant separate preparation.",
+      },
+      {
+        q: "What's the best way to practise SQL for SDET data validation scenarios?",
+        a: "Set up a local PostgreSQL instance with realistic sample data — at minimum, create tables for customers, orders, order_items, and products with proper foreign key relationships. Then intentionally introduce data integrity bugs: insert an order with a non-existent customer_id, duplicate an email address, create an order where the total doesn't match the sum of line items, delete a product without checking for existing order_items references. Write queries to detect each bug. This 'break it, then detect it' practice builds the validation mindset that interviewers test for. Complement this with SDET Interview Coach's SQL module, which presents data integrity scenarios and evaluates your query against model answers — including edge cases you might not have considered.",
+      },
+      {
+        q: "How do I handle the SQL question if I'm primarily a front-end or mobile test automation SDET?",
+        a: "Be honest about your experience while demonstrating transferable thinking. A good answer: 'Most of my testing has been at the UI and API layer, but I understand the database concepts that matter for testing. When debugging a test failure, I query the database to check whether the issue is in the data layer or the application layer — for example, verifying that an order was actually persisted before concluding the front-end is broken. I'm comfortable with JOINs, GROUP BY, and subqueries, and I'm actively building my window function skills.' Then demonstrate the validation mindset by walking through how you'd approach a data integrity check — even if your syntax isn't perfect, showing that you think in sets and edge cases goes a long way. Interviewers at mid-level expect growth potential, not perfection.",
+      },
+      {
+        q: "What are transaction isolation levels and why do they matter for SDET testing?",
+        a: "Transaction isolation levels control how concurrent database transactions interact — and they're a common source of test flakiness that SDETs need to diagnose. The four levels, from least to most strict: READ UNCOMMITTED (dirty reads allowed), READ COMMITTED (default in PostgreSQL — sees only committed data, but can see different data within the same transaction), REPEATABLE READ (default in MySQL — sees the same snapshot for the entire transaction, preventing non-repeatable reads), and SERIALIZABLE (executes transactions as if they were serial — the strictest, with the highest performance cost). For SDETs, the practical concern is: when a test inserts data and immediately queries for it but doesn't see it, is it an isolation level issue (the query uses a different connection or the data isn't committed yet), a connection pooling issue (the query hits a different connection), or a real bug? Understanding isolation levels helps you distinguish test infrastructure issues from application bugs. SDET Interview Coach includes isolation level scenarios in its senior-level database testing questions.",
+      },
+      {
+        q: "Does SDET Interview Coach cover SQL and database testing interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated SQL and Database Testing topic area with questions spanning SQL query patterns (JOINs, subqueries, window functions, aggregation), database-specific testing (constraints, transactions, ACID, isolation levels), data integrity validation patterns (orphan checks, uniqueness violations, cascade verification, cross-table reconciliation), ETL pipeline testing (source-to-target reconciliation, transformation verification), and SQL performance testing (EXPLAIN ANALYZE, index strategy, query optimisation). AI-scored mock interviews test both your query correctness and your verbal reasoning — the interviewer asks follow-ups about edge cases, NULL handling, and performance trade-offs, just like a real panel. Use Job Match to generate 50 bespoke questions from any SDET job description that mentions SQL, PostgreSQL, MySQL, database testing, data validation, or ETL.",
+      },
+    ],
+    relatedSlugs: ["sdet-test-data-management-interview-questions-2026", "typescript-for-sdet-interviews-2026", "java-for-sdet-interviews-2026"],
+  },
+  {
     slug: "monitoring-observability-sdet-interview-questions-2026",
     title: "Monitoring and Observability for SDETs Interview Questions 2026 — The Three Pillars of Observability for Test Automation (Logs, Metrics, Traces), Instrumenting Your Test Framework with Custom Metrics and Structured Logging, Building Real-Time Dashboards with Grafana and Datadog for Test Execution Visibility, Alerting on Test Infrastructure Health and Flakiness Trends with Prometheus and PagerDuty, Distributed Tracing for End-to-End Test Flows with OpenTelemetry, SLOs and SLIs for Quality Engineering (Error Budgets, Burn Rate Alerts, and Reliability Targets), and the Observability Interview Questions Senior SDET Panels Ask in 2026",
     description: "The definitive monitoring and observability guide for SDET interviews in 2026 — covering every observable dimension of test infrastructure and test quality that modern engineering organisations expect QA engineers to instrument, measure, and protect. Most SDETs can write a test. Few can answer the question: 'Your CI pipeline runs 3,000 tests every hour. A production incident happens. How do you know — within 60 seconds — whether your tests caught the regression, missed it entirely, or were flaking and nobody noticed?' That question separates test-writers from quality engineers. In 2026, with microservice architectures generating terabytes of telemetry, AI-powered testing producing non-deterministic outputs, and engineering organisations adopting observability-driven development, SDETs who can instrument test frameworks with custom metrics, build real-time dashboards that surface test health trends, configure alerting on flakiness and infrastructure degradation, and define Service Level Objectives for test reliability are the ones getting hired at top-tier companies. This guide covers every observability topic that senior SDET interview panels drill into: the three pillars (logs, metrics, traces) translated for test automation — structured logging in test frameworks, Prometheus counters and histograms for test execution metrics, and OpenTelemetry traces that connect a failing test to the exact API call that returned a 500; instrumenting Playwright, Selenium, and API test suites with custom business metrics; building Grafana dashboards that tell the story of your test suite's health at a glance; configuring intelligent alerting that distinguishes between 'the app is broken' and 'the test infrastructure is broken'; SLOs and SLIs for quality engineering — defining error budgets for test reliability and burning them down when flakiness spikes; and the observability interview questions that reveal whether you think like a quality engineer or a test scripter. Every section includes real instrumentation code snippets and dashboard configurations you might be asked to design, explain, or critique during an interview. The SDET Interview Coach iOS app includes observability scenario challenges with AI-scored feedback — you describe your monitoring strategy for a distributed test infrastructure, define key SLOs, and design an alerting hierarchy, and the app evaluates your answer against rubrics used at Google, Datadog, and Stripe for senior SDET and QE roles.",
