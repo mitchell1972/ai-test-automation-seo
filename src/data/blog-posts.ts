@@ -14,6 +14,335 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "test-doubles-mocks-stubs-fakes-spies-interview-questions-2026",
+    title: "Test Doubles Interview Questions 2026 — Mocks vs Stubs vs Fakes vs Spies: Understanding the Test Double Taxonomy, When to Use Each Type of Test Double in Your Automation Framework, Mocking Frameworks Compared (Mockito vs Jest vs unittest.mock vs Moq), Test Doubles for Microservices and Distributed Systems, Avoiding the Over-Mocking Anti-Pattern, and the Test Double Design Questions Senior SDET Interview Panels Ask in 2026",
+    description: "The definitive test doubles guide for SDET interviews in 2026 — covering every dimension of mocking, stubbing, faking, and spying that modern interview panels expect automation engineers to articulate with precision. Most SDETs use mocks. Few can explain when a stub is better than a mock, why spies are the most dangerous test double, or how to design test doubles for a distributed system without creating a false sense of security. Interviewers at top-tier engineering organisations have stopped asking 'have you used Mockito?' — they now ask 'design the test double strategy for a payment processing pipeline with 4 external dependencies, and justify every choice.' This guide covers the complete test double taxonomy (mocks, stubs, fakes, spies, dummies) with clear distinction criteria and decision frameworks; deep dives into Mockito, Jest, unittest.mock, and Moq with real code examples that demonstrate behavioural vs state verification; the over-mocking anti-pattern — how mocking everything turns your test suite into a change-detector that verifies implementation details rather than behaviour, and how to recognise when you have crossed the line; test doubles for microservices — designing contract test doubles with Pact, building service virtualisation with WireMock and Mountebank, and the architectural patterns that let you test a service in isolation without mocking its neighbours into oblivion; and the test double design questions that senior panels ask — the ones that reveal whether you understand verification strategy, not just framework syntax. Every section includes code snippets in Java, JavaScript/TypeScript, Python, and C# that you might be asked to write, critique, or refactor during a live coding interview. The SDET Interview Coach iOS app includes test double design challenges with AI-scored feedback — you define the mocking strategy for a given architecture, choose your doubles, and justify every decision, and the app evaluates your answer against rubrics used at Monzo, Wise, and Google for senior SDET roles.",
+    date: "2026-05-30",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "test doubles interview questions SDET 2026",
+      "mocks vs stubs vs fakes vs spies test automation explained",
+      "Mockito vs Jest vs unittest.mock test double frameworks comparison",
+      "over-mocking anti-pattern test automation best practices 2026",
+      "test doubles for microservices contract testing WireMock Mountebank",
+      "test double design strategy SDET system design interview",
+      "behavioural vs state verification test doubles Martin Fowler",
+      "senior SDET mocking strategy interview questions with answers 2026",
+    ],
+    content: `
+
+<section class="content-section">
+  <p>It is 10 PM. You are on a Zoom call with three senior engineers from a fintech company. The interview has been going well. You have discussed your test automation framework, explained your CI/CD pipeline, even white-boarded a Page Object Model. Then the lead engineer leans forward and says: "Your payment service talks to a fraud detection API, a ledger service, a notification service, and an external bank gateway. Walk me through exactly how you would test this — including every test double you would use, why you chose it, and what risks each choice introduces. Start from the test case and work outward."</p>
+  <p>This is the moment where most SDET candidates falter. Not because they do not know what a mock is — everyone knows what a mock is. They falter because they cannot articulate the <em>taxonomy</em>. They cannot explain why a stub and a mock serve fundamentally different purposes, why a spy is the most dangerous double in the toolbox, or why "just mock everything" is the single most damaging phrase in test automation. In 2026, interview panels at Monzo, Wise, Revolut, Amazon, and every engineering organisation that runs distributed systems at scale are testing for this distinction. They have stopped asking "have you used Mockito?" and started asking "design the test double strategy for this architecture and defend every choice." Many SDET candidates struggle with this because test doubles are taught as framework syntax (here is how to write <code>when().thenReturn()</code>), not as a design discipline. Don't walk into your interview with a vocabulary gap that a single follow-up question will expose — this guide gives you the taxonomy, the decision framework, the code examples, and the interview answers that separate test-double engineers from test-double users. Pair this with our deep-dives on <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> for the service-layer knowledge that drives test double design, our <a href="/blog/contract-testing-pact-interview-questions-2026">Contract Testing with Pact Interview Questions 2026</a> for the consumer-driven contract approach that complements test doubles, and our <a href="/blog/test-automation-framework-design-interview">Test Automation Framework Design Interview Questions</a> for the architectural context in which test doubles live. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes test double design challenges — you define mocking strategies for distributed architectures, choose your doubles, justify every decision, and get AI-scored feedback against real senior SDET interview rubrics.</p>
+</section>
+
+<section class="content-section">
+  <h2>The Test Double Taxonomy — Why "Just Mock It" Is a Career-Limiting Answer</h2>
+  <p>The single biggest mistake SDET candidates make in test double interviews is treating all test doubles as "mocks." Interviewers are trained to catch this. The moment you say "I would mock the database" instead of "I would stub the database responses" or "I would fake an in-memory database," the interviewer knows you have not thought about the distinction — and they will probe deeper until the gap is exposed. Here is the taxonomy every senior panel expects you to command.</p>
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Dummy — The Object That Is Passed Around and Never Used</h3>
+      <p><strong>Purpose:</strong> to satisfy parameter requirements when the object itself is irrelevant to the test. Dummies are the simplest test double — they exist purely to fill a method signature. <strong>When to use:</strong> when a method requires an argument that the specific test path does not touch. For example, a <code>UserService.createUser(user, auditLogger)</code> test that focuses on validation logic — if the test path never calls <code>auditLogger.log()</code>, pass a dummy <code>AuditLogger</code> that does nothing. <strong>Interview trap:</strong> "So you passed a dummy — what happens if the implementation changes and actually calls the audit logger?" The correct answer: "The test would fail with a NullPointerException or no-op, signalling that the implementation changed in a way my test did not anticipate — which is exactly what I want. A dummy that silently swallows calls is worse than one that throws." <strong>Framework equivalent:</strong> <code>mock(AuditLogger.class)</code> in Mockito with no stubbing — Mockito's default behaviour returns null/empty, making it a dummy by default.</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Stub — Provides Predefined Answers to Calls Made During the Test</h3>
+      <p><strong>Purpose:</strong> to control the indirect inputs of the system under test. A stub returns canned responses to specific queries — "when asked for user 42, return this user object." <strong>When to use:</strong> when the test needs the dependency to return specific data to exercise a particular code path. Example: testing that your checkout service applies a discount when the loyalty service returns "GOLD_TIER" — stub the loyalty service to return <code>LoyaltyTier.GOLD</code>. <strong>Critical distinction:</strong> stubs are for <em>state verification</em> — you assert on the final state of the system under test (the order total includes the discount), not on whether the stub was called. <strong>Interview trap:</strong> "Why did you stub that instead of mocking it?" The answer panels want: "Because I care about what my system produces (the output state), not about whether it interacted with the dependency in a specific way. A stub tells me <em>what</em> happened. A mock would tell me <em>how</em> it happened — and testing <em>how</em> couples my test to implementation details."</p>
+    </div>
+  </div>
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Mock — Verifies That Specific Interactions Occurred</h3>
+      <p><strong>Purpose:</strong> to verify the <em>behaviour</em> of the system under test — that it called the dependency with the right parameters, the right number of times, in the right order. <strong>When to use:</strong> when the correctness of the system depends on <em>that</em> a side effect occurred, not just on the final state. Example: testing that your order service <em>calls</em> <code>notificationService.send(orderConfirmation)</code> after placing an order — the outcome (state change) is the saved order, but the behaviour (the notification being sent) is an observable side effect that state alone cannot verify. <strong>Critical distinction:</strong> mocks are for <em>behavioural verification</em> — you assert on the interactions between objects, not on the final state. <strong>Interview trap:</strong> "When is a mock the wrong choice?" The answer: "When I am testing an implementation detail rather than an observable behaviour. If I mock every collaborator of a class and verify every method call, my test becomes a change-detector — it breaks every time I refactor the implementation, even when the behaviour is unchanged. Mocks should be reserved for interactions that <em>are</em> the behaviour — sending an email, publishing an event, calling an external API — not for internal wiring between objects."</p>
+    </div>
+    <div class="comparison-card">
+      <h3>Fake — A Working Implementation with Shortcuts</h3>
+      <p><strong>Purpose:</strong> to replace a heavyweight dependency with a lightweight, fully functional alternative that is unsuitable for production but ideal for testing. <strong>When to use:</strong> when the dependency is too complex to stub every call path and the test needs realistic behaviour across multiple interactions. Example: replacing a PostgreSQL database with an in-memory H2 database, or replacing a payment gateway with a fake that has the same API surface but settles transactions instantly without calling an external bank. <strong>Critical distinction:</strong> fakes have <em>business logic</em> — they are not just returning hard-coded values; they maintain state, enforce invariants, and behave like the real thing within a constrained scope. <strong>Interview trap:</strong> "What is the risk of a fake?" The answer: "The fake may have a different bug surface than the real implementation. An in-memory H2 database does not enforce the same transaction isolation levels as PostgreSQL. A fake payment gateway does not simulate network latency, retry storms, or partial failures. Fakes give you confidence in your business logic, not in your integration with the real dependency — they are complementary to, not a replacement for, integration tests."</p>
+    </div>
+  </div>
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Spy — Records Interactions for Later Assertion, but Delegates to the Real Object</h3>
+      <p><strong>Purpose:</strong> to observe the interactions between the system under test and a real dependency without replacing the dependency's behaviour. A spy wraps the real object, records every call made to it, and lets you assert on those calls afterward. <strong>When to use:</strong> sparingly. Spies are appropriate when you need to verify that a specific side effect occurred but want the real implementation to execute — for example, verifying that a caching layer actually called <code>cache.put()</code> after a database write, while still letting the real cache handle eviction and expiry. <strong>Critical distinction:</strong> spies are dangerous. They couple your test to implementation details (which methods were called) while still exercising the real implementation — giving you the worst of both worlds: brittle assertions and slow real dependencies. <strong>Interview gold:</strong> saying "I avoid spies unless I am testing a legacy system I cannot refactor" is the answer senior panels want to hear. It demonstrates that you understand the trade-off and have the discipline to use the right double for the job.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Mocking Frameworks Compared — Mockito, Jest, unittest.mock, and Moq</h2>
+  <p>Interview panels may not ask you to memorise framework APIs, but they will ask you to write code on a whiteboard — and the framework you choose says something about your experience. A candidate who reaches for Mockito's <code>verify()</code> in a state-verification scenario reveals that they default to behavioural verification without thinking about it. A candidate who writes a hand-rolled stub instead of reaching for a framework in a simple unit test reveals that they understand the principle before the tool. Here is how the major frameworks work, when to use each, and the code patterns that interviewers scan for.</p>
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Mockito (Java/Kotlin) — The Enterprise Standard</h3>
+      <p><strong>Mockito</strong> is the dominant mocking framework in the Java ecosystem, and it is what most enterprise SDET interviews expect you to be fluent in. Its philosophy is simple: create mock objects with <code>mock()</code>, define stubs with <code>when().thenReturn()</code>, and verify behaviour with <code>verify()</code>. <strong>Interview code pattern:</strong> panels want to see <code>@ExtendWith(MockitoExtension.class)</code> with <code>@Mock</code> and <code>@InjectMocks</code> annotations — not manual <code>mock()</code> calls. They want to see <code>verify(paymentGateway, times(1)).capture(paymentCaptor.capture())</code> with ArgumentCaptor for complex parameter assertions. And critically, they want to see that you know when <em>not</em> to use Mockito — when a hand-rolled fake or stub communicates intent more clearly than a chain of <code>when().thenReturn()</code> calls. <strong>The trap:</strong> <code>@InjectMocks</code> is a code smell at senior level. It masks constructor dependencies and makes refactoring harder. Senior candidates should show constructor injection with explicit mock creation — it signals testability-by-design thinking.</p>
+      <pre><code>// Mockito — The pattern senior interviewers want to see
+@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+  @Mock private PaymentGateway paymentGateway;
+  @Mock private NotificationService notificationService;
+  @Spy private InventoryService inventoryService;
+  
+  // Constructor injection — not @InjectMocks
+  private OrderService orderService;
+  
+  @BeforeEach
+  void setUp() {
+    orderService = new OrderService(
+      paymentGateway, notificationService, inventoryService
+    );
+  }
+  
+  @Test
+  void shouldCapturePaymentAndNotifyOnSuccessfulOrder() {
+    // Stub: control indirect input
+    when(paymentGateway.capture(any(Payment.class)))
+      .thenReturn(new PaymentResult("success", "txn_123"));
+    
+    // Exercise
+    Order order = orderService.placeOrder(new OrderRequest(...));
+    
+    // State verification: the order was saved
+    assertEquals(OrderStatus.CONFIRMED, order.getStatus());
+    
+    // Behavioural verification: side effects occurred
+    ArgumentCaptor<Notification> notifCaptor = 
+      ArgumentCaptor.forClass(Notification.class);
+    verify(notificationService, times(1))
+      .send(notifCaptor.capture());
+    assertEquals("order_confirmed", 
+      notifCaptor.getValue().getType());
+  }
+}</code></pre>
+    </div>
+    <div class="comparison-card">
+      <h3>Jest (JavaScript/TypeScript) — The Frontend and Full-Stack Standard</h3>
+      <p><strong>Jest</strong> is the default testing framework in the JavaScript ecosystem, and its mocking capabilities are embedded into the test runner itself — not a separate library. <strong>Interview code pattern:</strong> panels want to see <code>jest.fn()</code> for creating mock functions, <code>jest.mock()</code> for auto-mocking entire modules, <code>jest.spyOn()</code> for wrapping existing methods (with explicit <code>mockRestore()</code> in <code>afterEach</code>), and manual mocks in <code>__mocks__</code> directories for complex dependencies. <strong>The distinguishing answer:</strong> "I prefer <code>jest.fn()</code> with explicit return values over <code>jest.mock()</code> because auto-mocking an entire module hides which functions my test actually depends on. A manual mock in <code>__mocks__/stripe.ts</code> is better than inline mocks for an external service because it centralises the fake implementation and makes it reusable across test files." <strong>The trap:</strong> <code>jest.spyOn(obj, 'method')</code> without <code>mockRestore()</code> leaks state between tests. Senior candidates always clean up.</p>
+      <pre><code>// Jest — The pattern senior interviewers want to see
+import { OrderService } from './order-service';
+import { PaymentGateway } from './payment-gateway';
+import { NotificationService } from './notification-service';
+
+// Manual mock for complex external dependency
+jest.mock('./payment-gateway', () => ({
+  PaymentGateway: jest.fn().mockImplementation(() => ({
+    capture: jest.fn(),
+  })),
+}));
+
+describe('OrderService', () => {
+  let orderService: OrderService;
+  let paymentGateway: jest.Mocked<PaymentGateway>;
+  let notificationService: jest.Mocked<NotificationService>;
+  
+  beforeEach(() => {
+    paymentGateway = new PaymentGateway() as any;
+    notificationService = {
+      send: jest.fn(),
+    } as any;
+    orderService = new OrderService(paymentGateway, notificationService);
+  });
+  
+  it('should capture payment and notify on successful order', async () => {
+    // Stub: control indirect input
+    paymentGateway.capture.mockResolvedValue({ 
+      status: 'success', transactionId: 'txn_123' 
+    });
+    
+    // Exercise
+    const order = await orderService.placeOrder(orderRequest);
+    
+    // State verification
+    expect(order.status).toBe('CONFIRMED');
+    
+    // Behavioural verification
+    expect(notificationService.send).toHaveBeenCalledTimes(1);
+    expect(notificationService.send).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'order_confirmed' })
+    );
+  });
+});</code></pre>
+    </div>
+  </div>
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>unittest.mock (Python) — The Standard Library Power Tool</h3>
+      <p><strong>unittest.mock</strong> (and <strong>pytest-mock</strong>) provide Python's mocking capabilities. <strong>Interview code pattern:</strong> panels want to see <code>unittest.mock.patch()</code> used as a context manager or decorator (not as a test method parameter — that pattern is fragile under refactoring), <code>MagicMock</code> for objects that need to support attribute access and iteration, and <code>spec_set</code> to prevent typos from silently creating non-existent attributes. <strong>The distinguishing answer:</strong> "I use <code>patch.object()</code> with <code>autospec=True</code> — it ensures my mock has the same interface as the real object, catching typos and API mismatches at test time rather than in production. Without autospec, calling <code>mock.non_existent_method()</code> returns another MagicMock instead of raising an AttributeError." <strong>The trap:</strong> <code>patch()</code> decorators that stack — the order is bottom-up, and getting it wrong is a common source of mysterious test failures. Senior candidates prefer <code>patch()</code> as a context manager for readability.</p>
+      <pre><code># unittest.mock — The pattern senior interviewers want to see
+from unittest.mock import Mock, patch, MagicMock
+import pytest
+from order_service import OrderService
+
+class TestOrderService:
+  
+  def test_should_capture_payment_and_notify(self):
+    # Stub: control indirect input with autospec for safety
+    payment_gateway = Mock(name='payment_gateway')
+    payment_gateway.capture.return_value = {
+      'status': 'success', 'transaction_id': 'txn_123'
+    }
+    
+    # Mock: verify side effect occurs
+    notification_service = Mock(name='notification_service')
+    
+    order_service = OrderService(payment_gateway, notification_service)
+    
+    # Exercise
+    order = order_service.place_order(order_request)
+    
+    # State verification
+    assert order.status == 'CONFIRMED'
+    
+    # Behavioural verification with explicit argument matching
+    notification_service.send.assert_called_once()
+    call_args = notification_service.send.call_args[0][0]
+    assert call_args['type'] == 'order_confirmed'
+</code></pre>
+    </div>
+    <div class="comparison-card">
+      <h3>Moq (C#/.NET) — The .NET Ecosystem Standard</h3>
+      <p><strong>Moq</strong> is the dominant mocking library in .NET, used with xUnit or NUnit. <strong>Interview code pattern:</strong> panels want to see <code>Mock&lt;T&gt;</code> with lambda-based <code>Setup()</code> for stubs, <code>Verify()</code> with <code>Times.Once</code> for behavioural assertions, and <code>It.Is&lt;T&gt;()</code> for complex argument matching. <strong>The distinguishing answer:</strong> "I prefer <code>MockBehavior.Strict</code> for mocks that should only respond to explicitly set up calls — it fails fast when the system under test makes unexpected calls, catching specification drift early. For stubs, I use <code>MockBehavior.Loose</code> because I do not care about unexpected interactions." <strong>The trap:</strong> overusing <code>It.IsAny&lt;T&gt;()</code> — it signals to the interviewer that you are not verifying the <em>content</em> of the calls, only that they happened. A precise <code>It.Is&lt;Order&gt;(o => o.Amount == 100)</code> demonstrates attention to what matters.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Over-Mocking Anti-Pattern — When Your Test Suite Becomes a Change Detector</h2>
+  <p>This is the interview topic that separates senior SDETs from everyone else. Most candidates can use Mockito. Most candidates can explain the difference between a stub and a mock. But when the interviewer asks, "Have you ever regretted mocking something?" — that is where the real conversation begins. Here is what over-mocking looks like, why it destroys test value, and how to recognise it before your test suite turns into a liability.</p>
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Symptom 1: Your Tests Break on Every Refactor — Even When Behaviour Is Unchanged</h3>
+      <p>You extract a helper method. You rename a private field. You split a class into two. Your tests explode — not because the behaviour changed, but because the tests were asserting on <em>how</em> the code achieved the behaviour, not <em>what</em> behaviour it produced. <strong>The diagnosis:</strong> you mocked every collaborator. <strong>The fix:</strong> apply the "don't mock what you don't own" principle. Mock the boundaries — the HTTP client, the message queue, the database driver. Do not mock your own domain objects. If <code>OrderProcessor</code> delegates to <code>PricingCalculator</code>, and both are your code, test them together. The mock boundary should be at the architectural seam, not at every class boundary. A test suite where 80% of tests have no mocks and 20% mock at the system boundary is healthier than one where 100% of tests mock every dependency.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Symptom 2: Your Tests Pass but the Integration Is Broken</h3>
+      <p>You mock the payment gateway to return <code>{status: "success"}</code>. The test passes. You deploy. The real payment gateway returns <code>{status: "SUCCESS", transaction_id: "txn_..."}</code> — note the uppercase — and your null check on <code>transaction_id</code> crashes because the stub never included it. <strong>The diagnosis:</strong> your stub diverged from the real contract. <strong>The fix:</strong> complement mocks with contract tests. Use <a href="/blog/contract-testing-pact-interview-questions-2026">Pact consumer-driven contract tests</a> to verify that your stubs match the real provider's responses. Use WireMock with recorded traffic (record-and-replay) to keep stubs in sync with reality. And always ask: "Does this stub represent what actually happens, or what I <em>wish</em> happened?" The second one is a time bomb.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Symptom 3: New Team Members Cannot Understand the Tests</h3>
+      <p>A new SDET joins the team. They open a test file. They see 200 lines of <code>when().thenReturn()</code> chains, <code>verify()</code> calls with <code>times(3)</code> on internal methods, and argument captors that capture objects nobody reads. They cannot tell what the test is actually testing. <strong>The diagnosis:</strong> the tests document the implementation, not the behaviour. <strong>The fix:</strong> write tests that read like a specification. The Arrange section should set up <em>scenarios</em>, not method call chains. "Given a gold-tier customer with a valid payment method" — that is a scenario. "Given mockCustomer when getTier thenReturn GOLD and mockPaymentMethod when isValid thenReturn true" — that is an implementation script. If your test's Arrange section is longer than the Act and Assert sections combined, you are over-mocking.</p>
+    </div>
+  </div>
+  <p style="margin-top: 1.5rem;">The heuristic senior interviewers use: "Would this test still pass if I rewrote the implementation using a different design pattern?" If the answer is no, the test is coupled to implementation details — and it is probably over-mocked. Real-world SDET interviews at Monzo, Wise, and Google now include refactoring exercises where candidates are given an over-mocked test suite and asked to identify which mocks are justified and which are coupling the tests to implementation details. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> app includes these exact refactoring scenarios — you review over-mocked test code, identify the coupling points, and get AI-scored feedback on whether you correctly separated necessary mocks from implementation-detail mocks.</p>
+</section>
+
+<section class="content-section">
+  <h2>Test Doubles for Microservices — The Distributed System Challenge</h2>
+  <p>Testing a monolith with test doubles is straightforward — you have one process, one set of interfaces, one mocking boundary. Testing a distributed system with 12 microservices, each with its own database, message queue, and external API dependencies, is where test double strategy becomes an architectural skill. Here is the framework panels expect you to articulate.</p>
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Service Virtualisation with WireMock and Mountebank</h3>
+      <p><strong>The problem:</strong> your service depends on 4 other services. Spinning up all 4 for every test run is slow, flaky, and expensive. Mocking all 4 with Mockito means your tests are testing against your assumptions about those services, not against reality. <strong>The solution:</strong> service virtualisation. <strong>WireMock</strong> lets you run a standalone HTTP server that simulates your dependencies — configured via JSON stubs or a Java API. It supports stateful behaviour (return different responses on successive calls), fault injection (simulate timeouts, 500s, malformed responses), and request matching by URL, headers, and body content. <strong>Mountebank</strong> extends this to protocols beyond HTTP — TCP, SMTP, and custom protocols — making it ideal for testing message-queue-driven systems. <strong>Interview question:</strong> "When would you use WireMock vs Mockito?" The answer: "WireMock when I am testing across a network boundary — the HTTP call actually happens, the serialisation/deserialisation is exercised, and I can simulate network failures. Mockito when the dependency is in-process and the interaction is a direct method call. The network hop is the architectural seam that determines the mock boundary."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Contract Testing — Proving Your Stubs Match Reality</h3>
+      <p><strong>The problem:</strong> your service stub returns <code>{status: "success"}</code>. The real payment service deploys a change that returns <code>{status: "succeeded", risk_score: 0.85}</code>. Your stub does not have <code>risk_score</code>. Your tests pass. Production breaks. <strong>The solution:</strong> contract testing with <strong>Pact</strong>. The consumer (your service) defines a contract — "I expect the payment service to respond with this shape." The provider (the payment service) verifies that it can satisfy that contract. CI runs these contract verifications on every build. When the payment service adds <code>risk_score</code>, the contract test catches it <em>before</em> deployment — because the contract says the response should not contain unexpected fields (depending on your matching rules). <strong>Interview gold:</strong> "My test double strategy has three layers: unit tests with Mockito for in-process logic, service virtualisation with WireMock for integration tests that exercise the HTTP boundary, and Pact contract tests in CI to ensure my WireMock stubs stay in sync with the real services."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The Test Double Boundary in Event-Driven Architectures</h3>
+      <p><strong>The problem:</strong> your order service publishes an <code>OrderPlaced</code> event to Kafka. Five other services consume it. How do you test the order service in isolation? Mocking Kafka is wrong — the event publication <em>is</em> the behaviour. Spinning up Kafka for every test is impractical. <strong>The solution:</strong> use an <strong>embedded Kafka</strong> (a fake) or <strong>Testcontainers</strong> with a real Kafka container for integration tests, and a <strong>test double for the Kafka producer</strong> in unit tests that captures the published events and asserts on them. <strong>Interview pattern:</strong> the panel describes a service mesh with async messaging and asks, "What lives in the unit test, what lives in the integration test, and what requires an end-to-end test?" The answer structure: "Unit tests mock the message producer and verify that the correct event was published with the correct payload. Integration tests use an embedded or containerised message broker to verify serialisation, deserialisation, and consumer offset behaviour. End-to-end tests run across real services in a staging environment to verify that the event chain — order placed → inventory updated → notification sent — works from end to end."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Test Double Interview Questions That Determine Your Seniority Level</h2>
+  <p>After 20 years of SDET interviewing at HMRC, the Ministry of Defence, Nationwide, and Accenture, I have identified the test double questions that consistently separate candidates by seniority. Here they are — with the thinking each level should demonstrate.</p>
+  
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Junior/Mid-Level: "What Is the Difference Between a Mock and a Stub?"</h3>
+      <p><strong>What they are testing:</strong> basic vocabulary. Do you know the taxonomy or do you use "mock" as a catch-all term? <strong>The winning answer:</strong> "A stub provides canned answers to queries — it controls indirect <em>inputs</em>. I assert on the system's final state. A mock verifies that expected interactions occurred — it controls indirect <em>outputs</em>. I assert on the interactions themselves. Stubs are for state verification; mocks are for behavioural verification." <strong>The extra credit:</strong> mention that this distinction comes from Gerard Meszaros's xUnit Test Patterns and was popularised by Martin Fowler's "Mocks Aren't Stubs" article. Showing you know the provenance demonstrates that you have studied the discipline, not just the tool.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Senior Level: "Design the Test Double Strategy for This Architecture"</h3>
+      <p><strong>What they are testing:</strong> architectural judgment. Can you decide which test doubles go where in a multi-service system? <strong>The winning answer structure:</strong> (1) Identify the system boundaries — these are the natural mock seams. (2) For each boundary, classify whether the dependency is synchronous (HTTP/gRPC) or asynchronous (Kafka/RabbitMQ). (3) For synchronous dependencies: WireMock stubs for integration tests, Mockito mocks for unit tests, Pact contracts for CI verification. (4) For asynchronous dependencies: embedded broker for integration tests, captured-outbox-pattern for unit tests. (5) Explicitly identify what you are NOT testing with this strategy — the gaps that require end-to-end tests. <strong>The extra credit:</strong> add a risk assessment: "The highest risk in this strategy is that our contract tests do not cover all edge cases — specifically, the fraud service's behaviour under high load. I would mitigate this by adding a chaos engineering test that runs WireMock with injected latency and verifies our circuit breaker behaviour."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Lead/Principal Level: "When Should We Stop Using Test Doubles and Test Against Production?"</h3>
+      <p><strong>What they are testing:</strong> pragmatism and business awareness. Can you recognise when the cost of maintaining test doubles exceeds the value they provide? <strong>The winning answer:</strong> "Test doubles have a maintenance cost — they drift from reality. The drift cost increases with the rate of change in the dependency. There is a crossover point where maintaining a comprehensive test double suite costs more than running a canary deployment against the real dependency and monitoring for anomalies. For stable, slow-changing dependencies (an authentication service, a logging framework), test doubles provide high ROI over years. For rapidly evolving internal services that deploy 10 times a day, the double drifts within hours — I would invest in a lightweight staging environment with the real services and use synthetic monitoring to catch regressions, keeping test doubles only for the deterministic edge cases that monitoring cannot surface. The skill is not in choosing test doubles vs real dependencies — it is in continuously re-evaluating the trade-off as the system evolves."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How SDET Interview Coach Prepares You for Test Double Questions</h2>
+  <p>Reading about test doubles is one thing. Articulating your strategy under interview pressure — with a senior engineer asking follow-up questions and a clock ticking — is another. Here is how the SDET Interview Coach app bridges that gap, specifically for test double interview preparation.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>System Design Challenges with Test Double Strategy Scoring</h3>
+        <p>The app presents you with a microservices architecture diagram — 4 services, 2 external APIs, a message queue, and a database — and asks you to define the test double strategy. You specify which doubles you would use at each boundary, justify each choice, and identify the risks. The AI grades your answer against a rubric used at leading fintech companies, checking whether you correctly applied the stub-vs-mock distinction, identified the right architectural seams, and surfaced the risks your strategy does not cover.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Spaced Repetition on the Test Double Taxonomy</h3>
+        <p>The five test double types (dummy, stub, mock, fake, spy) are easy to read once and forget. The app's SM-2 spaced repetition system brings them back at the optimal intervals — 1 day, 3 days, 7 days, 14 days — until the distinctions are reflexive. By interview day, you will not be mentally translating "stub = state, mock = behaviour" — you will just know it, the way you know that 2+2=4.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📝</span>
+      <div>
+        <h3>Mock Interview Mode with Adaptive Follow-Ups</h3>
+        <p>You answer a test double question. The app asks a follow-up based on your answer. If you say "I would mock the database," it asks "Why a mock and not a fake?" If you say "I would use WireMock," it asks "How do you keep your WireMock stubs in sync with the real service?" This is exactly how real interview panels probe — one answer leads to a deeper question — and practicing this chain of reasoning under time pressure is the difference between passing and freezing.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The SDET Interview Coach app is available on iOS. It covers test doubles across all five seniority levels (Junior through Lead), across six tech stacks (Java/Mockito, JavaScript/Jest, Python/unittest.mock, C#/Moq, TypeScript/Jest, and Playwright/API mocking), and includes code-writing challenges where you implement the test double strategy you just designed and get AI feedback on your implementation. <a href="/blog/sdet-interview-coach-app-guide">Learn more about SDET Interview Coach</a> and how it fits into your complete interview preparation plan.</p>
+</section>
+
+<section class="content-section">
+  <h2>The 3-Step Test Double Interview Prep Plan — Starting Tonight</h2>
+  <p>You do not need to memorise every Mockito method or every WireMock configuration. You need to understand the taxonomy, practice the decision-making, and get feedback on your answers. Here is the plan that works:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Internalise the taxonomy tonight.</strong> Dummy → Stub → Mock → Fake → Spy. Say the words out loud. Explain each one to your wall. If you cannot distinguish them without looking at notes, you are not ready for the interview follow-up question that will come 25 minutes in when your mental energy is drained.</li>
+    <li><strong>Practice the decision framework.</strong> Take any service in your current project. Draw its dependencies. For each one, decide: stub, mock, fake, or real? Write down why. Then ask yourself what would break if the dependency changed its API — this reveals whether your test doubles are testing behaviour or implementation.</li>
+    <li><strong>Run a mock interview in SDET Interview Coach.</strong> Select the Test Doubles topic, set a 20-minute timer, and answer the system design questions out loud. The AI feedback will show you which part of the taxonomy you are weak on — and the spaced repetition system will drill that gap until it closes.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The test double interview landscape has shifted. In 2023, knowing how to write <code>when().thenReturn()</code> was enough. In 2026, panels expect you to design test double strategies for distributed systems, articulate the trade-offs between five different types of doubles, recognise the over-mocking anti-pattern, and explain how contract testing keeps your stubs honest. The candidates who prepare for this depth <em>before</em> the interview are the ones who walk out with offers. Do not walk in with a vocabulary gap that a single follow-up question will expose.</p>
+
+  <p>If you are preparing for an SDET role that involves microservices or distributed systems, also review our guides on <a href="/blog/api-testing-interview-questions-2026">API Testing Interview Questions 2026</a> for the service-layer knowledge that informs test double design, and <a href="/blog/sdet-system-design-interview-questions-2026">SDET System Design Interview Questions 2026</a> for the architectural thinking that test double strategy is a subset of.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What is the difference between a mock, stub, fake, and spy in test automation?",
+        a: "A stub provides canned answers to queries — it controls indirect inputs, and you verify the system's final state (state verification). A mock verifies that expected interactions occurred — it controls indirect outputs, and you verify the interactions themselves (behavioural verification). A fake is a working implementation with shortcuts — like an in-memory database replacing PostgreSQL — that has business logic but is unsuitable for production. A spy wraps a real object, records interactions, and lets you assert on them afterward while still executing the real implementation. A dummy is an object passed around but never used — it exists to satisfy parameter requirements. The distinction was formalised by Gerard Meszaros in xUnit Test Patterns and popularised by Martin Fowler's 'Mocks Aren't Stubs' article.",
+      },
+      {
+        q: "When should I use a mock instead of a stub in my tests?",
+        a: "Use a mock when the correctness of your system depends on that a side effect occurred — for example, verifying that your order service called notificationService.send() after placing an order. The notification being sent is an observable behaviour that state alone cannot verify. Use a stub when you need to control the indirect inputs to exercise a specific code path — for example, stubbing a loyalty service to return GOLD_TIER so you can test that gold customers get a discount. The key question: am I testing what my system produces (use a stub) or what my system does to its collaborators (use a mock)? If you find yourself mocking every collaborator, you may be testing implementation details rather than behaviour — this is the over-mocking anti-pattern.",
+      },
+      {
+        q: "What is the over-mocking anti-pattern and how do I avoid it?",
+        a: "Over-mocking occurs when you mock every dependency of the system under test, resulting in tests that verify implementation details rather than observable behaviour. Symptoms include: tests that break on every refactor even when behaviour is unchanged, tests that pass but the integration is broken (stubs drifted from reality), and tests that are unreadable to new team members. Avoid it by mocking only at architectural seams — mock the HTTP client, the message queue, the database driver — not your own domain objects. A healthy test suite has 80% of tests with no mocks and 20% mocking at system boundaries. Complement mocks with contract tests (Pact) to ensure stubs stay in sync with real services, and use service virtualisation (WireMock) instead of framework-level mocking for integration tests across network boundaries.",
+      },
+      {
+        q: "How do I design a test double strategy for a microservices architecture?",
+        a: "Start by identifying system boundaries — these are the natural mock seams. For each boundary, classify dependencies as synchronous (HTTP/gRPC) or asynchronous (Kafka/RabbitMQ). For synchronous: use Mockito/Jest for unit tests (in-process), WireMock stubs for integration tests (exercising the HTTP boundary), and Pact contracts in CI to keep stubs honest. For asynchronous: use an embedded or containerised message broker (Testcontainers) for integration tests, and test the outbox pattern in unit tests by capturing published events. Explicitly identify gaps: what risks does this strategy not cover? Those require end-to-end tests or canary deployments. The three-layer strategy — unit tests with framework mocks, integration tests with service virtualisation, CI contract tests — is what senior interview panels at fintech companies expect to hear.",
+      },
+      {
+        q: "Does the SDET Interview Coach app cover test double interview questions?",
+        a: "Yes. SDET Interview Coach includes test double questions across all five seniority levels, from Junior to Lead. Topics cover the complete taxonomy (dummy, stub, mock, fake, spy), framework-specific questions for Mockito, Jest, unittest.mock, and Moq, system design challenges where you define test double strategies for distributed architectures, and over-mocking refactoring exercises. The app offers timed mock interviews with adaptive follow-ups that simulate how real panels probe deeper after each answer, and AI-graded feedback scores your responses on technical accuracy, framework knowledge, and architectural judgment. Use Job Match to generate bespoke test double questions from any SDET job description.",
+      },
+      {
+        q: "What test double frameworks should I know for an SDET interview in 2026?",
+        a: "The frameworks interviewers expect depend on your tech stack. For Java/Kotlin: Mockito (with MockitoExtension, ArgumentCaptor, and verify modes). For JavaScript/TypeScript: Jest (jest.fn(), jest.mock(), jest.spyOn() with mockRestore() cleanup). For Python: unittest.mock (patch with autospec, MagicMock, and pytest-mock). For C#/.NET: Moq (Mock<T> with Setup/Verify and It.Is<T> matchers). Beyond framework-specific mocks, senior SDETs should also know service virtualisation tools: WireMock for HTTP APIs (stateful stubs, fault injection, record-and-replay) and Mountebank for multi-protocol virtualisation (HTTP, TCP, SMTP). Mentioning Testcontainers for integration tests with real dependencies shows awareness of the test double spectrum beyond just mocking frameworks.",
+      },
+    ],
+    relatedSlugs: [
+      "api-testing-interview-questions-2026",
+      "contract-testing-pact-interview-questions-2026",
+      "test-automation-framework-design-interview",
+    ],
+  },
+
+  {
     slug: "test-case-design-techniques-sdet-interview-questions-2026",
     title: "Test Case Design Techniques for SDET Interviews 2026 — How SDETs Design Test Cases Differently from Manual Testers: Automation-Conscious Test Architecture, Black-Box Techniques for SDET Interviews (Equivalence Partitioning, Boundary Value Analysis, Decision Tables, State Transition Testing, Pairwise Testing), White-Box Structural Techniques (Statement Coverage, Branch Coverage, Path Coverage, and MC/DC for Safety-Critical Systems), Experience-Based Approaches (Exploratory Testing, Error Guessing, Checklist-Based Testing, Heuristic Risk-Based Testing), How to Prioritise Test Cases When Time Is Limited (Risk-Based Prioritisation, MoSCoW for Testing, Impact Analysis), Real Interview Scenarios with Structured Model Answers, Common Mistakes Candidates Make in Test Design Interviews, and 7 Model-Answer FAQs",
     description: "The definitive test case design interview guide for SDETs, QA engineers, and test automation professionals in 2026 — covering every dimension of test design methodology that interview panels probe when assessing whether you can think structurally about quality, not just write test scripts. Many SDET candidates prepare exhaustively for coding rounds — memorising Playwright selectors, practising API assertion patterns, drilling on Selenium grid architecture — but walk into the test design interview expecting it to be 'the easy round'. They're wrong. Test design is where panels separate testers who follow instructions from engineers who design quality. The question sounds simple: 'Here's a login page. Design the test cases.' But what the panel is actually evaluating is whether you can decompose a feature into testable dimensions, apply structured techniques rather than guessing at edge cases, prioritise ruthlessly when time is limited, and explain your reasoning with the vocabulary of the testing craft — equivalence classes, boundary values, decision tables, state transitions, pairwise combinations. This guide treats test case design as a methodology, not a talent: we cover how SDETs design test cases differently from manual testers (automation-conscious design that considers maintainability, data independence, and execution order from the first test case), black-box techniques (equivalence partitioning, boundary value analysis, decision tables, state transition testing, and pairwise testing — each explained with the interview scenario that triggers it), white-box techniques relevant to SDETs (statement coverage, branch coverage, path coverage, and MC/DC for safety-critical contexts — not just the definitions but the 'when would you use this?' reasoning panels expect), experience-based techniques (exploratory testing, error guessing, checklist-based testing, and heuristic risk-based testing — how to describe these in an interview without sounding like you lack rigour), prioritisation strategies (risk-based, MoSCoW for testing, and impact analysis), a detailed walkthrough of the 'design test cases for a login page' interview question with a structured model answer, and the top 7 mistakes candidates make in test design interviews with explicit anti-patterns to avoid. Every section includes the interview framing — the exact question that triggers the technique, the thought process the panel wants to see, and the follow-up questions that distinguish mid-level from senior candidates. With 7 detailed FAQs and methodology-first explanations throughout, this guide is designed to transform your test design interview from 'I'll list every edge case I can think of' to 'I'll apply a structured technique that gives me confidence I haven't missed anything' — the test design maturity that correlates with £85K–£120K SDET roles in 2026. Complement with our guides on Test Strategy and Planning Interview Questions 2026 for the strategic layer above individual test design, BDD and Cucumber Interview Questions 2026 for the behaviour-driven approach that pairs with structured test design, and SDET Behavioural Interview Questions 2026 for the communication skills you need to explain your test design thinking to panels. The SDET Interview Coach iOS app includes a dedicated Test Case Design mock interview module with AI-scored scenario exercises — you're given a feature description and asked to design test cases using specific techniques, then evaluated on coverage, technique selection, and prioritisation reasoning.",
