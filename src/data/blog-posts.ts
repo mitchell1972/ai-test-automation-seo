@@ -14,6 +14,305 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "non-functional-testing-sdet-interview-questions-2026",
+    title: "Non-Functional Testing Interview Questions for SDETs 2026 — The Complete Guide to NFR Interview Questions: What Interviewers Really Want When They Ask About Non-Functional Testing, Performance Testing Fundamentals Every SDET Must Know Including Response Time, Throughput, Resource Utilisation, Concurrency, Percentile Latencies, and the P95 vs Average Trap, Security Testing Basics for SDETs Covering OWASP Top 10 Awareness, SAST vs DAST, Injection Attacks, Authentication and Authorisation Testing, Secure Data Handling, and How to Answer Security Questions Without Being a Security Specialist, Usability and Accessibility Testing Awareness Including WCAG Compliance, Screen Reader Testing, Colour Contrast Ratios, Keyboard Navigation, and the Business Case for Inclusive Software, Reliability and Resilience Testing From Chaos Engineering and Failover Drills to Circuit Breakers, Retry Logic, Graceful Degradation, and How Netflix's Simian Army Changed the Industry, How to Answer 'Describe a Time You Tested for Non-Functional Requirements' When You've Mostly Done Functional Testing, Four Model Interview Answers Covering Performance, Security, Resilience, and Accessibility Scenarios, and the #1 Piece of Advice: Never Say 'That's Not My Job' in an SDET Interview",
+    description: "The definitive guide to non-functional testing interview questions for SDETs in 2026 — covering performance, security, usability, reliability, and scalability testing from an SDET interview perspective. Most SDETs prepare for functional testing questions — Selenium locators, Playwright fixtures, API assertions — and get caught flat-footed when the interviewer asks about response time percentiles, OWASP injection attacks, or chaos engineering. This guide closes that gap. It is not a deep-dive on each non-functional domain (we have dedicated posts for security testing, performance testing with k6, and monitoring and observability). Instead, this is the 'how to think about and answer NFR questions' guide — the meta-skill of recognising what the interviewer is actually evaluating and structuring your answer to demonstrate breadth without claiming expertise you don't have. You'll learn: what interviewers really want when they ask about non-functional testing (hint: it's rarely deep specialism), performance testing fundamentals every SDET should know including response time, throughput, resource utilisation, concurrency, and why the P95 matters more than the average, security testing basics for SDETs with OWASP Top 10 awareness, the difference between SAST and DAST, and how to test for injection, broken authentication, and sensitive data exposure without being a dedicated security engineer, usability and accessibility awareness covering WCAG compliance levels, screen reader testing with VoiceOver and NVDA, colour contrast ratio tools, and keyboard navigation testing with Playwright, reliability and resilience testing from chaos engineering principles to circuit breakers, retry logic patterns, failover testing, and graceful degradation strategies, how to answer 'describe a time you tested for non-functional requirements' when you've mostly done functional testing — the STAR-method framework adapted for NFR scenarios plus four complete model interview answers for performance, security, resilience, and accessibility scenarios. Mitchell Agoma draws on his experience leading QA across HMRC, the Ministry of Defence, Nationwide Building Society, and Accenture to show you how NFR testing questions are evaluated in real SDET interviews at every seniority level. Every concept connects directly to the SDET Interview Coach iOS app, which includes dedicated topic areas for performance testing, security testing, and non-functional requirements — plus AI-powered mock interviews that throw curveball NFR questions at you so you're not hearing them for the first time in a real interview.",
+    date: "2026-06-01",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "non-functional testing interview questions for SDETs 2026",
+      "NFR testing SDET interview preparation performance security reliability",
+      "performance testing fundamentals SDET response time throughput percentile latencies p95",
+      "security testing basics SDET OWASP top 10 SAST DAST injection authentication",
+      "usability accessibility testing WCAG screen reader keyboard navigation SDET interview",
+      "reliability resilience testing chaos engineering circuit breaker retry failover SDET",
+      "how to answer non-functional testing questions functional tester SDET interview STAR method",
+      "Mitchell Agoma SDET non-functional testing interview guide HMRC MoD Nationwide Accenture",
+    ],
+    content: `
+<section class="content-section">
+  <p>Mitchell Agoma has sat on both sides of the SDET interview table — as a candidate being grilled on non-functional requirements at HMRC, the Ministry of Defence, Nationwide Building Society, and Accenture, and as the hiring manager evaluating candidates who froze when asked about response time percentiles. The pattern is universal: <strong>most SDETs prepare exhaustively for functional testing questions and treat non-functional testing as an afterthought.</strong> They can explain Playwright fixtures in their sleep but go blank when asked "What's the difference between P50 and P95 latency, and why does it matter for your tests?" They can write a Selenium Page Object Model from memory but have never heard of SAST versus DAST. This is not a knowledge gap — it's a preparation gap. And it's the gap that separates the SDET who gets the offer from the SDET who gets the "we'll be in touch."</p>
+  <p>Here is what most candidates don't understand: <strong>interviewers are not expecting you to be a performance engineer, a security specialist, and an accessibility expert.</strong> Unless you're applying for a dedicated performance testing role or a security-focussed SDET position, the non-functional testing questions are testing breadth, not depth. They are testing whether you think beyond the happy path — whether your testing mindset extends to how the system <em>behaves</em>, not just whether it <em>functions</em>. A candidate who can speak intelligently about response time percentiles, OWASP injection vectors, and keyboard navigation testing — even at a foundational level — signals that they are a complete engineer, not a script-writer. That distinction is worth thousands in salary negotiation.</p>
+  <p>This guide is not a deep-dive on each non-functional domain. We have dedicated posts for that: see our guides on <a href="/blog/security-testing-qa-interview-questions">security testing for QA interviews</a>, <a href="/blog/k6-performance-testing-interview-questions">k6 performance testing interview questions</a>, and <a href="/blog/monitoring-observability-sdet-interviews-2026">monitoring and observability for SDET interviews</a>. Instead, this is the <strong>meta-guide</strong> — the guide to <em>thinking about</em> and <em>answering</em> non-functional testing questions in SDET interviews. It teaches you to recognise what the interviewer is actually evaluating, structure your answer to demonstrate breadth without overreaching, and turn a potential weakness into a strength. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated topic areas for non-functional testing, performance testing, and security testing — with AI-powered mock interviews that surface curveball NFR questions calibrated to your target seniority level.</p>
+</section>
+
+<section class="content-section">
+  <h2>What Interviewers Really Want When They Ask About Non-Functional Testing</h2>
+  <p>Let's start with the most important meta-skill: understanding what the interviewer is actually evaluating. Most candidates hear "Tell me about your experience with non-functional testing" and panic — they think the interviewer expects deep expertise in load testing, penetration testing, accessibility auditing, and chaos engineering all at once. They don't. Here is what interviewers at each level are actually looking for:</p>
+
+  <div class="insight-box">
+    <h3>🔑 The Interviewer's Actual Agenda — By Seniority Level</h3>
+    <p><strong>Junior SDET (0-2 years):</strong> Basic awareness. Can you name the main categories of non-functional testing? Do you understand that testing isn't just "does the button work" but also "how fast does the button work" and "is the button secure"? A Junior who can list performance, security, usability, reliability, and scalability as non-functional categories — and give a one-sentence definition of each — is already ahead of 70% of candidates at this level.</p>
+    <p><strong>Mid-Level SDET (2-5 years):</strong> Practical experience with at least one non-functional domain. Have you ever run a performance test? Set up a security scan in CI? Written an accessibility test? You don't need all three — but you need at least one, with enough depth to discuss the tools, the metrics, and what you learned. The interviewer is checking whether your testing mindset extends beyond functional verification.</p>
+    <p><strong>Senior SDET (5-8 years):</strong> Breadth across multiple domains plus the ability to advocate for NFR testing. At this level, you should be able to discuss trade-offs: "We prioritised performance testing over security scanning because our user base was complaining about page load times and we had a dedicated security team handling penetration testing. Here's the load testing framework we built, the thresholds we set, and how we integrated results into our definition of done." The interviewer is checking whether you think strategically about quality, not just tactically about tests.</p>
+    <p><strong>Lead/Principal SDET (8+ years):</strong> NFR testing as organisational capability. At this level, the question isn't "have you done non-functional testing" but "how have you built non-functional testing into your team's DNA?" The interviewer wants to hear about NFR acceptance criteria in user stories, performance budgets enforced in CI, accessibility gates that block releases, chaos engineering programs you've championed, and how you've coached teams to think about the -ilities (reliability, scalability, maintainability, usability) from sprint zero, not as a pre-release checklist.</p>
+  </div>
+
+  <p>The most common mistake candidates make is <strong>answering the question they think they heard instead of the question that was asked.</strong> When an interviewer asks "What's your experience with security testing?" they are almost never asking "Are you a certified ethical hacker?" They are asking: "Do you think about security when you test? Do you know enough to raise a flag when something looks wrong? Can you collaborate with a security team?" Framing your answer accordingly — honest about your level, confident about your awareness, specific about what you <em>have</em> done — is more impressive than bluffing expertise you don't have.</p>
+
+  <div class="insight-box">
+    <h3>⚠️ The Trap: "That's Not My Job"</h3>
+    <p>The single worst answer to any non-functional testing question is some variation of "That's not really part of my role — we had a separate performance team for that" or "Security testing was handled by the InfoSec team." Even if that's factually true, it signals that you have a narrow view of your responsibilities and that you're comfortable delegating quality to other teams. The correct framing is: "In my previous role, we had a dedicated performance engineering team that owned the large-scale load testing. However, I made sure our functional tests included performance assertions — response time checks on critical API endpoints, page load time thresholds in our Playwright tests, and monitoring for N+1 query patterns that would degrade under load. I also participated in the performance team's triage sessions so I understood how our functional testing could surface performance regressions earlier." <strong>You've done non-functional testing — you just might not have called it that.</strong></p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Performance Testing Fundamentals Every SDET Should Know</h2>
+  <p>Performance testing is the most commonly tested non-functional domain in SDET interviews — and the one where candidates most often confuse terminology. You don't need to be a performance engineer, but you do need to understand the core concepts and be able to discuss them intelligently.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">⏱️</span>
+      <div>
+        <h3>Response Time and Latency</h3>
+        <p><strong>Response time</strong> is the total time from request to response — including network latency, server processing time, and payload serialisation. <strong>Latency</strong> is specifically the time the request spends waiting before processing begins. In SDET interviews, be precise: "The P95 response time for our checkout API was 850ms under load" is a strong answer. "It was pretty fast" is not. Interviewers want to see that you think in numbers, not adjectives. Know the common thresholds: <100ms is excellent for API responses, <200ms is good, <1s is acceptable for most user-facing operations, and >3s is where users start abandoning.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>Percentile Latencies — The P95 vs Average Trap</h3>
+        <p>This is the single most important performance concept for SDET interviews. <strong>Average (mean) response time is a lie</strong> — it hides outliers. If 95 out of 100 requests complete in 100ms and 5 take 10 seconds, the average is ~595ms, which looks fine. But those 5 users had a terrible experience. <strong>The P95 (95th percentile) tells the real story:</strong> 95% of requests completed in X ms or less. Strong candidates know P50 (median), P95, and P99 — and can explain when each matters. P50 tells you the typical experience, P95 tells you about your worst reasonable users, and P99 tells you about your outliers. Interviewers light up when candidates volunteer: "I don't look at averages — I look at P95. Averages hide the users who are suffering."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Throughput and Concurrency</h3>
+        <p><strong>Throughput</strong> is requests per second (RPS) or transactions per second (TPS) that your system can handle. <strong>Concurrency</strong> is the number of simultaneous users or connections. The relationship is not linear — doubling concurrency doesn't double throughput, and beyond a saturation point, throughput plateaus while response times skyrocket. In interviews, be ready to discuss: "We ran a soak test at 500 concurrent users for 2 hours and observed that throughput stabilised at 1,200 RPS while P95 response time degraded from 200ms to 450ms after the first 30 minutes — indicating a memory leak in the connection pool that we escalated to the backend team." This level of specificity — concurrency, throughput, saturation behaviour, root cause hypothesis — is what separates mid-level from senior answers.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📈</span>
+      <div>
+        <h3>Resource Utilisation and Bottlenecks</h3>
+        <p>Performance testing isn't just about response times — it's about understanding <em>why</em> response times degrade. Strong candidates discuss CPU utilisation (sustained >80% is a red flag), memory consumption (is it growing over time? that's a leak), database connection pool saturation (are connections waiting?), garbage collection pauses (in JVM or .NET applications), and I/O bottlenecks (disk, network). In your interview answer, connect metrics to hypotheses: "We noticed CPU utilisation spiking to 95% during the load test while database query times remained flat — this pointed to an application-level bottleneck, not a database issue. We profiled the code and found an N+1 query in the product listing endpoint that was serialising the entire product catalogue into memory before filtering."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>🗣️ Performance Testing Tools to Mention</h3>
+    <p>You don't need to be an expert in all of these, but knowing what they are and when to use them demonstrates breadth: <strong>k6</strong> (modern, developer-friendly, scriptable in JavaScript — ideal for SDETs integrating performance tests into CI), <strong>JMeter</strong> (the industry veteran, GUI-based but powerful, widely used in enterprise), <strong>Gatling</strong> (Scala-based, excellent for complex scenarios, strong reporting), <strong>Locust</strong> (Python-based, good for distributed testing), and <strong>Artillery</strong> (lightweight, Node.js-native, great for API load testing in CI pipelines). Mentioning that you'd choose k6 for a modern JavaScript/TypeScript shop because it integrates naturally with existing test infrastructure — while acknowledging JMeter's maturity for enterprise environments — shows situational awareness that interviewers value.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Security Testing Basics for SDETs</h2>
+  <p>Security testing questions make SDETs nervous because security feels like a separate discipline — something for CISSP-certified specialists, not test automation engineers. But interviewers aren't testing for CISSP knowledge. They're testing whether you understand enough to be dangerous in the right way: aware of common vulnerabilities, capable of writing tests that catch them, and able to collaborate with security teams effectively.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🛡️</span>
+      <div>
+        <h3>OWASP Top 10 Awareness</h3>
+        <p>The Open Web Application Security Project (OWASP) Top 10 is the industry-standard list of the most critical web application security risks. You don't need to memorise all ten, but you should know the big ones: <strong>Injection</strong> (SQL, NoSQL, OS command injection — untrusted data sent to an interpreter), <strong>Broken Authentication</strong> (session management flaws, credential stuffing, weak password policies), <strong>Sensitive Data Exposure</strong> (unencrypted data in transit or at rest, weak cryptography), <strong>XML External Entities (XXE)</strong> (vulnerable XML processors), <strong>Broken Access Control</strong> (users acting outside their intended permissions), <strong>Security Misconfiguration</strong> (default credentials, verbose error messages, unnecessary features enabled), <strong>Cross-Site Scripting (XSS)</strong> (injecting malicious scripts into trusted websites), <strong>Insecure Deserialisation</strong> (tampering with serialised objects), <strong>Using Components with Known Vulnerabilities</strong> (outdated libraries), and <strong>Insufficient Logging and Monitoring</strong> (no audit trail for attacks). In an interview, being able to name five or six and explain how you'd test for two or three is a strong answer.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>SAST vs DAST — Knowing the Difference</h3>
+        <p><strong>SAST (Static Application Security Testing)</strong> analyses source code or compiled code without executing it — think SonarQube, Checkmarx, or ESLint security plugins. It catches issues like hard-coded secrets, SQL injection patterns in code, and insecure cryptographic algorithms during development. <strong>DAST (Dynamic Application Security Testing)</strong> tests the running application from the outside — think OWASP ZAP, Burp Suite, or Netsparker. It catches runtime issues like XSS, CSRF, and misconfigured headers that only manifest when the app is live. The strong interviewee knows the difference and can say: "We integrated SAST into our CI pipeline — SonarQube scans on every pull request and blocks merges for critical and high-severity findings. For DAST, we run OWASP ZAP against our staging environment weekly and include findings in our sprint retrospectives. As an SDET, I also write automated security tests using libraries like OWASP ZAP's API or custom scripts that verify security headers, CORS policies, and authentication flows."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔐</span>
+      <div>
+        <h3>Authentication and Authorisation Testing</h3>
+        <p>These are the security tests SDETs are most likely to automate. <strong>Authentication testing</strong> verifies that the system correctly identifies users: Are invalid credentials rejected? Does the system enforce password complexity requirements? Does it lock accounts after repeated failed attempts? Are session tokens invalidated on logout? Are JWT tokens properly signed and verified with appropriate expiry? <strong>Authorisation testing</strong> verifies that authenticated users can only access what they're supposed to: Can a regular user access admin endpoints by changing a URL? Can User A see User B's data by modifying an ID parameter (IDOR — Insecure Direct Object Reference)? Can a user with read-only permissions perform write operations? These are testable, automatable checks that demonstrate security awareness without requiring specialist tools.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔒</span>
+      <div>
+        <h3>Secure Data Handling in Tests</h3>
+        <p>SDETs handle test data constantly — and security-aware SDETs handle it carefully. Interviewers appreciate candidates who mention: (1) <strong>No production data in test environments</strong> — use synthetic data or properly anonymised data. (2) <strong>No secrets in test code</strong> — API keys, database credentials, and auth tokens should come from environment variables or a secrets manager, never hard-coded. (3) <strong>Test data cleanup</strong> — PII (personally identifiable information) used in tests must be purged, not left lingering in test databases. (4) <strong>Encryption in transit</strong> — test clients should verify TLS certificates, not disable verification with insecure flags. One concise statement covers all of this: "All test credentials are stored in a vault, injected at runtime via CI environment variables, and rotated monthly. We use synthetic test data generated by factories — never production data — and our test teardown scripts purge all PII within 24 hours."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>💡 The Security Question Cheat Sheet</h3>
+    <p>When asked about security testing and you're not a specialist, use this framework: (1) Acknowledge the domain's importance — "Security testing is critical, especially in industries like finance and government where I've worked." (2) State your level honestly — "I'm not a dedicated security engineer, but here's what I've done..." (3) Describe specific practices — automated security header checks, OWASP ZAP scans in CI, authentication flow tests, SQL injection test cases for input fields. (4) Show collaboration — "I worked closely with our InfoSec team to understand their findings and translate them into automated regression tests." (5) Express growth — "I'm actively learning more about security testing, and the <a href='/blog/sdet-interview-coach-app-guide'>SDET Interview Coach app</a> has been helpful for practising security testing interview questions."</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Usability and Accessibility Testing Awareness</h2>
+  <p>Accessibility and usability are often the forgotten non-functional requirements — until a lawsuit, a regulatory audit, or an interviewer asks about them. In 2026, with the European Accessibility Act enforcing compliance and companies increasingly facing accessibility litigation, this topic is appearing more frequently in SDET interviews. You need to be able to talk about it.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">♿</span>
+      <div>
+        <h3>WCAG Compliance Levels</h3>
+        <p>The Web Content Accessibility Guidelines (WCAG) define three levels of conformance: <strong>Level A</strong> (minimum — the web page must satisfy these, e.g., no keyboard traps, non-text content has text alternatives), <strong>Level AA</strong> (mid-range — the target for most organisations, e.g., colour contrast ratio of at least 4.5:1, resizable text up to 200%, consistent navigation), and <strong>Level AAA</strong> (highest — not always achievable for all content, e.g., contrast ratio of 7:1, sign language interpretation for audio). Most organisations target WCAG 2.1 or 2.2 Level AA. In an interview, stating "Our team targeted WCAG 2.1 AA compliance" demonstrates awareness of the standard. Better: "We targeted WCAG 2.1 AA and I automated accessibility checks in our Playwright tests using axe-core, which catches ~57% of WCAG issues automatically."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🖥️</span>
+      <div>
+        <h3>Screen Reader Testing</h3>
+        <p>Screen readers are how visually impaired users interact with web applications — and they're surprisingly easy to incorporate into SDET testing. Know the major players: <strong>VoiceOver</strong> (built into macOS and iOS), <strong>NVDA</strong> (free, open-source, Windows), <strong>JAWS</strong> (commercial, Windows, most widely used in enterprise), and <strong>TalkBack</strong> (Android). In Playwright, you can test for accessible names and roles: <code>await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible()</code> verifies that screen readers can find the button. Even better: discuss how you've used ARIA (Accessible Rich Internet Applications) attributes — <code>aria-label</code>, <code>aria-describedby</code>, <code>role</code> — to ensure dynamic content is accessible, and how you've written tests that fail when ARIA attributes are missing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎨</span>
+      <div>
+        <h3>Colour Contrast and Visual Testing</h3>
+        <p>Colour contrast is one of the most common accessibility failures — and one of the easiest to test. WCAG 2.1 AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. Tools like <strong>axe-core</strong> (integrates with Playwright via <code>@axe-core/playwright</code>), <strong>pa11y</strong>, and <strong>Lighthouse</strong> can automate contrast checks. In an interview: "We integrated axe-core into our Playwright test suite — it runs after every page navigation and reports accessibility violations as test failures. We specifically track colour contrast violations, missing alt text, and form label issues. Our CI pipeline blocks merges if any new critical or serious accessibility violations are introduced." Bonus points for mentioning that you also test with the <strong>prefers-reduced-motion</strong> media query and dark mode/high contrast modes.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⌨️</span>
+      <div>
+        <h3>Keyboard Navigation Testing</h3>
+        <p>Many users with motor disabilities navigate entirely by keyboard — and keyboard accessibility is required at WCAG Level A. Every interactive element must be reachable and operable via keyboard alone. Key things to test: <strong>Focus order</strong> (does Tab navigate in a logical sequence?), <strong>Focus visibility</strong> (is there a visible focus indicator?), <strong>Skip links</strong> (is there a "Skip to main content" link as the first focusable element?), <strong>No keyboard traps</strong> (can focus always move away?), and <strong>Keyboard-operated custom widgets</strong> (can a dropdown, modal, or date picker be operated with Enter, Escape, and arrow keys?). In Playwright: <code>await page.keyboard.press('Tab')</code> followed by <code>await expect(page.locator(':focus')).toHaveAttribute('aria-label', 'Search')</code> verifies keyboard focus lands where expected. The strongest candidates discuss how they built a keyboard navigation test suite that validates the entire Tab sequence of critical user flows.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>🌍 The Business Case for Accessibility</h3>
+    <p>The strongest interview answers connect accessibility to business outcomes, not just compliance. "We implemented automated accessibility testing not just because WCAG compliance is a regulatory requirement in our sector, but because 15% of the global population has some form of disability — that's over a billion potential users. Accessible software is also more usable for everyone: keyboard shortcuts benefit power users, captions benefit people in noisy environments, and high-contrast modes benefit people using devices in bright sunlight. Our accessibility investment paid for itself in reduced legal risk, expanded market reach, and improved SEO — search engines reward accessible websites." This answer demonstrates strategic thinking, not just checkbox compliance.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Reliability and Resilience Testing</h2>
+  <p>Reliability testing asks: "Does the system keep working when things go wrong?" Resilience testing asks: "How gracefully does it recover?" These are the non-functional requirements that separate systems that work on a developer's laptop from systems that work in production at 3 a.m. on a Saturday. They're also increasingly common in SDET interviews as organisations adopt microservices, cloud-native architectures, and distributed systems where partial failure is the norm, not the exception.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🐒</span>
+      <div>
+        <h3>Chaos Engineering Principles</h3>
+        <p>Chaos engineering is the practice of deliberately injecting failures into a system to test its resilience. Netflix's Simian Army — Chaos Monkey (randomly terminates instances), Latency Monkey (injects network delays), Chaos Gorilla (takes down an entire availability zone) — pioneered the discipline. For SDET interviews, you don't need to have run Chaos Monkey in production, but you should understand the principles: (1) <strong>Start with a steady state</strong> — define what "normal" looks like in metrics. (2) <strong>Hypothesise</strong> — "If we kill the payment service, the checkout flow should degrade gracefully, not crash." (3) <strong>Inject failure</strong> — terminate the service, throttle the network, fill the disk. (4) <strong>Observe</strong> — did the system behave as expected? (5) <strong>Learn and fix</strong> — if it didn't, why not, and what needs to change? Being able to articulate these five steps with a concrete example — "We ran a chaos experiment where we killed one of three Redis nodes and verified that our application switched to the replica within 2 seconds without data loss" — demonstrates resilience thinking.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚡</span>
+      <div>
+        <h3>Circuit Breakers, Retry Logic, and Timeouts</h3>
+        <p>These are the three pillars of resilient service communication — and they're testable. <strong>Circuit breakers</strong> prevent cascading failures: when a downstream service fails repeatedly, the circuit breaker trips (opens) and subsequent calls fail fast instead of waiting for timeouts, giving the downstream service time to recover. After a cooling period, the circuit breaker transitions to half-open and allows a test request through. <strong>Retry logic</strong> handles transient failures: if a request fails with a 503 (Service Unavailable) or a network timeout, retry with exponential backoff — wait 1s, then 2s, then 4s, then 8s. <strong>Timeouts</strong> prevent indefinite waiting: set connection timeouts, read timeouts, and request timeouts appropriate to your SLA. In an interview: "I wrote integration tests that verify circuit breaker behaviour — when the mock payment service returns 500 errors 5 times consecutively, the circuit opens and subsequent requests to the checkout endpoint return a graceful 'service temporarily unavailable' message instead of a 500 stack trace."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Failover and Disaster Recovery Testing</h3>
+        <p>Failover testing verifies that when a primary component fails, a backup takes over without data loss or excessive downtime. <strong>Active-passive failover:</strong> the backup is idle until needed. <strong>Active-active failover:</strong> both instances serve traffic; if one fails, the other handles the full load. Key test scenarios: database failover (primary to replica), message queue failover (broker failover in Kafka or RabbitMQ), region failover (if us-east-1 goes down, does traffic route to eu-west-1?), and DNS failover. For SDETs, the test automation angle is: "We automated failover smoke tests that run daily — they trigger a controlled database failover, verify that the application reconnects to the new primary within 10 seconds, confirm no in-flight transactions were lost, and validate that all critical APIs return 200 within 30 seconds of failover completion." Even if your team only tested this manually, discussing the automation strategy shows you think beyond one-off testing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🛟</span>
+      <div>
+        <h3>Graceful Degradation Patterns</h3>
+        <p>Graceful degradation is the principle that when a non-critical dependency fails, the system should continue operating with reduced functionality rather than failing entirely. Examples: if the recommendation engine is down, show a static "Popular Items" list instead of an error page. If the image CDN is unreachable, show placeholder images with alt text. If the analytics service times out, log the event locally and retry later — don't block the user's purchase. In interviews, discuss how you've tested graceful degradation: "We built a test harness that simulates dependency failures — we kill the recommendation service container and verify the product page still loads with a fallback 'trending products' section and an appropriate warning message, not a 500 error or an infinite spinner." This demonstrates that you test for resilience, not just correctness.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Answer "Describe a Time You Tested for Non-Functional Requirements" When You've Mostly Done Functional</h2>
+  <p>This is the question that makes most candidates sweat. If you've spent your career writing Selenium tests for CRUD applications, you might feel like you've never done non-functional testing. <strong>You almost certainly have — you just haven't framed it that way.</strong> Here's how to find the non-functional testing in your functional testing experience:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Performance:</strong> Have you ever added a wait for an element to load? That's implicitly testing response time. Have you ever noticed a page was slow and flagged it? That's performance awareness. Have you ever set a test timeout? That's a performance threshold. Frame it: "I incorporated implicit performance checks into our functional tests — any page that took longer than 5 seconds to load triggered a warning in our test report, which helped us catch performance regressions early."</li>
+    <li><strong>Security:</strong> Have you ever tested login functionality? That's authentication testing. Have you ever tested that a non-admin user can't access the admin panel? That's authorisation testing. Have you ever tested input validation (special characters, empty fields, excessively long inputs)? That's injection testing. Frame it: "My functional tests included security-adjacent scenarios — I validated that SQL-like strings in search fields didn't break the application, that session tokens were invalidated on logout, and that direct URL access to admin routes redirected unauthenticated users to the login page."</li>
+    <li><strong>Accessibility:</strong> Have you ever checked that a button has visible text? That's accessibility testing. Have you ever verified keyboard navigation? That's accessibility testing. Have you ever tested with browser zoom? That's accessibility testing. Frame it: "I advocated for adding accessible labels to all interactive elements in our component library and wrote tests that verified every button, link, and form input had an accessible name — these tests caught 23 accessibility regressions before they reached production."</li>
+    <li><strong>Reliability:</strong> Have you ever tested what happens when a network request fails? That's resilience testing. Have you ever tested error handling? That's reliability testing. Have you ever run a test suite multiple times to check for flakiness? That's a basic form of reliability testing. Frame it: "I wrote service-virtualisation tests that simulated downstream API failures — timeouts, 500 errors, and malformed responses — and verified that our application handled each failure mode gracefully with user-friendly error messages rather than crashing."</li>
+  </ol>
+
+  <p>The key to answering this question is <strong>reframing, not inventing.</strong> You're not lying about experience you don't have — you're recognising the non-functional dimension of the work you've already done and articulating it in the language interviewers expect.</p>
+</section>
+
+<section class="content-section">
+  <h2>Model Interview Answers: Four Non-Functional Testing Scenarios</h2>
+  <p>These model answers use the STAR method (Situation, Task, Action, Result) adapted for non-functional testing scenarios. Practise them out loud — the SDET Interview Coach app's AI mock interviewer can ask these exact questions and score your responses.</p>
+
+  <div class="timeline-container">
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 1</div>
+      <div class="timeline-content">
+        <h3>Performance: Catching a Database Bottleneck Before It Reached Production</h3>
+        <p><strong>Situation:</strong> "Our e-commerce platform was preparing for Black Friday — traffic was expected to increase 10x. The product team was focused on feature completeness; performance testing wasn't on the sprint board." <strong>Task:</strong> "As the SDET on the checkout team, I needed to ensure the checkout flow would handle the projected load without degrading." <strong>Action:</strong> "I wrote a k6 load test script that simulated the full checkout flow — add to cart, apply promo code, enter shipping, submit payment — with 500 virtual users ramping up over 5 minutes. I ran it against our staging environment during off-hours. The results showed P95 response time for the payment confirmation endpoint spiking to 4.2 seconds at 300 concurrent users. I profiled the endpoint and traced the bottleneck to an unindexed query on the orders table that was doing a full table scan. I documented the finding with the exact query, the query plan, the recommended index, and the projected performance improvement. I presented this to the backend lead with the revenue impact: 'At projected Black Friday traffic, this single query would add 3 seconds to every checkout — that's an estimated £45,000 in abandoned carts per hour.'" <strong>Result:</strong> "The backend team added the index within 24 hours. I re-ran the load test and P95 dropped to 380ms at 1,000 concurrent users. The checkout flow handled Black Friday without a single performance incident. The CTO cited this in the engineering all-hands as an example of proactive quality engineering. I was asked to lead performance testing across all customer-facing teams."</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 2</div>
+      <div class="timeline-content">
+        <h3>Security: Automating Authentication and Authorisation Tests That Caught a Real Vulnerability</h3>
+        <p><strong>Situation:</strong> "I was working on a government digital service that handled citizen personal data. Security was non-negotiable — a data breach would have legal consequences under GDPR and damage public trust. We had a security team doing penetration testing quarterly, but no automated security regression tests between pen tests." <strong>Task:</strong> "I needed to build a suite of automated security tests that would run on every deployment and catch common vulnerabilities before they reached production — complementing, not replacing, the quarterly pen tests." <strong>Action:</strong> "I wrote Playwright tests that covered: (1) Authentication — invalid credentials rejection, session invalidation on logout, JWT token expiry handling, password complexity enforcement. (2) Authorisation — direct URL access to admin endpoints by regular users, IDOR attempts by modifying user IDs in API calls, role escalation by manipulating JWT claims. (3) Input validation — XSS payloads in form fields, SQL injection patterns in search inputs, excessively long strings to test buffer handling. (4) Security headers — Content-Security-Policy, X-Frame-Options, Strict-Transport-Security presence. I also integrated OWASP ZAP's API to run a passive scan during our end-to-end test suite and report any findings directly to our defect tracker." <strong>Result:</strong> "On the third week of running these tests, the authorisation tests caught a critical vulnerability — a newly added admin endpoint was missing the role-check middleware, meaning any authenticated user could access it. This would have gone undetected until the next quarterly pen test — three months of exposure. The fix was deployed within hours. The security team adopted my test suite as part of their CI pipeline and expanded it. I was invited to present the approach at the department's security community of practice."</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 3</div>
+      <div class="timeline-content">
+        <h3>Resilience: Verifying Graceful Degradation When a Critical Dependency Failed</h3>
+        <p><strong>Situation:</strong> "Our application depended on a third-party payment gateway for processing transactions. The gateway had experienced two outages in the previous quarter — each time, our application crashed with an unhandled exception, returning a 500 error and a stack trace to users. The business was losing revenue every minute the gateway was down." <strong>Task:</strong> "I needed to verify that our application handled payment gateway failures gracefully — queueing transactions for retry instead of crashing, showing a user-friendly message instead of a stack trace, and alerting the on-call team automatically." <strong>Action:</strong> "I built a resilience test suite using WireMock to simulate the payment gateway. I created scenarios: (1) Gateway timeout after 30 seconds, (2) Gateway returning 503 Service Unavailable, (3) Gateway returning malformed JSON, (4) Gateway returning success with 30-second latency, (5) Gateway returning partial success — payment captured but confirmation failed. For each scenario, I verified: the application returned a 200 with a 'payment is being processed' message (not a 500), the transaction was queued for retry with exponential backoff, an alert was triggered in PagerDuty with the correct severity, and the user's cart state was preserved so they didn't lose their items. I also tested recovery — when the gateway came back online, queued transactions were processed successfully." <strong>Result:</strong> "Two months later, the payment gateway had another outage — this time lasting 45 minutes. Our application handled it exactly as designed: users saw 'Your payment is being processed — you'll receive a confirmation email within 15 minutes,' transactions were queued and retried, and zero revenue was lost. The product manager said it was the first payment gateway outage that didn't generate a single customer support ticket. The resilience test suite became a template adopted by three other teams."</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Scenario 4</div>
+      <div class="timeline-content">
+        <h3>Accessibility: Building an Accessibility Gate Into CI/CD That Changed Engineering Culture</h3>
+        <p><strong>Situation:</strong> "I joined a fintech company that was preparing for a major accessibility audit as part of a partnership with a large bank. The bank required WCAG 2.1 AA compliance before signing. Our application had never been tested for accessibility — Lighthouse scores were in the 40s, colour contrast was failing on 60% of pages, and keyboard navigation was completely broken on modal dialogs and dropdown menus." <strong>Task:</strong> "I needed to establish an accessibility testing baseline, automate as much as possible, and create a process that prevented new accessibility regressions — all within 8 weeks before the audit." <strong>Action:</strong> "I integrated axe-core with our Playwright test suite using @axe-core/playwright. I configured it to run after every page navigation and report violations at critical and serious severity. I wrote dedicated keyboard navigation tests that validated the Tab sequence for our top 10 user flows — login, onboarding, dashboard, transaction history, fund transfer, settings, etc. I added visual regression tests that included colour contrast comparisons using a contrast ratio calculation library. I made accessibility violations block CI merges — if any new critical or serious violations were introduced, the build failed. I created an accessibility dashboard in Grafana showing violations over time, organised by page and severity. I also ran training sessions for the frontend team on ARIA attributes, semantic HTML, and keyboard navigation patterns." <strong>Result:</strong> "Within 6 weeks, we went from 1,200+ accessibility violations to under 50 — all non-critical. The external audit found zero WCAG 2.1 AA failures. The bank signed the partnership. More importantly, the frontend team internalised accessibility — six months later, new engineers were being onboarded with accessibility as a first-class concern, not an afterthought. The accessibility gate in CI was never removed and continued catching regressions. I presented this work at a local TestBash meetup."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How SDET Interview Coach Prepares You for Non-Functional Testing Questions</h2>
+  <p>Non-functional testing questions are difficult to prepare for because they're broad — you can't just memorise a list of Playwright commands and expect to pass. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> is designed to help you build the structured thinking and broad awareness that NFR questions require:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Dedicated non-functional testing topic area</strong> — Questions spanning performance, security, accessibility, reliability, and scalability testing, calibrated to your target seniority level. Junior candidates get foundational awareness questions; Lead candidates get strategic NFR-programme questions.</li>
+    <li><strong>AI-powered mock interviews</strong> — The AI interviewer throws curveball NFR questions and adapts its follow-ups based on your answers. It scores you on technical accuracy, breadth, communication clarity, and — crucially — whether you're overclaiming expertise you don't have (a common and costly mistake).</li>
+    <li><strong>Job Match with NFR extraction</strong> — Paste your target job description and Job Match extracts every non-functional testing signal — "performance testing," "security awareness," "scalability," "resilience" — and generates 50 bespoke questions tailored to that specific role.</li>
+    <li><strong>Model answers with depth gradation</strong> — Every question comes with model answers at three levels: foundational ("I understand the concept"), practitioner ("I've done this"), and expert ("I've led this"). You can see exactly what "good" looks like at your target level and what you need to stretch to reach the next one.</li>
+    <li><strong>Spaced repetition for NFR terminology</strong> — Terms like "P95 latency," "SAST vs DAST," "circuit breaker pattern," "WCAG conformance level," and "graceful degradation" are added to your spaced repetition queue so they're in your long-term memory when the interviewer asks about them.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">Mitchell Agoma built SDET Interview Coach after experiencing the exact gap this guide addresses — he was a strong functional tester who froze when asked about non-functional requirements in a Lead SDET interview at a major financial institution. He got the job eventually — but only after learning, through trial and error, what non-functional testing interviewers actually care about. The app distils those lessons into structured, repeatable preparation so you don't have to learn the hard way. Download it from the iOS App Store, complete the 2-minute onboarding, and run your first non-functional testing mock interview today — you'll know exactly where you stand and what to practise before the real thing.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What are non-functional testing requirements in SDET interviews?",
+        a: "Non-functional testing requirements refer to testing how a system behaves rather than what it does — covering performance, security, usability, accessibility, reliability, scalability, and maintainability. In SDET interviews, these questions test whether you think beyond functional correctness: does the page load fast enough? Is user data secure? Can a keyboard-only user navigate the application? What happens when a downstream service fails? Interviewers use NFR questions to assess breadth — a candidate who can discuss response time percentiles, OWASP injection vectors, and WCAG compliance, even at a foundational level, signals that they are a complete engineer rather than someone who only writes functional tests. The depth expected scales with seniority: Junior candidates should demonstrate awareness of non-functional categories, mid-level candidates should have practical experience in at least one domain, senior candidates should show breadth across multiple domains, and lead candidates should discuss how they've built NFR testing into their team's culture and processes.",
+      },
+      {
+        q: "How do I answer non-functional testing questions if I've only done functional testing?",
+        a: "Reframe, don't invent. Most SDETs have done non-functional testing without labelling it that way. If you've tested login flows, you've done authentication testing (a security non-functional). If you've verified that pages load within reasonable time, you've done implicit performance testing. If you've checked that error messages appear when APIs fail, you've done basic resilience testing. The key is articulating this work in non-functional language: 'My functional test suite included security-adjacent scenarios — I validated input sanitisation against SQL injection patterns, tested that expired session tokens redirected to login, and verified that non-admin users couldn't access admin endpoints by direct URL manipulation.' This reframing demonstrates awareness without overclaiming expertise. Use the STAR method, be honest about your level, and show growth orientation: 'This is an area I'm actively developing — I've been using the SDET Interview Coach app to practise non-functional testing scenarios.'",
+      },
+      {
+        q: "What's the difference between performance testing and load testing?",
+        a: "Performance testing is the umbrella term encompassing all testing that evaluates system speed, responsiveness, and stability under workload. Load testing is a specific type of performance testing that evaluates system behaviour under expected normal and peak load conditions. Other types include: stress testing (pushing beyond normal capacity to find breaking points), soak testing (sustained load over extended periods to detect memory leaks and resource degradation), spike testing (sudden extreme increases in load), and scalability testing (how the system scales as resources are added). In SDET interviews, being able to distinguish these types — and describe which tools and metrics you'd use for each — demonstrates genuine understanding rather than buzzword familiarity. For example: 'For load testing our API, I'd use k6 to simulate expected peak traffic and measure P95 response time, throughput, and error rate. For soak testing, I'd run the same script for 8 hours and monitor memory consumption and garbage collection patterns.'",
+      },
+      {
+        q: "Do I need to be a security expert for SDET interviews?",
+        a: "No — unless you're applying for a security-focussed SDET role, interviewers are testing awareness and collaboration ability, not deep specialism. You should know: the OWASP Top 10 at a high level (injection, broken authentication, sensitive data exposure, XSS, broken access control), the difference between SAST (static code analysis) and DAST (dynamic application testing), how to write automated tests for authentication and authorisation flows, how to handle test data securely (no production data, no hard-coded secrets), and how to integrate security scanning tools like OWASP ZAP or SonarQube into CI pipelines. Strong candidates also demonstrate collaboration: 'I worked with our InfoSec team to understand their penetration test findings and translated the recurring vulnerabilities into automated regression tests that prevented them from reappearing.' This answer shows you understand the boundary between SDET security testing and specialist security engineering.",
+      },
+      {
+        q: "Does SDET Interview Coach cover non-functional testing interview questions?",
+        a: "Yes. SDET Interview Coach includes a dedicated non-functional testing topic area with questions covering performance, security, accessibility, reliability, and scalability testing. Questions are calibrated to five seniority levels — from foundational awareness for Junior candidates to strategic NFR-programme design for Lead candidates. The AI mock interviewer can run dedicated NFR interview rounds, asking domain-specific follow-up questions and scoring your answers on technical accuracy, breadth, communication clarity, and appropriate self-assessment (it flags when you're overclaiming). Use Job Match to paste your target job description and get 50 bespoke questions tailored to that role — if the JD mentions 'performance testing' or 'security awareness,' you'll get NFR questions specific to those expectations. The spaced repetition system ensures NFR terminology like P95 latency, SAST vs DAST, WCAG compliance levels, and circuit breaker patterns are in your long-term memory.",
+      },
+      {
+        q: "How should I prepare for a non-functional testing interview round?",
+        a: "Start with honest self-assessment: which non-functional domains (performance, security, accessibility, reliability, scalability) have you actually worked with? For each, write down one concrete example using the STAR method — even if it's a small example. Then: (1) Read the dedicated posts on our blog for domains you're weakest in — we have deep-dives on security testing, k6 performance testing, and monitoring/observability. (2) Download SDET Interview Coach and complete the non-functional testing topic assessment — it identifies your exact gaps. (3) Run at least three AI mock interviews on the non-functional topic — the AI adapts its questions based on your answers and identifies patterns in your weak spots. (4) Use Job Match for your target role — paste the JD and study the NFR-related questions it generates. (5) Practise articulating your reframed functional-to-non-functional examples out loud — video yourself or use the app's voice recording feature. The goal is to reach a point where you can discuss any non-functional domain for 2-3 minutes with specific examples and technical depth appropriate to your level.",
+      },
+      {
+        q: "What's the most common mistake SDETs make on non-functional testing questions?",
+        a: "The two most common mistakes are polar opposites: (1) Overclaiming — claiming expertise you don't have. Saying 'I'm an expert in security testing' when your experience is running a few OWASP ZAP scans will get exposed in follow-up questions and destroys your credibility on every other answer. (2) Underclaiming — saying 'I haven't really done non-functional testing' when you've been doing it all along without the label. The fix for both is the same: be specific about what you've done, honest about your level, and frame your experience in non-functional language. 'I haven't done dedicated performance engineering, but I've built performance checks into my functional test suite — response time assertions on critical API endpoints, page load time thresholds in Playwright, and monitoring queries that would indicate N+1 problems under load.' This answer is credible, specific, and demonstrates the right mindset — which is what interviewers actually want.",
+      },
+    ],
+    relatedSlugs: ["security-testing-qa-interview-questions", "k6-performance-testing-interview-questions", "monitoring-observability-sdet-interviews-2026"],
+  },
+  {
     slug: "sdet-job-search-strategy-application-tips-2026",
     title: "SDET Job Search Strategy 2026 — The Complete Guide to Landing a Test Automation Role: CV That Gets Past ATS, LinkedIn Profile That Recruiters Actually Find, Cold Outreach Templates That Get Replies, Application Tracking Systems, and the Job Hunt Psychology That Keeps You Going When You're Searching at 11 PM",
     description: "The definitive SDET job search strategy guide for 2026. You've built the skills. You've practised the interview questions. But none of that matters if nobody calls you. This guide covers everything between 'I'm ready to apply' and 'I have an offer': the CV that gets past the ATS filter, the LinkedIn profile that makes recruiters message you first, cold outreach DMs to recruiters and hiring managers that actually get replies (with copy-paste templates), an application tracking system so you never miss a follow-up, how to work with recruitment agencies without getting lost in their database, the psychology of a job search that might take 6–12 weeks, and how to handle rejection without spiralling. Built from Mitchell Agoma's 20 years on both sides of the SDET hiring table — as a candidate who navigated into HMRC, MoD, Nationwide, and Accenture without a CS degree, and as a hiring manager who has opened and closed thousands of CVs. If you're searching at 11 PM wondering why nobody's calling back, this guide is your playbook. The SDET Interview Coach iOS app includes a Career Strategy module with mock negotiation scenarios and market-rate benchmarking — pair your job search strategy with interview readiness and walk into every call prepared.",
