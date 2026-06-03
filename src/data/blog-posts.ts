@@ -14,6 +14,675 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "qa-testing-terminology-glossary-sdet-interviews-2026",
+    title: "QA Testing Terminology Glossary for SDET Interviews 2026 — The Complete Reference Guide to Speaking the Language of Testing Fluently: Every Term, Acronym, and Concept You Need to Define on the Spot, The Differences Between Commonly Confused Terms That Interviewers Test Deliberately, How to Explain Testing Concepts Like a Senior Engineer (Not a Textbook), Red-Flag Terminology Mistakes That Cost Candidates Offers, and 20 Years of Watching Testing Language Evolve from V-Model to AI-Driven Quality",
+    description: "The definitive QA testing terminology glossary for SDET interviews in 2026. Nothing exposes a candidate faster than fumbling a basic term — and nothing signals competence faster than defining one clearly, concisely, and in your own words. Mitchell Agoma has spent 20 years in software testing across HMRC, the Ministry of Defence, Nationwide Building Society, and Accenture — environments where terminology precision wasn't academic, it was the difference between a production defect caught and a regulatory breach missed. This reference guide organises every testing term you might be asked to define in an SDET interview by category: test types, test levels, automation terms, CI/CD terminology, performance concepts, security vocabulary, and accessibility jargon. It decodes the acronyms that populate SDET job descriptions — TDD, BDD, DDT, ATDD, POM, CI/CD, SUT, AUT, E2E, UAT, SLA, SLO, SLI. It walks through the commonly confused term pairs that interviewers use as litmus tests: verification vs validation, quality assurance vs quality control, smoke vs sanity, retesting vs regression, stub vs mock vs fake vs spy. It teaches the 'explain to a junior developer' framework for answering terminology questions in a way that demonstrates senior-level communication — the single skill that most reliably separates offers from rejections in behavioural and technical rounds. It catalogues the red-flag terminology mistakes that lose interviewers within the first five minutes, and it includes Mitchell's personal perspective on the terms that have changed meaning over two decades in the industry. With 8 detailed FAQs and downloadable structure, this is the glossary you read the night before your interview — and refer back to throughout your SDET career. The SDET Interview Coach iOS app includes a dedicated terminology drill module that quizzes you on definitions, acronyms, and confused-term differentiation with AI-powered feedback — so you walk into the interview knowing exactly what every term means and how to explain it like someone who's been doing this for years.",
+    date: "2026-06-03",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "QA testing terminology glossary SDET interview 2026",
+      "software testing terms and definitions for test automation engineer interviews",
+      "SDET acronyms decoded TDD BDD CI/CD POM SUT explained clearly",
+      "commonly confused testing terms verification vs validation smoke vs sanity",
+      "how to explain testing concepts in interviews senior SDET communication skills",
+      "test doubles explained stub mock fake spy differences SDET interview prep",
+      "testing terminology mistakes that cost SDET job offers 2026",
+      "QA testing vocabulary reference guide test types levels categories glossary",
+    ],
+    content: `
+<section class="content-section">
+  <p>Here is a moment every SDET candidate dreads. The interviewer leans forward, pauses, and asks: <strong>"Can you explain the difference between verification and validation?"</strong> It's a simple question. Two terms. One sentence each. And yet — in the pressure of an interview, when your brain is already spinning through the framework design question you just answered and the coding problem you know is coming next — a surprising number of candidates freeze, conflate the two, or deliver a textbook definition so dry and memorised that the interviewer mentally checks out before the second sentence. This is the hidden power of terminology questions in SDET interviews: they look easy, which makes stumbling on them disproportionately damaging. If you can't define verification and validation clearly, what else don't you know? If you confuse smoke testing and sanity testing — two foundational quality gates — can you be trusted to design a test strategy? If you call every test double a "mock" without understanding the distinctions, have you actually worked in a serious test automation environment, or have you just watched tutorials? Terminology precision is not pedantry. It is the quickest signal interviewers have for assessing whether you understand the <em>discipline</em> of software testing, or whether you've just learned the syntax of a test framework.</p>
+  <p>Mitchell Agoma has spent 20 years in environments where terminology precision had real-world consequences: at HMRC, where confusing verification and validation in a tax processing system could mean incorrect tax calculations for millions of citizens; at the Ministry of Defence, where calling a security test "done" after only static analysis — while skipping dynamic penetration testing — was a career-limiting move; at Nationwide Building Society, where distinguishing between retesting and regression testing determined whether a payment bug fix was actually verified or whether related functionality was silently broken; and at Accenture, where consulting across client engagements meant speaking the precise testing language of financial services, telecommunications, and government — sometimes in the same week. The terminology you use in an interview doesn't just demonstrate knowledge. It demonstrates that you've <em>operated</em> in environments where precision mattered. This glossary is organised for interview preparation, not academic reference. Every term is defined the way you should define it in an interview — clearly, concisely, with context, and in your own words. If you're preparing for an SDET interview, pair this glossary with the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a>, which includes a dedicated terminology drill module that quizzes you on definitions, acronyms, and confused-term differentiation with AI-powered feedback calibrated to interview expectations at every seniority level.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Terminology Questions Are Interview Litmus Tests — And Why Candidates Underestimate Them</h2>
+  <p>Most candidates prepare for coding challenges and system design questions. Almost nobody prepares for terminology questions. This is why interviewers love them — they separate candidates who have <em>studied</em> testing from candidates who have <em>practised</em> testing. The distinction matters because in production environments, terminology precision is not academic. It's operational. Here's what interviewers are actually evaluating when they ask you to define a term:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. Precision Under Ambiguity — Can You Draw Clear Lines?</h3>
+      <p>When an interviewer asks "What's the difference between smoke testing and sanity testing?", they're not just testing whether you've memorised two definitions. They're testing whether you can draw a clear, practical distinction between two concepts that overlap in many people's minds. This skill — precise differentiation — is the same skill you need when writing a bug report that distinguishes between a test environment issue and an application defect, or when explaining to a product manager why a specific edge case isn't covered by existing test coverage. Candidates who say "they're basically the same thing" or "smoke testing is just a quick sanity check" have just signalled that they either don't know, or don't value precision — both of which are dealbreakers at senior levels. Candidates who say "smoke testing verifies that the critical paths of a build are working — can the application start, can users log in, can a basic transaction complete. Sanity testing is narrower: it verifies that a specific bug fix or feature change works as expected without testing the full system" have just demonstrated the kind of operational clarity that senior SDETs bring to release decisions.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Communication Range — Can You Explain Complex Ideas Simply?</h3>
+      <p>The best SDETs are not just technically proficient — they are communicators who can explain testing concepts to developers, product managers, business stakeholders, and junior team members at the appropriate level of detail for each audience. Terminology questions in interviews test exactly this: can you take a technical concept and explain it clearly? Candidates who recite dictionary definitions word-for-word signal that they've memorised, not understood. Candidates who say "Let me give you an example..." and use a concrete scenario signal that they've internalised the concept. Mitchell's rule from 20 years of interviewing: the candidate who can explain a technical term to a hypothetical junior developer — without jargon, with a concrete example, and in under 90 seconds — gets hired more often than the candidate with the deeper technical knowledge who can't communicate it. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> includes behavioural interview modules that specifically train this skill — asking you to explain testing concepts to different audiences and scoring your communication clarity.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. Experience Depth — Have You Actually Done This, or Just Read About It?</h3>
+      <p>Terminology questions have a unique property: they expose whether your knowledge comes from practice or from study. A candidate who has only read about test doubles will say "A mock is a simulated object that returns predefined responses." A candidate who has actually used test doubles in anger will say "A mock is for behaviour verification — you assert that specific methods were called with specific arguments. I use them when I need to verify that my code <em>interacts</em> with a dependency correctly, not just that it uses the dependency's return value. For example, when testing a payment service, I mock the email notification service to verify that a confirmation email was triggered — I don't care about the email content, I care that the trigger happened." The second answer is richer because it's grounded in real decisions — "when do I use this versus that" is the experience marker. Interviewers hear this immediately. It's the difference between someone who has consumed testing content and someone who has produced testing results.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. Industry Awareness — Do You Know How the Language Is Evolving?</h3>
+      <p>Testing terminology evolves. Terms that meant one thing in 2010 mean something different — or more nuanced — in 2026. "Shift-left testing" used to mean "test earlier in the development cycle." Now it encompasses developer-owned testing, contract testing in CI, and quality gates at the pull-request level. "Test automation" used to mean "automated regression suites." Now it includes self-healing tests, AI-generated test cases, visual regression testing, and continuous testing in deployment pipelines. When an interviewer asks you to define a term, they're also testing whether your understanding is current — or frozen at whatever year you last studied testing formally. Candidates who define "BDD" as "writing Gherkin scenarios" are giving a 2018 answer. Candidates who talk about BDD as a collaboration practice that uses concrete examples to build shared understanding between business, development, and testing — with Gherkin as just one possible tool for capturing those examples — are giving a 2026 answer. The distinction sounds subtle on paper. In an interview, it's the difference between mid-level and senior.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The good news: terminology questions are among the highest-ROI areas to prepare because the knowledge you need is finite and learnable. There are roughly 80-100 terms that an SDET at mid-to-senior level should be able to define clearly. That's manageable with a few evenings of focused study. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> makes this prep systematic — drilling you on terms, tracking which ones you've mastered, and using spaced repetition to ensure they're in long-term memory by interview day.</p>
+</section>
+
+<section class="content-section">
+  <h2>Part 1 — Test Types: The Categories Every SDET Must Be Able to Define</h2>
+  <p>Test types describe <em>what</em> you're testing — the quality attribute or characteristic under examination. Interviewers expect you to know these cold, because test type classification is the foundation of test strategy: you can't plan testing if you can't articulate what kinds of testing are needed for a given system. Here are the essential test types, with interview-ready definitions.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔬</span>
+      <div>
+        <h3>Functional Testing</h3>
+        <p><strong>What it is:</strong> Testing that verifies the system behaves according to specified functional requirements — given input X, the system produces output Y. Functional testing answers the question: <em>does the system do what it's supposed to do?</em> Examples: testing that a login form accepts valid credentials and rejects invalid ones, testing that a shopping cart correctly calculates totals with discounts and taxes, testing that an API endpoint returns the correct HTTP status code and response body for each defined input. <strong>Interview tip:</strong> When defining functional testing, always contrast it with non-functional testing — it shows you understand the full testing landscape, not just one corner of it. The SDET Interview Coach terminology module drills exactly this kind of paired-definition recall.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚡</span>
+      <div>
+        <h3>Non-Functional Testing</h3>
+        <p><strong>What it is:</strong> Testing that verifies <em>how</em> the system behaves — its quality attributes rather than its specific functions. This includes performance (how fast?), load (how many users?), stress (what's the breaking point?), security (how safe?), usability (how intuitive?), reliability (how stable over time?), and scalability (how does it grow?). Non-functional testing answers the question: <em>does the system do what it's supposed to do, well enough, under realistic conditions?</em> <strong>Interview tip:</strong> When asked about non-functional testing in an SDET interview, be ready to discuss at least three non-functional categories in depth — performance, security, and accessibility are the highest-frequency interview topics. For a deep dive on all three, see our dedicated guides on <a href="/blog/non-functional-testing-sdet-interview-questions-2026">non-functional testing interview questions</a>, <a href="/blog/security-testing-qa-interview-questions">security testing interview questions</a>, and <a href="/blog/accessibility-testing-interview-questions-2026">accessibility testing interview questions</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Regression Testing</h3>
+        <p><strong>What it is:</strong> Testing that verifies existing functionality still works correctly after a change — a code modification, a configuration update, a dependency upgrade, or an environment change. Regression testing answers the question: <em>did we break anything that was already working?</em> This is the bread and butter of test automation: automated regression suites run on every commit, pull request, or deployment to catch unintended side effects quickly. <strong>Interview tip:</strong> Interviewers frequently ask you to distinguish between retesting and regression testing — retesting verifies that a specific bug fix works (narrow), regression testing verifies that nothing else broke (broad). Candidates who conflate the two lose credibility fast. See the "commonly confused terms" section below for the full differentiation.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">💨</span>
+      <div>
+        <h3>Smoke Testing</h3>
+        <p><strong>What it is:</strong> A shallow, broad set of tests that verify the critical functionality of a build is working — enough to determine whether the build is stable enough for further, more thorough testing. Also called "build verification testing" or "confidence testing." Smoke testing answers the question: <em>is this build worth testing further, or is it fundamentally broken?</em> If smoke tests fail, the build is rejected — no further testing occurs. <strong>Interview tip:</strong> The metaphor: when you turn on a new piece of electronics and smoke comes out, you don't bother testing whether the volume knob works. Smoke testing catches the "catches fire" problems before you invest in detailed testing. Mitchell has seen builds rejected at the smoke test stage at HMRC because a database migration script failed — there was no point running 5,000 regression tests when the application couldn't even start. That's the operational value of smoke testing that interviewers want to hear.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🧪</span>
+      <div>
+        <h3>Sanity Testing</h3>
+        <p><strong>What it is:</strong> Narrow, focused testing that verifies a specific bug fix or feature change works correctly — without running the full regression suite. Sanity testing answers the question: <em>does this specific change work as expected, and is the application stable enough to proceed with more thorough testing?</em> It's shallower than full regression but more focused than smoke testing. <strong>Interview tip:</strong> The key differentiator: sanity testing is performed <em>after</em> a specific change, smoke testing is performed on a <em>new build</em> regardless of what changed. If an interviewer presents a scenario — "A developer just fixed a critical payment bug; what testing do you do before deploying?" — sanity testing is the correct initial answer: verify the fix, then run a targeted regression around the payment module.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔀</span>
+      <div>
+        <h3>Integration Testing</h3>
+        <p><strong>What it is:</strong> Testing that verifies the interaction between two or more components, modules, or systems works correctly. Integration testing answers the question: <em>do these pieces work together?</em> Examples: testing that a frontend correctly calls a backend API and handles the response, testing that a service correctly reads from and writes to a database, testing that a payment service correctly communicates with a third-party payment gateway. <strong>Interview tip:</strong> In a microservices world, integration testing has become layered: component integration (within a service), service integration (between services), and system integration (end-to-end across the full system). Senior candidates can discuss which integration layer to test at for different risk profiles.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🧩</span>
+      <div>
+        <h3>Unit Testing</h3>
+        <p><strong>What it is:</strong> Testing individual units of code — typically functions, methods, or classes — in isolation from their dependencies. Unit testing answers the question: <em>does this specific piece of code do what it's supposed to do, independent of everything around it?</em> Unit tests are typically written by developers (not SDETs), but SDETs need to understand them because test automation strategies are built on the testing pyramid — and the pyramid's foundation is unit tests. <strong>Interview tip:</strong> SDETs who can discuss unit testing intelligently — not just acknowledge it exists — differentiate themselves. Know the difference between solitary unit tests (isolated with mocks) and sociable unit tests (testing several units together without external dependencies).</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔗</span>
+      <div>
+        <h3>End-to-End (E2E) Testing</h3>
+        <p><strong>What it is:</strong> Testing that verifies a complete user workflow from start to finish, across all layers of the application — frontend, backend, database, and external integrations. E2E testing answers the question: <em>does the whole system work together to deliver the user's goal?</em> Example: testing that a user can browse products, add to cart, enter payment details, complete purchase, and receive a confirmation email — all through the actual UI. <strong>Interview tip:</strong> E2E tests are powerful but expensive — they're slow, brittle, and hard to debug. Senior SDETs discuss the trade-off explicitly: E2E tests should cover critical user journeys (login, checkout, core workflows) but not every possible path. The testing pyramid principle — many unit tests, fewer integration tests, fewest E2E tests — is interview table stakes.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">👤</span>
+      <div>
+        <h3>User Acceptance Testing (UAT)</h3>
+        <p><strong>What it is:</strong> Testing performed by end users or business stakeholders to verify that the system meets their needs and is ready for production. UAT answers the question: <em>does this system solve the user's actual problem, in the way they expect?</em> UAT is typically manual, scenario-based, and performed in a staging or pre-production environment. <strong>Interview tip:</strong> UAT is not the SDET's responsibility to perform — but the SDET's automation work should support UAT by ensuring that the build reaching UAT is stable and free of known defects. The phrase "our automation suite gates the build before UAT" signals operational maturity.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>Exploratory Testing</h3>
+        <p><strong>What it is:</strong> Simultaneous learning, test design, and test execution — testing without predefined scripts, where the tester's observations during testing inform what to test next. Exploratory testing answers the question: <em>what unexpected behaviours, edge cases, or usability issues exist that scripted testing wouldn't find?</em> <strong>Interview tip:</strong> Exploratory testing is not "random clicking" and calling it that in an interview is a red flag. It's structured by charters (time-boxed testing missions with specific focus areas), and findings are documented with session-based test management. Even in highly automated environments, exploratory testing catches issues that scripts never would — and senior SDETs acknowledge its value rather than positioning automation as a replacement for all manual testing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 2 — Test Levels: The Testing Pyramid, Trophy, and Beyond</h2>
+  <p>Test levels describe <em>where</em> testing happens in the application architecture — from isolated code units to full-system workflows. Interviewers test your understanding of test levels because it reveals whether you can design a balanced test strategy, not just write scripts at one level.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📐</span>
+      <div>
+        <h3>The Testing Pyramid</h3>
+        <p>The classic model: many fast, cheap unit tests at the bottom; fewer, slower integration tests in the middle; even fewer, slowest E2E tests at the top. The pyramid principle is about <em>investment allocation</em>: put your testing effort where tests are fastest to run, cheapest to maintain, and most precise about failures. <strong>Interview tip:</strong> In 2026, the pyramid is still valid as a principle but has been refined — for microservices, the "testing trophy" (emphasising integration tests) and the "testing honeycomb" (emphasising integrated tests that cross service boundaries) are alternative models worth knowing. Naming these alternatives shows breadth. For more depth on test strategy, see our guide on <a href="/blog/test-strategy-planning-interview-questions-2026">test strategy and planning interview questions</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔌</span>
+      <div>
+        <h3>API / Service Layer Testing</h3>
+        <p>Testing at the API layer — verifying that REST endpoints, GraphQL queries, or gRPC services return correct responses, handle errors gracefully, and respect contracts. API tests are faster and more stable than UI tests, making them the sweet spot for automation coverage. <strong>Interview tip:</strong> In modern SDET roles, API testing is often the largest category of automated tests — it's where you get the best ROI: fast execution, deterministic results, and coverage of business logic without UI brittleness. For comprehensive API testing preparation, see our <a href="/blog/api-testing-interview-questions-2026">API testing interview questions guide</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🖥️</span>
+      <div>
+        <h3>UI / GUI Testing</h3>
+        <p>Testing through the user interface — verifying that UI elements render correctly, user interactions produce expected outcomes, and the visual layer integrates correctly with backend services. UI tests are the most realistic but also the slowest, most brittle, and most expensive to maintain. <strong>Interview tip:</strong> The modern SDET approach: push as much verification as possible to the API layer, keep UI tests minimal and focused on critical user journeys, and use tools like Playwright's auto-waiting, locator strategies, and trace viewer to manage UI test brittleness.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>Database / Data Layer Testing</h3>
+        <p>Testing at the database layer — verifying data integrity, schema correctness, migration safety, stored procedure logic, and data transformation accuracy. <strong>Interview tip:</strong> SDETs who can discuss database testing beyond "we checked the data was saved" stand out. Talk about: verifying data integrity constraints (foreign keys, unique constraints), testing migration scripts (both forward and rollback), testing data transformations in ETL pipelines, and validating that test data factories produce valid, referentially intact data. For comprehensive database testing interview prep, see our <a href="/blog/sql-database-testing-sdet-interview-questions-2026">SQL and database testing interview questions</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 3 — Test Automation Terminology: The Vocabulary of Automated Testing</h2>
+  <p>This is the core vocabulary of the SDET role — the terms you'll use every day and the terms interviewers expect you to use precisely.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🤖</span>
+      <div>
+        <h3>Test Automation Framework</h3>
+        <p>A structured set of guidelines, tools, libraries, and coding standards that support automated test creation, execution, and reporting. A framework is not a tool — it's the architecture that organises how you use tools. Components typically include: test runner, assertion library, reporting mechanism, test data management, configuration management, and CI/CD integration. <strong>Interview tip:</strong> When asked about frameworks, don't just name tools ("I use Playwright"). Describe the architecture: how you structure test code, how you manage test data, how you handle configuration across environments, how you integrate with CI. See our <a href="/blog/test-automation-framework-design-interview">test automation framework design interview guide</a> for the complete framework design interview preparation.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📄</span>
+      <div>
+        <h3>Page Object Model (POM)</h3>
+        <p>A design pattern where each web page or component is represented as a class, encapsulating the page's elements (locators) and actions (methods). POM separates test logic from page structure — when the UI changes, you update the page object, not every test. <strong>Interview tip:</strong> In 2026, the expectation has evolved from "I use POM" to "I use component-based POM with small, reusable abstractions for shared UI elements" — nav bars, modals, search components are modelled once and reused. Discuss anti-patterns: the "god page object" with hundreds of methods, hard-coded data in page objects, and sleep-based waits.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎭</span>
+      <div>
+        <h3>Screenplay Pattern</h3>
+        <p>An alternative to POM that models tests as user journeys composed of actions (tasks) performed by actors (users with specific abilities). Screenplay emphasises composition over inheritance — you build tests by combining small, reusable task objects rather than inheriting from page classes. <strong>Interview tip:</strong> Mentioning the Screenplay pattern in an interview — especially if you can explain when you'd choose it over POM (complex workflows with many shared steps, scenarios where different user roles perform different actions on the same page) — signals awareness beyond the most common pattern.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📍</span>
+      <div>
+        <h3>Locators / Selectors</h3>
+        <p>The mechanisms used to find and interact with elements on a page — CSS selectors, XPath, text content, roles, test IDs, and data attributes. <strong>Interview tip:</strong> A locator strategy question is almost guaranteed in any UI automation interview. The gold-standard answer: prefer data-testid or dedicated test attributes (they're stable across UI redesigns), then role-based selectors (accessible by default), then text content (for user-visible labels), then CSS selectors, and use XPath only as a last resort. For Playwright specifically: its locator API supports all of these and automatically waits for elements to be actionable — which changes the locator strategy compared to Selenium.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⏳</span>
+      <div>
+        <h3>Waits — Explicit, Implicit, and Fluent</h3>
+        <p><strong>Implicit wait:</strong> A global timeout applied to every element lookup — the driver waits up to N seconds for an element to appear before throwing an error. <strong>Explicit wait:</strong> A targeted wait for a specific condition on a specific element — wait until element is visible, clickable, or contains specific text. <strong>Fluent wait:</strong> An explicit wait that polls at a defined interval and can ignore specific exceptions during polling. <strong>Interview tip:</strong> Modern frameworks (Playwright, Cypress) have largely eliminated manual wait management with auto-waiting — but interviewers still ask this question to test whether you understand the <em>problem</em> that auto-waiting solves. Don't just say "Playwright handles waits automatically" — explain <em>why</em> waits are necessary (asynchronous rendering, network latency, animations) and how auto-waiting works (actionability checks: attached, visible, stable, enabled, not covered by other elements).</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📸</span>
+      <div>
+        <h3>Visual Regression Testing</h3>
+        <p>Automated comparison of screenshots of the application UI against baseline images to detect unintended visual changes — layout shifts, styling regressions, missing elements. <strong>Interview tip:</strong> Visual regression testing tools (Percy, Chromatic, Playwright's built-in screenshot comparison) catch visual bugs that functional tests miss — a button that still works but has moved off-screen, a form that functions but has broken CSS. For deep preparation, see our <a href="/blog/visual-regression-testing-interview-questions-2026">visual regression testing interview questions</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>Data-Driven Testing (DDT)</h3>
+        <p>A testing approach where test logic is separated from test data — the same test script runs multiple times with different input data sets, each producing independent results. <strong>Interview tip:</strong> DDT is interview table stakes. The nuanced discussion: how to structure test data (external files vs inline vs factory functions), how to handle test data that requires specific states (database seeding, API preconditions), and how to avoid the anti-pattern of data-driven tests that become unmaintainable because the data and logic are too tightly coupled. The SDET Interview Coach app includes coding challenges that test exactly this — separating data from logic cleanly.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔑</span>
+      <div>
+        <h3>Keyword-Driven Testing</h3>
+        <p>A testing approach where tests are written as sequences of keywords (high-level actions like "login", "search", "addToCart") mapped to automation code. Keywords abstract away the implementation details, allowing non-programmers to create or modify tests. <strong>Interview tip:</strong> Keyword-driven testing was popular in the 2010s (especially with tools like Robot Framework and Katalon). In 2026, it's less dominant but still appears in enterprise contexts and legacy frameworks. Know it, but also know its limitations: keyword libraries become large and unwieldy, and complex logic is awkward to express in keyword sequences. BDD with Gherkin has largely replaced keyword-driven testing for business-readable tests.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🩺</span>
+      <div>
+        <h3>Self-Healing Tests</h3>
+        <p>Tests that automatically adapt to minor UI changes — when a locator breaks because an element's ID changed, a self-healing mechanism uses AI or heuristics to find the element via alternative attributes and update the locator for future runs. <strong>Interview tip:</strong> Self-healing is a hot topic in 2026. Tools like Healenium, Testim, and some AI-augmented platforms offer self-healing. The nuanced interview answer: self-healing reduces maintenance but shouldn't mask genuine test failures — a self-healing test that silently finds the wrong element is worse than a failing test that clearly signals a problem. Always pair self-healing with human review of locator changes.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🧵</span>
+      <div>
+        <h3>Parallel Test Execution</h3>
+        <p>Running multiple tests simultaneously across different browser instances, devices, or machines to reduce overall execution time. <strong>Interview tip:</strong> Parallel execution is not just a configuration checkbox — it requires test design that supports parallelism: tests must be independent (no shared state), test data must be isolated (unique per parallel worker), and resource contention (database connections, file system access) must be managed. The phrase "we achieved a 60% reduction in suite execution time through parallelisation after refactoring test data to be worker-isolated" is the kind of quantified result that impresses interviewers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 4 — Test Doubles: Stubs, Mocks, Fakes, Spies, and Dummies</h2>
+  <p>This is the terminology cluster that most reliably separates candidates who've done serious test automation from those who've watched tutorials. Interviewers at mid-level and above <em>will</em> ask you to differentiate between test doubles. Here they are, with the distinctions that matter.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🪵</span>
+      <div>
+        <h3>Stub</h3>
+        <p><strong>Definition:</strong> A test double that provides pre-programmed responses to calls made during the test — it returns what you tell it to return, nothing more. Stubs are used for <em>state verification</em>: you check that the system under test behaves correctly given the stub's responses. <strong>Example:</strong> A stub for a payment gateway's "charge" method that always returns {"status": "success", "transactionId": "txn_123"}. <strong>When to use:</strong> When you need to control the SUT's input to test a specific code path — you don't care whether the method was called, you care what the SUT does with the response.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎭</span>
+      <div>
+        <h3>Mock</h3>
+        <p><strong>Definition:</strong> A test double that records the calls it receives and lets you assert that specific methods were called with specific arguments and a specific number of times. Mocks are used for <em>behaviour verification</em>: you check that the SUT interacted with its dependency correctly. <strong>Example:</strong> A mock email service where you verify that <code>sendConfirmationEmail(userId, orderId)</code> was called exactly once after a purchase. <strong>When to use:</strong> When the <em>interaction itself</em> is what you need to verify — the SUT should trigger a specific side effect, send a specific notification, or log a specific event.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎬</span>
+      <div>
+        <h3>Fake</h3>
+        <p><strong>Definition:</strong> A lightweight, working implementation of a dependency that's unsuitable for production but adequate for testing. Fakes have real behaviour — they actually do something — but they take shortcuts (in-memory database instead of a real one, simple in-memory queue instead of Kafka). <strong>Example:</strong> An in-memory repository that stores entities in a HashMap instead of a real database, implementing the full repository interface. <strong>When to use:</strong> When you need the dependency to have real behaviour for the test to be meaningful, but using the real dependency would make the test too slow, flaky, or hard to set up.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🕵️</span>
+      <div>
+        <h3>Spy</h3>
+        <p><strong>Definition:</strong> A test double that wraps a real object and records calls to it — you can later inspect what was called, with what arguments, and how many times. Spies are like mocks on top of real objects: the real behaviour still happens, but you also get call recording. <strong>Example:</strong> A spy on a real logging service that lets you verify that <code>logError()</code> was called with a specific message, while the actual logging still writes to the log file. <strong>When to use:</strong> When you want the real object's behaviour but also need to verify interactions — often used to verify that side effects happened without replacing the side-effect-producing component entirely.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🗿</span>
+      <div>
+        <h3>Dummy</h3>
+        <p><strong>Definition:</strong> An object that's passed but never actually used — it exists only to satisfy parameter requirements. Dummies are the simplest test double: they fill a parameter slot and nothing more. <strong>Example:</strong> A dummy <code>User</code> object passed to a constructor that requires a <code>User</code> parameter but the method under test never accesses any user fields. <strong>When to use:</strong> When a method signature requires an argument that's irrelevant to the specific test case — the dummy is a signal that "this parameter doesn't matter for this test."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="interviewer-insight" style="margin-top: 1.5rem; background: #f0f7ff; border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0 8px 8px 0;">
+    <h3 style="margin-top: 0;">🎯 Mitchell's Interview Observation: The Test Double Litmus Test</h3>
+    <p>In Mitchell's experience interviewing SDETs at all levels, the test double question reveals three candidate types. <strong>Type 1 (Junior):</strong> "A mock is when you simulate something" — conflates all test doubles under one term. <strong>Type 2 (Mid-level):</strong> Can define stub vs mock correctly (state vs behaviour verification) but can't distinguish fake from stub. <strong>Type 3 (Senior):</strong> Can define all five, explain when to use each, and — critically — knows the testing philosophy that "over-mocking leads to tests that verify mock behaviour rather than actual system behaviour, creating a false sense of security." The Type 3 answer wins offers at senior level. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> includes terminology differentiation drills that specifically test these distinctions, with AI feedback that evaluates whether your definitions are memorised or internalised.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 5 — Essential SDET Acronyms Decoded</h2>
+  <p>SDET interviews and job descriptions are dense with acronyms. You don't just need to know what they stand for — you need to understand what they <em>mean</em> operationally and be able to discuss them in context. Here are the acronyms that appear most frequently, with definitions that demonstrate practical understanding.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>TDD — Test-Driven Development</h3>
+        <p><strong>What it stands for:</strong> Writing a failing test before writing the production code that makes it pass, then refactoring. The cycle: Red (failing test) → Green (minimal code to pass) → Refactor (improve code without changing behaviour). <strong>Interview context:</strong> TDD is primarily a developer practice, but SDETs need to understand it because: (1) you may coach developers on TDD practices in a quality-enablement role, (2) you may be asked to write tests in a TDD style for test utilities and frameworks, and (3) it comes up when discussing test-first vs test-after approaches. For deep TDD/BDD interview prep, see our <a href="/blog/tdd-bdd-testing-methodology-interview-questions-2026">TDD and BDD methodology interview questions guide</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📝</span>
+      <div>
+        <h3>BDD — Behaviour-Driven Development</h3>
+        <p><strong>What it stands for:</strong> A collaborative practice where concrete examples of system behaviour are used to build shared understanding between business, development, and testing. Typically expressed in Given-When-Then format. <strong>Interview context:</strong> In 2026, BDD is understood as a <em>collaboration practice</em>, not a testing tool. Gherkin (the Given-When-Then syntax) and Cucumber/SpecFlow/Behave (the automation tools) are implementations of BDD, not BDD itself. A 2026 answer: "BDD is about using concrete examples to build shared understanding before anyone writes code. Gherkin is the syntax we use to capture those examples. Cucumber is the tool that automates them. The value is primarily in the conversation, not the automation." For more, see our <a href="/blog/bdd-cucumber-interview-questions-2026">BDD and Cucumber interview questions guide</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>DDT — Data-Driven Testing</h3>
+        <p><strong>What it stands for:</strong> Separating test logic from test data so the same test can run with multiple data sets. <strong>Interview context:</strong> Covered in detail in the automation terminology section above. The acronym is worth knowing because it appears in job descriptions and technical discussions.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🤝</span>
+      <div>
+        <h3>ATDD — Acceptance Test-Driven Development</h3>
+        <p><strong>What it stands for:</strong> A practice where acceptance criteria are defined as automated tests before development begins — the entire team (business, development, testing) collaborates to define what "done" looks like as executable specifications. <strong>Interview context:</strong> ATDD bridges BDD and TDD: it uses BDD-style collaborative specification to create acceptance tests, which then drive TDD-style development. ATDD is less commonly asked about than TDD or BDD, but knowing it — and how it relates to both — demonstrates awareness of the broader testing methodology landscape.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📄</span>
+      <div>
+        <h3>POM — Page Object Model</h3>
+        <p><strong>What it stands for:</strong> A design pattern where web pages are modelled as classes with locators and action methods. <strong>Interview context:</strong> Covered in the automation terminology section above. This acronym appears in virtually every SDET job description that mentions UI automation.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚙️</span>
+      <div>
+        <h3>CI/CD — Continuous Integration / Continuous Delivery (or Deployment)</h3>
+        <p><strong>What it stands for:</strong> CI: automatically building and testing code changes when they're merged into a shared repository. CD: automatically deploying tested code to staging (Continuous Delivery) or production (Continuous Deployment). <strong>Interview context:</strong> SDETs must understand CI/CD because automated tests run in CI/CD pipelines — you need to know how to configure test execution, interpret CI results, and debug CI-only failures. For comprehensive CI/CD interview preparation, see our <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD pipeline testing interview questions guide</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>SUT — System Under Test</h3>
+        <p><strong>What it stands for:</strong> The specific system, application, or component being tested. <strong>Interview context:</strong> This is a precision term — it distinguishes the thing you're testing from the things you're using to test it (test framework, test data, test doubles). Using "SUT" in your answers — "the SUT's response time degraded under load" rather than "the application slowed down" — signals professional testing vocabulary.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📱</span>
+      <div>
+        <h3>AUT — Application Under Test</h3>
+        <p><strong>What it stands for:</strong> Synonymous with SUT — the application being tested. <strong>Interview context:</strong> AUT and SUT are largely interchangeable, but some organisations distinguish them: AUT for the entire application, SUT for a specific component or service. In practice, don't stress about the distinction — using either consistently demonstrates familiarity with testing vocabulary.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔗</span>
+      <div>
+        <h3>E2E — End-to-End Testing</h3>
+        <p><strong>What it stands for:</strong> Testing a complete workflow across all system layers. <strong>Interview context:</strong> Covered in the test types section above. The acronym is worth emphasising because it appears constantly in discussions about test strategy, test pyramid, and automation scope. For cross-browser E2E specifics, see our <a href="/blog/cross-browser-testing-interview-questions-2026">cross-browser testing interview questions</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">✅</span>
+      <div>
+        <h3>UAT — User Acceptance Testing</h3>
+        <p><strong>What it stands for:</strong> Testing performed by end users to verify the system meets their needs. <strong>Interview context:</strong> Covered in the test types section above.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📈</span>
+      <div>
+        <h3>SLA / SLO / SLI — Service Level Agreement / Objective / Indicator</h3>
+        <p><strong>SLI (Service Level Indicator):</strong> The actual measurement — e.g., "99.95% of API requests returned in under 200ms last month." <strong>SLO (Service Level Objective):</strong> The target — e.g., "99.9% of API requests must return in under 200ms." <strong>SLA (Service Level Agreement):</strong> The contractual promise to customers, with consequences for breach — e.g., "99.5% uptime, with service credits for violations." <strong>Interview context:</strong> These terms appear in SDET interviews at senior and lead levels, especially for roles involving observability, monitoring, and production quality. The hierarchy is: SLI measures reality, SLO sets the internal target, SLA makes the external promise. SLOs should be stricter than SLAs — you set internal targets above contractual promises to give yourself a buffer. For deeper monitoring and observability interview prep, see our <a href="/blog/monitoring-observability-sdet-interviews-2026">monitoring and observability for SDET interviews guide</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 6 — Commonly Confused Terms: The Differentiation Questions That Interviewers Use as Litmus Tests</h2>
+  <p>These are the term pairs where the distinction is subtle enough that candidates routinely conflate them — making them ideal interview litmus tests. For each pair, memorise not just the definitions but the <em>operational distinction</em> — the difference that matters in practice.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">1️⃣</span>
+      <div>
+        <h3>Verification vs Validation</h3>
+        <p><strong>Verification:</strong> Are we building the product <em>right</em>? This is about checking that the software conforms to its specifications — reviews, inspections, static analysis, unit tests that check code against design. Verification can be done without running the software (static testing). <strong>Validation:</strong> Are we building the <em>right</em> product? This is about checking that the software meets the user's actual needs — UAT, beta testing, usability testing with real users. Validation requires running the software and observing real user behaviour. <strong>The mnemonic:</strong> "Verification = specification. Validation = expectation." <strong>The operational difference:</strong> You can verify software perfectly against a specification that describes the wrong product — verification alone isn't enough. You can validate software that users love but that's riddled with specification violations — validation alone isn't enough. You need both. Mitchell learned this at the Ministry of Defence: a system passed every specification-based test (verification) but failed operational exercises because the specifications didn't capture real battlefield scenarios (validation failure). The system was verified but not validated — and the distinction nearly had operational consequences.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">2️⃣</span>
+      <div>
+        <h3>Quality Assurance (QA) vs Quality Control (QC)</h3>
+        <p><strong>Quality Assurance:</strong> Process-oriented — ensuring that the <em>processes</em> used to build software will produce quality. QA is proactive: defining coding standards, establishing review processes, implementing CI/CD gates, designing test strategies before development starts. QA answers: "Are we doing the right things to build quality in?" <strong>Quality Control:</strong> Product-oriented — checking that the <em>product</em> meets quality standards. QC is reactive: running tests, reviewing code, inspecting deliverables. QC answers: "Does this specific thing meet our quality bar?" <strong>The operational difference:</strong> QA is about preventing defects (process improvement). QC is about detecting defects (product inspection). A team that only does QC (testing) without QA (process improvement) finds the same defects release after release. A team that only does QA without QC doesn't know if their processes actually work. <strong>Interview nuance:</strong> The job title "QA Engineer" is technically a misnomer for most SDET roles — most "QA" roles are primarily QC roles. Acknowledging this in an interview shows you understand the discipline beyond the job title. Mitchell's perspective: the title "QA" has stuck because of industry inertia, but in practice, most testing professionals do more QC than QA. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> includes terminology questions that specifically test these nuanced distinctions — the kind of depth that separates senior from mid-level answers.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">3️⃣</span>
+      <div>
+        <h3>Smoke Testing vs Sanity Testing</h3>
+        <p><strong>Smoke Testing:</strong> Broad but shallow — a quick check that the critical paths of a build work. Performed on every build to determine if it's stable enough for further testing. Think: "Can the application start? Can users log in? Can a basic transaction complete?" <strong>Sanity Testing:</strong> Narrow and focused — a quick check that a specific fix or feature change works. Performed after a change to determine if it's worth running the full regression suite. Think: "Does this specific bug fix work? Does this specific feature behave correctly?" <strong>The operational difference:</strong> Smoke testing is build-gating: fail → reject the build, don't test further. Sanity testing is change-gating: fail → the fix wasn't right, don't waste time on full regression for this change. <strong>The mnemonic:</strong> "Smoke = is the build on fire? Sanity = is this specific change sane?" <strong>Interview tip:</strong> This is the single most commonly confused pair in SDET interviews. Mitchell estimates 40-50% of candidates at mid-level conflate these two or define them imprecisely. Getting this pair right — with clear operational distinctions and examples — is one of the highest-ROI terminology preparations you can do.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">4️⃣</span>
+      <div>
+        <h3>Retesting vs Regression Testing</h3>
+        <p><strong>Retesting:</strong> Testing a specific bug fix to verify that the reported defect has been resolved — you run the exact steps that previously reproduced the bug and confirm the bug no longer occurs. Retesting is narrow: one fix, one verification. <strong>Regression Testing:</strong> Testing unchanged functionality to verify that the bug fix (or any other change) didn't break existing features. Regression testing is broad: many tests, many features, many paths. <strong>The operational difference:</strong> Retesting confirms the fix. Regression testing confirms nothing else broke because of the fix. Both are necessary before a bug can be marked as resolved. <strong>Interview tip:</strong> When a bug is fixed, the minimum testing protocol is: retest the fix (did we fix the right thing?), then run regression tests around the affected area (did we break anything?), then — if the fix touched shared code or infrastructure — run the broader regression suite. Candidates who articulate this three-step protocol demonstrate operational testing maturity.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">5️⃣</span>
+      <div>
+        <h3>Defect vs Bug vs Error vs Failure</h3>
+        <p><strong>Error (or Mistake):</strong> The human action that produces an incorrect result — a developer writes <code>if (x = 5)</code> instead of <code>if (x == 5)</code>. Errors happen in the developer's mind or code. <strong>Defect (or Bug or Fault):</strong> The manifestation of the error in the code — the assignment-instead-of-comparison that exists in the source code. Defects exist in the product. <strong>Failure:</strong> The observable deviation from expected behaviour — the program behaves incorrectly because of the assignment bug. Failures are what users see and what tests detect. <strong>The chain:</strong> Error (human mistake) → Defect (code flaw) → Failure (observed wrong behaviour). Not all errors become defects (caught during development), not all defects cause failures (code path never executed), and not all failures are caused by defects (environment issues, data corruption). <strong>Interview tip:</strong> This chain is important because it explains why test automation can't find all bugs: you can only detect failures, but a defect that never causes a failure is invisible to testing. This is why code reviews, static analysis, and other verification techniques complement testing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">6️⃣</span>
+      <div>
+        <h3>Static Testing vs Dynamic Testing</h3>
+        <p><strong>Static Testing:</strong> Testing without executing the code — code reviews, static analysis (linters, SonarQube), document reviews, walkthroughs, inspections. Static testing finds defects early, before the code even runs. <strong>Dynamic Testing:</strong> Testing by executing the code — unit tests, integration tests, E2E tests, manual testing. Dynamic testing finds failures that only manifest at runtime. <strong>The operational difference:</strong> Static testing catches syntax errors, code smells, security vulnerabilities in dependencies, and specification ambiguities — problems you can find without running anything. Dynamic testing catches runtime behaviour issues — logic errors, performance problems, integration failures. A mature testing strategy uses both: static testing in the IDE and CI pipeline (shift-left), dynamic testing at multiple levels (unit, integration, E2E).</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">7️⃣</span>
+      <div>
+        <h3>Black-Box vs White-Box vs Grey-Box Testing</h3>
+        <p><strong>Black-Box Testing:</strong> Testing without knowledge of the internal code structure — you test inputs and outputs, treating the system as opaque. Focus: what the system does, not how. Examples: API testing against specifications, UAT, most manual testing. <strong>White-Box Testing:</strong> Testing with full knowledge of the internal code structure — you test specific code paths, branches, and logic. Focus: how the system works internally. Examples: unit tests, code coverage-driven testing. <strong>Grey-Box Testing:</strong> Testing with partial knowledge — you know the high-level architecture and data flow but not the implementation details. Focus: testing at integration points with architectural awareness. Examples: API testing where you know the database schema but not the service code, integration testing with knowledge of message queue topology. <strong>Interview tip:</strong> Most automated SDET tests are grey-box: you know the API contracts, the database schema, maybe the architecture — but not the implementation details of every service. Acknowledging this in your answer shows you understand the testing landscape, not just textbook categories.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">8️⃣</span>
+      <div>
+        <h3>Test Plan vs Test Strategy vs Test Case vs Test Scenario</h3>
+        <p><strong>Test Strategy:</strong> The high-level approach — what types of testing will be done, at what levels, with what tools, by whom. Strategy is project-agnostic: it defines the organisation's testing philosophy. <strong>Test Plan:</strong> The specific implementation of the strategy for a particular project or release — what will be tested, when, by whom, with what resources, and what the entry/exit criteria are. <strong>Test Scenario:</strong> A high-level description of what to test — "verify that a logged-in user can complete a purchase with a saved payment method." One scenario can cover multiple test cases. <strong>Test Case:</strong> A specific, step-by-step procedure with defined inputs, expected results, and preconditions — "Step 1: Log in as user with saved card ending 4242. Step 2: Add item SKU-123 to cart. Step 3: Proceed to checkout. Step 4: Select saved card. Step 5: Confirm purchase. Expected: Order confirmation page with order number." <strong>The hierarchy:</strong> Strategy > Plan > Scenario > Case. For deeper strategy and planning interview preparation, see our guides on <a href="/blog/test-strategy-planning-interview-questions-2026">test strategy planning</a> and <a href="/blog/test-case-design-techniques-sdet-interview-questions-2026">test case design techniques</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 7 — CI/CD, Performance, Security, and Accessibility Terminology</h2>
+  <p>Modern SDET roles extend beyond functional automation. You need fluency in the terminology of pipeline integration, system performance, security testing, and accessibility — because these are increasingly part of the SDET's quality ownership scope.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🚀</span>
+      <div>
+        <h3>CI/CD Pipeline Terminology</h3>
+        <p><strong>Build Pipeline:</strong> The automated sequence of steps that compile, test, and package code. Test stages are inserted at specific pipeline points: unit tests after compile, integration tests after deploy to test environment, E2E tests after full environment provision. <strong>Artifact:</strong> A packaged, versioned build output (Docker image, JAR file, npm package) that's promoted through environments. <strong>Quality Gate:</strong> A pipeline checkpoint that blocks progression if quality criteria aren't met — test pass rate below threshold, code coverage decline, security vulnerability above severity threshold. <strong>Green/Blue Deployment:</strong> A deployment strategy where two identical environments (blue = current, green = new) allow instant rollback — test the green environment, then switch traffic. <strong>Canary Release:</strong> Rolling out a new version to a small subset of users first, monitoring for issues, then gradually increasing the rollout — essentially, testing in production with a safety net. <strong>Interview tip:</strong> SDETs who can discuss pipeline terminology beyond "tests run in Jenkins" demonstrate that they understand the operational context of test automation — not just the test code itself. For comprehensive CI/CD interview preparation, see our <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD pipeline testing guide</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚡</span>
+      <div>
+        <h3>Performance Testing Terminology</h3>
+        <p><strong>Load Testing:</strong> Testing system behaviour under expected concurrent user load — verifying that response times, throughput, and resource utilisation stay within acceptable limits at normal and peak loads. <strong>Stress Testing:</strong> Testing system behaviour beyond expected capacity to find the breaking point and observe how the system fails — does it degrade gracefully or crash catastrophically? <strong>Soak/Endurance Testing:</strong> Testing system behaviour under sustained load over an extended period — detecting memory leaks, resource exhaustion, and gradual degradation. <strong>Spike Testing:</strong> Testing system behaviour under a sudden, extreme increase in load — simulating a flash sale, a viral event, or a DDoS attack. <strong>Performance Baseline:</strong> A reference set of performance metrics against which future builds are compared — if the baseline is 200ms average response time at 100 concurrent users, a build with 350ms triggers an alert. <strong>Percentiles (p95, p99):</strong> Response time at the 95th and 99th percentile — p99 = 500ms means 99% of requests completed within 500ms, and 1% took longer. Percentiles matter more than averages because averages hide outliers. For deep performance testing interview prep, see our guides on <a href="/blog/jmeter-interview-questions-2026">JMeter</a>, <a href="/blog/gatling-performance-testing-interview-questions-2026">Gatling</a>, and <a href="/blog/k6-performance-testing-interview-questions">k6</a>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔒</span>
+      <div>
+        <h3>Security Testing Terminology</h3>
+        <p><strong>SAST (Static Application Security Testing):</strong> Analysing source code or binaries for security vulnerabilities without executing the code — finding SQL injection patterns, hard-coded credentials, insecure cryptography. <strong>DAST (Dynamic Application Security Testing):</strong> Testing a running application for security vulnerabilities — sending malicious inputs, testing authentication bypass, probing for exposed endpoints. <strong>Penetration Testing:</strong> Simulating a real-world attack on the system to identify exploitable vulnerabilities — typically performed by security specialists, not SDETs, but SDETs should understand the output. <strong>OWASP Top 10:</strong> The Open Web Application Security Project's list of the ten most critical web application security risks — injection, broken authentication, sensitive data exposure, XML external entities, broken access control, security misconfiguration, cross-site scripting (XSS), insecure deserialisation, using components with known vulnerabilities, insufficient logging and monitoring. <strong>Interview tip:</strong> SDETs aren't expected to be security experts, but they are expected to know what SAST and DAST are, understand the OWASP Top 10 at a high level, and know how to integrate security scanning into CI/CD pipelines. See our <a href="/blog/security-testing-qa-interview-questions">security testing interview questions guide</a> for comprehensive preparation.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">♿</span>
+      <div>
+        <h3>Accessibility Testing Terminology</h3>
+        <p><strong>WCAG (Web Content Accessibility Guidelines):</strong> The international standard for web accessibility — currently at version 2.2, organised around four principles: Perceivable, Operable, Understandable, Robust (POUR). <strong>A, AA, AAA Conformance Levels:</strong> WCAG's three levels — A (minimum), AA (standard target for most organisations), AAA (highest, not always achievable for all content). <strong>Screen Reader Testing:</strong> Testing with assistive technology (VoiceOver, NVDA, JAWS) to verify that content is correctly announced and navigable. <strong>Automated vs Manual Accessibility Testing:</strong> Automated tools (axe-core, Lighthouse, Pa11y) catch 30-40% of accessibility issues — colour contrast, missing alt text, heading hierarchy. The remaining 60-70% require manual testing: keyboard navigation, screen reader experience, focus order logic, meaningful link text. <strong>Interview tip:</strong> SDETs who can discuss both automated and manual accessibility testing — and the 30-40% coverage limitation of automation — demonstrate mature understanding. For in-depth preparation, see our <a href="/blog/accessibility-testing-interview-questions-2026">accessibility testing interview questions guide</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 8 — How to Explain Testing Terms in Interviews: The "Explain to a Junior Developer" Test</h2>
+  <p>Knowing a definition is necessary but not sufficient. <em>Explaining</em> a term — clearly, concisely, and without relying on jargon that assumes prior knowledge — is the skill that interviewers actually evaluate. A memorised definition sounds like a Wikipedia article. An explanation sounds like someone who understands the concept deeply enough to teach it. Here's the framework Mitchell has used to coach hundreds of SDET candidates on terminology answers.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">1️⃣</span>
+      <div>
+        <h3>Start with the Category (Not the Definition)</h3>
+        <p>Before you define a term, place it in its category. This gives the interviewer context and demonstrates structured thinking. Instead of: "Smoke testing is..." Say: "Smoke testing is a type of test level — specifically, it's a build verification activity that sits between deployment and detailed testing." This one-sentence framing tells the interviewer you understand where the concept fits in the broader testing landscape — not just its isolated definition. Practice this for every term: what category does it belong to? Test type? Test level? Design pattern? Methodology? Quality attribute?</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">2️⃣</span>
+      <div>
+        <h3>Define in One Sentence (Your Words, Not the Textbook)</h3>
+        <p>The second sentence should be your own one-sentence definition. Not the ISTQB definition, not the textbook definition — <em>your</em> definition, in <em>your</em> words. This proves you've internalised the concept. Example: "Smoke testing is essentially asking: is this build functional enough to be worth testing further, or is it fundamentally broken?" Your definition should be simple enough that a junior developer with no testing background could understand it. If your definition uses three other testing terms that also need defining, it's not a good definition.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">3️⃣</span>
+      <div>
+        <h3>Use a Concrete Example (The Bridge from Abstract to Real)</h3>
+        <p>The third component: a brief, concrete example that makes the abstract concept tangible. "For example, when we deploy a new build of an e-commerce application, our smoke tests verify: can the application start, can users log in, can they search for a product, and can they add it to the cart? If any of these fail, we reject the build — there's no point running the 5,000-test regression suite." The example should be specific — name the application type, the specific checks, the consequence of failure. Abstract examples ("like checking if the system works") don't help. Concrete examples ("verifying login, search, and add-to-cart on an e-commerce app") demonstrate operational experience.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">4️⃣</span>
+      <div>
+        <h3>Contrast with a Neighbouring Concept (If the Term Has a Common Confusion)</h3>
+        <p>If the term has a commonly confused counterpart — and most testing terms do — add a brief contrast. "People sometimes confuse smoke testing with sanity testing. The difference is scope: smoke testing is broad and shallow — checking the build overall. Sanity testing is narrow and deep — checking a specific change. Smoke gates the build; sanity gates the change." This contrast signals two things: you know the term, and you know the <em>landscape</em> around the term — you understand where the boundaries are. This is exactly the depth that interviewers are probing for.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="interviewer-insight" style="margin-top: 1.5rem; background: #f0f7ff; border-left: 4px solid #2563eb; padding: 1.25rem; border-radius: 0 8px 8px 0;">
+    <h3 style="margin-top: 0;">🎯 The 90-Second Rule for Terminology Answers</h3>
+    <p>Mitchell's guideline from evaluating hundreds of SDET interviews: a good terminology answer should take 60-90 seconds. Longer than that, and you're either rambling or reciting. Shorter than that, and you haven't demonstrated depth. The 90-second structure: Category placement (10 seconds) → Your definition (15 seconds) → Concrete example (25 seconds) → Contrast with neighbour (20 seconds) → Relevance to the role (20 seconds). Practice timing yourself with your phone's stopwatch. The candidates who can deliver a crisp, 90-second definition for any of the 80+ terms in this glossary — without notes, without hesitation — walk into interviews with a visible confidence that comes from knowing that no terminology question can catch them off guard. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> includes timed terminology drills that simulate exactly this interview pressure — presenting a term and recording your answer for self-review and AI feedback.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Part 9 — Red-Flag Terminology Mistakes That Lose Interviewers</h2>
+  <p>Some terminology mistakes are minor — an interviewer will mentally note the imprecision and move on. Others are red flags that fundamentally shift how the interviewer evaluates everything else you say. Here are the terminology mistakes that do disproportionate damage — not because the term itself is critically important, but because the mistake signals a gap in testing fundamentals that casts doubt on broader competence.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>🚩 Red Flag 1: Confusing Verification and Validation</h3>
+      <p>This is the single most common red-flag mistake in SDET interviews — and it appears across all seniority levels. When a candidate says "We verify that the software meets user needs" or "We validate the code against the specification," they've just reversed the two terms. Why this matters: verification and validation are foundational concepts in software testing — they appear in ISTQB Foundation Level, they're the basis of test strategy, and they're terminology that the interviewer almost certainly learned in their first testing course. Getting them backwards suggests either: (a) you've never formally studied testing (not disqualifying, but notable), or (b) you studied but didn't retain the fundamentals (more concerning). Either way, it's a flag. The fix: create a sticky note, put it on your monitor during interview prep: <strong>Verification = Specification. Validation = Expectation.</strong> Drill it until it's automatic. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> includes spaced repetition for exactly this kind of fundamental terminology — the pairs that candidates most commonly reverse under pressure.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🚩 Red Flag 2: Calling Every Test Double a "Mock"</h3>
+      <p>When a candidate says "We mock the database" when they mean "We use an in-memory fake," or "We mock the API" when they mean "We stub the API responses," they've signalled that they don't understand the test double taxonomy — which signals that they haven't worked in a testing environment where the distinctions mattered. Why this matters: in a serious test automation environment, the distinction between stub, mock, fake, spy, and dummy is operational. Using a mock when you need a fake leads to tests that don't catch real integration issues. Using a stub when you need a mock means you can't verify critical interactions. Using the wrong term in code review — "This test needs a mock for the payment gateway" when it actually needs a stub — leads to the wrong implementation. The fix: memorise the five types, their use cases, and practice using each in example sentences. "I stubbed the API to return a fixed response for this test." "I mocked the notification service to verify that sendAlert() was called." "I used a fake in-memory database for local development."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🚩 Red Flag 3: Saying "BDD Is Writing Gherkin Scenarios"</h3>
+      <p>This definition was acceptable in 2018. In 2026, it signals that your understanding of BDD is frozen at the tool level. BDD is a collaboration practice that uses concrete examples to build shared understanding. Gherkin is a syntax for capturing those examples. Cucumber is a tool for automating them. Conflating BDD with Gherkin is like conflating "agile" with "stand-up meetings" — it misses the philosophy in favour of the mechanics. Why this matters: if an SDET candidate reduces BDD to a syntax, it raises the question: what else do they understand only at the surface level? The fix: practice defining BDD as a collaboration practice first, then mention Gherkin as the syntax, Cucumber as the tool. The order matters — it signals that you understand the <em>why</em> before the <em>how</em>.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🚩 Red Flag 4: Describing Exploratory Testing as "Random Testing" or "Ad-Hoc Testing"</h3>
+      <p>This mistake signals a fundamental misunderstanding of a core testing practice — and, more damagingly, it signals that you might dismiss the testing work that doesn't involve automation. Exploratory testing is structured: it uses charters (time-boxed missions), it requires skill (simultaneous learning, design, and execution), and it produces documented findings (session-based test management). Calling it "random" in an interview is like a developer calling code review "just reading" — it trivialises a skilled activity and alienates interviewers who value it. Why this matters: many senior SDETs began their careers in manual and exploratory testing. You're potentially insulting the interviewer's own background. The fix: know the definition, acknowledge the skill, and — even if your personal focus is automation — demonstrate respect for the practice.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🚩 Red Flag 5: Using "Test Automation" and "Automated Testing" Interchangeably Without Nuance</h3>
+      <p>This is a nuanced one — many interviewers won't flag it, but the best ones will. "Automated testing" is the activity — using tools to execute tests automatically. "Test automation" is the discipline — the strategy, architecture, tooling, and maintenance of the systems that enable automated testing. The distinction: you can do automated testing without test automation (running a script someone else wrote), but you can't have sustainable automated testing without test automation (the framework, CI integration, reporting, and maintenance strategy). Why this matters: conflating the activity with the discipline signals that you see test automation as a task rather than an engineering discipline. At senior levels, interviewers expect you to discuss test automation as an engineering problem — with architecture, scalability, maintainability, and team enablement dimensions — not just as script-writing.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>🚩 Red Flag 6: Not Knowing What a Flaky Test Is — Or Dismissing Flakiness as "Just Happens Sometimes"</h3>
+      <p>A flaky test is a test that passes and fails intermittently without any code changes — its outcome is non-deterministic. If a candidate can't define flaky tests, or — worse — dismisses them as an acceptable part of test automation, that's a significant red flag. Why this matters: flaky tests are one of the most expensive problems in test automation. They erode trust in test results, they slow down CI pipelines (re-running flaky tests), they waste developer time investigating false positives, and they lead to "test blindness" — where teams ignore test failures because "it's probably just flaky." A candidate who doesn't take flakiness seriously signals that they haven't operated in an environment where test reliability was critical — or that they were in such an environment and didn't notice the problem. For deep preparation on this topic, see our <a href="/blog/test-flakiness-stability-interview-questions-2026">test flakiness and stability guide</a>.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The common thread across all six red flags: they're not about obscure, niche terminology. They're about <em>fundamental</em> concepts that every competent SDET should know. That's why they're red flags — they signal gaps in the foundation, not missing knowledge at the edges. Drill these six areas until they're automatic. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> specifically identifies and drills the terminology areas where candidates most commonly make these red-flag mistakes, using AI-powered feedback that flags imprecise definitions and suggests improved framing.</p>
+</section>
+
+<section class="content-section">
+  <h2>Mitchell's Perspective: Testing Terms That Changed Meaning Over 20 Years</h2>
+  <p>Language evolves, and testing terminology is no exception. Mitchell has watched the vocabulary of software testing shift over two decades — sometimes gradually, sometimes abruptly — as methodologies changed, tools matured, and the industry's understanding of quality deepened. Here are the terms whose meanings have shifted most significantly, and what those shifts reveal about where testing is heading.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📅</span>
+      <div>
+        <h3>"Test Automation" — From Record-and-Playback to Engineering Discipline</h3>
+        <p><strong>2005 meaning:</strong> Using tools like QTP or WinRunner to record user actions and replay them — automation as a faster way to execute manual test cases. The "automation engineer" was often a tester who had learned a tool, not an engineer who wrote code. <strong>2026 meaning:</strong> Test automation as a software engineering discipline — designing frameworks, writing maintainable code, integrating with CI/CD pipelines, and treating test code with the same engineering rigour as production code. The "SDET" title reflects this evolution: the "S" (Software Development Engineer in Test) signals that automation is now understood as development work applied to testing. <strong>Mitchell's observation:</strong> The most significant shift wasn't technical — it was cultural. In 2005, test automation was often an afterthought, bolted on after development. In 2026, it's treated as a first-class engineering concern, with dedicated roles, architectural decisions made before a line of production code is written, and testability considered a non-functional requirement from the start. This cultural shift — from "testing after" to "building quality in" — is the through-line of Mitchell's entire career, and it's what every modern SDET interview is fundamentally testing.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔄</span>
+      <div>
+        <h3>"Shift-Left Testing" — From Earlier in the Cycle to Everywhere in the Cycle</h3>
+        <p><strong>2010 meaning:</strong> Test earlier in the development lifecycle — involve testers during requirements and design, not just after development is "complete." <strong>2026 meaning:</strong> Testing is integrated at every stage — static analysis at commit time, unit tests written before code (TDD), contract tests in CI, integration tests at pull request, E2E tests before deployment, canary testing in production. "Shift-left" has expanded from "test earlier" to "test everywhere, continuously." <strong>Mitchell's observation:</strong> The shift-left philosophy succeeded so completely that the term itself is becoming redundant — in mature organisations, testing is no longer a phase that can be "shifted" because it's no longer a phase at all. It's a continuous activity distributed across the entire delivery pipeline. The modern question isn't "When do we test?" It's "Where don't we test?"</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📝</span>
+      <div>
+        <h3>"BDD" — From Testing Tool to Collaboration Practice</h3>
+        <p><strong>2010 meaning:</strong> BDD meant Cucumber — writing feature files in Gherkin and automating them. It was primarily a testing activity, owned by QA. <strong>2026 meaning:</strong> BDD is understood as the "Three Amigos" practice — business, development, and testing collaborating to define concrete examples before implementation. The automation of those examples is secondary to the shared understanding created by the conversation. <strong>Mitchell's observation:</strong> This redefinition has been one of the healthiest shifts in testing methodology. When BDD was "just Cucumber," it often devolved into an extra layer of test automation that added maintenance overhead without the collaboration benefit. Now that the industry understands BDD as primarily a communication practice, it's used where it adds value — in complex business domains where shared understanding is the bottleneck, not simple CRUD applications where it's overhead. This is a lesson in how testing terminology evolves: tools come first (people need something concrete), practices mature (people realise the tool isn't the point), and eventually the definition catches up to the practice.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🧪</span>
+      <div>
+        <h3>"Testing Pyramid" — From Doctrine to Principle with Nuance</h3>
+        <p><strong>2012 meaning:</strong> The pyramid was presented as near-doctrine: many unit tests, fewer service tests, fewest UI tests. Deviate at your peril. <strong>2026 meaning:</strong> The pyramid is understood as a <em>principle</em>, not a prescription — the principle being that you should invest testing effort where tests are fastest, cheapest, and most reliable. The specific shape depends on your architecture: microservices naturally have more integration tests (the "testing trophy"), event-driven systems have more contract tests, mobile apps have more UI tests than the classic pyramid suggests. <strong>Mitchell's observation:</strong> The pyramid's evolution from doctrine to principle is a case study in how testing concepts mature. New practitioners need simple rules ("follow the pyramid"). Experienced practitioners need nuanced principles ("move tests to the lowest level where they're reliable and fast"). Interviewers at senior levels want to hear the nuance — not because the pyramid is wrong, but because understanding when and how to deviate from it demonstrates architectural judgment.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🤖</span>
+      <div>
+        <h3>"AI in Testing" — From Science Fiction to Operational Reality</h3>
+        <p><strong>2018 meaning:</strong> AI in testing was largely aspirational — vendors claimed AI-powered test generation that mostly meant "we have some heuristics for suggesting locators." <strong>2026 meaning:</strong> AI in testing is operational: self-healing locators, AI-generated test cases from user session data, visual anomaly detection, predictive flaky test identification, and natural language test authoring. It's not magic — it doesn't replace testers — but it meaningfully reduces the mechanical overhead of test maintenance. <strong>Mitchell's observation:</strong> The most important thing to understand about AI in testing in 2026 is what it <em>doesn't</em> do: it doesn't understand your business domain, it doesn't know what "correct" behaviour looks like for your specific application, and it can't replace the judgment of an experienced tester who knows which risks to prioritise. AI augments testing — it reduces the toil of maintenance, it surfaces patterns humans might miss, it generates test data and edge cases — but it doesn't replace the tester's judgment. The smartest answer to "What's the role of AI in testing?" acknowledges AI's current capabilities while being clear-eyed about its limitations. Mitchell knows that the AI hype cycle in testing has been intense, and interviewers in 2026 are looking for candidates who are neither AI-cynics nor AI-evangelists — but AI-pragmatists who can articulate exactly where it helps and where it doesn't.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">👁️</span>
+      <div>
+        <h3>"Quality" Itself — From Defect Absence to Value Delivery</h3>
+        <p><strong>2000 meaning:</strong> Quality meant conformance to requirements — the software did what the specification said it should do, with minimal defects. <strong>2026 meaning:</strong> Quality has expanded to encompass the full user experience — performance, accessibility, usability, reliability, security, and the speed at which value is delivered. Quality is no longer just "absence of bugs" — it's "fitness for purpose" across all dimensions that matter to users. <strong>Mitchell's observation:</strong> This is the deepest shift of all, and it's the one that has redefined the SDET role. When quality meant "fewer bugs," the tester's job was finding defects. When quality means "the system delivers value reliably, securely, performantly, and accessibly to all users," the SDET's job expands to encompass the entire quality ecosystem — automation architecture, observability, performance engineering, security testing integration, and accessibility verification. This is why modern SDET interviews test so broadly: they're not assessing whether you can find bugs. They're assessing whether you can own quality across its entire modern definition. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> reflects this expanded definition of quality — its question bank spans functional automation, performance, security, accessibility, CI/CD, and observability because that's what the modern SDET role demands.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Use This Glossary for Interview Preparation — A 3-Day Plan</h2>
+  <p>This glossary is comprehensive — 80+ terms across 9 categories. Trying to memorise it in one sitting is counterproductive. Here's a structured 3-day preparation plan that builds terminology fluency systematically:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📅</span>
+      <div>
+        <h3>Day 1: Foundation Terms and Confused Pairs</h3>
+        <p>Focus on the terms that carry the highest interview risk — the ones that are most commonly asked and most commonly mistaken. Morning session (90 minutes): Study and self-quiz on the confused pairs (Part 6) — verification vs validation, QA vs QC, smoke vs sanity, retesting vs regression, static vs dynamic, black-box vs white-box vs grey-box. These are the highest-frequency differentiation questions. Afternoon session (60 minutes): Study test types (Part 1) — be able to define functional, non-functional, regression, smoke, sanity, integration, unit, E2E, UAT, and exploratory testing in your own words. Evening (30 minutes): Quick self-test — your partner, a friend, or the mirror. Pick 5 terms at random and deliver a 90-second definition for each.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📅</span>
+      <div>
+        <h3>Day 2: Acronyms, Test Doubles, and Automation Terms</h3>
+        <p>Focus on the vocabulary of modern SDET practice. Morning session (90 minutes): Master the acronyms (Part 5) — TDD, BDD, DDT, ATDD, POM, CI/CD, SUT, AUT, E2E, UAT, SLA/SLO/SLI. Be able to define each without hesitation and give a brief example. Afternoon session (90 minutes): Master test doubles (Part 4) — stub, mock, fake, spy, dummy. Be able to define all five, explain the use case for each, and differentiate them from each other. Practice the "I use [double type] when I need to [purpose] — for example, [concrete scenario]." formula. Evening (30 minutes): Terminology speed round — 20 terms in 20 minutes. If you hesitate on any term, mark it for Day 3 review.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📅</span>
+      <div>
+        <h3>Day 3: Review, Red Flags, and Mock Interview</h3>
+        <p>Morning session (60 minutes): Review the red-flag mistakes (Part 9) — make sure you can confidently define each term and avoid the common errors. Rehearse Mitchell's terms-that-changed-meaning (Part 8) — these demonstrate industry awareness and can elevate your answers from competent to insightful. Afternoon (45 minutes): Study performance, security, and CI/CD terminology (Part 7) — these are asked more frequently at senior levels. Evening (30-60 minutes): Run a mock interview focused on terminology. Use the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a>'s terminology drill module — it presents terms just as an interviewer would, records your answers, and provides AI feedback on clarity, accuracy, and depth. Or ask a friend to fire 10 random terminology questions at you and evaluate whether your answers pass the "explain to a junior developer" test.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">A final word on terminology preparation: <strong>don't over-prepare to the point of sounding scripted.</strong> The goal is fluency, not memorisation. A candidate who delivers a perfectly memorised ISTQB definition sounds like a textbook. A candidate who says "Let me put that in my own words — here's how I think about it..." sounds like an experienced professional. The difference is detectable within seconds, and it changes how the interviewer evaluates everything else you say. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> helps with this specifically — it evaluates not just whether your definitions are correct, but whether they sound like someone who has <em>used</em> these concepts, not just someone who has <em>studied</em> them. For broader interview strategy, pair this glossary with our <a href="/blog/sdet-interview-preparation-plan-2026">SDET interview preparation plan</a> and our <a href="/blog/sdet-behavioural-interview-questions-2026">behavioural interview questions guide</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "What's the difference between verification and validation in software testing?",
+        a: "Verification answers 'Are we building the product right?' — it's about checking that the software conforms to its specifications, requirements, and design documents. Verification can be done without running the software: code reviews, static analysis, inspections, and unit tests that verify code against design. Validation answers 'Are we building the right product?' — it's about checking that the software meets the user's actual needs and expectations. Validation requires running the software and observing real user behaviour: UAT, beta testing, usability testing. The key operational distinction: you can perfectly verify software against a specification that describes the wrong product (verification passes, but the product is wrong), and you can validate software that users love but that's riddled with specification violations (validation passes, but the product is poorly engineered). A mature testing strategy requires both — verification ensures engineering correctness, validation ensures user value. In Mitchell's experience at the Ministry of Defence, this distinction had operational consequences: a system that passed every verification test failed operational exercises because the specifications didn't capture real battlefield scenarios — it was verified but not validated.",
+      },
+      {
+        q: "What is the difference between smoke testing and sanity testing?",
+        a: "Smoke testing is broad but shallow — a quick check that the critical paths of a new build are working, performed to determine whether the build is stable enough for further testing. Think: can the application start, can users log in, can a basic transaction complete? If smoke tests fail, the build is rejected outright — no further testing occurs. Sanity testing is narrow and focused — a quick check that a specific bug fix or feature change works correctly, performed after a change to determine whether it's worth running the full regression suite. Think: does this specific bug fix work, does this specific feature behave as expected? The operational metaphor: smoke testing is checking whether the engine starts (broad, build-level). Sanity testing is checking whether the new brake pads were installed correctly (narrow, change-level). This is the single most commonly confused term pair in SDET interviews — Mitchell estimates 40-50% of mid-level candidates conflate these two. Getting this pair right with clear operational distinctions and concrete examples is one of the highest-ROI terminology preparations you can do.",
+      },
+      {
+        q: "What are test doubles and when should I use stubs vs mocks vs fakes?",
+        a: "Test doubles are replacement objects that stand in for real dependencies during testing. There are five types. Stubs provide pre-programmed responses — use them for state verification when you need to control what the system under test receives as input. Example: a payment gateway stub that always returns {'status': 'success'}. Mocks record interactions and let you assert that specific methods were called — use them for behaviour verification when the interaction itself matters. Example: verifying that sendConfirmationEmail() was called exactly once after a purchase. Fakes are lightweight working implementations — use them when you need real behaviour but the real dependency is too slow or complex. Example: an in-memory database instead of a real PostgreSQL instance. Spies wrap real objects and record calls — use them when you want real behaviour plus call recording. Dummies fill parameter slots and are never used — use them when a method signature requires an argument irrelevant to your test. The key philosophy: over-mocking leads to tests that verify mock behaviour rather than actual system behaviour. Use the simplest test double that serves your test's purpose. This is the level of nuance that separates senior from mid-level answers in SDET interviews.",
+      },
+      {
+        q: "How should I explain testing terms during an SDET interview?",
+        a: "Use Mitchell's four-step framework. First, place the term in its category: 'Regression testing is a type of testing — specifically, it's the category of tests that verify existing functionality still works after changes.' Second, define in one sentence, in your own words: 'It's essentially asking: did we break anything that was already working?' Third, give a concrete example: 'For example, after we fix a payment calculation bug, our regression suite re-runs all payment-related tests — tax calculations, discount applications, refund processing — to confirm the fix didn't introduce new issues.' Fourth, contrast with a commonly confused neighbour if relevant: 'People sometimes confuse regression testing with retesting. Retesting verifies the specific fix. Regression testing verifies nothing else broke because of the fix.' Your entire answer should be 60-90 seconds. The goal is fluency, not memorisation — sounding like someone who has used these concepts, not someone who has studied them. The SDET Interview Coach app includes timed terminology drills that simulate exactly this interview format, with AI feedback on clarity, accuracy, and whether your answer passes the 'explain to a junior developer' test.",
+      },
+      {
+        q: "What's the difference between Quality Assurance and Quality Control?",
+        a: "Quality Assurance (QA) is process-oriented and proactive — it's about ensuring the processes used to build software will produce quality. QA asks: 'Are we doing the right things to build quality in?' Examples: defining coding standards, establishing code review processes, implementing CI/CD quality gates, designing test strategies before development starts. Quality Control (QC) is product-oriented and reactive — it's about checking that the product meets quality standards. QC asks: 'Does this specific thing meet our quality bar?' Examples: running tests, reviewing code, inspecting deliverables. The operational distinction: QA prevents defects through process improvement. QC detects defects through product inspection. Interestingly, the job title 'QA Engineer' is technically a misnomer for most SDET roles — most 'QA' roles are primarily QC roles (detecting defects through testing). Acknowledging this nuance in an interview demonstrates that you understand the discipline beyond the job title. A team that only does QC without QA finds the same defects release after release. A team that only does QA without QC doesn't know if their processes actually work. You need both.",
+      },
+      {
+        q: "What are SLOs, SLIs, and SLAs and why do SDETs need to know them?",
+        a: "SLI (Service Level Indicator) is the actual measurement — '99.95% of API requests returned in under 200ms last month.' SLO (Service Level Objective) is the internal target — '99.9% of API requests must return in under 200ms.' SLA (Service Level Agreement) is the contractual promise to customers, with consequences for breach — '99.5% uptime, with service credits for violations.' The hierarchy: SLI measures reality, SLO sets the internal target, SLA makes the external promise. SLOs should be stricter than SLAs — you set internal targets above contractual promises to give yourself a buffer. SDETs need to understand these because modern quality ownership extends beyond functional correctness to system reliability. When an SDET designs test automation, they should know the SLOs their tests are protecting: if the checkout service has a 99.9% availability SLO, the test suite should include reliability-focused tests (retry logic, circuit breaker behaviour, graceful degradation). Additionally, SLO-based alerting — paging on-call when error budgets are burning — is increasingly part of the quality ecosystem that SDETs contribute to. These terms appear at senior and lead-level SDET interviews, especially for roles involving observability and production quality.",
+      },
+      {
+        q: "What are the red-flag terminology mistakes that cost candidates SDET job offers?",
+        a: "There are six terminology mistakes that do disproportionate damage in SDET interviews. (1) Confusing verification and validation — getting these foundational terms backwards signals either no formal testing education or poor retention of fundamentals. (2) Calling every test double a 'mock' — signals that you haven't worked in an environment where the distinctions between stub, mock, fake, spy, and dummy mattered operationally. (3) Defining BDD as 'writing Gherkin scenarios' — signals a 2018-level understanding frozen at the tool level rather than understanding BDD as a collaboration practice. (4) Calling exploratory testing 'random testing' — signals dismissal of a core testing practice and potentially alienates interviewers who value it. (5) Using 'test automation' and 'automated testing' interchangeably without nuance — signals that you see automation as a task rather than an engineering discipline. (6) Not knowing what a flaky test is, or dismissing flakiness as acceptable — signals that you haven't operated in an environment where test reliability was critical. None of these mistakes are about obscure terminology. They're about fundamental concepts — which is exactly why they're red flags. The SDET Interview Coach app drills these high-risk terminology areas specifically, using AI-powered feedback to catch imprecise definitions before they cost you in a real interview.",
+      },
+      {
+        q: "Does SDET Interview Coach cover testing terminology and glossary preparation?",
+        a: "Yes. SDET Interview Coach includes a dedicated terminology drill module that systematically prepares you for the terminology questions that appear in virtually every SDET interview. The module includes: definitions for 80+ testing terms organised by category, acronym decoding (TDD, BDD, DDT, ATDD, POM, CI/CD, SUT, AUT, E2E, UAT, SLA/SLO/SLI and more), confused-term differentiation drills that test your ability to distinguish verification from validation, smoke from sanity, retesting from regression, stubs from mocks from fakes, and AI-powered feedback that evaluates whether your definitions sound memorised or internalised. The app uses spaced repetition to ensure terminology is in your long-term memory by interview day, and includes timed drills that simulate the pressure of answering terminology questions on the spot. Use the Job Match feature to paste your target company's job description — if it mentions specific testing methodologies, tools, or quality attributes, you'll get terminology questions calibrated to that role's expectations. Whether you're a junior SDET preparing for your first automation role or a senior candidate preparing for a lead-quality position, the terminology module ensures you never freeze on a definition question again.",
+      },
+    ],
+    relatedSlugs: [
+      "test-case-design-techniques-sdet-interview-questions-2026",
+      "sdet-behavioural-interview-questions-2026",
+      "sdet-interview-preparation-plan-2026",
+    ],
+  },
+  {
     slug: "test-automation-best-practices-code-quality-sdet-2026",
     title: "Test Automation Best Practices and Code Quality for SDETs 2026 — The Complete Guide to Writing Maintainable, Scalable Test Code: Page Object Model Evolution From Monolithic Page Classes to Component-Based Architecture and When Each Pattern Still Makes Sense, SOLID Principles Applied to Test Automation With Concrete TypeScript and Python Examples Showing Single Responsibility in Test Classes and Dependency Inversion for Browser Abstractions, DRY Fixtures and Test Data Factories That Eliminate the Copy-Paste Anti-Pattern Without Creating Fragile Shared State, Naming Conventions That Survive Team Growth — How to Name Test Files, Test Cases, Page Objects, Fixtures, and Custom Assertions So a New Hire Can Navigate Your Test Suite in Their First Sprint, Code Review Standards for Test Automation That Go Beyond 'LGTM' — What Senior SDETs Actually Look For When Reviewing Test Pull Requests Including Assertion Quality, Selector Strategy, Wait Handling, and Test Independence Verification, the Most Common Test Automation Code Smells and How to Refactor Them — Sleep-Based Waits, Hard-Coded Test Data, God Page Objects, Assertion Roulette, Erratic Tests, Mystery Guest Tests, and Flaky Test Patterns That Erode Trust in Your Automation Suite, Architecture Patterns for Test Frameworks at Scale Including Layered Architecture, the Test Pyramid Enforced Through Code Review, and How to Design a Framework That 50 Engineers Can Contribute To Without Destroying Each Other's Tests, and How the SDET Interview Coach App Prepares You for the Framework Design and Code Quality Questions That Separate Mid-Level From Senior SDET Candidates in Technical Interviews",
     description: "The definitive guide to test automation best practices and code quality standards for SDETs in 2026. You've felt it — that sinking feeling at 11 PM when your test suite that passed yesterday is now red with 37 failures, and you can't figure out whether the application broke or your tests broke. That's not a bad night. That's a design problem you can prevent. This guide covers the code quality principles, architectural patterns, naming conventions, and code review standards that transform test automation from a maintenance nightmare into a reliable engineering asset. Built from Mitchell Agoma's 20 years writing and reviewing test automation across HMRC, the Ministry of Defence, Nationwide Building Society, and Accenture — environments where test failures in production pipelines can mean regulatory findings, financial loss, or worse. You'll learn the Page Object Model evolution from monolithic page classes to component-based architecture, SOLID principles applied to test code with concrete examples in TypeScript and Python, DRY fixture patterns that eliminate copy-paste without creating fragile shared state, naming conventions that scale across teams, code review checklists that catch real problems before they reach main, and the most common test automation code smells with step-by-step refactoring recipes. Every section connects to the SDET Interview Coach iOS app — the tool that helps you practice articulating these principles in interview settings where framework design and code quality questions determine whether you're placed at mid, senior, or lead level.",
