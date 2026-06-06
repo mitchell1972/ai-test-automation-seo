@@ -14,6 +14,380 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "code-review-test-automation-sdet-interview-questions-2026",
+    title: "Code Review for Test Automation — SDET Interview Questions, Anti-Patterns, and How to Review Test Code Like a Senior Engineer in 2026",
+    description: "The complete code review for test automation interview guide for SDET roles in 2026. Covers test code anti-patterns, review checklists, linting and static analysis, PR review process for test suites, and 35+ real interview questions with model answers at every seniority level.",
+    date: "2026-06-06",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "code review test automation interview questions",
+      "SDET code review interview questions 2026",
+      "test automation code review checklist",
+      "test code anti-patterns interview",
+      "how to review test automation code",
+      "PR review process for automated tests",
+      "test code quality standards interview",
+      "static analysis linting test automation interview"
+    ],
+    content: `
+<section class="content-section">
+  <p>It is 10:47pm. Your SDET interview is tomorrow at 9am. You have practised your Selenium and Playwright answers. You can explain the Page Object Model forwards and backwards. You have memorised every REST Assured method chain and can whiteboard a test automation framework architecture without hesitation. Then you re-read the job spec one final time and your eyes land on a single line: <strong>"Experience participating in code reviews for test automation."</strong> Your throat tightens.</p>
+  <p>Code review. Not writing tests — <em>reviewing</em> them. You have been writing automated tests for four years. You have pushed hundreds of pull requests. But if the interviewer asks you to review a block of test code live — spotting the missing assertions, the hard-coded waits, the brittle locators, the tests with no independence — or asks you to describe your code review process for test suites, or to explain the difference between reviewing test code and reviewing production code, you are not certain you could structure a coherent answer. You are not alone. Most SDET candidates have never been asked about code review in an interview. They assume it is a developer-only skill. That assumption is costing them job offers in 2026.</p>
+  <p>Mitchell Agoma has spent 20 years reviewing test automation code — and being reviewed — across tax-processing systems at HMRC, defence systems at the Ministry of Defence, payment-processing platforms at Nationwide, and enterprise transformations at Accenture. At every one of those engagements, the quality of test code was directly proportional to the rigour of the review process. A team that reviewed test code caught flaky tests before they poisoned the CI pipeline. A team that skipped test code review shipped assertions that passed but verified nothing. A team that treated test code review as an afterthought — something you did if you had time after reviewing the production code — produced test suites that slowed delivery instead of enabling it. <strong>In 2026, interview panels have realised that asking a candidate to review test code reveals more about their testing maturity than twenty questions about framework syntax.</strong> Because reviewing test code is not about spotting typos. It is about spotting the invisible mistakes — the missing assertion that makes a test a confidence trick, the shared state that guarantees flakiness under parallel execution, the selector strategy that will break on the next UI redesign. Don't walk into your interview without a structured approach to code review. This guide covers every code review question you are likely to face — the anti-patterns to watch for, the review checklist to internalise, the tools and static analysis that catch what humans miss, and the model answers that signal you review test code like a senior engineer. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes code review scenarios at the mid and senior levels, with live code review exercises where the AI mock interviewer presents you with problematic test code and evaluates your ability to identify anti-patterns — exactly what real panels do.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Code Review Questions Are Appearing in 2026 SDET Interviews</h2>
+  <p>Three years ago, code review was a developer concern. SDETs wrote tests; developers reviewed them. If an SDET was invited to a code review at all, they were there to answer questions about the test's intent — not to critique the code. That has changed. Here is why interview panels are now screening for code review capability in SDET candidates, and what the shift signals about the evolution of the role.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. Test Code Is Production Code</h3>
+      <p>The artificial separation between "real code" and "test code" has collapsed. In a modern CI/CD pipeline, test code executes in the same environment as production code. It commits to the same repository. It blocks the same deployments. It costs the same engineering hours to maintain. A poorly written test suite that takes 45 minutes to execute and fails non-deterministically is not a testing problem — it is an engineering problem. Mitchell's teams at Nationwide discovered that test code review was the single most effective intervention for reducing pipeline failures: the teams that peer-reviewed test automation pull requests had 60% fewer flaky test incidents than teams that treated test PRs as rubber-stamp approvals. The industry has internalised this lesson. When a 2026 interviewer asks about your code review experience, they are testing whether you treat test code as a first-class software engineering artefact — or a second-class afterthought. The <a href="/blog/test-automation-best-practices-code-quality-sdet-2026">test automation code quality</a> guide covers the full engineering standards for test code.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Reviewing Test Code Tests Your Testing Instincts</h3>
+      <p>Here is what experienced interviewers have worked out: give a candidate a block of functional test code and ask them to review it, and you will learn more about their testing philosophy than twenty theory questions. A candidate who spots the missing negative assertion has demonstrated they think about edge cases. A candidate who flags the hard-coded thread sleep has demonstrated they understand asynchronous testing. A candidate who identifies the shared mutable state has demonstrated they reason about test isolation. A candidate who notices that three tests are testing the same thing with different data has demonstrated they recognise redundancy. A candidate who says "this looks fine to me" has demonstrated they are not ready for the role. Code review is a compressed assessment of testing judgement — and senior panels have figured out that it works better than any other single question type. Mitchell has used this exact technique when interviewing SDETs for payment-processing platforms at HMRC and Nationwide: present 40 lines of test code with five deliberate anti-patterns, and see how many the candidate finds. The number of anti-patterns spotted — not years of experience — was the strongest predictor of on-the-job performance.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. The SDET Role Has Shifted Toward Quality Enablement</h3>
+      <p>In 2021, an SDET's primary output was automated tests. In 2026, an SDET's primary output is quality — and quality is a team responsibility, not an individual one. This means SDETs spend more time reviewing other people's test code than writing their own. They review developers' unit tests to ensure adequate coverage. They review QA engineers' integration tests to catch anti-patterns before they propagate. They review pull requests from junior SDETs to mentor and establish standards. Code review has become a core delivery mechanism for the SDET role — not a peripheral activity. When an interviewer asks about your code review experience, they are assessing whether you can operate as a quality enabler across the team, or whether you are only comfortable in a silo writing tests alone. The <a href="/blog/qa-team-leadership-management-sdet-interview-questions-2026">QA team leadership</a> guide explores the mentoring and enablement dimension in detail.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. Automated Review Cannot Replace Human Judgement</h3>
+      <p>Linting tools catch trailing whitespace. Static analysis catches unused imports. SonarQube catches cyclomatic complexity. But no automated tool catches a test that asserts <code>assertTrue(true)</code> — a real anti-pattern Mitchell encountered in a production codebase at a major financial institution, planted by a contractor who was measured on test count, not test quality. No tool catches a test whose name says it verifies a calculation but whose assertions only check HTTP status codes. No tool catches a Page Object that exposes WebDriver directly instead of encapsulating behaviour. These require human judgement — the ability to read test code and ask: "What is this test actually verifying? If it passes, what do I know? If it fails, what do I know?" An interview that includes a code review exercise is testing exactly this judgement. Tools can assist the review — but they cannot replace it. The candidate who understands the boundary between automated and human review demonstrates maturity.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The framing to take into your interview: <strong>code review is not an administrative step — it is the primary quality gate for test automation code.</strong> Just as production code review prevents bugs from reaching users, test code review prevents bad tests from corrupting the confidence the team places in the test suite. A test that passes but verifies nothing is worse than no test at all — because it creates a false sense of security. Code review is the mechanism that catches those invisible failures before they become production incidents.</p>
+</section>
+
+<section class="content-section">
+  <h2>What Is Test Automation Code Review? The Foundations Every SDET Must Know</h2>
+  <p>Before you can answer code review questions in an interview, you need a structured mental model of what code review is — and how it differs when applied to test code rather than production code. Here is the foundation.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📋</span>
+      <div>
+        <h3>Code Review Defined — Not Just Spotting Typos</h3>
+        <p>Code review is a systematic examination of source code by one or more peers before it is merged into the main branch. For test automation, the review serves five distinct purposes. <strong>Correctness:</strong> does the test verify what it claims to verify? Are assertions present, specific, and sufficient? <strong>Reliability:</strong> will the test produce the same result every time it runs, or does it depend on timing, ordering, or external state? <strong>Maintainability:</strong> will another engineer understand this test in six months? Is the intent clear from the test name, structure, and comments? <strong>Performance:</strong> will this test slow down the pipeline? Are there unnecessary waits, redundant setups, or over-broad test scopes? <strong>Coverage:</strong> does this test add something the suite does not already cover, or is it a duplicate? A code review that only checks for syntax errors has missed the point. The review must interrogate the test's <em>purpose</em>, not just its <em>form</em>.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚖️</span>
+      <div>
+        <h3>Production Code Review vs Test Code Review — The Critical Differences</h3>
+        <p>Reviewing test code is not the same as reviewing production code, and conflating the two is a mistake interviewers specifically test for. Production code review focuses on correctness, performance, security, and architectural fit. Test code review adds dimensions that production review does not. <strong>False confidence:</strong> a production bug is visible when it occurs. A bad test that passes silently is invisible — it creates false confidence that lasts until a production incident. The reviewer must actively search for tests that pass but do not verify. <strong>Isolation:</strong> production code components are designed to be independent. Test code is inherently coupled — to the application, to other tests, to test data, to the environment. The reviewer must trace these coupling points. <strong>Naming:</strong> production code naming describes what the code does. Test code naming must describe what the code verifies and under what conditions. <code>testLogin()</code> is a production-style name. <code>shouldDisplayErrorMessageWhenPasswordContainsOnlySpaces()</code> is a test-style name. <strong>Assertion density:</strong> in production code, assertions are rare. In test code, they are the entire point. A test with one assertion or no assertion deserves scrutiny. Mitchell's rule from 20 years of reviewing test code: if you read a test and cannot say "if this test fails, I know exactly what broke," the test is under-specified.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🔍</span>
+      <div>
+        <h3>The Test Code Review Checklist — What to Look For Every Time</h3>
+        <p>A structured checklist prevents reviewers from defaulting to surface-level feedback. Mitchell's teams at Accenture used a standard review rubric that covered six dimensions. <strong>1. Test intent and naming:</strong> does the name follow the <code>should[ExpectedBehaviour]When[Condition]</code> pattern? Can you understand what the test verifies without reading the body? <strong>2. Assertions:</strong> are assertions present, specific, and sufficient? Are you asserting on the right thing — behaviour, not implementation details? <strong>3. Test independence:</strong> does this test share mutable state with other tests? Can it run in any order, in parallel, in isolation? <strong>4. Locators and selectors:</strong> are selectors stable, unique, and maintainable? Are they using data-testid attributes rather than CSS classes or XPath hierarchies? <strong>5. Waits and synchronisation:</strong> are there any hard-coded <code>Thread.sleep()</code> or equivalent? Are waits using the framework's built-in auto-waiting? <strong>6. Data management:</strong> where does the test data come from? Is it created in setup or assumed to exist? Does the test clean up after itself? Memorise these six dimensions — they are your interview answer structure.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🛠️</span>
+      <div>
+        <h3>Automated Assistance — What Linting, Static Analysis, and AI Can (and Cannot) Catch</h3>
+        <p>Human reviewers should not spend time on things tools can catch automatically. ESLint with appropriate plugins (eslint-plugin-jest, eslint-plugin-playwright, eslint-plugin-testing-library) catches structural issues: missing async/await, incorrect assertion usage, deprecated APIs, missing accessibility checks. SonarQube or SonarLint catches complexity issues: tests that are too long, too deeply nested, or have too many assertions. Prettier handles formatting — remove it from human review entirely. AI code review tools like CodeRabbit and GitHub Copilot code review can flag common anti-patterns: empty catch blocks, missing assertions, duplicate test logic. But — and this is the distinction interviewers want to hear — <strong>no tool catches the contextual failures:</strong> the test that verifies the wrong thing, the assertion that is technically correct but semantically meaningless, the Page Object that models the wrong abstraction. Mitchell's teams at the Ministry of Defence built a review pipeline where ESLint and SonarQube ran as pre-commit hooks, catching the mechanical issues before a human ever saw the PR. The human reviewer focused exclusively on the questions tools cannot answer: "Is this test actually useful? If it passes, does it increase our confidence in the system? If it fails, will the failure message tell an on-call engineer what broke?"</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The opening answer that impresses: <strong>"Code review for test automation is a systematic examination of test code for correctness, reliability, maintainability, performance, and coverage. It goes beyond syntax — it interrogates whether the test actually verifies what it claims to verify. The key difference from production code review is the focus on false confidence: a test that passes but verifies nothing is worse than no test because it creates a false sense of security. I use a structured checklist covering test intent, assertions, independence, selectors, waits, and data management. I automate the mechanical checks — linting, formatting, static analysis — and reserve human review for the contextual questions tools cannot answer: is this test useful? Does it increase our confidence in the system?"</strong></p>
+</section>
+
+<section class="content-section">
+  <h2>The 7 Deadly Anti-Patterns of Test Automation Code — What to Flag in a Review</h2>
+  <p>Interview panels that include a code review exercise are not testing whether you can spot a missing semicolon. They are testing whether you can spot the patterns that make test suites slow, flaky, unmaintainable, or — worst of all — confidently wrong. Here are the seven anti-patterns that signal test code review maturity when you flag them, ranked from most common to most dangerous.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. The Assertion-Free Test</h3>
+      <p><strong>What it looks like:</strong> a test that navigates, clicks, types, submits — and ends. No assertion. No verification. The test exercises the application without checking any outcome. <strong>Why it is dangerous:</strong> the test can only fail if the application throws an unhandled exception. It passes for every silent failure — wrong calculation result, wrong page load, wrong data displayed. The test adds execution time and CI cost without adding a shred of confidence. <strong>What to say in a review:</strong> "This test exercises the workflow but verifies nothing. If the calculation returns an incorrect result, this test still passes. Add assertions that validate the specific business outcomes this workflow should produce. At minimum, assert on the key output value and a visible confirmation element."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Hard-Coded Thread.sleep()</h3>
+      <p><strong>What it looks like:</strong> <code>Thread.sleep(3000)</code>, <code>await page.waitForTimeout(5000)</code>, or any fixed-duration wait not tied to a condition. <strong>Why it is dangerous:</strong> hard-coded waits are simultaneously too short and too long. Too short when the CI environment is under load and the element takes 6 seconds to appear — the test fails. Too long when running locally and the element appears in 200ms — the test wastes 2.8 seconds, and across 500 tests that is 23 minutes of wasted execution time. They are the number one cause of flaky tests in enterprise suites. <strong>What to say in a review:</strong> "Replace hard-coded waits with condition-based waiting: Playwright's auto-waiting, Selenium's WebDriverWait with ExpectedConditions, or Cypress's built-in retry-ability. Each framework provides a mechanism to wait for a specific condition — element visible, text present, network idle — without guessing the duration. If you genuinely need a fixed delay, document why in a comment — the exception proves the rule."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. Brittle Locators</h3>
+      <p><strong>What it looks like:</strong> XPath selectors that traverse the DOM hierarchy: <code>//div[3]/span[2]/button[1]</code>. CSS class selectors tied to presentational styles: <code>.btn-primary-large-v2</code>. Selectors that break on the next UI redesign. <strong>Why it is dangerous:</strong> every front-end change becomes a test maintenance event. A designer moves a button one div to the left, and 40 tests fail — not because the functionality broke, but because the selectors broke. The test suite becomes a drag on development velocity. <strong>What to say in a review:</strong> "These selectors are coupled to DOM structure and presentational classes. Replace them with data-testid attributes: <code>page.locator('[data-testid="submit-order-button"]')</code>. Coordinate with the front-end team to add data-testid attributes to interactive elements, ideally as part of the component's contract. For elements that cannot have data-testid, prefer role-based selectors: <code>page.getByRole('button', { name: 'Submit Order' })</code>."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. Shared Mutable State</h3>
+      <p><strong>What it looks like:</strong> Test A creates a user, Test B updates that user's profile, Test C deletes the user — and Test B and C depend on Test A having run first, in that exact order. <strong>Why it is dangerous:</strong> running tests in a different order produces different results. Running tests in parallel produces race conditions. Debugging one test requires running three. The test suite is not a collection of independent checks — it is a fragile script. <strong>What to say in a review:</strong> "This test shares state with other tests through a persisted entity. Isolate it: each test should create its own data in a before-each hook and clean it up in an after-each. Use unique identifiers — timestamps or UUIDs — to prevent data collisions between parallel test workers. If creating data per test is too slow, use a shared read-only fixture with per-test isolated writes."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. Overly Broad Assertions</h3>
+      <p><strong>What it looks like:</strong> <code>assertThat(responseBodyString, containsString("success"))</code>. <strong>Why it is dangerous:</strong> any response containing the word "success" passes — including error messages that say "success: false" or HTML pages that happen to contain the word in a meta tag. Broad assertions create the illusion of verification without the substance. <strong>What to say in a review:</strong> "This assertion is too broad to be meaningful. Narrow it to the specific field and value being verified: assert the HTTP status code is 200, parse the JSON response body, and assert the specific field — <code>jsonPath.getInt('orderId')</code> is not null, <code>jsonPath.getString('status')</code> equals 'CONFIRMED'. The more precise the assertion, the more useful the failure message."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>6. The God Test</h3>
+      <p><strong>What it looks like:</strong> a single test method that is 200 lines long, navigating through five pages, submitting three forms, verifying twelve things, and taking 45 seconds to execute. <strong>Why it is dangerous:</strong> when it fails — and it will — the failure message says "expected true but was false" at line 147. Nobody knows what broke without stepping through with a debugger. The test is unmaintainable: changing any step risks breaking verification for unrelated steps. <strong>What to say in a review:</strong> "This test verifies too many things. Split it into focused tests that each verify a single behaviour: one test for the form validation on page one, one test for the submission flow on page two, one test for the confirmation display on page three. Each test should have a single reason to fail. The suite takes the same total time but each failure tells you exactly what broke."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>7. Implementation-Coupled Tests</h3>
+      <p><strong>What it looks like:</strong> a test that asserts on internal implementation details — the exact text of a button label that changes with every copy update, the CSS class that is refactored, the specific API endpoint path that gets versioned. <strong>Why it is dangerous:</strong> non-functional changes break tests. The button still works, the page still looks correct, the API still returns the right data — but the tests fail because they were testing implementation, not behaviour. <strong>What to say in a review:</strong> "This test asserts on implementation details that can change without affecting behaviour. Refocus the assertions on user-visible outcomes: instead of asserting the button's CSS class, assert that clicking it navigates to the correct page. Instead of asserting the API path, assert that the response contains the expected data. Tests should be coupled to behaviour, not structure."</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">When asked to review test code live in an interview, start here: scan the code for these seven patterns. Flag the first three you find. Then explain why each matters and what you would suggest instead. Do not get stuck on formatting or variable naming — those are for the linter. Focus on the patterns that make tests wrong, slow, or flaky. That is what interviewers are scoring.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Conduct a Code Review for Test Automation — The Process</h2>
+  <p>Interviewers do not just ask what you look for in a review. They ask <em>how</em> you conduct the review — because the process matters as much as the checklist. A reviewer who writes "LGTM 👍" on every PR is not reviewing. A reviewer who leaves 47 nitpick comments on a 60-line test is not helping. Here is the process that signals operational maturity.</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">Step 1</div>
+      <div class="timeline-content">
+        <h3>Understand the Intent Before Reading the Code</h3>
+        <p>Read the PR description. What is this test supposed to verify? What scenario does it cover? If you cannot answer those questions from the description, that is your first review comment: "Please add a description explaining what behaviour this test verifies, what condition it sets up, and what the expected outcome is." A good PR description for a test might read: "Adds an end-to-end test for the password reset flow when the user's email is not verified. Sets up an unverified user via the test data factory, triggers password reset, and asserts that the UI displays the verification-required message rather than sending the reset email." Now you know what the test should do. Read the code with that intent in mind. Does the code actually verify that? Or does it verify something adjacent?</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Step 2</div>
+      <div class="timeline-content">
+        <h3>Run the Automated Checks First</h3>
+        <p>Before you invest human attention, let the machines do their work. Check that the CI pipeline has passed — linting, formatting, static analysis, and the tests themselves. If any automated check has failed, your review should start there: "Please address the failing linting check before I review." Do not spend time reviewing code that does not compile or pass the formatting gate. Mitchell's teams configured branch protection rules so that PRs with failing checks could not be merged — but could still be reviewed. The reviewer's role was to judge the test's quality, not its syntax. Configure your pipeline to reject the mechanical issues automatically so human review stays focused on testing judgement.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Step 3</div>
+      <div class="timeline-content">
+        <h3>The Two-Pass Review: Structure, Then Detail</h3>
+        <p>First pass: read the test at the structural level. What is the test name? What is the arrange-act-assert structure? Is the test independent? Is the test data isolated? Does the test clean up? This pass takes 30 seconds and catches 60% of issues. Second pass: read the test at the detail level. Check each locator for stability. Check each wait for condition-based waiting. Check each assertion for specificity and sufficiency. Check that mock or stub behaviour matches real system behaviour. This pass takes 2-3 minutes. The two-pass approach prevents the most common review failure: getting lost in syntax details and missing the structural flaw that makes the entire test invalid.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Step 4</div>
+      <div class="timeline-content">
+        <h3>Write Review Comments That Teach, Not Just Correct</h3>
+        <p>The difference between a reviewer who slows the team down and a reviewer who accelerates it is the quality of their comments. "Fix this" slows the team down — the author must interpret what "this" means and guess at the fix. "This selector uses an index-based XPath that will break if the DOM order changes. Use data-testid instead — here is the pattern we use: <code>page.locator('[data-testid="submit-button"]')</code>. The front-end team adds these as part of their component definition — see the component-playbook.md for the convention." This comment teaches the author how to avoid the problem next time. It links to documentation. It reduces the probability of repeat issues. Write reviews that make the author a better tester, not just a corrected one.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Step 5</div>
+      <div class="timeline-content">
+        <h3>Distinguish Blocking from Non-Blocking Feedback</h3>
+        <p>Not all review feedback should block the merge. Use a convention to separate blocking issues from suggestions. Mitchell's teams used prefixes: <strong>BLOCKER:</strong> for issues that would cause test failure, false confidence, or pipeline instability (missing assertion, hard-coded wait, shared mutable state). <strong>SUGGESTION:</strong> for improvements that would increase maintainability but are not correctness-critical (more descriptive variable name, extracting a helper method, adding a clarifying comment). <strong>QUESTION:</strong> for points where the reviewer is uncertain and wants the author's reasoning ("Why does this test bypass the login page instead of using the auth helper? Is there a reason we can't use the standard flow?"). This triaging lets the author merge quickly when only suggestions remain, while blocking on genuinely dangerous issues.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The interview answer: describe this process step by step, not just the checklist. "I start by reading the PR description to understand the test's intent. If the intent is not clear, that is my first comment. I let automated checks — linting, static analysis, formatting — handle the mechanical issues. Then I do a two-pass review: structure then detail. I write comments that teach, using BLOCKER/SUGGESTION/QUESTION prefixes to make the merge decision clear. And I never approve a test that I cannot explain — if I read the test and cannot say what it verifies, I ask the author to clarify before I approve."</p>
+</section>
+
+<section class="content-section">
+  <h2>Tools for Automating Test Code Review — Linting, Static Analysis, and AI Assistance</h2>
+  <p>A common interview question: "What tools do you use to support code review for test automation?" A weak answer lists tools. A strong answer explains what each tool catches, what it cannot catch, and how the tools fit into the review workflow. Here is that answer.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🧹</span>
+      <div>
+        <h3>ESLint with Test-Specific Plugins</h3>
+        <p>ESLint is the first line of defence. Configure it with plugins that understand your test framework: <strong>eslint-plugin-jest</strong> catches missing async/await in Jest tests, tests with no assertions (<code>jest/expect-expect</code>), and duplicate test names. <strong>eslint-plugin-playwright</strong> catches missing awaits on Playwright async operations, forces locator best practices (<code>playwright/prefer-web-first-assertions</code>), and warns on hard-coded delays. <strong>eslint-plugin-testing-library</strong> catches common mistakes with React Testing Library. <strong>eslint-plugin-cypress</strong> catches Cypress anti-patterns. The rule configuration tells the interviewer you have thought about this: set error-level for rules that catch correctness issues (missing assertions, missing awaits), warn-level for rules that catch style preferences. Run ESLint as a pre-commit hook (lint-staged + husky) and as a CI check. The pre-commit hook catches issues before the PR is opened; the CI check provides a failsafe. Mitchell's teams at Accenture reduced "fix typo" review comments by 80% after configuring ESLint with framework-specific plugins — freeing reviewers to focus on testing judgement.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📊</span>
+      <div>
+        <h3>SonarQube / SonarLint for Test Code Quality</h3>
+        <p>SonarQube analyses test code for the same quality dimensions as production code: duplication, complexity, cognitive load, and potential bugs. Configure it to treat test directories as analysed source, not excluded folders. Key rules for test code: flag test methods with more than 25 lines (too long to understand at a glance), flag files with more than 20 test methods (too many responsibilities), flag duplicate test logic across files (extract shared helpers). SonarLint provides the same analysis in the IDE, catching issues before the commit. The interview signal is not listing SonarQube — it is explaining how you configure it for test code specifically, not just accepting the defaults that exclude test directories from analysis.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🤖</span>
+      <div>
+        <h3>AI Code Review Tools — CodeRabbit, Copilot, and Custom Rules</h3>
+        <p>AI code review tools have reached the point where they can catch a meaningful subset of test anti-patterns. Configured with custom review instructions, they flag missing assertions, hard-coded waits, and selector anti-patterns before a human reviewer sees the PR. The approach: write a custom review prompt that encodes your team's test code standards — "Flag any test that does not contain an assertion. Flag any usage of Thread.sleep or waitForTimeout without a comment explaining why. Flag any XPath selector longer than two levels. Flag any test that shares state through global variables." The AI runs as the first reviewer, leaving inline comments. The human reviewer then either dismisses, accepts, or builds on those comments. Mitchell uses this pattern in the <a href="/blog/ai-in-testing-interview-questions-2026">AI in testing</a> workflow — AI handles the mechanical pattern-matching, human handles the contextual judgement. The candidate who can articulate this human-AI division of labour demonstrates they understand both the capability and the limitation of AI-assisted review.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">📐</span>
+      <div>
+        <h3>Prettier — Remove Formatting from Human Review</h3>
+        <p>This is a one-sentence addition to your interview answer but it signals operational maturity: "We use Prettier for automated code formatting so no human reviewer ever comments on indentation, line length, or quote style." The principle: every minute a reviewer spends on formatting is a minute they are not spending on testing judgement. Configure Prettier to run on save (IDE integration), on commit (lint-staged), and in CI (format-check). The CI check fails if any file is not formatted, blocking the merge — but the developer fixes it with a single command (<code>npx prettier --write .</code>) rather than a back-and-forth review conversation. This is a small detail with an outsized impact on review quality, and mentioning it unprompted signals you have optimised a real review process, not just read about one.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The integration: ESLint catches correctness issues at commit time. SonarQube catches complexity and duplication in CI. Prettier eliminates formatting discussions. AI review tools catch common anti-patterns before human review begins. The human reviewer — freed from mechanical checks — focuses on the four questions no tool can answer: Is this test verifying the right thing? Is the test data representative? Are the assertions specific enough to produce useful failure messages? Does this test increase our confidence in the system, or just increase our coverage percentage?</p>
+</section>
+
+<section class="content-section">
+  <h2>Common Code Review Interview Questions — With Model Answers</h2>
+  <p>Here are the precise questions interview panels ask about code review for test automation, with model answers at mid and senior levels. The answers are structured to demonstrate not just knowledge, but the operational experience that separates candidates who have reviewed test code from those who have only had their test code reviewed.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>"Review this test and tell me what you would change."</h3>
+      <p><strong>What they are testing:</strong> your ability to spot anti-patterns in unfamiliar code under time pressure. <strong>Model approach:</strong> start with structure, not syntax. "First, I notice the test name is <code>test1()</code> — it does not describe what the test verifies or under what conditions. Rename it to describe the scenario. Second, I see <code>Thread.sleep(2000)</code> on line 12 — replace with condition-based waiting. Third, the test calls the login API directly to create a session — if another test also uses that session, the tests share mutable state and will fail in parallel execution. Fourth, the test asserts <code>statusCode(200)</code> but not the response body — the API could return 200 with an empty body or wrong data and the test would pass. Fifth, the XPath selector <code>//div/div/div[2]/span</code> will break on any DOM restructuring — replace with <code>data-testid</code>. I would block the merge on the missing assertions and hard-coded wait. The naming and selector are suggestions that could be addressed in a follow-up." This answer demonstrates the ability to triage by severity — exactly what senior panels score on.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"How do you handle a disagreement during a code review?"</h3>
+      <p><strong>What they are testing:</strong> your collaboration and communication skills — the behavioural dimension of code review. <strong>Model answer:</strong> "I separate preference from correctness. If the disagreement is about correctness — the test verifies the wrong thing, the assertions are missing — I explain the specific risk: 'If this test passes with a wrong calculation result, we will not detect it until production. Here is the assertion I think we need.' If the disagreement is about preference — variable naming, helper extraction, assertion style — I ask two questions: 'Does the team have a documented convention for this?' If yes, we follow it. If no, I acknowledge their approach is valid and suggest we document a convention for consistency going forward. If we genuinely disagree on approach, I escalate to a third reviewer or the test architect for a decision. The goal is to unblock the merge without lowering quality — not to win the argument." The key signal this answer sends: you distinguish between objective quality issues and subjective style preferences. Engineers who conflate the two create toxic review cultures.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"What is your code review turnaround time?"</h3>
+      <p><strong>What they are testing:</strong> whether you understand that review latency is a delivery metric, not a personal preference. <strong>Model answer:</strong> "I aim to review test automation PRs within 4 business hours. A PR that sits unreviewed for a day is blocking delivery. If I cannot review within that window — because I am in meetings, deep in my own work, or off — I communicate: 'I'll review this by tomorrow morning. If you need it sooner, tag another reviewer.' For urgent PRs — hotfixes, pipeline blockers, release-critical tests — I review within the hour. The team should know what to expect. A reviewer whose turnaround is unpredictable becomes a bottleneck, regardless of how good their feedback is." This answer signals you understand that code review speed affects team velocity, not just code quality — a perspective that mid-level candidates often miss.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>"How do you review test code when you do not fully understand the application it tests?"</h3>
+      <p><strong>What they are testing:</strong> your intellectual honesty and your technique for reviewing under uncertainty. <strong>Model answer:</strong> "I can review the test's structure and testing quality without fully understanding the application domain. I check: does the test name clearly describe what it verifies? Are assertions present and specific? Is the test independent? Are the waits condition-based? Are the selectors stable? For the application-specific logic — whether the expected value of £347.22 is correct for a tax calculation — I flag it: 'QUESTION: I cannot verify this expected value because I am not familiar with the tax calculation rules. Can you confirm this is the correct expected output, and ideally add a comment linking to the relevant business rule or specification?' I can catch 80% of test quality issues without domain knowledge. For the remaining 20%, I ask — that is better than pretending competence and approving a test with wrong expected values." This answer demonstrates the self-awareness interviewers value more than false confidence.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">For a deeper dive into the behavioural dimension of these interviews, the <a href="/blog/sdet-behavioural-interview-questions-2026">SDET behavioural interview questions</a> guide covers the collaboration and communication scenarios that often appear alongside technical code review questions.</p>
+</section>
+
+<section class="content-section">
+  <h2>Building a Code Review Culture for Test Automation — The Senior-Level Perspective</h2>
+  <p>Senior and lead SDET candidates face a different question: not "how do you review test code?" but "how do you build a culture where test code review is valued, not resented?" This question tests your ability to influence team behaviour — the skill that defines senior engineering. Here is the model answer, drawn from Mitchell's experience building review cultures across four enterprise organisations.</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">Phase 1</div>
+      <div class="timeline-content">
+        <h3>Make the Pain Visible</h3>
+        <p>Teams that do not review test code do not see the cost of that decision. Start by measuring and communicating it. Track the number of flaky test incidents per sprint. Track the time spent debugging test failures that turned out to be test bugs, not application bugs. Track the number of test PRs that are reverted within 24 hours of merging. Present these numbers at the sprint retrospective. Ask the question: "What percentage of these incidents would code review have caught?" When Mitchell did this at Nationwide, the numbers were stark — 40% of pipeline failures were caused by test code issues that a 10-minute review would have caught. The team did not need to be convinced code review was a good idea. They needed to see that <em>not</em> reviewing was a worse idea. The <a href="/blog/test-flakiness-stability-interview-questions-2026">test flakiness and stability</a> guide covers the cost of flaky tests in production pipelines.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Phase 2</div>
+      <div class="timeline-content">
+        <h3>Start Small — One Dimension at a Time</h3>
+        <p>Do not introduce a 47-point review checklist in week one. The team will resent it and circumvent it. Start with one dimension: "For the next two weeks, all test PR reviews will focus on assertions only. Is there at least one assertion? Is it specific? Does it verify the outcome described in the test name?" After two weeks, add a second dimension — selectors or waits. After a month, the team is reviewing against four or five dimensions without feeling overwhelmed. The incremental approach builds the review habit before it builds the review rigour. By sprint six, the team starts asking for the next dimension because they can feel the quality improvement. Mitchell's teams at HMRC adopted this approach, starting with test isolation as the single focus — the dimension causing the most pain in their parallel CI environment. Within three sprints, parallel test failures dropped by 70%.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Phase 3</div>
+      <div class="timeline-content">
+        <h3>Automate What You Can, Standardise What You Cannot</h3>
+      <p>Once the review habit is established, reduce the review burden. Configure ESLint with framework-specific plugins to catch the mechanical issues. Add the linting rules to the pre-commit hook so they never reach review. Document the team's code review standards in a CONTRIBUTING.md or TESTING.md file — what reviewers check, what they do not check, what BLOCKER means, what SUGGESTION means. Create a review template in your PR platform: a checklist that prompts the reviewer to check test independence, assertions, selectors, waits, and data management. Templates reduce the cognitive load of remembering what to check and increase review consistency across the team. The goal is a review process that takes 5-10 minutes per test PR, not 30 minutes — because if review takes too long, it will be skipped when the team is under pressure.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">Phase 4</div>
+      <div class="timeline-content">
+        <h3>Rotate Reviewers — Build Shared Ownership</h3>
+      <p>The fastest way to kill a review culture is to make one person the permanent reviewer. They become a bottleneck. They burn out. The rest of the team stops thinking critically about test code because "the reviewer will catch it." Rotate the review responsibility across the entire SDET team. Even junior SDETs should review — reviewing code is one of the fastest ways to learn what good test code looks like. Pair a junior reviewer with a senior for the first few reviews: the junior reviews first and leaves comments, the senior reviews the junior's comments and discusses any misses. After a quarter, every SDET on the team can review test code competently — and the team's collective test quality is higher than any single reviewer could achieve alone. The rotation also prevents the "reviewer fatigue" that sets in when one person has reviewed 300 test PRs and has started rubber-stamping.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The senior-level answer: "Building a review culture is a change management exercise, not a technical one. You start by making the cost of not reviewing visible — measure the pipeline failures, the debugging time, the reverted merges. You introduce review dimensions incrementally — one at a time, building the habit before the rigour. You automate the mechanical checks so human review stays focused on testing judgement. And you rotate reviewers so the responsibility is shared across the team, not concentrated on one person who becomes a bottleneck. The goal is not a perfect review process in week one. The goal is a sustainable review culture where every SDET can competently review test code within a quarter."</p>
+</section>
+
+<section class="content-section">
+  <h2>Code Review for Test Automation in CI/CD — Pipeline Integration</h2>
+  <p>Code review does not end when the PR is approved. The review extends into the CI/CD pipeline, where automated checks enforce the standards that human reviewers have established. Here is how to integrate code review into your pipeline — a topic that appears in senior and staff-level SDET interviews.</p>
+
+  <p>The pipeline integration flow that Mitchell's teams at Accenture implemented:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Pre-commit (local):</strong> lint-staged runs ESLint and Prettier on staged files. Catches formatting, missing assertions, and framework-specific anti-patterns before the commit leaves the developer's machine.</li>
+    <li><strong>PR open (CI):</strong> the CI pipeline runs the full lint suite, type checking (TypeScript), and unit tests. If any check fails, the PR is marked as "changes requested" automatically. The human reviewer knows they only need to assess testing judgement — the mechanical checks have passed.</li>
+    <li><strong>PR review (human):</strong> the reviewer applies the structured checklist, leaving BLOCKER/SUGGESTION/QUESTION comments. At least one approval is required. The author addresses all BLOCKERs before merging.</li>
+    <li><strong>Merge to main (CI):</strong> a second CI run executes the full test suite — including the newly merged tests — against the main branch. If the new tests fail consistently, they are automatically quarantined and the author is notified.</li>
+    <li><strong>Nightly (scheduled):</strong> mutation testing runs on the test code base — yes, you can mutate test code to measure the quality of your tests' assertions. SonarQube runs its full analysis. A quality report is published to the team's dashboard.</li>
+  </ul>
+
+  <p>Two additional pipeline patterns that signal senior-level review integration:</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🏷️</span>
+      <div>
+        <h3>Test Impact Analysis</h3>
+        <p>Not every test needs to run for every PR. Implement test impact analysis that maps changed source files to the tests that exercise them. A PR that changes only the checkout page CSS should not trigger the full user management test suite. This reduces CI execution time while maintaining review confidence. Frameworks like Jest (<code>--onlyChanged</code>), Playwright (sharding with <code>--only-changed</code>), and commercial tools like Launchable provide this. The interview signal: you understand that pipeline speed affects review behaviour. A pipeline that takes 45 minutes per PR is a pipeline where code review is skipped under time pressure. A pipeline that takes 5 minutes per PR is a pipeline where code review actually happens.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🚦</span>
+      <div>
+        <h3>Flaky Test Quarantine</h3>
+        <p>When a test fails non-deterministically in CI — passes on retry, fails on a different worker — it should be automatically quarantined, not left to poison the pipeline. A quarantined test is moved to a separate test suite that runs but does not block the build. The author is notified: "Test X has been quarantined after 3 non-deterministic failures in the last 24 hours. Please investigate and fix." This prevents the "ignore the red build" culture that develops when flaky tests train engineers to distrust CI results. Mitchell's teams at Nationwide implemented this with a simple pattern: if a test failed on the first run and passed on retry three times in 24 hours, it was automatically moved to the flaky quarantine suite. The quarantine dashboard was reviewed at standup. The most frequently quarantined tests were prioritised for rewrite — and the review process was updated to catch the patterns those tests shared.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">For a full treatment of CI/CD pipeline design for test automation, see the <a href="/blog/cicd-pipeline-testing-interview-questions">CI/CD pipeline testing interview questions</a> guide.</p>
+</section>
+
+<section class="content-section">
+  <h2>Preparing for the Live Code Review Exercise — What to Practise</h2>
+  <p>The live code review exercise is the most anxiety-inducing part of a modern SDET interview. You are handed a block of test code — typically 30-60 lines — and asked to review it on the spot. Here is how to prepare so you walk in confident.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Practise with Real Code</h3>
+        <p>Open any open-source test automation repository — Playwright's own test suite, Cypress's example projects, Selenium's integration tests — and review a random test file against the six-dimension checklist. Set a timer for 5 minutes. Write down every issue you spot. Then read the test again with the timer off — did you miss anything? Repeat this exercise with ten different test files across different frameworks. You will start to see patterns — the same anti-patterns appear in every codebase, just with different syntax. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes a dedicated code review practice module that presents you with real test code containing deliberately planted anti-patterns and scores how many you identify — exactly the format of a live interview exercise.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🗣️</span>
+      <div>
+        <h3>Narrate Your Thought Process</h3>
+        <p>The most common mistake in live code review exercises is silent analysis. You spend three minutes reading the code in your head, then say "I found three issues." The interviewer cannot score your thinking if you do not verbalise it. Practise narrating: "I am going to start by reading the test name — okay, <code>testLogin</code>, that does not tell me what scenario or expected behaviour. I would rename it. Now I am scanning for assertions — I see a click on line 18 but no assertion after it. This test could navigate without verifying. I also see <code>Thread.sleep(3000)</code> on line 12 — I would replace that with an explicit wait..." Narration demonstrates your review methodology while you review. An interviewer who hears structured narration scores higher than someone who finds the same issues silently — because the methodology is what transfers to real team review.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">⚠️</span>
+      <div>
+        <h3>Prioritise by Severity</h3>
+        <p>When you find multiple issues — and you will — present them in order of severity: correctness first, reliability second, maintainability third, style last. "The most important issue is the missing assertion — the test does not verify anything, so it provides false confidence. Second priority is the hard-coded wait — it will cause flakiness in CI. Third is the brittle XPath selector — it will break on the next UI change. Finally, the variable name <code>resp</code> could be more descriptive — that is a style preference, not a correctness issue." This triage signals you understand what matters and what can wait — exactly the judgement senior SDETs need when reviewing PRs with limited time.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">If you want to take your interview preparation beyond this guide, the <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook">AI Test Automation Playbook</a> (£9.99 at stan.store/mitchellagoma/p/ai-test-automation-playbook) includes a chapter on using AI to simulate code review exercises — generating problematic test code, reviewing it yourself, and then asking the AI for its review to compare. This self-assessment loop sharpens your review instincts faster than reading alone.</p>
+</section>`,
+    faqs: [
+      {
+        q: "What do interviewers look for when asking about code review for test automation?",
+        a: "Interviewers are testing three things. First, your testing judgement — can you distinguish a good test from a bad one, and articulate why? Second, your review methodology — do you have a structured approach, or do you review haphazardly? Third, your collaboration skills — can you deliver feedback that improves the code without damaging the relationship? A candidate who says 'I check that the test has assertions and uses proper waits' has demonstrated surface knowledge. A candidate who says 'I start by reading the PR description to understand the test's intent, then do a two-pass review — structure then detail — and use BLOCKER/SUGGESTION/QUESTION prefixes to make the merge decision clear' has demonstrated operational maturity. Mitchell Agoma has used this exact evaluation framework when interviewing SDETs across his 20-year career at HMRC, MoD, Nationwide, and Accenture."
+      },
+      {
+        q: "What are the most common test automation code review anti-patterns?",
+        a: "The seven most common anti-patterns, ranked by danger: 1) The assertion-free test — exercises the application without verifying any outcome. 2) Hard-coded waits — Thread.sleep or waitForTimeout, which cause flakiness and slow execution. 3) Brittle locators — index-based XPath or CSS class selectors that break on UI changes. 4) Shared mutable state — tests that depend on execution order and fail in parallel. 5) Overly broad assertions — checking for 'success' in a response string instead of specific field values. 6) The God test — a single 200-line test that verifies too many things and produces useless failure messages. 7) Implementation-coupled tests — asserting on internal details (button labels, CSS classes, API paths) rather than user-visible behaviour. These seven patterns account for roughly 80% of test suite maintenance cost in enterprise codebases, based on Mitchell's experience across four enterprise organisations."
+      },
+      {
+        q: "How do you conduct a code review of automated tests?",
+        a: "I follow a five-step process. Step 1: Understand intent — read the PR description to determine what the test is supposed to verify. If the intent is not clear from the description, that is my first review comment. Step 2: Automated checks — verify that linting, static analysis, formatting, and the test itself have passed in CI. Do not review code that does not pass mechanical checks. Step 3: Two-pass review — first pass assesses structure (test name, arrange-act-assert pattern, independence, data isolation). Second pass assesses detail (locators, waits, assertions, mock behaviour). Step 4: Teaching comments — write feedback that explains why the change is needed and links to team conventions, not just what to change. Step 5: Triage feedback — prefix comments with BLOCKER (correctness issue, must fix before merge), SUGGESTION (improvement, not merge-blocking), or QUESTION (I need the author's reasoning). This process takes 5-10 minutes per test PR and catches both structural and detail-level issues without creating review fatigue."
+      },
+      {
+        q: "What tools can you use to automate code review for test automation?",
+        a: "Four categories of tools, each catching a different class of issue. ESLint with framework-specific plugins (eslint-plugin-jest, eslint-plugin-playwright, eslint-plugin-testing-library) catches correctness and convention issues — missing assertions, missing awaits, deprecated APIs. SonarQube/SonarLint catches complexity and duplication — tests that are too long, too deeply nested, or copy-pasted across files. AI code review tools like CodeRabbit or GitHub Copilot review catch common anti-patterns — empty catch blocks, hard-coded delays, selector issues — when configured with custom review prompts. Prettier handles formatting, removing it from human review entirely. The key principle: automate the mechanical checks so human reviewers focus on testing judgement — is this test verifying the right thing? Are the assertions specific enough? Does this test increase confidence or just coverage? Mitchell's teams at Accenture configured this four-layer automated review pipeline and reduced review turnaround time by 60% while catching more issues."
+      },
+      {
+        q: "How do you handle disagreements during a test automation code review?",
+        a: "I separate correctness from preference. If the disagreement is about correctness — the test verifies the wrong thing, the assertions are insufficient — I explain the specific risk: 'If this scenario occurs, this test passes but we do not detect the issue. Here is the assertion I believe we need.' If the disagreement is about preference — naming conventions, assertion style, helper method extraction — I ask whether the team has a documented convention. If yes, we follow it. If no, I acknowledge their approach is valid and suggest we document a convention for consistency. If we genuinely disagree on approach and cannot reach consensus, I escalate to a third reviewer or the test architect. The goal is never to win the argument — it is to unblock the merge without lowering quality. Engineers who conflate correctness and preference create toxic review cultures that slow delivery without improving code."
+      },
+      {
+        q: "What is the difference between reviewing test code and reviewing production code?",
+        a: "The critical difference is the risk profile. A bug in production code is visible — it causes an error, a crash, an incorrect output. A bug in test code is invisible — the test passes silently, creating a false sense of security that lasts until a production incident. This means test code review must actively search for the absence of verification: missing assertions, assertions that are technically present but semantically meaningless (assertTrue(true)), and assertions that check the wrong thing entirely. Production code review focuses on what the code does. Test code review must also focus on what the code does not do — what it fails to verify. Additionally, test code review evaluates test independence (can this run in any order?), coupling (does it share state?), and naming (does the name describe the scenario and expected outcome, not just the action?). These dimensions are unique to test code and are what make test code review a distinct skill from production code review."
+      },
+      {
+        q: "Does the SDET Interview Coach app cover code review questions?",
+        a: "Yes. The SDET Interview Coach iOS app includes a dedicated code review practice module for mid-level and senior SDET candidates. The app presents you with real test code containing deliberately planted anti-patterns — missing assertions, hard-coded waits, brittle selectors, shared state — and asks you to review the code live, either by typing your analysis or speaking it. The AI mock interviewer evaluates how many anti-patterns you identified, whether you prioritised them by severity, and whether your feedback was constructive and actionable. The Job Match feature also generates code review questions tailored to any SDET job description — if a job mentions 'code review,' 'PR review,' 'peer review,' or 'test code quality standards,' the app surfaces the exact code review scenarios and questions you are most likely to face."
+      }
+    ],
+    relatedSlugs: [
+      "test-automation-best-practices-code-quality-sdet-2026",
+      "test-automation-framework-design-interview",
+      "sdet-interview-coach-app-guide",
+      "sdet-behavioural-interview-questions-2026"
+    ],
+  },
+  {
     slug: "mutation-testing-interview-questions-2026",
     title: "Mutation Testing Interview Questions — What SDET Panels Ask About Pitest, Stryker, and Test Quality Metrics in 2026",
     description: "The complete mutation testing interview guide for SDET roles in 2026. Covers Pitest (PIT) for Java, Stryker Mutator for JavaScript/TypeScript, mutation score, equivalent mutants, infection chain, and 40+ real interview questions with model answers.",
