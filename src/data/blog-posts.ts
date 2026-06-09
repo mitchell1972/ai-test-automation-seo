@@ -14,6 +14,248 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "allure-reporting-interview-questions-2026",
+    title: "Allure Reporting Interview Questions 2026 — Test Reports, Custom Annotations, CI Integration, and Every Question SDETs Get Asked About Test Visibility",
+    description: "Complete Allure reporting interview guide for SDETs in 2026. Covers Allure annotations, custom report generation, Jenkins/GitHub Actions CI integration, test attachment strategies, Allure vs ExtentReports comparison, and real answers from enterprise test programmes.",
+    date: "2026-06-09",
+    author: SITE_CONFIG.author,
+    keywords: [
+      "Allure reporting interview questions 2026",
+      "Allure test report framework interview",
+      "Allure annotations @Step @Attachment @Feature interview questions",
+      "Allure Jenkins CI integration test reporting",
+      "Allure vs ExtentReports comparison interview 2026",
+      "Allure custom report generation categories interview",
+      "Allure TestNG JUnit integration reporting interview",
+      "Allure testops test management interview questions",
+      "Allure report history trends test metrics interview",
+      "Allure Selenium Playwright integration reporting interview"
+    ],
+    content: `
+<section class="content-section">
+  <p>It is 11:03pm. Your SDET interview is tomorrow morning. You have revised design patterns, practised coding challenges, and memorised HTTP status codes. You feel ready. Then you re-read the job description one final time and a bullet point freezes the blood: <strong>"Experience with Allure reporting for test visibility."</strong> Allure. You have written a thousand tests. You have built test frameworks. But you have never configured a test report beyond the default console output. What even <em>is</em> an Allure report? What is a @Step annotation? How do you attach screenshots to test results? How do you group tests by feature and story? The panic is real: "I have used frameworks that output Allure JSON but I have never actually <em>customised</em> Allure. If they ask me to walk through setting up Allure for a Playwright project, I will freeze." You are not alone. In 2026, interview panels increasingly probe Allure because test visibility is no longer a nice-to-have — it is a requirement for every regulated industry, every CI/CD pipeline, and every programme director who needs to see pass-rate trends without opening a terminal.</p>
+  <p>Mitchell Agoma has spent 20 years building and leading test automation programmes across HMRC, the Ministry of Defence, Nationwide, and Accenture. At HMRC, Mitchell's teams used Allure to give non-technical stakeholders visibility into the tax-calculation test suite — the Allure dashboard's trends page showed pass-rate history across 6 microservices, which the programme director reviewed every sprint. At Nationwide, the mortgage-approval test suite used Allure's @Attachment annotation to capture API response bodies on failure, cutting debugging time from hours to minutes. At Accenture, a government client standardised on Allure because it generated a single unified report across teams using Selenium (Java), Playwright (TypeScript), and REST Assured (Java) — Allure's language-agnostic JSON format was the glue. These stories separate candidates who configured Allure from those who just ran mvn allure:serve once. <strong>Don't let weak reporting answers undermine strong coding answers.</strong> This guide covers every Allure question SDET panels are asking in 2026 — from annotation fundamentals and report structure through CI integration and the Allure-vs-ExtentReports comparison that appears in virtually every interview. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes dedicated Allure reporting mock interview rounds with AI-graded feedback, so you can practise describing the @Step/@Attachment/@Feature annotation flow aloud — because knowing what @Step does is knowledge; explaining how Allure fits into a CI/CD pipeline under interview pressure is performance, and performance requires rehearsal.</p>
+</section>
+
+<section class="content-section">
+  <h2>What Is Allure — And Why Do SDETs Need It?</h2>
+  <p>Allure Framework is an open-source test reporting tool that consumes test results in a language-agnostic JSON format and produces comprehensive HTML reports. The core insight: <strong>Allure is not a test runner.</strong> It does not execute tests. It does not replace JUnit, TestNG, pytest, Mocha, or Jest. Allure sits downstream — your test runner produces results, your language-specific Allure adapter converts those results into Allure JSON, and the Allure command-line tool generates the HTML report. This architecture means one reporting standard works across every programming language and test framework in your organisation.</p>
+  <p>Interviewers ask about Allure for four reasons that probe deeper than "can you generate a report?" First, <strong>test visibility</strong> — a candidate who can describe how to make test results readable by programme directors, product owners, and compliance auditors demonstrates stakeholder awareness that goes beyond technical execution. Second, <strong>debugging efficiency</strong> — a candidate who can explain how to attach screenshots, API response bodies, and browser console logs to failed tests demonstrates operational maturity: they have experienced the pain of trying to reproduce a CI failure without context. Third, <strong>cross-team standardisation</strong> — a candidate who understands that Allure's JSON format allows a Java Selenium team, a TypeScript Playwright team, and a Python pytest team to produce identically structured reports demonstrates enterprise architectural thinking. Fourth, <strong>trend analysis</strong> — a candidate who can describe how Allure's history and trends features enable sprint-over-sprint quality measurement demonstrates strategic quality thinking beyond per-build pass/fail. Mitchell's Accenture client adopted Allure specifically because the programme had three test teams in three languages and the programme director needed one dashboard — the language-agnostic JSON format was the only viable option.</p>
+  <p>The distinction between "I ran the Allure command once" and "I understand Allure's architecture" is what interview panels probe. The candidate who describes Allure as a downstream consumer of test results, with language-specific adapters acting as translators, demonstrates the architectural reasoning that separates senior from junior. The candidate who only mentions "you add a Maven dependency and run a command" demonstrates procedure recall. The <a href="/blog/test-reporting-metrics-interview-questions-2026">test reporting metrics guide</a> covers the measurement philosophy Allure enables.</p>
+</section>
+
+<section class="content-section">
+  <h2>Core Allure Annotations — @Step, @Attachment, @Feature, @Story, @Epic, @Severity, @Description, @Link</h2>
+  <p>These eight annotations form the foundation of Allure reporting. Every Allure interview question about "how do you customise reports" maps back to one or more of these annotations. The candidate who can describe each annotation's purpose and give a real use case demonstrates they have configured Allure, not just read the README.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <h3>@Step("description")</h3>
+      <p>Wraps a method so its execution appears as a named step in the Allure report. Use @Step on every method that represents a meaningful user action — <code>@Step("Login with username {username}")</code>, <code>@Step("Add item {productId} to basket")</code>. Parameters are interpolated into the step name via <code>{paramName}</code> syntax. The result: your Allure report reads like a narrative of what the test did, not a stack trace. Mitchell's Nationwide team annotated every page-object method with @Step so the mortgage-approval test report read like a user journey — "Search for mortgage products", "Select 5-year fixed rate", "Complete affordability check", "Submit application" — and any failure immediately showed which step failed and with what inputs.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>@Attachment</h3>
+      <p>Attaches files to test results — screenshots, API response bodies, browser console logs, CSV dumps, PDF exports. Usage: <code>@Attachment(value = "Screenshot on failure", type = "image/png")</code>. The critical pattern: call @Attachment in a test teardown or failure hook, not inline in the test body. This keeps tests clean while ensuring every failure includes diagnostic context. Mitchell's HMRC team attached the full tax-calculation API response body to every failed test — the programme director could open the Allure report, click the failed test, and see exactly what the tax engine returned without opening a single log file. Debugging time dropped from hours to minutes.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>@Feature and @Story</h3>
+      <p>Group tests by feature area and user story. <code>@Feature("Checkout")</code> with <code>@Story("US-472: Apply discount code")</code>. These annotations populate Allure's Behaviours view — the tab non-technical stakeholders find most readable because it organises results by business capability, not by test class name. Mitchell's Accenture client used @Feature and @Story to map every test to a specific requirement in the test management tool, creating a traceability chain from requirement to test to result that satisfied audit without additional tooling.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>@Epic, @Severity, @Description, @Link</h3>
+      <p><strong>@Epic</strong> sits above @Feature — use it for high-level initiatives like "Regulatory Compliance" that span multiple features. <strong>@Severity</strong> (BLOCKER, CRITICAL, NORMAL, MINOR, TRIVIAL) enables triage — your CI pipeline can fail-fast on BLOCKER-level failures while allowing MINOR failures to be reviewed later. <strong>@Description</strong> accepts HTML and Markdown for rich test documentation inside the report. <strong>@Link</strong> connects a test result to a Jira issue, Confluence page, or TMS entry — the report becomes a navigation hub linking test results to the surrounding documentation ecosystem. The strongest interview answer explains not just what each annotation does but how they combine: @Epic groups business initiatives, @Feature groups capabilities, @Story groups requirements, @Step narrates execution, @Attachment provides evidence, @Severity enables triage, @Description documents intent, and @Link connects to the broader quality ecosystem.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The interview-ready distinction: Allure annotations are metadata — they describe the test for the report — and they are applied declaratively on test methods and helper methods. They do not alter test execution. A common mistake is confusing Allure annotations with test runner annotations (TestNG's @Test, JUnit's @Test, pytest's markers). Allure annotations sit alongside test-runner annotations; they serve different purposes. The candidate who clearly separates "test execution metadata" from "report presentation metadata" signals architectural clarity.</p>
+</section>
+
+<section class="content-section">
+  <h2>Allure Report Structure — What an Interviewer Expects You to Describe</h2>
+  <p>When an interviewer says "walk me through an Allure report," they want you to describe the six standard views — not recite menu labels but explain what each view contains, who uses it, and what question it answers. This is the difference between "the report has tabs" and "I understand what information each tab provides to which stakeholder."</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <h3>Dashboard</h3>
+      <p>The landing page. Shows overall pass/fail/skip counts, severity distribution (how many BLOCKER vs CRITICAL vs NORMAL failures), duration, and a trend chart when history data exists. The programme director's view — answers "is this build healthy at a glance?" Mitchell's HMRC programme director reviewed this tab every sprint to check whether the tax-calculation suite's pass rate was trending up or down across the six microservices.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Suites</h3>
+      <p>Organises results by test class/package — the developer's view. Shows which test classes ran, which methods passed and failed, and execution time per class. Engineers use this to find slow test classes and identify which areas of the codebase have the most test failures. Matches the mental model of the codebase structure.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Behaviours</h3>
+      <p>Organises results by @Epic → @Feature → @Story hierarchy — the product owner's view. Answers "do all the checkout features work?" and "did any user story tests fail?" This is the tab that maps test results to business requirements. Mitchell's Accenture client used Behaviours as their primary audit evidence because it showed which features were tested and what the results were, organised by business capability rather than technical structure.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Categories</h3>
+      <p>Groups failures by category — product defects, test defects, environment issues, flaky tests. Powered by a <code>categories.json</code> file that defines regex patterns to classify failures. This is the triage view: a test lead opening this tab can immediately see whether this build's failures are real bugs (product defects) or test infrastructure problems (environment issues) and route investigation accordingly. Custom categories are a hallmark of teams that have matured beyond default Allure configuration.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Graphs</h3>
+      <p>Visualises test duration distribution, severity distribution, status distribution, and retry analysis. The retry graph is particularly valuable for identifying flaky tests — tests that pass on retry indicate non-deterministic behaviour. Mitchell's teams used the Graphs view to identify flaky tests weekly and assign them for stabilisation before the next sprint.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Timeline</h3>
+      <p>Shows test execution over time — which tests ran in parallel, which tests blocked others, where the bottlenecks are. Essential for diagnosing slow CI pipelines. If 90% of tests finish in 3 minutes but 10% take 12 minutes, the Timeline view reveals which tests are the outliers and whether they are serial bottlenecks or slow individual tests.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The strongest interview answer connects report views to stakeholders: "The Dashboard is for programme directors who need a health check in 10 seconds. Suites is for developers investigating failures. Behaviours is for product owners and business analysts who think in features, not classes. Categories is for test leads triaging failures. Graphs is for the quality team tracking trends. Timeline is for DevOps diagnosing pipeline bottlenecks." This demonstrates you understand that reporting serves multiple audiences, not one.</p>
+</section>
+
+<section class="content-section">
+  <h2>CI Integration — Generating Allure Reports in Jenkins, GitHub Actions, GitLab CI</h2>
+  <p>The pattern for Allure CI integration is universal across CI platforms: <strong>(1) run tests → (2) collect Allure results → (3) generate report → (4) publish report.</strong> The tools differ but the pipeline is the same. Interview panels probe CI integration because a candidate who can describe the full pipeline demonstrates operational maturity — they have run Allure in production, not just on their laptop.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <h3>Jenkins</h3>
+      <p>Use the <strong>Allure Jenkins Plugin</strong>. Step 1: configure your test job to output Allure results to <code>allure-results/</code>. Step 2: add a post-build action "Allure Report" pointing to <code>allure-results/</code>. The plugin automatically generates the report and embeds it in the Jenkins build page — every build has a clickable Allure report icon showing the trend chart across builds. The plugin also handles history: it copies the previous build's history into the current build's results so the trend chart spans multiple builds. No shell script required. Mitchell's HMRC team used the Jenkins plugin so the programme director could open any build in Jenkins and see the Allure report with one click — zero friction between CI and reporting.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>GitHub Actions</h3>
+      <p>Use <strong>allure-report-action</strong> (the community GitHub Action) or the CLI directly. Pattern: after your test step, add <code>allure generate allure-results --clean -o allure-report</code>, then use <code>actions/upload-artifact</code> to publish the report as a build artifact. For trend history: use <code>actions/download-artifact</code> to pull the previous build's history into <code>allure-results/history/</code> before generating the report. Advanced pattern: deploy the report to GitHub Pages for a permanent URL each team member can access without digging through Actions artifacts. Mitchell's teams used this for Playwright + TypeScript projects where the entire CI pipeline — checkout, install, test, report, publish — lived in a single workflow YAML file.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>GitLab CI</h3>
+      <p>GitLab CI supports Allure via the CLI in a Docker executor. Use an image with Allure installed (<code>allureframework/allure2</code> or install via script). Define two stages: <code>test</code> (runs tests and produces allure-results) and <code>report</code> (runs <code>allure generate</code> and publishes as a GitLab Pages artifact). Use <code>artifacts</code> with <code>reports:junit</code> for JUnit XML ingestion alongside the Allure HTML artifact — GitLab's merge request widget shows JUnit results while the Allure report provides rich detail. GitLab's built-in artifact browsing publishes the Allure report at a stable URL for the life of the pipeline.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Universal Pattern</h3>
+      <p>Regardless of CI platform, the three-critical-files pattern applies: <strong>categories.json</strong> (failure classification), <strong>environment.properties</strong> (test environment context — OS, browser, environment name), and <strong>executor.json</strong> (build information — build name, build URL, CI type). These files go into <code>allure-results/</code> before report generation. The environment.properties file is particularly valuable: it embeds the exact test environment into every report so that a report from three weeks ago still tells you which browser version and which environment it ran against. Without environment.properties, a historical report is just numbers without context.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The interview-ready answer describes the universal pattern first, then applies it to the specific CI platform the interviewer asks about. "The pattern is four stages: run tests, collect JSON, generate HTML, publish. In Jenkins you use the plugin, in GitHub Actions you use the community action, in GitLab CI you use the CLI in a Docker executor. The same allure-results/ directory works everywhere because Allure's JSON format is platform-agnostic." This demonstrates you understand the principle, not just the syntax. See our <a href="/blog/continuous-testing-devops-sdet-interview-questions-2026">continuous testing and DevOps guide</a> for deeper CI/CD coverage.</p>
+</section>
+
+<section class="content-section">
+  <h2>Customisation — Categories, Environment Properties, and Executor Configuration</h2>
+  <p>The gap between a team that "uses Allure" and a team that has customised Allure for their context is where interview panels separate mid-level from senior. Default Allure gives you a generic report. Customised Allure gives you a report that reflects your team's quality taxonomy, your environment topology, and your build infrastructure — information that makes the report actionable rather than decorative.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <h3>categories.json — Failure Classification</h3>
+      <p>A JSON file placed in <code>allure-results/</code> that defines failure categories via regex matching on error messages and stack traces. Example: a <code>"Product defects"</code> category with regex patterns for assertion errors and expected-condition failures; an <code>"Environment issues"</code> category for connection timeouts, DNS resolution failures, and service-unavailable errors; a <code>"Test defects"</code> category for NullPointerException and StaleElementReferenceException (problems in the test code, not the product). The result: opening the Categories tab immediately tells you whether this build's failures are real bugs or infrastructure problems — no manual reading of stack traces required. Mitchell's Nationwide team defined a <code>"Data issues"</code> category for failures caused by test data not being available — this category consistently accounted for 30% of failures and drove an investment in dedicated test data management tooling that reduced flaky failures by half. Without categories.json, those 30% of failures were indistinguishable from product defects and wasted hours of investigation every sprint.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>environment.properties — Test Context</h3>
+      <p>A key-value properties file placed in <code>allure-results/</code> before report generation. Embed context like <code>Browser=Chrome 125</code>, <code>Environment=staging</code>, <code>OS=macOS 14.5</code>, <code>Java=21</code>, <code>TestDataVersion=2026-06-09</code>. This information appears on the Allure report's Overview page. The operational importance: if a report from three weeks ago shows failures, environment.properties tells you whether those failures ran against staging (maybe a known environment issue) or production (immediate investigation required), and which browser version was used (was it a browser update that broke tests?). Without environment.properties, a historical report is anonymous — knowing that 12 tests failed is useless without knowing what they ran against. Mitchell's teams automated environment.properties generation at the start of every test run via a shell script that collected OS info, browser versions, and environment names from CI variables.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>executor.json — Build Traceability</h3>
+      <p>A JSON file placed in <code>allure-results/</code> that links the Allure report to a specific CI build. Fields: <code>name</code> ("Jenkins" or "GitHub Actions"), <code>type</code> ("jenkins" or "github"), <code>url</code> (the CI build URL), <code>buildOrder</code> (incremented per build for trend continuity), <code>buildName</code> ("#847" or "PR #312"), <code>reportUrl</code> (the Allure report's published URL). This makes every Allure report a two-way link: from the CI build you can open the Allure report, and from the Allure report you can navigate to the CI build that produced it. This is critical for regulated industries where every test result must be traceable to a specific build with a specific configuration. Mitchell's Accenture government client required executor.json in every Allure report for audit compliance — the auditor could verify that the test results matched the CI build logs and that no results had been tampered with between execution and presentation.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The interview-ready distinction: a candidate who describes only the Allure annotations demonstrates configuration knowledge. A candidate who describes categories.json, environment.properties, and executor.json demonstrates operational knowledge — they have run Allure in CI, dealt with historical reports, classified real failures, and maintained reporting infrastructure. The difference in perceived seniority is substantial. See our <a href="/blog/test-automation-framework-design-interview">test automation framework design guide</a> for how reporting infrastructure fits into broader framework architecture.</p>
+</section>
+
+<section class="content-section">
+  <h2>Allure vs ExtentReports — The Comparison Every Interviewer Asks</h2>
+  <p>This question appears in nearly every Allure interview because it tests whether you understand reporting framework architecture or just reporting framework usage. The two tools solve the same problem — producing readable HTML reports from test results — but their architectures, licensing, and ecosystems differ in ways that reveal whether a candidate has evaluated reporting options or simply used whichever tool was already in the project.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <h3>Language-Agnostic vs Language-Specific</h3>
+      <p>Allure's defining characteristic: it consumes language-agnostic JSON. Any test framework in any language can output Allure JSON, and Allure generates the same report. The result: a Java Selenium team, a TypeScript Playwright team, and a Python pytest team produce identically structured reports. ExtentReports is Java and .NET only — it integrates directly with TestNG and JUnit via Java APIs, and the report generation happens inside the JVM. If your organisation has test teams in multiple languages, Allure is the only option. If your organisation is Java-only and you want maximum control over report content via Java code, ExtentReports is more direct. Mitchell's Accenture client had three test teams in three languages — the programme director needed one dashboard, and Allure's language-agnostic architecture was the only viable option.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Free vs Licensing</h3>
+      <p>Allure Framework (the open-source report generator) is free and Apache 2.0 licensed. Allure TestOps (the enterprise test management platform with real-time results, launch management, and team collaboration) has a free community edition and paid enterprise tiers. ExtentReports community edition is free but the <strong>Pro/Enterprise versions with advanced features</strong> (KLOV report server for centralised reporting, advanced analytics, multi-project dashboards) require a commercial licence — prices start around \u00a3750/year at the time of writing. For startups and small teams, Allure's fully free model is attractive. For enterprises that need a supported, on-premises centralised reporting server with vendor SLAs, ExtentReports Pro is worth evaluating. The interview answer that acknowledges this nuance — free for core features in both, paid for enterprise-scale centralised reporting — demonstrates you have compared tools, not just read feature lists.</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Report Richness and Customisation</h3>
+      <p>ExtentReports produces visually richer reports out of the box — pie charts, dashboards, category views, and author views with customisable themes and branding. Allure's reports are also rich (trend charts, severity distribution, timeline) but follow a more standardised layout. For teams that want custom-branded, stakeholder-specific report views, ExtentReports offers more HTML-level customisation. For teams that want a standardised report format that any engineer can navigate, Allure's consistency across projects is a feature, not a limitation. The interview-ready answer: "ExtentReports for maximum visual customisation within a Java ecosystem; Allure for standardised multi-language reporting across large organisations."</p>
+    </div>
+    <div class="benefit-card">
+      <h3>CI Integration Depth</h3>
+      <p>Allure has dedicated CI plugins for Jenkins, TeamCity, and Bamboo — install the plugin, point at the results directory, and the report appears in every build with automatic trend history across builds. ExtentReports CI integration is more manual: generate the HTML report in your build step and publish it as an artifact or to a web server. The Allure Jenkins plugin handles history, trend charts, and build-to-build navigation automatically. ExtentReports requires you to manage history yourself — storing previous results, merging them into the current report, and handling build-to-build report navigation. Mitchell's recommendation: if your CI platform is Jenkins and you want minimal configuration effort for cross-build trend reporting, Allure with the Jenkins plugin is the path of least resistance. The <a href="/blog/continuous-testing-devops-sdet-interview-questions-2026">continuous testing guide</a> covers CI/CD patterns in depth.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The strongest interview answer to "Allure vs ExtentReports?" avoids partisanship: "Both produce excellent HTML test reports. Allure is the right choice for multi-language organisations, teams that want zero-configuration CI integration via dedicated plugins, and programmes where report standardisation across teams matters more than visual customisation. ExtentReports is the right choice for Java-only organisations that want maximum control over report layout, custom branding, and programmatic report generation from within their test code. I have used both — Allure at Accenture for its cross-language unification and ExtentReports at a Java-only fintech where the stakeholder report needed custom sections showing compliance test results." This answer demonstrates tool evaluation, not tool loyalty — exactly what interview panels want.</p>
+</section>
+
+<section class="content-section">
+  <h2>Real Configuration — Allure for Playwright + TypeScript (Walkthrough)</h2>
+  <p>This is the "whiteboard configuration" question. The interviewer wants you to describe the setup conceptually — tools, packages, configuration files, the data flow from test execution to published report. You do not need exact command-line syntax. You need to demonstrate you understand the pipeline.</p>
+
+  <p>Start with packages: <code>npm install --save-dev allure-playwright allure-commandline</code> (or the equivalent yarn/pnpm). <code>allure-playwright</code> is the Playwright-specific adapter that hooks into Playwright's test lifecycle and outputs Allure JSON. <code>allure-commandline</code> provides the <code>allure generate</code> and <code>allure serve</code> commands.</p>
+
+  <p>Configure Playwright: in <code>playwright.config.ts</code>, add the Allure reporter to the reporter array — <code>reporter: [['allure-playwright', { outputFolder: 'allure-results' }]]</code>. This tells Playwright to send test results to the Allure adapter, which writes Allure JSON to <code>allure-results/</code>. If you also want JUnit XML (for CI ingestion alongside the Allure HTML report), you can add a second reporter — Playwright supports multiple reporters simultaneously.</p>
+
+  <p>Add attachments in test hooks: in a Playwright fixture or <code>afterEach</code> hook, attach screenshots on failure — <code>if (testInfo.status !== 'passed') { await allure.attachment('Screenshot', await page.screenshot(), { contentType: 'image/png' }); }</code>. For API tests with Playwright's APIRequestContext, attach the response body: <code>await allure.attachment('API Response', JSON.stringify(responseBody, null, 2), { contentType: 'application/json' });</code>. This is the key operational pattern: attachments in hooks, not inline — every failure gets diagnostic context without polluting the test body.</p>
+
+  <p>Add customisation files: create <code>categories.json</code> in the project root (or a <code>config/</code> directory) and copy it to <code>allure-results/</code> before report generation. Same for <code>environment.properties</code> — generate it dynamically from CI variables or a script that collects OS/browser/environment information. For local development, <code>allure serve allure-results</code> opens the report in a browser. For CI, <code>allure generate allure-results --clean -o allure-report</code> produces a static HTML directory, then publish <code>allure-report/</code> via your CI platform's artifact publishing mechanism.</p>
+
+  <p>For trend history in CI (GitHub Actions example): before generating the report, download the previous build's history: copy <code>allure-report/history/</code> into <code>allure-results/history/</code>. Then generate the report. The trend chart now spans builds. After generation, upload <code>allure-report/</code> as an artifact. The next build downloads <code>allure-report/history/</code> from the previous build's artifact, copies it into <code>allure-results/history/</code>, and generates the report with cumulative history. This creates a continuous trend line across builds — exactly what programme directors review every sprint.</p>
+
+  <p>The interview-ready narrative: "I install allure-playwright as a Playwright reporter, configure it in playwright.config.ts to output to allure-results/, attach screenshots and API responses in afterEach hooks, copy categories.json and environment.properties into allure-results/ before report generation, generate the HTML report with allure-commandline, and publish it as a CI artifact with cross-build history for trend analysis." This 20-second answer demonstrates complete pipeline understanding. For related Playwright depth, see <a href="/blog/playwright-interview-questions-2026">our Playwright interview guide</a>. For Selenium integration, see <a href="/blog/selenium-interview-questions-2026">our Selenium interview guide</a>.</p>
+</section>
+
+<section class="content-section">
+  <h2>The Three Levels of Allure Competence — What Interviewers Actually Assess</h2>
+  <p>After hundreds of Allure-related interview questions, a pattern emerges. Interview panels assess Allure competence at three levels, and the level you demonstrate determines the seniority band at which you are hired.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <h3>Level 1 — Consumer</h3>
+      <p>You can run <code>allure serve</code>, open the report, and read the results. You know the tabs exist. You use Allure because your project already has it configured. This is junior-to-mid-level — sufficient when the JD says "familiarity with Allure" but insufficient when it says "experience configuring Allure."</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Level 2 — Configurer</h3>
+      <p>You can set up Allure for a new project — install the adapter packages, configure the test runner to output Allure JSON, add @Step and @Attachment annotations to test code, configure categories.json and environment.properties, and integrate with CI. You understand the data flow: test runner → adapter → Allure JSON → CLI → HTML report. This is mid-to-senior-level — you are the person the team goes to when "the Allure report isn't generating."</p>
+    </div>
+    <div class="benefit-card">
+      <h3>Level 3 — Strategist</h3>
+      <p>You design the reporting strategy across multiple teams and languages. You decide whether Allure or ExtentReports fits the organisation's constraints (language diversity, licensing budget, CI platform, stakeholder needs). You design the failure classification taxonomy (categories.json) that maps to your organisation's defect management workflow. You design the trend-analysis process that turns Allure's history data into sprint-over-sprint quality metrics the programme director reviews. You integrate Allure TestOps for real-time centralised reporting when the organisation outgrows per-build static reports. This is senior-to-lead-level — you are not configuring Allure; you are using Allure as a component in a broader quality visibility strategy.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The interview tactic: read the job description carefully. If it says "familiarity with Allure," aim for Level 2 depth — demonstrate you can configure Allure but do not over-engineer the answer with enterprise strategy. If it says "experience designing test reporting strategy" or "test visibility across multiple teams," aim for Level 3 — discuss cross-team standardisation, failure taxonomy design, and trend analysis as strategic quality tools. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> calibrates Allure questions to your target seniority level, so you can practise at the right depth without guessing what the panel expects.</p>
+</section>
+    `,
+    faqs: [
+      {
+        q: "What is the difference between Allure Framework and Allure TestOps?",
+        a: "Allure Framework is the open-source report generator — it consumes Allure JSON files and produces static HTML reports. It is free (Apache 2.0) and runs via CLI or CI plugin. Allure TestOps is the enterprise test management platform — it provides a centralised server that collects test results in real time from multiple CI pipelines, supports launch management, manual test case management, defect integration, and team dashboards. Think of Allure Framework as the reporting engine and Allure TestOps as the reporting platform. Most teams start with Allure Framework (free, simple, per-build reports) and adopt Allure TestOps when they need centralised visibility across multiple teams and pipelines. In an interview, if the JD mentions Allure TestOps, they care about cross-team quality visibility. If it mentions Allure Framework, they care about per-build test reporting.",
+      },
+      {
+        q: "How do I attach screenshots to Allure reports from Selenium WebDriver tests?",
+        a: "Use Allure's @Attachment annotation on a helper method that takes a byte array, or use the Allure.addAttachment() API directly. The standard pattern: in your TestNG @AfterMethod or JUnit @AfterEach hook, check if the test failed — <code>if (result.getStatus() == ITestResult.FAILURE)</code> — and if so, capture a screenshot as bytes via <code>((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)</code>, then attach it with <code>Allure.addAttachment('Screenshot on failure', 'image/png', new ByteArrayInputStream(screenshotBytes), '.png')</code>. This attaches a screenshot to every failed test automatically — no test body needs to call the screenshot logic. For Playwright, use <code>allure.attachment()</code> in the afterEach hook. For Cypress, use the <code>@shelex/cypress-allure-plugin</code> which auto-attaches screenshots on failure and videos on test end. The key principle: attachments belong in hooks, not inline in tests.",
+      },
+      {
+        q: "How does Allure handle parallel test execution?",
+        a: "Allure handles parallel execution through its result-accumulation model: each parallel test thread writes its results to separate files in <code>allure-results/</code> (each result is a UUID-named JSON file — no file conflicts). After all threads complete, <code>allure generate</code> reads all JSON files and produces the unified report. The Timeline view shows which tests ran in parallel and when. The key operational consideration: ensure your CI step that generates the report runs <em>after</em> all parallel test threads have completed — not during execution. If you generate the report while tests are still running, you will get a partial report. Mitchell's teams used a CI workflow pattern: run tests across N parallel shards → wait for all shards → collect all allure-results/ directories into one → generate report. For TestNG parallel execution with Allure, no special configuration is needed beyond ensuring <code>allure-results/</code> is the same directory for all threads.",
+      },
+      {
+        q: "Can I use Allure with Cypress?",
+        a: "Yes. The <code>@shelex/cypress-allure-plugin</code> is the community-standard adapter. Install it, add it to Cypress plugins, and it automatically writes Allure JSON results from Cypress test execution. It supports automatic screenshot attachment on failure, video attachment, and custom @Step-like logging via <code>cy.allure().step('description')</code>. The CI pattern: run Cypress tests → run <code>allure generate</code> on the results directory → publish the report. The Cypress Dashboard and Allure serve different purposes — Cypress Dashboard for real-time test monitoring during CI, Allure for stakeholder-readable historical reports with trend analysis.",
+      },
+      {
+        q: "How do I configure custom failure categories in Allure?",
+        a: "Create a <code>categories.json</code> file in your <code>allure-results/</code> directory before generating the report. Define categories with <code>name</code>, <code>matchedStatuses</code> (typically ['failed']), and <code>messageRegex</code> and/or <code>traceRegex</code> patterns to match against error messages and stack traces. Example: <code>{ \"name\": \"Environment Issues\", \"matchedStatuses\": [\"failed\"], \"messageRegex\": \".*Connection refused.*|.*timeout.*|.*502 Bad Gateway.*\" }</code>. Categories appear in the Allure report's Categories tab. The operational best practice: maintain categories.json in version control alongside your test code, and copy it into allure-results/ as a CI step before report generation. Review and update the regex patterns quarterly — as your test suite and application evolve, the failure patterns evolve too. A neglected categories.json is worse than no categories at all because it misclassifies failures and erodes trust in the Categories tab.",
+      },
+      {
+        q: "What is the difference between Allure's Behaviours view and Suites view?",
+        a: "Suites organises results by test class/package structure — it mirrors your codebase. Behaviours organises results by @Epic → @Feature → @Story annotations — it mirrors your business requirements. Suites answers 'which test classes have failures?' (developer question). Behaviours answers 'which features are broken?' (product owner question). Both views show the same results—the difference is the organisational hierarchy. In an interview, when asked to explain Allure report structure, always mention that Suites is for engineers and Behaviours is for stakeholders — this demonstrates you understand that reporting serves multiple audiences. Mitchell's recommendation: invest effort in @Feature and @Story annotations early. They take minutes to add to each test but transform the Behaviours view from an empty tab into the most valuable tab in the report for non-technical stakeholders.",
+      },
+      {
+        q: "Does the SDET Interview Coach app cover Allure reporting questions?",
+        a: "Yes. The SDET Interview Coach iOS app includes Allure reporting questions in its test reporting and tooling topic area. The AI mock interviewer asks questions across all three competence levels — from annotation fundamentals to CI integration to enterprise reporting strategy — and grades your answers on technical accuracy, completeness, and communication. You can upload a job description that mentions Allure and the app's Job Match feature generates 50 bespoke questions tailored to that specific role, including Allure-specific questions calibrated to the seniority level of the position. The app also includes a dedicated test reporting and visibility module that covers Allure alongside other reporting tools (ExtentReports, ReportPortal, Grafana dashboards) so you can demonstrate broad reporting literacy, not single-tool familiarity.",
+      },
+    ],
+    relatedSlugs: [
+      "test-reporting-metrics-interview-questions-2026",
+      "test-automation-framework-design-interview",
+      "selenium-interview-questions-2026",
+      "playwright-interview-questions-2026",
+      "continuous-testing-devops-sdet-interview-questions-2026"
+    ],
+  },
+  {
     slug: "locust-performance-testing-interview-questions-2026",
     title: "Locust Interview Questions 2026 — Python Performance Testing, Distributed Load Generation, Locust vs JMeter, and Every Question SDETs Get Asked About Scalable Performance Testing",
     description: "Locust performance testing interview guide for SDETs. Python load testing, distributed workers, Locust vs JMeter vs k6, custom User classes, and real enterprise performance programme answers.",
