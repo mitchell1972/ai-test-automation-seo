@@ -14,6 +14,237 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
 {
+  slug: "test-impact-analysis-selective-execution-sdet-interview-questions-2026",
+  title: "Test Impact Analysis & Selective Execution: SDET Interview Questions 2026",
+  description: "Master test impact analysis and selective test execution for your SDET interview. Learn how senior SDETs cut CI pipeline time by 70% while maintaining quality. Real strategies from 20-year QA veteran Mitchell Agoma.",
+  date: "2026-07-01",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "test impact analysis interview",
+    "selective test execution sdet",
+    "test prioritisation interview questions",
+    "test impact analysis CI/CD",
+    "selective regression testing",
+    "reduce test suite runtime",
+    "test selection strategies",
+    "code coverage impact analysis",
+    "test flakiness selective execution",
+    "risk based test execution",
+    "test suite optimisation interview",
+    "incremental testing strategy",
+    "build pipeline test optimisation",
+    "test impact analysis tools",
+    "sdet scalable testing interview 2026"
+  ],
+  content: `
+<section class="content-section">
+  <p>It's 11pm. Your senior SDET interview is tomorrow. You've prepared for framework design, API testing, and CI/CD pipelines. You can explain the Page Object Model, discuss contract testing, and walk through a Docker-based test environment without breaking a sweat. Then you spot it in the job description — buried between "experience with cloud-native testing" and "strong debugging skills": <strong>"Experience with test impact analysis and selective test execution."</strong> Your mind goes blank. You've never heard those terms in an interview context. You open a browser and search — and the results are either vendor documentation, academic papers from 2019, or LinkedIn posts with buzzwords and no substance. Nothing tells you what an interview panel actually wants to hear.</p>
+  <p>Here's the reality: <strong>many senior SDET candidates have never heard of test impact analysis (TIA).</strong> Five years ago, it was an esoteric topic discussed at testing conferences. But in 2026, with CI pipelines running thousands of tests and engineering teams pushing for faster feedback loops, TIA questions are appearing in senior and staff-level SDET interviews across the industry. Companies that once accepted 45-minute CI pipelines now expect sub-10-minute feedback on every commit — and TIA is how you get there. The candidate who can explain it owns the room. The candidate who can't looks unprepared for the scale of modern testing.</p>
+  <p>This guide covers the test impact analysis and selective execution questions that 2026 SDET interview panels are asking — from fundamentals to implementation strategies to risk mitigation. It includes model answers that demonstrate you've actually done this work (or understand it deeply enough to do it day one), real-world statistics from Mitchell's twenty years at <strong>HMRC, the Ministry of Defence, Nationwide, Accenture, Asda, the Co-op, and BT</strong>, and the preparation plan that turns a blank stare into a confident whiteboard walkthrough. And it shows you exactly how the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> — Mitchell's iOS and Google Play interview prep app — uses AI-graded mock interviews to drill you on TIA questions until your answers are as sharp as your test scripts.</p>
+  <p><strong>Don't walk into a senior SDET interview without knowing what test impact analysis is.</strong> Many candidates are caught off guard by this question — and in a competitive market, that moment of hesitation is all it takes. Let's make sure that's not you.</p>
+</section>
+
+<section class="content-section">
+  <h2>What Interviewers Are Actually Testing When They Ask About Test Impact Analysis</h2>
+  <p>When an interviewer says "tell me about your experience with test impact analysis," they are not checking whether you've heard the term before. They are probing for four specific signals — and each one tells them whether you're ready for the scale of testing at their organisation.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Signal 1: Understanding of TIA Fundamentals — What It Is, Why It Matters, How It Works</h3>
+      <p>The interviewer wants to know you can define test impact analysis precisely: it's the practice of determining which tests are affected by a given code change and executing only that subset, rather than running the entire test suite. More importantly, they want to hear <em>why</em> it matters at scale — that a 2,000-test suite taking 45 minutes in CI doesn't scale when twenty engineers are committing fifteen times a day. The math: without TIA, that's 225 pipeline-hours daily. With TIA, an average commit might run 200 tests in 4 minutes — saving over 10 hours of pipeline time per day. A candidate who can produce these numbers in an interview signals that they've thought about testing as an engineering problem, not just a quality problem.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Signal 2: Code-to-Test Mapping — How Do You Know Which Tests to Run?</h3>
+      <p>This is the technical heart of TIA, and it's where many candidates stumble. The interviewer is probing whether you understand the mechanisms that map code changes to affected tests. Can you distinguish between <strong>static analysis</strong> (parsing import graphs and dependency trees to determine which modules are touched by a change) and <strong>dynamic analysis</strong> (using code coverage data from previous test runs to establish which tests exercise which lines of code)? Do you know that modern TIA tools use both — static analysis for fast, coarse-grained selection ("this change touches the payment module, run all payment tests") and dynamic analysis for fine-grained precision ("line 247 of PaymentService changed; only 3 tests exercise that line")? A candidate who can articulate both approaches and their trade-offs signals serious depth.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Signal 3: Tooling Awareness — What Exists and When to Use Each</h3>
+      <p>Interviewers don't expect you to have used every TIA tool, but they do expect awareness. <strong>Gradle Enterprise Test Distribution</strong> provides predictive test selection for JVM projects. <strong>Jest --onlyChanged</strong> uses Git diff to identify changed files and runs tests that import them — dead simple but surprisingly effective for JavaScript projects. <strong>pytest-testmon</strong> tracks which tests execute which code paths in Python and only re-runs affected tests. <strong>Develocity (formerly Gradle Enterprise)</strong> offers test distribution and predictive selection at enterprise scale. The strongest candidates can also discuss <strong>custom implementations</strong> — using CI metadata to diff changed files and mapping them to test tags, or building a dependency graph from module imports. Showing you understand the concepts deeply enough to build your own solution is often more impressive than listing tools.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Signal 4: Risk-Based Thinking — Do You Trust TIA Completely or Build Safety Nets?</h3>
+      <p>This is the signal that differentiates a senior SDET from a mid-level engineer who just read a blog post. When TIA says "run these 30 tests," do you trust it 100% and ship to production? The wrong answer is yes. The right answer includes a <strong>layered safety net</strong>: nightly full-suite runs to catch any missed dependencies, periodic TIA accuracy audits (comparing what TIA selected against what a full run would have found), and risk-based overrides — because some modules (payments, authentication, data integrity) always get a broader test selection regardless of what the impact analysis says. The interviewer is testing your judgement: can you balance speed and safety? Can you articulate the trade-offs without being paralysed by risk or reckless with speed?</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>4 Model Answers That Win Test Impact Analysis Interviews</h2>
+  <p>Here are the TIA and selective execution questions that Mitchell has both asked and been asked in SDET interviews — each with the model answer that distinguishes a candidate who has <em>heard of</em> TIA from a candidate who <em>understands</em> it.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Q1: "What is test impact analysis and why does it matter at scale?"</h3>
+      <p><strong>The Model Answer:</strong> Test impact analysis is the practice of determining which tests are affected by a code change and running only those instead of the entire test suite. At its core, it's a mapping problem — given a set of changed files or lines, which tests should be re-executed? The reason it matters at scale is straightforward arithmetic: a 2,000-test suite running in 45 minutes, multiplied by a team of 20 engineers each committing 15 times per day, equals 225 hours of pipeline time daily. With TIA, an average commit might touch 10% of the codebase, selecting 200 tests that run in 4 minutes — reducing daily pipeline time to under 20 hours. That's over 10 hours saved every single day. But the trade-off is real: TIA introduces risk. If your code-to-test mapping is incomplete — if you miss a transitive dependency or a shared utility — you skip tests that should have run. The skill is building a mapping that's thorough enough to trust while being selective enough to deliver speed. And you always, always maintain a full-suite safety net — running the complete regression suite nightly or on merge to main, so that any missed dependencies are caught within 24 hours, not deployed to production.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q2: "How would you implement selective test execution in a CI/CD pipeline?"</h3>
+      <p><strong>The Model Answer:</strong> I'd implement a three-tier approach. <strong>Tier 1 — Fast Feedback:</strong> Run unit tests for changed modules only, targeting under 2 minutes. This uses Git diff to identify changed files, maps them to modules, and executes only those module tests. If unit tests fail, stop the pipeline immediately. <strong>Tier 2 — Impact Layer:</strong> Use code coverage data or a dependency graph to select integration tests affected by the change, targeting under 10 minutes. This is where tools like Jest --onlyChanged, pytest-testmon, or Gradle Enterprise come in — they maintain a database of which tests exercise which code, so when a function changes, they know exactly which tests to run. <strong>Tier 3 — Safety Net:</strong> Run the full regression suite nightly and on merge to main. This catches anything Tier 1 and Tier 2 missed — a shared utility that wasn't in the dependency graph, a configuration change that broke an unrelated module. Gate each tier: if Tier 1 fails, don't proceed to Tier 2. If Tier 2 fails, flag for review. And crucially, I'd instrument the pipeline to track TIA accuracy over time — comparing selected test results against full-suite results to catch drift in the impact mapping. No pipeline architecture should be set-and-forget.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q3: "How do you decide which tests to run when time is limited?"</h3>
+      <p><strong>The Model Answer:</strong> I use a risk-based prioritisation matrix. It's a 2x2 grid: the vertical axis is business risk (how critical is this module — does it handle payments, authentication, or customer data?), and the horizontal axis is change recency (was this code modified in the current commit?). <strong>High-risk + recent change = always run.</strong> These are your payment processing, authentication, and core business logic tests — any failure here is a production incident. <strong>High-risk + no change = run if time allows.</strong> These modules are critical but haven't been touched — the risk of regression is lower, but the blast radius of a missed failure is huge. <strong>Low-risk + recent change = run a representative sample.</strong> Run a subset that covers the changed code paths — enough to catch obvious regressions without consuming pipeline time on edge cases. <strong>Low-risk + no change = skip.</strong> These tests add confidence but not value when time is scarce. The key to making this work is maintaining a living risk map of your application — which modules cause the most production incidents? Which have the highest cost of failure? That's where your selective execution budget goes first. This isn't a one-time exercise; it's a practice you update every quarter based on incident data.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q4: "What are the risks of selective test execution and how do you mitigate them?"</h3>
+      <p><strong>The Model Answer:</strong> There are three major risks. <strong>First, missed dependencies.</strong> A change in Module A breaks Module B, but TIA only ran Module A tests because the dependency wasn't in the mapping. The real-world example: a change to a shared date-formatting utility breaks date-dependent calculations in the billing module — but the TIA mapping didn't know billing depended on that utility. Mitigation: combine static dependency analysis with runtime dependency tracking — instrument test runs to record not just which lines are executed, but which classes and methods are actually invoked across module boundaries. <strong>Second, flaky test blindness.</strong> If flaky tests are excluded from selective runs (because they slow things down or produce noise), real failures in those areas never surface. Mitigation: quarantine flaky tests into a separate suite that runs nightly with retry logic — don't skip them entirely. Track flakiness rates, assign owners, and drive them toward zero. <strong>Third, coverage gaps.</strong> TIA relies on code coverage data to build the test-to-code mapping. If coverage is incomplete (say 60% instead of 80%), the impact map is incomplete — you're making decisions with 40% of your information missing. Mitigation: maintain a minimum coverage threshold (80%+) as a prerequisite for meaningful TIA, run periodic full-suite audits to validate TIA accuracy, and never treat TIA as a replacement for a full regression suite — it's a complement.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>4 Common Mistakes When Implementing Test Impact Analysis</h2>
+  <p>These are the four mistakes Mitchell has seen teams make — and the ones interviewers are listening for when they ask follow-up questions.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Mistake 1: Running the Full Suite on Every Commit and Calling It "Safe"</h3>
+      <p>It's not safe — it's lazy. Running 2,000 tests on every commit because you're afraid of missing something is a failure of engineering, not a sign of thoroughness. At scale, long pipelines kill developer productivity: engineers context-switch, PRs queue up, and deployment frequency drops. The teams that refuse to implement TIA because "we'd rather be safe" are the same teams that deploy twice a week while their competitors deploy six times a day. Safety isn't achieved by running everything — it's achieved by running the right things, with the right safety nets, and continuously validating your selection logic. Interviewers who hear "we just run everything" know they're talking to someone who hasn't worked at scale.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Mistake 2: Implementing TIA Without a Nightly Full-Suite Safety Net</h3>
+      <p>This is the mistake that turns TIA from a productivity win into a production incident. No impact mapping is perfect. Dependencies get missed. Shared utilities change. Configuration files that aren't in any dependency graph break everything. Without a full-suite run happening at least once every 24 hours (ideally nightly and on merge to main), missed failures accumulate until they surface in production. The pattern that works: TIA on every commit for fast feedback, full suite nightly for safety, and full suite on merge to main as the final gate before deployment. Three layers, each with a different purpose, none optional.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Mistake 3: Ignoring Flaky Tests Instead of Quarantining Them</h3>
+      <p>When a test fails intermittently, the temptation is to remove it from the selective execution set — "it's flaky anyway, why waste pipeline time on it?" This is dangerous. A test that's flaky today might be the only test covering a code path that breaks next week. The right approach is quarantine: move flaky tests into a separate, monitored suite with retry logic and ownership tags. Run it nightly. Track flakiness rates. Assign a team to investigate any test that's flaky more than 5% of the time. The goal isn't to ignore flaky tests — it's to fix them. Selective execution should reduce your runtime, not your test coverage. Skipping flaky tests is a coverage reduction disguised as an optimisation.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Mistake 4: Not Measuring the Actual Time Savings After Implementing TIA</h3>
+      <p>TIA without metrics is faith-based engineering. You need to measure: average pipeline duration before and after, percentage of tests selected per commit, false-positive rate (TIA said "don't run" but a full run would have failed), and pipeline throughput (commits processed per hour). Without these metrics, you can't tell if TIA is actually working or if your selection logic has drifted and you're running nearly everything anyway. Mitchell's rule: if you can't graph the time savings, you haven't implemented TIA — you've just added complexity. Interviewers who ask about metrics are probing whether you treat testing as an engineering discipline or a checklist.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Your 3-Step TIA Interview Preparation Plan</h2>
+  <p>Here's exactly what to do between now and your interview to turn test impact analysis from a knowledge gap into a confident talking point.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Step 1: Understand the Core Concept — Be Able to Draw It on a Whiteboard</h3>
+      <p>The fundamental flow is: <strong>code change → dependency graph → affected tests → run subset.</strong> You should be able to draw this on a whiteboard or explain it in a video call without notes. Start with the code change — a diff of modified files or lines. Show how those changes are fed into a dependency graph that maps code to tests. Explain that the graph can be built statically (from import statements and module dependencies) or dynamically (from code coverage data collected during test runs). Then show the output: a subset of tests that need to be re-executed. Finally, explain the feedback loop: the subset runs, results are collected, and if a test fails that wasn't predicted, the dependency graph is updated. Practice this explanation until it flows naturally — thirty seconds, no jargon, clear logic. That's what the interviewer is picturing when they ask about TIA.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Step 2: Learn One TIA Tool — Enough to Discuss It Intelligently</h3>
+      <p>You don't need hands-on experience with every TIA tool, but you should be able to discuss one in detail. <strong>Gradle Enterprise Test Distribution</strong> is the most common in Java/JVM environments — understand how it uses predictive test selection based on historical test execution data to determine which tests to run for a given change. <strong>Jest --onlyChanged</strong> is the simplest to understand: it uses Git to identify changed files since the last commit, finds tests that import those files, and runs only those tests. It's elegant in its simplicity and makes for a great interview example because the logic is transparent. <strong>pytest-testmon</strong> is the Python equivalent — it maintains a database of test-to-code mappings and only re-runs affected tests. Pick the one that matches your tech stack and spend thirty minutes reading its documentation. You'll be able to discuss it more credibly than 90% of candidates.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Step 3: Prepare a Real-World Scenario — Complete with Numbers</h3>
+      <p>Interviewers remember specifics. Prepare a concrete scenario you can walk through: "Here's how I'd cut a 45-minute pipeline to 8 minutes for a team of 15 engineers." Break it down: the pipeline currently runs 2,800 tests. The average commit touches 8% of the codebase. With TIA, that's ~224 tests per commit. With parallel execution across 4 shards, that's 56 tests per shard — running in under 2 minutes per shard, 8 minutes total with orchestration overhead. Add a nightly full suite for safety. Show the math. Show the trade-offs. Show that you've thought about what happens when TIA misses something. A candidate who can produce this analysis on demand — with specific numbers, specific tools, and specific risk mitigations — walks out of the interview with an offer. A candidate who says "we'd use TIA to run fewer tests" doesn't.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The 2026 Test Impact Analysis Landscape: What's Changing</h2>
+  <p>Test impact analysis is evolving fast — and interview panels in 2026 expect candidates to know where the industry is heading.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>AI-Powered Test Selection Is Here</h3>
+      <p>Traditional TIA uses static rules — "this file changed, run these tests." The next generation uses <strong>machine learning</strong> to predict which tests are most likely to fail based on historical patterns. Tools are emerging that learn from thousands of CI runs: which tests correlate with which code changes, which tests historically catch the most regressions, and which tests are redundant (two tests that have always passed or failed together for the last 500 runs). Companies like Google and Meta have been using predictive test selection internally for years — and it's now trickling down to enterprise tooling. An interviewer who asks "what's next for TIA?" wants to hear that you understand this shift from deterministic selection to probabilistic prediction.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Predictive Test Selection Using Machine Learning</h3>
+      <p>The research from Google's Engineering Productivity team has shown that ML-based test selection can reduce test execution by 90%+ while maintaining 95%+ fault detection. The model learns from historical CI data: change metadata (files changed, author, commit message), test execution history (which tests passed/failed for similar changes), and code coverage data. The output is a ranked list of tests — most likely to fail first, least likely to fail last — and the pipeline runs as many as time allows, starting from the top. This is fundamentally different from traditional TIA, which makes binary decisions (run/don't run). ML-based selection makes probabilistic decisions, which means you can tune the risk threshold: "run enough tests to be 95% confident we haven't missed a regression." Interviewers who ask about ML-based testing are probing whether you're tracking the frontier — not just the current state.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>"Run the Right Things" Is Replacing "Run Everything"</h3>
+      <p>The industry consensus is shifting decisively. Five years ago, the default advice was "run your full suite on every commit — trust nothing." In 2026, the default is becoming "run the right tests on every commit, run everything nightly." This shift is driven by two forces: test suites are growing faster than CI hardware can keep up, and deployment frequency is becoming a competitive advantage. The companies winning in 2026 deploy multiple times per day — and you cannot do that with a 45-minute CI pipeline. Test impact analysis is no longer a nice-to-have optimisation. It's becoming a prerequisite for modern delivery velocity. Interview panels want to know that you understand this shift — and that you're ready to operate in a world where selective execution is the norm, not the exception.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>TIA Is Moving Up the Seniority Ladder</h3>
+      <p>Two years ago, test impact analysis questions appeared primarily in staff and principal SDET interviews. In 2026, they're appearing at senior level — and even at strong mid-level interviews. The reason: TIA is no longer something only large tech companies need. A 50-person startup with a 20-minute CI pipeline that's growing by 100 tests per sprint will hit a wall within 6 months. Interviewers at companies of all sizes now ask about TIA because they're either implementing it, planning to implement it, or worried their pipeline is about to become a bottleneck. If you're interviewing at senior level or above in 2026, prepare for this question. If you're at mid-level and can discuss TIA intelligently, you'll stand out dramatically.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Mitchell's Take: 20 Years of Test Impact Analysis Across HMRC, Nationwide, BT, and More</h2>
+  <p>Here's the thing about test impact analysis that no tool vendor will tell you: <strong>the technology is the easy part. The hard part is trust.</strong> Building the dependency graph, integrating with CI, configuring the tool — that takes weeks. Learning to trust that the 200 tests TIA selected are really the only ones you need? That takes months. And in those months, you run the full suite alongside the selective suite, comparing results, tracking discrepancies, slowly convincing yourself — and your team, and your stakeholders — that fewer tests doesn't mean less quality. Here's what that journey looked like at three organisations where Mitchell led test transformation.</p>
+
+  <p><strong>At HMRC,</strong> the tax calculation regression suite was the bottleneck. 4 hours for a full run. Multiple teams contributing to the same codebase. Deploying to production required a full-suite pass, which meant the earliest you could deploy after a fix was the next day. Implementing selective test execution brought it to 22 minutes — a 91% reduction. But it took three months of tuning the impact map before the team trusted it enough to remove the full-suite prerequisite. The breakthrough was building a visual dependency graph that showed, for every commit, exactly which modules were affected and which tests were selected — transparency replaced blind trust. When engineers could <em>see</em> why their change triggered certain tests, they stopped demanding full-suite runs and started contributing to the impact map themselves.</p>
+
+  <p><strong>At Nationwide Building Society,</strong> the mortgage application pipeline ran 2,400 tests. After implementing TIA, the average commit ran 180 tests — a 92.5% reduction. The key insight wasn't the tool — it was the mapping. The team invested heavily in mapping endpoint-to-module dependencies and module-to-test dependencies, building a two-layer graph that understood both the API surface and the internal code structure. When a commit changed the mortgage affordability calculation, the graph traced from the changed class → the module → the API endpoint → the integration tests that exercise that endpoint → the end-to-end tests that depend on that integration. The result wasn't just faster pipelines — it was <em>smarter</em> pipelines that could explain their decisions. Engineers stopped asking "why did my commit trigger 500 tests?" and started asking "why didn't my commit trigger <em>enough</em> tests?"</p>
+
+  <p><strong>At BT,</strong> the broadband order flow had 1,100 tests. Without TIA, the team couldn't deploy more than twice a week — the pipeline simply couldn't keep up with the volume of commits. After implementing TIA across the order flow, fulfilment, and provisioning modules, the team achieved <strong>six deploys per day.</strong> The transformation wasn't just technical — it was cultural. When engineers experience a 6-minute feedback loop instead of a 50-minute one, their behaviour changes. They make smaller, more frequent commits. They experiment more. They fix issues faster because the failure is still fresh in their mind. TIA doesn't just speed up pipelines — it changes how teams work.</p>
+
+  <p style="margin-top: 1.5rem; font-size: 1.1rem; font-weight: 600;">The difference between a good SDET and a great one? The great one knows which 200 tests to run right now. The good one runs all 2,000 and hopes.</p>
+</section>
+
+<section class="content-section">
+  <h2>Your Next Step: Practise Answering TIA Questions Before the Interview</h2>
+  <p>Reading about test impact analysis is one thing. Explaining it to an interview panel — with confidence, clarity, and specific numbers — is something else entirely. That's where practice transforms knowledge into offers.</p>
+
+  <div style="margin-top: 2rem; padding: 2rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+    <h3 style="margin-top: 0;">Master TIA Questions with SDET Interview Coach</h3>
+    <p>Practise answering test impact analysis questions with AI-graded feedback in the <strong>SDET Interview Coach app</strong> — 800+ questions across 32 topics, covering everything from TIA fundamentals to pipeline architecture. The AI mock interviewer asks follow-up questions, evaluates your answers on technical accuracy and communication, and identifies weak spots before the real panel does. Available on <strong>iOS and Google Play</strong>. Don't walk into your senior SDET interview hoping you can talk about test impact analysis. Walk in knowing you can.</p>
+
+    <p style="margin-top: 1.5rem;">Get the complete CI/CD optimisation playbook — including test impact analysis patterns, pipeline architecture templates, and risk-based selection strategies — in the <a href="https://www.stan.store/mitchellagoma/p/ai-test-automation-playbook" target="_blank" rel="noopener">AI Test Automation Playbook</a> at Mitchell's Stan Store.</p>
+  </div>
+
+  <p style="margin-top: 1.5rem; font-weight: 600;">Many senior SDET candidates have never heard of test impact analysis — which means the ones who have stand out instantly. Be the candidate the panel remembers for the right reasons.</p>
+</section>
+`,
+  faqs: [
+    {
+      q: "What is test impact analysis in simple terms?",
+      a: "Test impact analysis (TIA) is a technique that identifies which tests need to run after a code change, instead of running every test in the suite. Think of it as a smart filter: you change 20 lines of code in the payment module, and TIA determines that only 150 tests out of 2,000 are affected by those changes — so you run those 150 instead of all 2,000. It works by maintaining a mapping between code and tests, either statically (analysing import and dependency graphs) or dynamically (tracking which tests execute which code during test runs). The result is faster CI pipelines, shorter feedback loops, and more efficient use of testing resources — without sacrificing quality, provided you maintain proper safety nets like nightly full-suite runs."
+    },
+    {
+      q: "How does selective test execution work in CI/CD pipelines?",
+      a: "Selective test execution in CI/CD works through several mechanisms. The simplest approach is file-based selection: the CI system uses Git diff to identify changed files, then runs only the tests associated with those files. More sophisticated systems use code coverage data — they maintain a database that records which tests exercise which lines of code, so when a function changes, the system knows exactly which tests to re-run. The most advanced implementations combine both approaches with machine learning, learning from historical CI data to predict which tests are most likely to fail. In practice, most teams implement a tiered approach: fast unit tests on changed modules (under 2 minutes), selected integration tests based on impact analysis (under 10 minutes), and a full regression suite nightly or on merge to main."
+    },
+    {
+      q: "What tools support test impact analysis?",
+      a: "Several tools provide test impact analysis capabilities. For JVM/Java projects: Gradle Enterprise Test Distribution and Develocity offer predictive test selection based on historical test execution data. For JavaScript/TypeScript: Jest provides --onlyChanged which uses Git to identify changed files and runs tests that import them. For Python: pytest-testmon tracks test-to-code mappings and only re-runs affected tests. For .NET: Visual Studio Test Explorer includes test impact analysis. Beyond dedicated tools, many teams build custom TIA solutions using CI metadata, dependency graphs, and test tagging — mapping files to test suites and using Git diff to determine which suites to execute. The tool you choose depends on your tech stack, but the principles (code-to-test mapping, selective execution, safety nets) are universal."
+    },
+    {
+      q: "What's the difference between test impact analysis and test prioritisation?",
+      a: "Test impact analysis and test prioritisation are complementary but distinct strategies. Test impact analysis is a binary decision: given a code change, which tests should run and which can be skipped? It's a selection problem — you're filtering your test suite down to a subset. Test prioritisation, on the other hand, is an ordering problem: given a set of tests, in what order should they run to find failures fastest? You still run all (or most) tests, but you order them so that the ones most likely to fail execute first. In practice, the two strategies are often combined: TIA first selects the affected subset, then prioritisation orders that subset to run the highest-risk tests first. This combination gives you both speed (fewer tests) and early feedback (failures surface quickly within the subset). A strong SDET interview candidate should be able to articulate the difference and describe when you'd use each strategy — or both together."
+    },
+    {
+      q: "How do you measure the effectiveness of selective test execution?",
+      a: "Effectiveness is measured across four dimensions. First, time savings: average pipeline duration before vs. after TIA, and total compute hours saved per sprint. Second, selection accuracy: the false-positive rate (TIA selected tests that weren't needed) and false-negative rate (TIA skipped tests that would have caught a regression). Third, fault detection: the percentage of real regressions caught by TIA-selected tests vs. the full suite — you want TIA catching 95%+ of what the full suite would find. Fourth, pipeline throughput: commits processed per hour and deployment frequency before vs. after TIA. If you're not measuring all four, you don't know whether TIA is actually improving your engineering outcomes or just making numbers look good. Track these metrics from day one and review them monthly."
+    },
+    {
+      q: "What are the risks of only running impacted tests?",
+      a: "The risks fall into three categories. The first is missed regressions from unaccounted dependencies — a change in Module A breaks Module B because they share a utility, but the dependency graph doesn't capture that relationship, so Module B's tests never run and the regression ships. The second is environmental failures — a configuration change or infrastructure update breaks tests that TIA rightly skipped because no code changed, but the environment changed. The third is cumulative quality erosion — small issues that TIA misses accumulate over days and weeks until a nightly full-suite run surfaces dozens of failures simultaneously. Mitigations include: maintaining a nightly full-suite run, instrumenting your pipeline to compare TIA results against full-suite results periodically, implementing runtime dependency tracking to catch transitive dependencies, and quarantining (not deleting) flaky tests so they still run in safety-net runs."
+    },
+    {
+      q: "How do you implement test impact analysis for a legacy test suite?",
+      a: "Implementing TIA for a legacy suite requires a phased approach. Phase 1: Establish coverage baselines — run the full suite with code coverage enabled to build the initial test-to-code mapping. Without this data, you can't determine which tests cover which code. Phase 2: Start with coarse-grained selection — map tests to modules or packages rather than individual files or lines. Even module-level TIA can reduce runtime by 50-70% with lower risk of false negatives. Phase 3: Run TIA in shadow mode — select a subset but still run the full suite, comparing results to measure false-negative rates. Don't gate deployments on TIA results until you've validated accuracy for at least 2-4 weeks. Phase 4: Gradually tighten the mapping and reduce the safety threshold. The key mistake teams make with legacy suites is going too fine-grained too fast — a legacy suite with 60% coverage doesn't support line-level TIA, and attempting it produces unreliable selections. Accept that legacy TIA will be coarser than greenfield TIA, and improve it incrementally."
+    },
+    {
+      q: "How does code coverage relate to test impact analysis?",
+      a: "Code coverage is fundamental to test impact analysis because it provides the mapping between code and tests. For dynamic TIA, coverage data answers the question: 'which tests execute which lines of code?' When a line changes, TIA looks up which tests covered that line and selects them for re-execution. This means TIA effectiveness is directly tied to coverage quality — if your coverage is 60%, your TIA mapping is missing 40% of the code-test relationships, and you're making selection decisions with incomplete information. But coverage alone isn't enough: coverage tells you a line was executed, not whether it was tested meaningfully. A test might hit a line without asserting anything useful about it, creating a false mapping that TIA relies on. This is why the best TIA implementations combine coverage data with static dependency analysis and, increasingly, machine learning that learns which tests actually catch regressions — not just which tests execute which lines. In an interview, demonstrating you understand both the power and the limitations of coverage-based TIA signals sophisticated engineering judgement."
+    }
+  ],
+  relatedSlugs: [
+    "continuous-testing-devops-sdet-interview-questions-2026",
+    "test-automation-roi-business-case-interview-questions-2026",
+    "risk-based-testing-sdet-interview-questions-2026",
+    "regression-testing-strategy-sdet-interview-questions-2026",
+    "cicd-pipeline-testing-interview-questions",
+    "code-coverage-test-automation-sdet-interview-questions-2026"
+  ],
+},
+{
   slug: "xpath-css-selectors-locator-strategies-interview-questions-2026",
   title: "XPath vs CSS Selectors & Locator Strategies: SDET Interview Questions 2026",
   description: "Master XPath, CSS selectors, and locator strategies for your SDET interview. Real questions on selector performance, dynamic elements, and Selenium/Playwright locators from 20-year QA veteran Mitchell Agoma.",
