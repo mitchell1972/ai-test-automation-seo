@@ -14,6 +14,371 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
 {
+  slug: "equivalence-partitioning-boundary-value-analysis-sdet-interview-questions-2026",
+  title: "Equivalence Partitioning & Boundary Value Analysis: SDET Interview Questions 2026",
+  description: "Master equivalence partitioning and boundary value analysis for your SDET interview. EP classes, BVA 2-value vs 3-value debate, interview model answers, Playwright code examples, and test design theory. Real strategies from 20-year QA veteran Mitchell Agoma at HMRC, MoD, Nationwide, and Accenture.",
+  date: "2026-07-04",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "equivalence partitioning interview questions",
+    "boundary value analysis SDET",
+    "test design techniques interview",
+    "ISTQB test techniques",
+    "software testing interview questions",
+    "equivalence classes test design",
+    "BVA 2-value vs 3-value boundary testing",
+    "test case design techniques sdet 2026",
+    "equivalence partitioning example age field",
+    "boundary value analysis Playwright examples",
+    "ISTQB foundation level interview questions",
+    "SDET theory interview questions 2026",
+    "test design interview model answers",
+    "equivalence partitioning boundary analysis HMRC",
+    "software testing fundamentals interview prep"
+  ],
+  content: `
+<section class="content-section">
+  <p>It's 11pm. Your senior SDET interview is in ten hours. You've been drilling Playwright fixtures, REST Assured request chains, and your best CI/CD pipeline war story for two weeks. You're feeling ready — the technical stuff is solid, the behavioural stories are polished, the STAR format is muscle memory. Then you remember something a colleague mentioned after their HMRC interview last month: <strong>"They asked me to partition an age field into valid and invalid equivalence classes. On a whiteboard. I hadn't thought about equivalence partitioning since my ISTQB Foundation exam six years ago. I froze."</strong> Your colleague has seven years of test automation experience. They can write a Playwright test in their sleep. But when the panel asked them to design test cases using a technique that every tester learns in week one of ISTQB training — something that sounds like textbook theory, not real engineering — their mind went blank. And suddenly, in the quiet of your flat at 11pm, you're wondering: could you do it right now? Could you stand at a whiteboard and partition a date range into valid and invalid equivalence classes, identify the boundary values, and explain whether you'd use two-value or three-value boundary analysis — without hesitating, without Googling, without looking like someone who skipped the fundamentals?</p>
+  <p>Here's what nobody tells you about 2026 SDET interviews: <strong>the theory questions haven't gone away.</strong> Interviewers at <strong>HMRC, the Ministry of Defence, Nationwide, and Accenture</strong> still ask equivalence partitioning and boundary value analysis questions — not because they want an ISTQB textbook recitation, but because these techniques reveal whether you think systematically about test coverage or whether you test by instinct. A candidate who can partition an input domain into valid and invalid equivalence classes in thirty seconds demonstrates something that a candidate who can only write code does not: <em>test design thinking</em>. The kind of thinking that stops you from writing forty-seven test cases for a date picker when seven would cover the same risks. The kind of thinking that distinguishes the SDET who maintains tests from the SDET who designs test strategies. In Mitchell's twenty years across those four organisations, he's watched candidates with brilliant automation skills get rejected because they couldn't answer a single test design question — and the feedback was always the same: <strong>"Technically strong, but couldn't demonstrate systematic test design thinking."</strong> The gap between a pass and a fail is one follow-up question.</p>
+  <p>This guide covers every equivalence partitioning and boundary value analysis question that 2026 SDET panels are asking — from partitioning input domains to identifying boundary values, from the two-value vs three-value debate to applying these techniques in Playwright automation. You'll get model answers, real-world examples from Mitchell's career at HMRC and Nationwide, and Playwright code that shows how these theoretical techniques translate directly into test automation. And you'll learn how <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> — Mitchell's iOS app with 800+ questions and Claude-graded mock interviews from Junior to Lead — lets you practise test design techniques under simulated interview conditions, with an AI interviewer that throws you curveball equivalence partitioning scenarios and evaluates your reasoning in real time.</p>
+  <p><strong>Don't walk into your 2026 SDET interview hoping the theory questions don't come up.</strong> They will. At HMRC, they'll ask you to partition a tax code field. At Nationwide, they'll ask you for the boundary values of a mortgage term input. At Accenture, they'll hand you a whiteboard marker and ask you to design equivalence classes for a client's date-of-birth validation field. The only question is whether you're the candidate who stares at the whiteboard or the candidate who picks up the marker and maps the domain in sixty seconds. Let's make sure you're the second one.</p>
+</section>
+
+<section class="content-section">
+  <h2>What Is Equivalence Partitioning — And Why Interviewers Still Ask About It in 2026</h2>
+  <p>Equivalence partitioning (EP) is a black-box test design technique that divides the input domain of a software component into groups — called equivalence classes — where the system is expected to behave identically for every member of the same class. If one value in the class works, they all work. If one value in the class triggers a bug, they all trigger that bug. The technique lets you test one representative value per class instead of every possible input — reducing an infinite or impractically large input space to a finite, manageable set of test cases.</p>
+
+  <p>The classic example: an age field that accepts integer values between 18 and 65 inclusive. Testing every possible age from 18 to 65 would require 48 test cases — and that's before you even consider invalid inputs. Equivalence partitioning reduces this to <strong>three test cases</strong>:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Valid Equivalence Class</h3>
+      <p><strong>Range:</strong> 18–65 (inclusive). Any value in this range should be accepted by the system. Test with one representative value — say, <strong>30</strong> — and you've covered all 48 valid ages. If the system accepts 30, it should accept 18, 19, 20… all the way to 65. That's the power of the technique: one test case replaces forty-eight, without sacrificing coverage of the equivalence class itself.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Invalid Equivalence Class 1: Below Minimum</h3>
+      <p><strong>Range:</strong> any integer less than 18 ( … 16, 17). All values in this class should be rejected with the same error — typically "Age must be at least 18" or a validation message. Test with one representative value — <strong>10</strong> — and you've covered every invalid-below-minimum input. If the system correctly rejects 10, it should correctly reject 0, -5, and 17.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Invalid Equivalence Class 2: Above Maximum</h3>
+      <p><strong>Range:</strong> any integer greater than 65 (66, 67, 68…). All values in this class should be rejected with an appropriate error — "Age must not exceed 65" or similar. Test with one representative value — <strong>80</strong> — and you've covered every invalid-above-maximum input. If the system correctly rejects 80, it should correctly reject 66, 100, and 999.</p>
+    </div>
+  </div>
+
+  <p>But here's what separates a passing answer from a standout answer in an interview: <strong>a strong candidate also identifies the "forgotten" equivalence classes.</strong> What about non-integer inputs? The string "twenty-five"? A decimal value like 25.5? A negative number like -1? Zero? Null? An empty string? A value with leading zeros like "018"? An extremely large number that overflows the integer field? These are all <em>additional</em> invalid equivalence classes — and the candidate who volunteers them without being prompted demonstrates that they think about completeness, not just the obvious partitions.</p>
+
+  <p><strong>Why interviewers still ask this in 2026:</strong> equivalence partitioning tests whether you can abstract an input space into categories — a skill that applies directly to test automation architecture. When you're designing a test data generation strategy for 50 API endpoints, you're doing equivalence partitioning. When you're deciding which browser/OS combinations to test in your cross-browser suite, you're doing equivalence partitioning. When you're selecting representative test scenarios for a regression suite that can't run everything, you're doing equivalence partitioning. The interviewer isn't asking about a textbook technique — they're asking whether you can think in terms of <em>coverage through categorisation</em>, which is fundamental to every senior SDET responsibility.</p>
+</section>
+
+<section class="content-section">
+  <h2>What Is Boundary Value Analysis — And How It Extends Equivalence Partitioning</h2>
+  <p>Boundary value analysis (BVA) is the natural extension of equivalence partitioning. It's based on a simple observation that has been empirically validated across decades of software testing: <strong>bugs cluster at boundaries.</strong> Developers get the "greater than" and "greater than or equal to" operators confused. They use <code>&lt;=</code> when they mean <code>&lt;</code>. They handle the middle of a range correctly — 30 years old, £500 loan amount, 24-month term — but the edges? 18 years old, exactly £0, exactly 65 years old? That's where the off-by-one errors live. That's where the validation logic has a gap that nobody noticed because "who applies for a mortgage at exactly 18?" The answer: enough people that Nationwide's production defect log has an entire category for boundary-value failures.</p>
+
+  <p>BVA says: for each boundary between equivalence classes, test the values <em>on</em> the boundary and the values immediately <em>adjacent</em> to the boundary on both sides. For our age field (valid range 18–65), the boundaries are 18 (lower boundary) and 65 (upper boundary).</p>
+
+  <p>This is where the interview often pivots to <strong>"two-value or three-value?"</strong> — and your answer to this question is one of the strongest signals of test design maturity. Here's the debate and the correct answer for 2026 interviews:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Two-Value Boundary Testing</h3>
+      <p>Tests the boundary value itself and one adjacent value. For the lower boundary at 18: test <strong>17</strong> (invalid, just below) and <strong>18</strong> (valid, on the boundary). For the upper boundary at 65: test <strong>65</strong> (valid, on the boundary) and <strong>66</strong> (invalid, just above). Total: 4 boundary test cases. <strong>This is the ISTQB Foundation-level answer</strong> — and it's the minimum acceptable answer in an interview. It catches the most common off-by-one errors: using <code>&gt;= 18</code> (correct) vs <code>&gt; 18</code> (incorrect — rejects valid 18-year-olds) vs <code>&gt;= 17</code> (incorrect — accepts invalid 17-year-olds). Two-value testing catches all three variants because it tests both sides of the boundary.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Three-Value Boundary Testing</h3>
+      <p>Tests the boundary value, one value just below, and one value just above. For the lower boundary at 18: test <strong>17</strong> (invalid), <strong>18</strong> (valid, boundary), and <strong>19</strong> (valid). For the upper boundary at 65: test <strong>64</strong> (valid), <strong>65</strong> (valid, boundary), and <strong>66</strong> (invalid). Total: 6 boundary test cases. <strong>This is the ISTQB Advanced-level answer</strong> — and it's what senior panels want to hear. Why? Because three-value testing catches a subtler class of bugs: the developer who writes <code>age &gt; 18 &amp;&amp; age &lt; 65</code> instead of <code>age &gt;= 18 &amp;&amp; age &lt;= 65</code>. A two-value test at the lower boundary (17, 18) would pass — 17 is rejected (correct — less than 19 is rejected), 18 is rejected (incorrect — but the two-value test only tells you <em>that</em> it was rejected, not that it <em>should have been accepted</em>). A three-value test (17, 18, 19) would reveal the bug: 18 is incorrectly rejected while 19 is correctly accepted — exposing the off-by-one in the lower-bound comparison operator.</p>
+    </div>
+  </div>
+
+  <p>In your interview, the strongest answer is: <strong>"I use two-value boundary testing for most scenarios because it catches the majority of off-by-one errors with fewer test cases. But for business-critical boundaries — financial calculations, age restrictions with legal implications, dosage calculations in healthcare — I use three-value boundary testing because the additional coverage justifies the extra two test cases. At Nationwide, we used three-value testing on mortgage term boundaries (minimum 2 years, maximum 40 years) because an off-by-one on the minimum term had regulatory implications for affordability checks. At HMRC, tax code boundaries were always three-value tested because a single-character difference in a tax code can alter someone's entire tax calculation."</strong> This answer demonstrates that you know both techniques, you know when to use each, and you've made this decision in a real production context — which is exactly what the panel is evaluating.</p>
+</section>
+
+<section class="content-section">
+  <h2>Interview Questions & Model Answers — 5 Questions That Separate Candidates</h2>
+  <p>Here are the equivalence partitioning and boundary value analysis questions that Mitchell has both asked and been asked in SDET interviews at HMRC, the MoD, Nationwide, and Accenture — each with the model answer that distinguishes a candidate who has memorised ISTQB definitions from a candidate who can <em>apply</em> these techniques in real test design scenarios.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Q1: "A loan application form accepts amounts from £500 to £50,000 in increments of £100. Design your equivalence partitions and boundary values."</h3>
+      <p><strong>The Model Answer:</strong> I'd start with the equivalence classes. <strong>Valid class 1:</strong> amounts from £500 to £50,000 in £100 increments — any valid multiple of 100 within this range. I'd test with a mid-range value like £10,000. But I'd also partition this valid class further: amounts that are exact multiples of £100 (valid — £1,000) and amounts that are not multiples of £100 within the valid range (invalid due to increment constraint — £1,050). <strong>Invalid class 1:</strong> amounts below £500 — test with £100. <strong>Invalid class 2:</strong> amounts above £50,000 — test with £55,000. <strong>Invalid class 3:</strong> non-numeric inputs — empty string, alphabetic characters ("five hundred"), special characters ("£500"). <strong>Invalid class 4:</strong> negative amounts — test with -£500. <strong>Invalid class 5:</strong> zero — test with £0. For boundary values (two-value approach): lower boundary at £500 — test £400 (invalid, below) and £500 (valid, at boundary); upper boundary at £50,000 — test £50,000 (valid, at boundary) and £50,100 (invalid, above). If this were a regulated financial product, I'd use three-value: £400, £500, £600 at the lower end and £49,900, £50,000, £50,100 at the upper end. At HMRC, we discovered that a tax relief calculator had an off-by-one on the upper boundary — it accepted £50,000 but rejected £50,000 exactly when formatted with a pound sign, because the parser stripped the currency symbol <em>after</em> the range check. That's the kind of interaction bug that boundary testing catches.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q2: "How do you apply equivalence partitioning to non-numeric inputs — like a dropdown menu or a set of radio buttons?"</h3>
+      <p><strong>The Model Answer:</strong> Equivalence partitioning isn't limited to numeric ranges — it applies to any input domain where you can group values by expected behaviour. For a dropdown menu with options [Select..., Mr, Mrs, Ms, Dr, Prof], I identify three equivalence classes. <strong>Valid class 1:</strong> each selectable title — Mr, Mrs, Ms, Dr, Prof — where the system should accept and store the selection. You don't need to test all five; testing two (say, Mr and Dr) covers the class if all titles follow the same code path. However, I'd also check whether any title triggers special behaviour — if "Dr" triggers an additional "Medical Registration Number" field, it belongs in a separate subclass that must be tested individually. <strong>Invalid class 1:</strong> the default "Select…" option — the system should reject form submission or display a validation message. <strong>Invalid class 2:</strong> no selection at all — the form is submitted without interacting with the dropdown. What many candidates miss: you should also test whether the dropdown allows selection of values not in the list through client-side manipulation — using browser DevTools to inject a value — because the server-side validation is a separate equivalence class (valid application-layer input vs invalid injected input). At Accenture, a client's registration form accepted any title value because the frontend dropdown restricted choices but the backend API had no validation — a gap that equivalence partitioning at the API layer would have caught.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q3: "When would you NOT use equivalence partitioning — and what would you use instead?"</h3>
+      <p><strong>The Model Answer:</strong> This is the question that separates candidates who treat EP as a universal technique from candidates who understand its limitations. I would not use equivalence partitioning alone when: <strong>(1) The system's behaviour is non-uniform within the partition</strong> — if a tax calculator applies different rates at £12,570, £50,270, and £125,140, those aren't equivalence classes in the traditional sense because the behaviour changes at each threshold. This is where <strong>decision table testing</strong> is more appropriate — it captures the business rules that determine behaviour at each threshold. <strong>(2) The input interactions create combinatorial complexity</strong> — if a mortgage application depends on age AND loan amount AND term length AND employment status simultaneously, partitioning each input independently misses the combinations. This is where <strong>pairwise testing</strong> or <strong>combinatorial test design</strong> is more effective. <strong>(3) The risk profile demands exhaustive testing of a narrow range</strong> — for a drug dosage calculator in a healthcare application, testing one representative value from the "valid dose" partition isn't sufficient; every possible dose within the therapeutic range may need verification. Here, you supplement EP with <strong>exhaustive testing within the critical range</strong>. The key insight: equivalence partitioning is a <em>risk-based sampling technique</em>. It's appropriate when the cost of exhaustive testing exceeds the risk of missing a bug within a partition. When that equation reverses — when the risk of missing a bug is catastrophic — you need more thorough techniques. Interview panels at the MoD especially appreciate this answer because defence software often has safety-critical boundaries where sampling isn't acceptable.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q4: "Walk me through how you'd design test cases for a date-of-birth field that accepts ages 18–120 using EP and BVA. Show your working."</h3>
+      <p><strong>The Model Answer:</strong> I'd start by converting the age range to dates, because the field accepts dates, not ages. Today's date is [calculate at interview time] — so the valid date range is from [today minus 120 years] to [today minus 18 years]. <strong>Equivalence classes:</strong> Valid: any date within that range. Invalid-below: any date after today minus 18 years (makes the user under 18). Invalid-above: any date before today minus 120 years (makes the user over 120). Invalid-future: any date after today. Invalid-impossible: 29 February in a non-leap year, 31st of a 30-day month. <strong>Boundary values (three-value for a legally significant age check):</strong> Lower boundary (18 years old): test [today minus 18 years minus 1 day] — invalid, under 18; test [today minus 18 years] — valid, exactly 18; test [today minus 18 years plus 1 day] — valid, 18 years and 1 day. Upper boundary (120 years old): test [today minus 120 years plus 1 day] — valid, 119 years 364 days; test [today minus 120 years] — valid, exactly 120; test [today minus 120 years minus 1 day] — invalid, over 120. <strong>Date-specific edge cases:</strong> I'd also test 29 February in a leap year (valid — the system must handle the quadrennial date) and 29 February in a non-leap year (invalid — the system must reject nonexistent dates). At Accenture, a client's DOB validation accepted 29 February 2023 — a date that doesn't exist — because the JavaScript Date constructor silently rolled it forward to 1 March. The validation passed but stored the wrong date. That's why date-specific edge cases belong in your EP analysis, not just numeric range boundaries.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Q5: "Your developer colleague says 'equivalence partitioning is academic theory — in the real world, we just write automated tests for every scenario.' How do you respond?"</h3>
+      <p><strong>The Model Answer:</strong> I'd say: "That's exactly the mindset that equivalence partitioning is designed to prevent. Let's take a concrete example. Our checkout flow has five input fields: quantity (1–99), discount code (alphanumeric, 6–10 chars), delivery postcode (valid UK format), gift message (0–200 chars), and email (valid format). If we tested 'every scenario' combinatorially, that's 99 × 26^6 × 1.7 million UK postcodes × 10^200 possible messages × infinite email variants. We can't. We <em>have</em> to sample. The question is whether we sample intelligently — using equivalence classes and boundary values — or haphazardly, guided by intuition and whatever values happen to break during exploratory testing. Equivalence partitioning isn't academic theory; it's the mathematical justification for why testing one valid postcode gives us confidence that the postcode validation works for all valid postcodes. Without that justification, we're just guessing — and guessing at test coverage is how production defects reach customers." At Nationwide, I once reviewed a test suite with 340 test cases for a seven-field mortgage application form. After applying EP and BVA, I reduced it to 42 test cases — a 88% reduction — while <em>increasing</em> coverage because the original 340 cases were clustered around "happy path" values and missed critical boundary conditions entirely. The team had tested £150,000, £200,000, £250,000 — all mid-range values — but hadn't tested £500 (the minimum loan amount) or £2,000,000 (the maximum). Equivalence partitioning didn't reduce their testing — it redirected it to where the bugs actually were."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Common Mistakes Candidates Make — And How to Avoid Them</h2>
+  <p>After conducting hundreds of SDET interviews across HMRC, the MoD, Nationwide, and Accenture, Mitchell has identified three mistakes that appear in nearly every equivalence partitioning and BVA interview answer. Here they are — and more importantly, how to avoid them.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Mistake 1: Forgetting the Non-Numeric Invalid Classes</h3>
+      <p>Nearly every candidate remembers the "below minimum" and "above maximum" invalid classes. Far fewer remember: null values, empty strings, whitespace-only strings, special characters, SQL injection payloads, extremely long strings, Unicode characters, values in the wrong data type (a string where a number is expected), and values that are numerically valid but formatted incorrectly ("1,000" instead of "1000"). In an interview, the candidate who says "I'd also test null, empty string, and a non-numeric value like 'abc'" immediately separates themselves from the candidate who only gives numeric boundaries. <strong>The fix:</strong> mentally run through a checklist: null, empty, wrong type, boundary-adjacent, extreme, format-invalid. That covers the six categories of invalid inputs that most candidates miss.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Mistake 2: Confusing Equivalence Partitioning with Boundary Value Analysis</h3>
+      <p>EP identifies <em>classes</em> of inputs where behaviour is identical. BVA identifies <em>specific values</em> at the edges of those classes where bugs are most likely. They're complementary, not interchangeable. The mistake: a candidate is asked to "design equivalence partitions for this field" and starts listing boundary values — 17, 18, 19, 64, 65, 66. Those are boundary values, not equivalence classes. The equivalence classes are "valid ages 18–65," "invalid ages below 18," and "invalid ages above 65." The boundary values come <em>after</em> you've identified the classes. <strong>The fix:</strong> in your interview answer, explicitly separate the two: "First, let me identify the equivalence classes… Now, let me identify the boundary values for each class boundary…" This structure demonstrates that you understand the relationship between the two techniques, not just that you've memorised them.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Mistake 3: Missing the "Hidden" Equivalence Classes Created by Business Rules</h3>
+      <p>Not all equivalence classes are defined by input ranges. Some are defined by business rules that create invisible partitions: a discount code field might accept any alphanumeric string, but premium customers get a 20% discount, standard customers get 10%, and codes from expired campaigns get 0%. These are three equivalence classes within the same valid input range — and testing one representative code (say, a standard-customer code) doesn't cover the premium or expired behaviour. <strong>The fix:</strong> when the interviewer describes a field with business rules attached, ask: "Are there different behaviours within the valid range based on the input's context or category?" This question demonstrates that you're thinking about behavioural equivalence — not just numeric equivalence — which is the senior-level perspective.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How EP and BVA Apply to Automation — Bridging Theory to SDET Practice</h2>
+  <p>The most common objection to test design theory is: "But I write Playwright tests, not ISTQB exam answers. How does this actually help me?" The answer: EP and BVA are <em>test data design</em> techniques, and test data design is the foundation of every automated test suite. Here's how to apply equivalence partitioning and boundary value analysis directly in your Playwright automation — with real TypeScript code examples that you can reference in your interview.</p>
+
+  <h3>Example 1: Boundary Value Testing for an Age Input Field in Playwright</h3>
+
+  <pre><code>import { test, expect } from '@playwright/test';
+
+// Boundary values for age field (valid: 18–65)
+const AGE_BOUNDARIES = {
+  lower: {
+    below: 17,     // invalid — should be rejected
+    boundary: 18,  // valid — on the lower boundary
+    above: 19,     // valid — just above lower boundary
+  },
+  upper: {
+    below: 64,     // valid — just below upper boundary
+    boundary: 65,  // valid — on the upper boundary
+    above: 66,     // invalid — should be rejected
+  },
+};
+
+// Invalid equivalence class representatives
+const INVALID_INPUTS = ['', 'abc', '-5', '999', '25.5'];
+
+test.describe('Age Field — Boundary Value Analysis', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/registration');
+  });
+
+  test('should accept age at lower boundary (18)', async ({ page }) => {
+    await page.fill('#age', String(AGE_BOUNDARIES.lower.boundary));
+    await page.click('button[type="submit"]');
+    await expect(page.locator('.error-message')).not.toBeVisible();
+  });
+
+  test('should reject age just below lower boundary (17)', async ({ page }) => {
+    await page.fill('#age', String(AGE_BOUNDARIES.lower.below));
+    await page.click('button[type="submit"]');
+    await expect(page.locator('.error-message')).toContainText('at least 18');
+  });
+
+  test('should accept age at upper boundary (65)', async ({ page }) => {
+    await page.fill('#age', String(AGE_BOUNDARIES.upper.boundary));
+    await page.click('button[type="submit"]');
+    await expect(page.locator('.error-message')).not.toBeVisible();
+  });
+
+  test('should reject age just above upper boundary (66)', async ({ page }) => {
+    await page.fill('#age', String(AGE_BOUNDARIES.upper.above));
+    await page.click('button[type="submit"]');
+    await expect(page.locator('.error-message')).toContainText('must not exceed 65');
+  });
+
+  // Equivalence partitioning: one representative from each invalid class
+  for (const input of INVALID_INPUTS) {
+    test(\`should reject invalid input: "\${input}"\`, async ({ page }) => {
+      await page.fill('#age', input);
+      await page.click('button[type="submit"]');
+      await expect(page.locator('.error-message')).toBeVisible();
+    });
+  }
+});</code></pre>
+
+  <p>This Playwright example demonstrates three things an interviewer wants to see: <strong>(1)</strong> You've structured your boundary values as named constants — not magic numbers scattered across test files — making the test data auditable and maintainable. <strong>(2)</strong> You've separated boundary value tests (specific edge cases) from equivalence class tests (representative sampling) — showing you understand the distinction. <strong>(3)</strong> You've included non-numeric invalid inputs — demonstrating you think beyond numeric ranges. This is the kind of automation code that bridges the theory-practice gap and impresses panels who are tired of hearing ISTQB definitions without seeing how they translate to real test scripts.</p>
+
+  <h3>Example 2: Equivalence Partitioning for a Loan Calculator API Test</h3>
+
+  <pre><code>import { test, expect } from '@playwright/test';
+
+// Equivalence classes for a loan calculator API
+// Valid loan amount: £500–£50,000 in £100 increments
+const EQUIVALENCE_CLASSES = {
+  valid: {
+    midRange: { amount: 10000, term: 24, expectedStatus: 200 },
+    lowerEdge: { amount: 500, term: 24, expectedStatus: 200 },
+    upperEdge: { amount: 50000, term: 24, expectedStatus: 200 },
+  },
+  invalidAmount: {
+    belowMinimum: { amount: 100, term: 24, expectedStatus: 400 },
+    aboveMaximum: { amount: 60000, term: 24, expectedStatus: 400 },
+    notMultipleOf100: { amount: 1050, term: 24, expectedStatus: 400 },
+  },
+  invalidTerm: {
+    belowMinimum: { amount: 10000, term: 1, expectedStatus: 400 },
+    aboveMaximum: { amount: 10000, term: 60, expectedStatus: 400 },
+  },
+  edgeCases: {
+    zeroAmount: { amount: 0, term: 24, expectedStatus: 400 },
+    negativeAmount: { amount: -500, term: 24, expectedStatus: 400 },
+    zeroTerm: { amount: 10000, term: 0, expectedStatus: 400 },
+  },
+} as const;
+
+test.describe('Loan Calculator API — Equivalence Partitioning', () => {
+  const API_URL = 'https://api.example.com/v1/loan-calculator';
+
+  test('valid mid-range loan returns 200 with correct monthly payment', async ({ request }) => {
+    const { amount, term } = EQUIVALENCE_CLASSES.valid.midRange;
+    const response = await request.post(API_URL, {
+      data: { amount, termMonths: term },
+    });
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    expect(body.monthlyPayment).toBeGreaterThan(0);
+  });
+
+  test('loan below minimum amount returns 400', async ({ request }) => {
+    const { amount, term } = EQUIVALENCE_CLASSES.invalidAmount.belowMinimum;
+    const response = await request.post(API_URL, {
+      data: { amount, termMonths: term },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('loan amount not in £100 increments returns 400', async ({ request }) => {
+    const { amount, term } = EQUIVALENCE_CLASSES.invalidAmount.notMultipleOf100;
+    const response = await request.post(API_URL, {
+      data: { amount, termMonths: term },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  // ... additional tests for remaining classes
+});</code></pre>
+
+  <p>The key insight here: <strong>the equivalence class definitions ARE the test data.</strong> By structuring your test data as a typed constant with named equivalence classes, you create a single source of truth that both documents your test design decisions and drives your test execution. An interviewer who sees this code pattern knows you're thinking about test architecture, not just test scripting.</p>
+</section>
+
+<section class="content-section">
+  <h2>Mitchell's Real-World Experience — EP and BVA in Production at HMRC, Nationwide, and Accenture</h2>
+  <p>The gap between knowing equivalence partitioning as an ISTQB concept and applying it to real production systems is where careers are made. Here are three stories from Mitchell's twenty years that illustrate why these techniques matter — not for passing exams, but for preventing production incidents that affect real people.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>HMRC: Tax Code Boundary Values That Affected Real Paychecks</h3>
+      <p>At HMRC, the tax code validation system accepted codes in a specific format: a number (representing the tax-free allowance divided by 10) followed by a letter (representing the tax category). The numeric portion had a valid range of 0 to 1257 (corresponding to the standard Personal Allowance of £12,570). During a system upgrade, a developer changed the upper-bound comparison from <code>&lt;= 1257</code> to <code>&lt; 1257</code> — a one-character typo. The change meant that anyone with the standard tax code 1257L was now rejected as invalid. Because 1257L is the most common tax code in the UK, the bug affected millions of records. It was caught in testing — not because someone randomly tried 1257L (which would have been the first code anyone tested), but because the boundary value test suite explicitly tested <code>1257</code> (valid, on the boundary), <code>1256</code> (valid, just below), and <code>1258</code> (invalid, just above). The 1257 test failed, the developer's off-by-one was identified in under ten minutes, and the fix was deployed before the release reached production. Without that boundary value test, the bug would have affected every PAYE taxpayer in the country — and the remediation cost would have been measured in millions. <strong>Interview lesson:</strong> when you're asked about BVA, this is the kind of story that transforms the answer from academic to compelling. The panel doesn't just want to know that you understand boundaries — they want to know that you understand <em>why</em> boundaries matter at scale.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Nationwide: Mortgage Term Boundary Values and Affordability Checks</h3>
+      <p>Nationwide's mortgage application system validated the mortgage term as an integer between 2 and 40 years. The equivalence classes were straightforward: valid (2–40), invalid-below (0–1), invalid-above (41+). But the boundary at 2 years had a hidden complexity: the affordability calculation used a different formula for terms under 5 years, which meant the behaviour at the boundary was <em>not</em> uniform — a 2-year term triggered a different calculation path than a 3-year term, even though both were in the same "valid" equivalence class. This is the "hidden equivalence class" problem: the business rules created a partition (under 5 years vs 5+ years) that the input validation didn't surface. The bug: when a customer selected a 2-year term, the affordability check ran the "short-term" formula, which correctly rejected the application. But when the same customer selected a 3-year term, the system ran the "standard" formula — which didn't account for the higher monthly payments of a short-term mortgage — and incorrectly approved an unaffordable loan. The fix: the equivalence class analysis was updated to reflect business-rule partitions, not just input-validation boundaries. The test suite added specific tests for the 2-year, 3-year, 4-year, and 5-year terms to verify that each triggered the correct affordability formula. <strong>Interview lesson:</strong> this story illustrates mistake #3 from the previous section — missing the hidden equivalence classes created by business rules. When you tell it in an interview, you demonstrate that you've learned this lesson the hard way, in production, at one of the UK's largest mortgage lenders.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Accenture: Client Date-of-Birth Validation and the Leap Year Problem</h3>
+      <p>At Accenture, a public-sector client's citizen registration portal validated dates of birth using a JavaScript library that parsed date strings and returned a Date object. The validation rule: the citizen must be between 18 and 120 years old. The equivalence classes and boundary values were thoroughly documented — but the test suite had a critical gap: <strong>nobody tested 29 February in a non-leap year.</strong> The JavaScript <code>new Date('2023-02-29')</code> constructor doesn't throw an error — it silently returns 1 March 2023. The validation code then calculated the age based on 1 March 2023 instead of 29 February, accepted the input as valid, and stored an incorrect date of birth in the citizen database. The bug was discovered when a data migration revealed 147 citizens with a birth date of 1 March that should have been 29 February or 1 March of a different year — and untangling the data took three months. The post-mortem identified the missing equivalence class: "dates that are valid in the Gregorian calendar but not in the specific year provided." The test suite was updated with a dedicated calendar-validity test that included 29 February in non-leap years, 31 April, 31 June, and 31 September. <strong>Interview lesson:</strong> this story demonstrates that equivalence partitioning isn't complete until you've considered the <em>domain-specific</em> invalid classes — the inputs that are syntactically correct but semantically impossible. Every domain has them. The candidate who asks "what are the semantically invalid inputs for this domain?" during an interview demonstrates the curiosity and thoroughness that senior SDET roles demand.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Preparation Strategy — How to Practise EP and BVA Before Your Interview</h2>
+  <p>Reading about equivalence partitioning and boundary value analysis is the first step. The second step — and the one that makes the difference in the interview room — is practising the <em>articulation</em> of these concepts under time pressure. Here's a four-step preparation strategy that Mitchell recommends to SDET candidates preparing for interviews at HMRC, the MoD, Nationwide, Accenture, and beyond.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Step 1: Partition Everything You See</h3>
+      <p>For the week before your interview, make a habit of mentally partitioning every input field you encounter. The login form on your banking app: partition the password field into valid (correct password), invalid-wrong (incorrect password), invalid-empty, invalid-too-short, invalid-too-long. The search box on Amazon: partition queries into valid-product-match, valid-no-match, empty, single-character, extremely-long, special-characters-only. This exercise takes thirty seconds per field and builds the mental muscle that lets you partition an interviewer's example in real time, without freezing. By the time you walk into the interview, you'll have partitioned fifty input fields — and the interviewer's whiteboard question will feel like the fifty-first, not the first.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Step 2: Practise the "Two-Value vs Three-Value" Explanation Out Loud</h3>
+      <p>This is the question you're most likely to stumble on if you haven't practised it — not because it's complex, but because explaining the difference between two-value and three-value boundary testing concisely, without rambling, is genuinely difficult under interview pressure. Write down a 60-second explanation. Practise it out loud until it flows naturally. The explanation should cover: what each technique tests, what class of bug each catches, and when you'd use each. The model answer in Section 3 of this guide is your template — adapt it to your own voice and experience.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Step 3: Write One Playwright Test Suite with EP and BVA</h3>
+      <p>Take a real form from a website you use — a registration form, a checkout flow, a search interface — and write a Playwright test suite that applies EP and BVA to one of its input fields. Use the code patterns from Section 5 of this guide. This gives you two things: a concrete example you can reference in your interview ("I recently applied boundary value analysis to a checkout quantity field — here's how I structured the tests"), and the confidence that comes from having <em>done</em> it, not just read about it. Interviewers can tell the difference.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Step 4: Simulate the Whiteboard Question</h3>
+      <p>Have a friend or colleague give you an input field specification and ask you to partition it and identify boundaries — on a whiteboard or a blank piece of paper — in under three minutes. Example prompts: "A flight booking form accepts passenger ages from 0 to 150. Go." Or: "A bank transfer form accepts amounts from £1 to £10,000. Go." The whiteboard pressure is real — your brain works differently when someone is watching you draw boxes and arrows. Three rounds of this exercise will inoculate you against the freeze response. For an even more realistic simulation, the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes 800+ questions with AI-graded mock interviews that cover test design techniques, including dedicated equivalence partitioning and boundary value analysis scenarios with real-time feedback on your partitioning logic and boundary identification.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Your Next Step: Walk Into That Interview Ready for the Theory Questions</h2>
+  <p>The 11pm anxiety is real — but it's also solvable. Equivalence partitioning and boundary value analysis are not complex techniques. The challenge isn't understanding them; it's recalling them, articulating them, and applying them under interview pressure when your brain wants to default to "I write Playwright tests, not theory." The four-step preparation strategy above — partition everything, practise the BVA explanation, write a real test suite, simulate the whiteboard — bridges that gap in a week of deliberate practice.</p>
+
+  <p>And here's the thing: the interviewers at HMRC, the MoD, Nationwide, and Accenture are not trying to catch you out. They're trying to identify the candidates who think systematically about test coverage — because systematic thinkers design test suites that catch production bugs before customers find them. The equivalence partitioning question is a shortcut to that signal. If you can stand at the whiteboard and partition an input domain into valid and invalid classes in sixty seconds, you've just told the panel something that forty minutes of "tell me about your Playwright experience" cannot: <strong>you understand test design, not just test automation.</strong> And in 2026, that distinction is worth a job offer.</p>
+
+  <div style="margin-top: 2rem; padding: 2rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+    <h3 style="margin-top: 0;">Practise Test Design Techniques with SDET Interview Coach</h3>
+    <p>Build confidence answering equivalence partitioning and boundary value analysis questions under interview pressure with AI-graded mock interviews in the <strong>SDET Interview Coach app</strong> — 800+ questions across 32 topics, including dedicated test design technique scenarios that simulate real whiteboard questions. The AI mock interviewer presents you with an input specification, watches you partition the domain and identify boundaries, and evaluates your reasoning on completeness, boundary identification, and the two-value vs three-value decision. Available on <strong>iOS and Google Play</strong>. Don't walk into your 2026 SDET interview hoping the test design questions don't come up. Walk in with the confidence that comes from having practised systematic test design until partitioning an input domain is as automatic as writing a Playwright selector.</p>
+
+    <p style="margin-top: 1.5rem;">For the complete test design playbook — including equivalence partitioning templates, boundary value analysis checklists, and decision table testing frameworks — get the <a href="https://www.stan.store/mitchellagoma/p/ai-test-automation-playbook" target="_blank" rel="noopener">AI Test Automation Playbook</a> at Mitchell's Stan Store (£9.99).</p>
+  </div>
+
+  <p style="margin-top: 1.5rem; font-weight: 600;">Many SDET candidates can write a Playwright test in their sleep. Few can design equivalence partitions on a whiteboard while a panel of three senior engineers waits for their answer. In 2026, the interviews that lead to offers are the ones where the candidate demonstrates both. Be that candidate.</p>
+</section>
+`,
+  faqs: [
+    {
+      q: "What is equivalence partitioning and why is it still asked in SDET interviews in 2026?",
+      a: "Equivalence partitioning (EP) is a black-box test design technique that divides an input domain into groups (equivalence classes) where the system is expected to behave identically for every member of the class. By testing one representative value per class, you reduce an infinite or impractically large input space to a manageable set of test cases without sacrificing coverage. EP is still asked in 2026 SDET interviews because it tests whether you think <em>systematically</em> about test coverage rather than testing by instinct. Interviewers at HMRC, the MoD, Nationwide, and Accenture use EP questions to probe whether you can abstract an input space into categories — a skill that applies directly to test data strategy, cross-browser test matrix design, and regression suite optimisation. A candidate who can partition an input domain on a whiteboard in sixty seconds demonstrates test design thinking that distinguishes them from candidates who can only write automation scripts. This question comes up more often than candidates expect — and the gap between a pass and a fail is often one follow-up question about how you'd handle the non-numeric invalid equivalence classes."
+    },
+    {
+      q: "What's the difference between two-value and three-value boundary value analysis?",
+      a: "<strong>Two-value boundary testing</strong> tests the boundary value itself and one adjacent value: for a lower boundary at 18, test 17 (invalid) and 18 (valid). This catches the most common off-by-one errors — using &gt; instead of &gt;=, or &lt; instead of &lt;= — and is the ISTQB Foundation-level answer. It's the minimum acceptable technique and is sufficient for most non-critical boundaries. <strong>Three-value boundary testing</strong> tests the boundary value, one below, and one above: for a lower boundary at 18, test 17 (invalid), 18 (valid, boundary), and 19 (valid, above). This catches a subtler class of bugs — when the developer uses strict inequality when they should use inclusive inequality (age &gt; 18 instead of age &gt;= 18). Two-value testing at 17 and 18 would show both rejected — which is correct for 17 but wrong for 18 — but wouldn't reveal that 18 should have been accepted. The three-value test at 19 shows 19 accepted while 18 is rejected, exposing the comparison operator error. The strongest interview answer acknowledges both techniques and explains <em>when</em> you'd use each: two-value for most boundaries, three-value for business-critical or safety-critical boundaries where the additional two test cases are justified by the higher risk of missing a comparison-operator bug."
+    },
+    {
+      q: "How do you apply equivalence partitioning to non-numeric inputs like dropdown menus or text fields?",
+      a: "Equivalence partitioning works identically for non-numeric inputs — you're still grouping inputs by expected behaviour. For a dropdown menu with options [Select..., Mr, Mrs, Ms, Dr, Prof], there are three equivalence classes: <strong>valid selections</strong> (any title — usually one representative is sufficient, but check for special behaviour like 'Dr' triggering a medical registration field, which would make it a separate subclass), <strong>the default 'Select…' option</strong> (invalid — the system should reject submission or show a validation message), and <strong>no interaction</strong> (the form is submitted without touching the dropdown — invalid). For a free-text name field, equivalence classes include: valid names (alphabetic characters, hyphens, apostrophes — e.g., 'O'Brien', 'Smith-Jones'), names with accented characters (valid if the system supports Unicode — 'José', 'Müller'), empty field (invalid), whitespace-only (invalid), names with numbers (invalid — 'John123'), extremely long names (invalid or truncated — 256+ characters), and SQL injection payloads (invalid — should be sanitised). The key principle is the same as numeric partitioning: identify groups of inputs that should trigger the same system behaviour, test one representative from each, and always include the 'forgotten' classes — null, empty, wrong type, and malicious input."
+    },
+    {
+      q: "How do equivalence partitioning and boundary value analysis relate to test automation with Playwright?",
+      a: "EP and BVA are test data design techniques, and test data design is the foundation of automated tests. In Playwright, you apply them by structuring your test data as named constants that represent equivalence classes and boundary values, then parameterising your tests to iterate over those constants. For example, an age input field's boundary values can be defined as <code>{ lower: { below: 17, boundary: 18, above: 19 }, upper: { below: 64, boundary: 65, above: 66 } }</code> and tested with a <code>for</code> loop or individual <code>test()</code> blocks. The Playwright API test example in this guide demonstrates structuring a loan calculator's equivalence classes as typed constants — valid mid-range, invalid below-minimum, invalid above-maximum, and edge cases like zero and negative amounts — and testing each with Playwright's <code>request.post()</code>. This approach gives you three things that interviewers look for: <strong>auditable test data</strong> (the boundary values are named and documented, not buried in test scripts), <strong>systematic coverage</strong> (you can prove you've tested every equivalence class by inspecting the test data constant), and <strong>maintainability</strong> (when the business rules change, you update one constant, not forty-seven test files)."
+    },
+    {
+      q: "What are the most common mistakes candidates make when answering EP and BVA interview questions?",
+      a: "After conducting hundreds of SDET interviews at HMRC, the MoD, Nationwide, and Accenture, the three most common mistakes are: <strong>(1) Forgetting non-numeric invalid equivalence classes</strong> — candidates remember 'below minimum' and 'above maximum' but forget null, empty string, whitespace-only, special characters, wrong data type, and SQL injection payloads. The strongest candidates run through a mental checklist: null, empty, wrong type, boundary-adjacent, extreme, format-invalid. <strong>(2) Confusing EP with BVA</strong> — candidates asked to 'design equivalence partitions' start listing boundary values (17, 18, 19, 64, 65, 66) instead of equivalence classes ('valid ages 18–65', 'invalid below 18', 'invalid above 65'). The fix is to explicitly separate the two in your answer: 'First, the equivalence classes… Now, the boundary values for those classes…' <strong>(3) Missing hidden equivalence classes created by business rules</strong> — not all partitions are defined by input ranges. A discount code field might treat premium customers differently from standard customers, creating two equivalence classes within the same valid input range. The strongest candidates ask follow-up questions: 'Are there different behaviours within the valid range based on the input's context or category?'"
+    },
+    {
+      q: "Is equivalence partitioning still relevant when you can run hundreds of automated tests in minutes?",
+      a: "Yes — arguably more relevant than ever, precisely because you <em>can</em> run hundreds of tests in minutes. The question isn't 'can we test everything?' — it's 'are we testing the right things?' Without EP and BVA, teams tend to test what's easy (mid-range happy-path values) and miss what's risky (boundary values and invalid equivalence classes). At Nationwide, Mitchell reviewed a test suite with 340 test cases for a mortgage application form. The tests clustered around easy values — £150,000, £200,000, £250,000 — but hadn't tested the minimum loan amount (£500) or the maximum (£2,000,000). After applying EP and BVA, the suite was reduced to 42 test cases while <em>increasing</em> coverage. The original 340 cases gave a false sense of thoroughness because they tested 340 variations of the same equivalence class. Equivalence partitioning doesn't reduce testing — it redirects it to where the bugs actually are. In modern CI/CD pipelines where fast feedback matters, EP and BVA help you design lean, high-signal test suites that run in minutes rather than hours, without sacrificing coverage. Finally, the technique applies beyond input validation: selecting representative browser/OS combinations for cross-browser testing, designing API contract test data, and selecting regression test scenarios are all equivalence partitioning problems in disguise."
+    }
+  ],
+  relatedSlugs: [
+    "test-case-design-techniques-sdet-interview-questions-2026",
+    "defect-management-bug-lifecycle-sdet-interview-questions-2026",
+    "risk-based-testing-sdet-interview-questions-2026",
+    "data-driven-testing-sdet-interview-questions-2026",
+    "sdet-system-design-interview-questions-2026",
+    "sdet-interview-preparation-plan-2026"
+  ],
+},
+{
   slug: "root-cause-analysis-test-failures-sdet-interview-questions-2026",
   title: "Root Cause Analysis for Test Failures: SDET Interview Questions 2026",
   description: "Master root cause analysis for test automation failures in your SDET interview. The 5 Whys, systematic debugging frameworks, failure triage, log analysis, and preventing recurrence. Real strategies from 20-year QA veteran Mitchell Agoma at HMRC, MoD, Nationwide, and Accenture.",
