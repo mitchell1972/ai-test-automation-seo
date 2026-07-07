@@ -15,6 +15,859 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
 
 {
+  slug: "playwright-api-testing-sdet-interview-questions-2026",
+  title: "Playwright API Testing: SDET Interview Questions 2026",
+  description: "Master Playwright API testing for your 2026 SDET interview. Learn Playwright's APIRequestContext for REST API testing, combining API + browser tests in a single framework, request interception with route.fulfill(), API response validation patterns, authentication token reuse across API and UI tests, and why Playwright is replacing standalone API tools like Postman in modern test stacks. Real-world experience from Mitchell Agoma at Asda, BT, HMRC, and the Ministry of Defence.",
+  date: "2026-07-07",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "playwright api testing interview questions",
+    "playwright APIRequestContext testing",
+    "playwright api testing vs postman",
+    "playwright request context sdet",
+    "playwright api response validation",
+    "playwright api authentication testing",
+    "playwright route intercept api testing",
+    "playwright api and ui combined testing",
+    "playwright api test framework design",
+    "playwright request fixture testing",
+    "playwright api mocking route fulfill",
+    "playwright api test parallel execution",
+    "playwright storageState api token reuse",
+    "playwright api testing interview questions 2026",
+    "playwright REST API testing SDET"
+  ],
+  content: `<section class="content-section">
+  <p>It is 11pm. Your SDET interview is tomorrow morning. You have spent the last three weeks preparing — Playwright page objects, auto-waits, the Trace Viewer, fixture scoping, CI/CD pipeline integration. You can explain <code>locator()</code> vs <code>getByRole()</code> in your sleep. You have a war story ready about debugging a flaky test with Playwright's trace viewer that makes you sound like a hero. Then you scan the job specification one more time and your stomach knots. There it is, buried in the "Required Skills" section — a line you definitely did not see during your preparation: <strong>"Experience testing REST APIs using Playwright's APIRequestContext."</strong> Your confidence evaporates. You thought Playwright was for browsers — Chromium, Firefox, WebKit. You have been writing page interactions, not API calls. You have never typed <code>request.post()</code> in a Playwright test. You did not even know Playwright could test APIs. And now, at 11pm, you are googling "Playwright APIRequestContext" on your phone in the dark, wondering how a single line in a job spec can undo weeks of preparation.</p>
+
+  <p>You are not alone. Many SDET candidates — even those with years of Playwright experience — stumble on API testing questions in 2026 interviews. The reason is subtle but devastating: Playwright entered the industry's consciousness as a browser automation tool. The documentation homepage shows you how to <code>await page.goto()</code>. The tutorials teach you selectors and assertions. The conference talks demo the Trace Viewer. The entire ecosystem — blog posts, YouTube videos, Udemy courses — positions Playwright as "the modern alternative to Selenium." So when an interviewer asks "How would you test our REST API using Playwright?", the candidate's brain short-circuits: <em>Wait — Playwright does API testing?</em> And in that moment of confusion, the interviewer mentally moves to the next candidate. Not because the candidate lacks technical ability — but because they have been trained by the industry to view Playwright as a browser tool, not as a full-stack testing framework. In Mitchell's twenty years hiring SDETs at HMRC, the Ministry of Defence, Nationwide, Accenture, Asda, BT, and the Co-op, he has watched dozens of candidates with impeccable Playwright browser-testing portfolios get rejected because they could not answer one question: <strong>"Your front-end displays product data from an API. How do you verify — in the same test framework — that the API returns the correct data and that the UI renders it correctly?"</strong> That question separates the Playwright users from the Playwright engineers.</p>
+
+  <p>If you want to practise answering Playwright API testing questions under realistic conditions, I built the <a href="https://www.aitestplaybook.com/blog/sdet-interview-coach-app-guide">SDET Interview Coach app</a> — 800+ questions across five seniority levels, Claude-graded mock interviews with detailed feedback, available on iOS and Google Play. It includes dedicated Playwright API testing scenarios where the AI interviewer challenges you to architect API + UI hybrid tests, design request intercept patterns with <code>route.fulfill()</code>, and explain authentication token reuse across API and browser contexts — in real time. And if you want the complete strategic framework for 2026 test automation, the <strong>AI Test Automation Playbook</strong> (£9.99) at <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook">stan.store/mitchellagoma/p/ai-test-automation-playbook</a> includes downloadable Playwright API testing templates, authentication fixture patterns, and the exact hybrid test architectures Mitchell has implemented at HMRC, BT, and Nationwide.</p>
+
+  <p><strong>Do not walk into your 2026 SDET interview not knowing that Playwright can test APIs — and that interviewers are specifically screening for this capability.</strong> The question is not whether the panel will ask about Playwright API testing — at any organisation that has adopted Playwright as its test framework, the API testing question is fundamentally a Playwright API testing question. The only choice is whether you will be the candidate who describes <code>APIRequestContext</code>, request fixtures, hybrid API + UI tests, <code>route.fulfill()</code> interception patterns, and authentication token reuse via <code>storageState</code> — or the candidate who says "I use Postman for API tests and Playwright for UI tests" and watches the interviewer mentally note "does not understand the Playwright testing ecosystem." This guide covers every Playwright API testing question SDET panels are asking in 2026: <code>APIRequestContext</code> creation and disposal, standalone API tests, hybrid API + UI test patterns, request interception with <code>route.fulfill()</code>, authentication token reuse across API and browser contexts, response validation strategies, parallel API test execution, and the mistakes that get candidates rejected at the API testing stage.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why Interviewers Are Asking About Playwright API Testing in 2026</h2>
+
+  <p>When an SDET interviewer asks "Have you used Playwright to test APIs?", they are not simply checking whether you have memorised the <code>request.post()</code> syntax. They are probing four specific dimensions of your test engineering capability — and the candidate who answers all four demonstrates the full-stack testing mindset that separates a senior SDET from a mid-level automation engineer.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Do You Understand Playwright as a Full-Stack Testing Tool — Not Just Browser Automation?</h3>
+      <p>The core misconception that costs candidates offers: Playwright is not "Selenium with a better API." Playwright is a full-stack testing framework that includes browser automation, API testing, network interception, authentication state management, and visual comparison — all in a single, unified API. The <code>APIRequestContext</code> is not an afterthought bolted onto a browser automation library. It is a first-class feature — shipped in Playwright 1.16 (October 2021), built on the same underlying network stack as the browser automation, and designed from the start to interoperate with browser contexts. When you create an <code>APIRequestContext</code>, you are using the same cookie storage, same TLS configuration, and same proxy settings as a browser context. This means a token obtained via an API call can be injected into a browser context seamlessly — and vice versa. The interviewer wants to hear that you understand this architecture: Playwright's API testing is not a workaround for "I need to call an API before opening a browser." It is a deliberate design decision by Microsoft to make Playwright the single testing framework for any application that has both a UI and an API — which is virtually every modern web application. At HMRC, Mitchell's team used Playwright as the sole testing framework for the tax platform — browser tests for the citizen-facing UI, API tests for the internal microservices, and hybrid tests that verified that what the API returned was exactly what the UI displayed. There was no Postman, no REST Assured, no separate API testing tool. One framework. One CI pipeline. One reporting dashboard. One brain to learn. The candidate who can articulate this unified-framework vision demonstrates they understand where the industry is heading, not just where it has been.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Can You Validate API Responses and Integrate That Validation with UI Assertions?</h3>
+      <p>This is the question that separates mid-level from senior: "Your e-commerce product page displays a price, a description, and stock availability. The price comes from the pricing API. The description comes from the catalogue API. The stock comes from the inventory API. How do you verify — in a single test — that all three APIs returned the correct data AND that the UI rendered it correctly?" The mid-level candidate's answer: "I'd write separate tests — one API test for each endpoint, and separate UI tests for the page." This creates a fundamental testing gap: the API tests verify the data is correct. The UI tests verify the page renders something. But nothing verifies that the page renders the <em>same</em> data the API returned. A backend change could alter the API response shape, the front-end could fail to map a new field, and both tests would pass — because the API test validates the new response shape and the UI test validates the UI still renders. The senior candidate's answer: a single hybrid test that calls all three APIs, captures the responses, navigates to the product page, and asserts that the rendered price, description, and stock text match the API values. If the API returns a price of £19.99 and the UI shows £19.99, the test passes. If the API returns £19.99 and the UI shows £20.00 (a rounding bug in the front-end), the test fails — and fails specifically on the assertion that connects API data to UI rendering. At BT, Mitchell's team caught a bug in the broadband configurator where the pricing API returned VAT-exclusive prices but the UI displayed inclusive prices — a £34.99 vs £41.99 discrepancy that had been in production for six weeks. Separate API and UI tests never caught it because each layer passed in isolation. The hybrid test caught it on the first run.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Do You Understand Authentication Token Reuse Across API and Browser Contexts?</h3>
+      <p>Every UI test that starts from a login page is slower than it needs to be. Every CI pipeline that runs login → wait for redirect → navigate to target page for 300 tests is burning minutes that could be spent running more tests. The Playwright solution: authenticate via API, inject the token into the browser context via <code>storageState</code>, and start every UI test already authenticated. The pattern: (1) A global setup script calls the login API endpoint, receives an access token and refresh token. (2) The script stores the authentication state — cookies, localStorage, sessionStorage — to a <code>storageState.json</code> file. (3) Every browser test loads that state file: <code>test.use({ storageState: 'auth.json' })</code>. The browser opens already logged in — no login page, no credential entry, no redirect wait. The test begins at the target page, authenticated. The interviewer wants to hear three things: (a) You understand this pattern exists and can articulate it. (b) You know that <code>storageState</code> captures cookies AND localStorage AND sessionStorage — it is a complete browser state snapshot, not just a cookie jar. (c) You know how to handle token refresh in long-running test suites — stale tokens in <code>storageState</code> cause 401s mid-suite, so you need a mechanism to detect token expiry and re-authenticate. At Nationwide, Mitchell's team reduced their UI test suite runtime by 40% by switching from per-test login (8-12 seconds per test) to <code>storageState</code> injection (0.2 seconds per test). Over 300 tests, that saved 35 minutes per CI run. The candidate who can articulate this pattern — and quantify the time savings — demonstrates production-scale test engineering, not just test writing.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Can You Replace Postman in CI/CD with Playwright API Tests?</h3>
+      <p>In 2019, the standard API testing stack was Postman for development, Newman for CI, and Selenium for browser tests — three tools, three reporting systems, three sets of environment configuration. In 2026, the standard is shifting: Playwright for everything. Browser tests. API tests. Hybrid tests. Network interception. Visual comparisons. One tool. One <code>playwright.config.ts</code>. One CI pipeline job. One HTML report showing all test results — browser failures alongside API failures, browser screenshots alongside API response bodies. The operational advantage is not abstract: it eliminates the "which tool reports the test failure?" debugging tax. When a Newman test fails in CI, you open the Newman HTML report, dig through the JUnit XML, and cross-reference with the Playwright report to see if the browser tests also failed. When a Playwright API test fails in CI, you open the Playwright HTML report and see the API failure, the browser failures, the trace of what happened, and the screenshot of the UI state — all in one page. The interviewer wants to hear that you understand this operational advantage and can articulate it: "Playwright eliminates the tool fragmentation tax. Instead of maintaining separate Postman collections, Newman CI configurations, and Selenium/Playwright browser test suites, I maintain a single Playwright test suite that covers API, UI, and hybrid testing — with a single reporting output, a single CI pipeline configuration, and a single framework for the team to learn." The candidate who advocates for Postman + Playwright as separate tools is answering the 2019 question. The interviewer is asking the 2026 question.</p>
+    </div>
+  </div>
+
+  <p>Mitchell's experience hiring SDETs at Asda, BT, HMRC, and Nationwide taught him one consistent lesson: <strong>the candidate who treats Playwright as a full-stack testing framework — API, UI, network interception, auth management, all in one codebase — gets the job.</strong> The candidate who treats Playwright as a browser automation tool and reaches for Postman whenever an API call is needed demonstrates fragmented thinking. The gap is not tool familiarity. The gap is understanding that in 2026, the interview panel expects you to test the application layer — not to delegate different layers to different tools.</p>
+</section>
+
+<section class="content-section">
+  <h2>Playwright APIRequestContext: The Mental Model Every SDET Needs</h2>
+
+  <p>Before you can write Playwright API tests in an interview, you need the mental model of how <code>APIRequestContext</code> works — how it relates to browser contexts, how to create and dispose of it, and how requests, responses, and assertions flow through it. Here is the mental model that every 2026 SDET candidate needs, presented at the depth that interviewers expect.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>What Is APIRequestContext — And How Does It Differ from BrowserContext?</h3>
+      <p><code>APIRequestContext</code> is Playwright's abstraction for making HTTP requests — analogous to a browser context, but without a browser. Where <code>BrowserContext</code> provides an isolated browser session (cookies, localStorage, viewport), <code>APIRequestContext</code> provides an isolated HTTP client session (headers, cookies, baseURL, timeout). The critical mental model: <strong>APIRequestContext is created from <code>request</code> — Playwright's built-in API testing fixture.</strong> Every Playwright test has access to a <code>request</code> fixture that provides a pre-configured <code>APIRequestContext</code> — the same way every test has access to a <code>page</code> fixture. The default <code>request</code> fixture uses the configuration from <code>playwright.config.ts</code>: the <code>baseURL</code> from <code>use.baseURL</code>, the <code>extraHTTPHeaders</code> from the project configuration, and the proxy settings. You can also create custom <code>APIRequestContext</code> instances via <code>request.newContext()</code> for specific needs — different base URLs, custom headers, or authentication that differs from the default. At the Ministry of Defence, Mitchell's team created separate request contexts for the authentication API (one base URL), the catalog API (different base URL), and the inventory API (third base URL) — each with its own headers and credentials. The interview nuance: <strong>each APIRequestContext must be disposed after use.</strong> Unlike browser contexts that Playwright auto-closes, <code>APIRequestContext</code> instances created via <code>request.newContext()</code> must be manually disposed in <code>afterAll</code> or they leak memory in CI. This is the number one Playwright API testing mistake Mitchell sees in interviews — candidates create contexts but never dispose them.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>How to Make Requests: GET, POST, PUT, PATCH, DELETE</h3>
+      <p>The <code>APIRequestContext</code> provides methods for every HTTP verb. <strong><code>request.get(url, options)</code></strong>: sends a GET request. Options include <code>params</code> (URL query parameters as an object), <code>headers</code> (additional HTTP headers), and <code>timeout</code> (request timeout in milliseconds). <strong><code>request.post(url, options)</code></strong>: sends a POST request. Options include <code>data</code> (request body — can be a string, Buffer, or serialisable object that Playwright auto-JSON-serialises), <code>form</code> (multipart/form-data fields), <code>multipart</code> (file uploads with custom file names and MIME types), and all standard options (headers, params, timeout). <strong><code>request.put(url, options)</code></strong>: sends a PUT request — same options as POST. <strong><code>request.patch(url, options)</code></strong>: sends a PATCH request. <strong><code>request.delete(url, options)</code></strong>: sends a DELETE request. <strong><code>request.head(url, options)</code></strong>: sends a HEAD request. <strong><code>request.fetch(urlOrRequest, options)</code></strong>: sends a request using a Request object (for advanced scenarios like redirect handling and custom request objects). Every method returns an <code>APIResponse</code> object — the same response type regardless of which HTTP method was used. The interview detail that signals genuine experience: when you pass <code>data</code> as a JavaScript object, Playwright automatically sets the <code>Content-Type</code> header to <code>application/json</code> and serialises the object. When you pass <code>data</code> as a string, you must manually set the <code>Content-Type</code> header. Candidates who do not know this subtlety will wonder why their form-encoded requests are being sent as JSON.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>APIResponse: Status, Headers, Body — The Assertion Targets</h3>
+      <p>Every request method returns an <code>APIResponse</code> object. This is your assertion surface. <strong><code>response.status()</code></strong>: returns the HTTP status code as a number (200, 201, 401, 404, 500). The most common assertion: <code>expect(response.status()).toBe(200)</code>. <strong><code>response.statusText()</code></strong>: returns the status text ("OK", "Created", "Not Found"). <strong><code>response.ok()</code></strong>: returns a boolean — true if the status code is in the 200-299 range. Useful for quick positive-path checks: <code>expect(response.ok()).toBeTruthy()</code>. <strong><code>response.headers()</code></strong>: returns the response headers as an object. Assert specific headers: <code>expect(response.headers()['content-type']).toContain('application/json')</code>. <strong><code>response.headersArray()</code></strong>: returns headers as an array of <code>{name, value}</code> objects — useful when headers appear multiple times. <strong><code>response.json()</code></strong>: parses the response body as JSON and returns a JavaScript object. This is the primary assertion target: parse the JSON, then assert on properties. <strong><code>response.text()</code></strong>: returns the response body as a raw string. Useful for non-JSON responses (HTML, XML, plain text). <strong><code>response.body()</code></strong>: returns the response body as a Buffer — useful for binary responses or for computing response hashes. <strong><code>response.url()</code></strong>: returns the final URL after redirects. The interview nuance: <strong><code>response.json()</code> can only be called once.</strong> The response body is a stream — reading it via <code>.json()</code> consumes the stream. Calling <code>.json()</code> a second time throws an error. Store the result: <code>const body = await response.json()</code>, then assert on <code>body</code> as many times as you need. Candidates who call <code>response.json()</code> multiple times demonstrate they have not worked with Playwright API testing at production scale.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Request Options — Query Params, Custom Headers, Timeouts, and Form Data</h3>
+      <p>The <code>options</code> parameter on every request method is where production-grade API tests are distinguished from tutorial examples. <strong><code>params</code></strong>: an object of URL query parameters — <code>{ page: 1, limit: 10, sort: 'name' }</code> becomes <code>?page=1&limit=10&sort=name</code>. The advantage over string interpolation: Playwright handles URL encoding, empty values, and array parameters correctly. <strong><code>headers</code></strong>: an object of additional HTTP headers — <code>{ 'Authorization': 'Bearer ' + token, 'X-Request-ID': requestId }</code>. These merge with (not replace) the default headers from <code>playwright.config.ts</code> and the <code>APIRequestContext</code> configuration. <strong><code>timeout</code></strong>: per-request timeout in milliseconds — overrides the context-level timeout. Critical for endpoints with known slow response times (report generation, bulk operations) where the default timeout would cause false failures. <strong><code>maxRedirects</code></strong>: maximum number of redirects to follow (default: 20). Set to 0 to prevent automatic redirect following and test redirect responses directly. <strong><code>failOnStatusCode</code></strong>: by default, Playwright APIRequestContext does NOT throw on non-2xx status codes (unlike browser page requests which fail on 4xx/5xx by default). Set to true to throw on non-2xx — or handle error status codes explicitly in assertions. <strong><code>form</code></strong>: for application/x-www-form-urlencoded requests — an object of key-value pairs. Playwright sets the Content-Type header and URL-encodes the body. <strong><code>multipart</code></strong>: for multipart/form-data requests (file uploads) — an object where values can be strings (form fields) or objects with <code>name</code>, <code>mimeType</code>, and <code>buffer</code> (file uploads). The interview signal: a candidate who can configure <code>maxRedirects: 0</code> to test redirect behaviour, <code>failOnStatusCode: false</code> to handle error responses explicitly, and <code>params</code> for query parameter management demonstrates that they have built API test suites at production scale, not just followed a tutorial.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Playwright API Testing Code Examples — What Interviewers Expect You to Write</h2>
+
+  <p>In many SDET interviews, you will be asked to write a Playwright API test — either on a whiteboard, in a shared editor, or by explaining your approach. Here are the patterns that score well, from basic requests through advanced hybrid testing.</p>
+
+  <h3>Creating an APIRequestContext and Making a GET Request</h3>
+  <pre><code>import { test, expect } from '@playwright/test';
+
+test('GET /products returns paginated product list', async ({ request }) => {
+  const response = await request.get('/api/products', {
+    params: {
+      page: 1,
+      limit: 10,
+      category: 'electronics'
+    }
+  });
+
+  // Status code validation
+  expect(response.status()).toBe(200);
+
+  // Parse the response (once \u2014 store it!)
+  const body = await response.json();
+
+  // Schema validation
+  expect(body).toHaveProperty('data');
+  expect(body).toHaveProperty('pagination');
+  expect(Array.isArray(body.data)).toBeTruthy();
+  expect(body.data.length).toBeLessThanOrEqual(10);
+
+  // Pagination metadata
+  expect(body.pagination).toMatchObject({
+    page: 1,
+    limit: 10,
+    total: expect.any(Number),
+    totalPages: expect.any(Number)
+  });
+
+  // Content validation
+  body.data.forEach((product: any) => {
+    expect(product).toHaveProperty('id');
+    expect(product).toHaveProperty('name');
+    expect(product).toHaveProperty('price');
+    expect(product.price).toBeGreaterThan(0);
+    expect(product.category).toBe('electronics');
+  });
+});</code></pre>
+
+  <h3>POST Request with JSON Body and Response Validation</h3>
+  <pre><code>test('POST /users creates a new user and returns 201', async ({ request }) => {
+  const newUser = {
+    name: 'Jane Smith',
+    email: \`jane-\${Date.now()}@example.com\`,
+    role: 'editor',
+    department: 'engineering'
+  };
+
+  const response = await request.post('/api/users', {
+    data: newUser,
+    headers: {
+      'Authorization': \`Bearer \${process.env.API_TOKEN}\`,
+      'X-Idempotency-Key': crypto.randomUUID()
+    }
+  });
+
+  // Expect 201 Created
+  expect(response.status()).toBe(201);
+
+  // Validate Location header
+  const location = response.headers()['location'];
+  expect(location).toBeDefined();
+  expect(location).toContain('/api/users/');
+
+  // Validate response body
+  const body = await response.json();
+  expect(body.name).toBe('Jane Smith');
+  expect(body.email).toBe(newUser.email);
+  expect(body.role).toBe('editor');
+  expect(body.id).toBeDefined();
+  expect(body.createdAt).toBeDefined();
+
+  // Verify we can fetch the created user
+  const getResponse = await request.get(\`/api/users/\${body.id}\`);
+  expect(getResponse.status()).toBe(200);
+});</code></pre>
+
+  <h3>Response Header and Status Code Validation</h3>
+  <pre><code>test('response headers contain required security and caching headers', async ({ request }) => {
+  const response = await request.get('/api/products/1');
+
+  const headers = response.headers();
+
+  // Content-Type validation
+  expect(headers['content-type']).toContain('application/json');
+
+  // Security headers
+  expect(headers['x-content-type-options']).toBe('nosniff');
+  expect(headers['x-frame-options']).toBe('DENY');
+
+  // Caching headers
+  expect(headers['cache-control']).toBeDefined();
+
+  // CORS headers
+  expect(headers['access-control-allow-origin']).toBeDefined();
+
+  // Response time SLA
+  expect(response.status()).toBe(200);
+
+  // Custom application headers
+  expect(headers['x-api-version']).toBeDefined();
+  expect(headers['x-request-id']).toBeDefined();
+});</code></pre>
+
+  <h3>Authentication Token Extraction and Reuse</h3>
+  <pre><code>import { test, expect } from '@playwright/test';
+
+test.describe('Authenticated API Tests', () => {
+  let authToken: string;
+  let refreshToken: string;
+
+  test.beforeAll(async ({ request }) => {
+    // Login once \u2014 reuse the token across all tests
+    const loginResponse = await request.post('/api/auth/login', {
+      data: {
+        email: process.env.TEST_USER_EMAIL,
+        password: process.env.TEST_USER_PASSWORD
+      }
+    });
+
+    expect(loginResponse.status()).toBe(200);
+
+    const body = await loginResponse.json();
+    authToken = body.accessToken;
+    refreshToken = body.refreshToken;
+
+    expect(authToken).toBeDefined();
+    expect(authToken.length).toBeGreaterThan(0);
+  });
+
+  test('GET /profile returns user profile with valid token', async ({ request }) => {
+    const response = await request.get('/api/users/profile', {
+      headers: { Authorization: \`Bearer \${authToken}\` }
+    });
+
+    expect(response.status()).toBe(200);
+
+    const profile = await response.json();
+    expect(profile.email).toBeDefined();
+    expect(profile.name).toBeDefined();
+  });
+
+  test('GET /profile with expired token returns 401', async ({ request }) => {
+    const expiredToken = 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDAwMDAwMDB9.abc123';
+
+    const response = await request.get('/api/users/profile', {
+      headers: { Authorization: \`Bearer \${expiredToken}\` }
+    });
+
+    expect(response.status()).toBe(401);
+  });
+
+  test('POST /refresh-token renews the access token', async ({ request }) => {
+    const response = await request.post('/api/auth/refresh', {
+      data: { refreshToken }
+    });
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body.accessToken).toBeDefined();
+    expect(body.accessToken).not.toBe(authToken);
+
+    // Update the token for subsequent tests
+    authToken = body.accessToken;
+  });
+});</code></pre>
+
+  <h3>route.fulfill() \u2014 Mocking API Responses at the Network Layer</h3>
+  <pre><code>import { test, expect } from '@playwright/test';
+
+test('checkout page displays error when payment API is down', async ({ page }) => {
+  // Intercept the payment API call and return a 503 Service Unavailable
+  await page.route('**/api/payments/process', async (route) => {
+    await route.fulfill({
+      status: 503,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        error: 'SERVICE_UNAVAILABLE',
+        message: 'Payment service is temporarily unavailable. Please try again.'
+      })
+    });
+  });
+
+  await page.goto('/checkout');
+
+  // Fill in checkout form
+  await page.fill('#card-number', '4111111111111111');
+  await page.fill('#card-expiry', '12/28');
+  await page.fill('#card-cvc', '123');
+  await page.click('#submit-payment');
+
+  // Assert the error UI appears
+  await expect(page.locator('.payment-error')).toBeVisible();
+  await expect(page.locator('.payment-error')).toContainText(
+    'Payment service is temporarily unavailable'
+  );
+
+  // Assert retry button is available
+  await expect(page.locator('#retry-payment')).toBeVisible();
+});</code></pre>
+
+  <h3>Hybrid Test: API Setup \u2192 UI Verification \u2192 API Cleanup</h3>
+  <pre><code>import { test, expect } from '@playwright/test';
+
+test.describe('Product creation and display \u2014 hybrid API + UI', () => {
+  let productId: string;
+  const testProduct = {
+    name: \`Test Widget \${Date.now()}\`,
+    price: 29.99,
+    description: 'A test product created via API',
+    stock: 42,
+    category: 'tools'
+  };
+
+  test.beforeAll(async ({ request }) => {
+    // STEP 1: Create the product via API
+    const createResponse = await request.post('/api/products', {
+      data: testProduct,
+      headers: { Authorization: \`Bearer \${process.env.API_TOKEN}\` }
+    });
+
+    expect(createResponse.status()).toBe(201);
+    const body = await createResponse.json();
+    productId = body.id;
+  });
+
+  test('UI displays the same product data that the API returned', async ({ page }) => {
+    // STEP 2: Navigate to the product page
+    await page.goto(\`/products/\${productId}\`);
+
+    // STEP 3: Assert UI matches API data
+    await expect(page.locator('.product-name')).toHaveText(testProduct.name);
+    await expect(page.locator('.product-price')).toContainText('29.99');
+    await expect(page.locator('.product-description')).toHaveText(testProduct.description);
+    await expect(page.locator('.product-stock')).toContainText('42');
+    await expect(page.locator('.product-category')).toContainText('tools');
+  });
+
+  test.afterAll(async ({ request }) => {
+    // STEP 4: Clean up \u2014 delete the test product via API
+    const deleteResponse = await request.delete(\`/api/products/\${productId}\`, {
+      headers: { Authorization: \`Bearer \${process.env.API_TOKEN}\` }
+    });
+
+    expect(deleteResponse.status()).toBe(204);
+  });
+});</code></pre>
+
+  <h3>storageState \u2014 Authenticate via API, Inject State, Run UI Tests</h3>
+  <pre><code>// auth.setup.ts \u2014 Global authentication setup
+import { test as setup, expect } from '@playwright/test';
+import path from 'path';
+
+const AUTH_FILE = path.join(__dirname, '.auth/user.json');
+
+setup('authenticate via API and save storage state', async ({ request, browser }) => {
+  // STEP 1: Login via API to get the auth token
+  const loginResponse = await request.post('/api/auth/login', {
+    data: {
+      email: process.env.TEST_USER_EMAIL!,
+      password: process.env.TEST_USER_PASSWORD!
+    }
+  });
+
+  expect(loginResponse.status()).toBe(200);
+  const { accessToken, refreshToken } = await loginResponse.json();
+
+  // STEP 2: Create a browser context and inject the tokens
+  const context = await browser.newContext();
+
+  // Set the auth tokens in localStorage
+  await context.addInitScript(({ token, refresh }) => {
+    window.localStorage.setItem('accessToken', token);
+    window.localStorage.setItem('refreshToken', refresh);
+  }, { token: accessToken, refresh: refreshToken });
+
+  // STEP 3: Navigate to any authenticated page to set cookies
+  const page = await context.newPage();
+  await page.goto('/dashboard');
+  await expect(page.locator('.user-menu')).toBeVisible();
+
+  // STEP 4: Save the complete browser state
+  await context.storageState({ path: AUTH_FILE });
+  await context.close();
+});</code></pre>
+
+  <pre><code>// playwright.config.ts \u2014 Configure projects to use storageState
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  projects: [
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/
+    },
+    {
+      name: 'chromium',
+      use: {
+        storageState: '.auth/user.json'  // All tests start authenticated!
+      },
+      dependencies: ['setup']  // Setup runs before browser tests
+    }
+  ]
+});</code></pre>
+
+  <h3>Custom Request Fixture with Authentication</h3>
+  <pre><code>// fixtures.ts \u2014 Extend Playwright's test with a custom authenticated request context
+import { test as base, request, APIRequestContext } from '@playwright/test';
+
+type ApiFixtures = {
+  apiRequest: APIRequestContext;
+};
+
+export const test = base.extend\u003CApiFixtures\u003E({
+  apiRequest: async ({}, use) => {
+    const apiContext = await request.newContext({
+      baseURL: process.env.API_BASE_URL || 'https://api.staging.example.com',
+      extraHTTPHeaders: {
+        'Authorization': \`Bearer \${process.env.API_TOKEN}\`,
+        'Content-Type': 'application/json',
+        'X-Request-ID': crypto.randomUUID()
+      },
+      timeout: 15000
+    });
+
+    await use(apiContext);
+
+    // Critical: dispose the custom context to prevent memory leaks
+    await apiContext.dispose();
+  }
+});
+
+export { expect } from '@playwright/test';</code></pre>
+
+  <h3>Parallel API Test Execution Configuration</h3>
+  <pre><code>// playwright.config.ts \u2014 Configure for parallel API test execution
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  workers: process.env.CI ? 4 : undefined,
+
+  projects: [
+    {
+      name: 'api-tests',
+      testMatch: '**/api/**/*.spec.ts',
+      use: {
+        baseURL: 'https://api.staging.example.com',
+        extraHTTPHeaders: {
+          'Authorization': \`Bearer \${process.env.API_TOKEN}\`,
+          'Content-Type': 'application/json'
+        }
+      }
+    },
+    {
+      name: 'ui-tests',
+      testMatch: '**/ui/**/*.spec.ts',
+      use: {
+        baseURL: 'https://staging.example.com',
+        storageState: '.auth/user.json'
+      },
+      dependencies: ['setup']
+    }
+  ],
+
+  timeout: 60000,
+  retries: process.env.CI ? 2 : 0
+});</code></pre>
+
+  <h3>API Test with Request Interception \u2014 Monitoring Network Traffic</h3>
+  <pre><code>import { test, expect } from '@playwright/test';
+
+test('monitor API calls made during page navigation', async ({ page }) => {
+  const apiCalls: { url: string; method: string; status: number }[] = [];
+
+  await page.route('**/api/**', async (route, request) => {
+    apiCalls.push({
+      url: request.url(),
+      method: request.method(),
+      status: 0
+    });
+
+    const response = await route.fetch();
+    apiCalls[apiCalls.length - 1].status = response.status();
+    await route.fulfill({ response });
+  });
+
+  await page.goto('/products');
+
+  expect(apiCalls.length).toBeGreaterThan(0);
+
+  const productListCall = apiCalls.find(
+    call => call.url.includes('/api/products')
+  );
+  expect(productListCall).toBeDefined();
+  expect(productListCall!.status).toBe(200);
+  expect(productListCall!.method).toBe('GET');
+
+  const failedCalls = apiCalls.filter(call => call.status >= 500);
+  expect(failedCalls).toHaveLength(0);
+});</code></pre>
+
+  <h3>DELETE and PUT Requests with Validation</h3>
+  <pre><code>test.describe('Product CRUD operations', () => {
+  let productId: string;
+
+  test('PUT /products/:id updates product details', async ({ request }) => {
+    const updateData = {
+      name: 'Updated Widget Pro',
+      price: 49.99,
+      description: 'Updated description with more features'
+    };
+
+    const response = await request.put(\`/api/products/\${productId}\`, {
+      data: updateData,
+      headers: { Authorization: \`Bearer \${process.env.API_TOKEN}\` }
+    });
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body.name).toBe('Updated Widget Pro');
+    expect(body.price).toBe(49.99);
+    expect(body.description).toBe('Updated description with more features');
+    expect(body.updatedAt).toBeDefined();
+  });
+
+  test('DELETE /products/:id removes the product', async ({ request }) => {
+    const response = await request.delete(\`/api/products/\${productId}\`, {
+      headers: { Authorization: \`Bearer \${process.env.API_TOKEN}\` }
+    });
+
+    expect(response.status()).toBe(204);
+
+    const getResponse = await request.get(\`/api/products/\${productId}\`);
+    expect(getResponse.status()).toBe(404);
+  });
+
+  test('DELETE /products/:id with invalid ID returns 404', async ({ request }) => {
+    const response = await request.delete('/api/products/nonexistent-id', {
+      headers: { Authorization: \`Bearer \${process.env.API_TOKEN}\` }
+    });
+
+    expect(response.status()).toBe(404);
+  });
+});</code></pre>
+
+  <h3>Environment-Specific baseURL for API Tests</h3>
+  <pre><code>// playwright.config.ts \u2014 Environment-aware API configuration
+import { defineConfig } from '@playwright/test';
+
+const ENV = process.env.TEST_ENV || 'staging';
+
+const API_CONFIGS: Record\u003Cstring, { baseURL: string; token: string }\u003E = {
+  dev: {
+    baseURL: 'https://api.dev.example.com',
+    token: process.env.DEV_API_TOKEN || ''
+  },
+  staging: {
+    baseURL: 'https://api.staging.example.com',
+    token: process.env.STAGING_API_TOKEN || ''
+  },
+  production: {
+    baseURL: 'https://api.example.com',
+    token: process.env.PROD_API_TOKEN || ''
+  }
+};
+
+const config = API_CONFIGS[ENV];
+
+if (!config || !config.token) {
+  throw new Error(\`Missing API configuration for environment: \${ENV}\`);
+}
+
+export default defineConfig({
+  projects: [
+    {
+      name: 'api-tests',
+      use: {
+        baseURL: config.baseURL,
+        extraHTTPHeaders: {
+          'Authorization': \`Bearer \${config.token}\`,
+          'X-Environment': ENV
+        }
+      }
+    }
+  ]
+});</code></pre>
+
+  <h3>Error Handling \u2014 API Error Response Validation</h3>
+  <pre><code>test.describe('API error handling', () => {
+
+  test('POST with missing required fields returns 422', async ({ request }) => {
+    const response = await request.post('/api/products', {
+      data: { name: 'Incomplete Product' },
+      headers: { Authorization: \`Bearer \${process.env.API_TOKEN}\` }
+    });
+
+    expect(response.status()).toBe(422);
+
+    const body = await response.json();
+    expect(body.error).toBe('VALIDATION_ERROR');
+    expect(body.errors).toBeInstanceOf(Array);
+
+    body.errors.forEach((err: any) => {
+      expect(err).toHaveProperty('field');
+      expect(err).toHaveProperty('message');
+      expect(err).toHaveProperty('code');
+    });
+  });
+
+  test('POST with malformed JSON body returns 400', async ({ request }) => {
+    const response = await request.post('/api/products', {
+      headers: {
+        'Authorization': \`Bearer \${process.env.API_TOKEN}\`,
+        'Content-Type': 'application/json'
+      },
+      data: 'this is not valid json {'
+    });
+
+    expect(response.status()).toBe(400);
+  });
+
+  test('GET with invalid authentication returns 401', async ({ request }) => {
+    const response = await request.get('/api/products', {
+      headers: { Authorization: 'Bearer invalid_token_12345' }
+    });
+
+    expect(response.status()).toBe(401);
+
+    const body = await response.json();
+    expect(body.error).toBe('UNAUTHORIZED');
+  });
+
+  test('GET with insufficient permissions returns 403', async ({ request }) => {
+    const response = await request.get('/api/admin/users', {
+      headers: { Authorization: \`Bearer \${process.env.READONLY_TOKEN}\` }
+    });
+
+    expect(response.status()).toBe(403);
+  });
+});</code></pre>
+</section>
+
+<section class="content-section">
+  <h2>Playwright API Testing Patterns Interviewers Expect</h2>
+
+  <p>When the interviewer asks "How would you structure Playwright API tests?", they are not asking for a code snippet. They are asking for your architectural thinking — the patterns you use to make API tests maintainable, scalable, and CI-friendly. Here are the four patterns every 2026 SDET candidate must be able to discuss.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Pattern 1: Standalone API Tests — Test REST Endpoints Directly, No Browser</h3>
+      <p>This is the foundational pattern: Playwright tests that use only the <code>request</code> fixture, with no <code>page</code>, no browser, no UI interaction. These tests are fast — typically 50-200ms per request versus 2-5 seconds per browser test. They are parallelisable — no browser means no CPU contention, so you can run 8-10 workers on a modest CI machine. They are deterministic — API responses are data, not rendering, so flakiness from timing and visual rendering is eliminated. The interview expectation: you should be able to structure standalone API tests by domain (auth, users, products, orders, payments), with each domain in its own <code>.spec.ts</code> file, shared authentication via <code>beforeAll</code> hooks, and shared test data via fixtures. Mention that standalone API tests should be in their own Playwright project (separate from browser tests) so they can run with different workers, different timeouts, and no browser dependency — reducing CI cost. At Asda, Mitchell's team ran 400 standalone Playwright API tests in 12 seconds (10 parallel workers), while the equivalent Postman/Newman suite took 90 seconds. The difference was not the tool — it was that Newman's sequential execution model bottlenecked on chained requests, while Playwright's parallel worker model ran independent tests simultaneously.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Pattern 2: Hybrid API + UI Tests — Create Data via API, Verify in UI, Clean Up via API</h3>
+      <p>This is the pattern that interviewers probe most deeply because it demonstrates end-to-end thinking. The flow: (1) Create test data via API (faster and more reliable than clicking through a UI form). (2) Navigate to the UI and verify the data renders correctly — using the exact same identifiers as the API response. (3) Clean up via API (delete the test data) so the test environment stays clean. The key interview points: <strong>test data isolation</strong> — every test run generates unique identifiers (UUIDs, timestamps) so parallel test runs never collide. <strong>API-first setup</strong> — never create test data through the UI if an API endpoint exists. UI data creation is slow (click → type → click → wait) and fragile (selectors change, form validation evolves). API data creation is fast (one POST request) and stable (JSON contracts change less frequently than DOM structure). <strong>Cleanup in afterAll</strong> — even if the UI verification fails, the cleanup should run. This is critical for maintaining a clean test environment across hundreds of test runs. At the Co-op, Mitchell's team built hybrid tests for the membership application where the API created a member record in 80ms, the UI verified the member profile rendered correctly, and the API deleted the record in 60ms — the entire test took 2.5 seconds, of which 2.2 seconds were browser rendering time. Without the API setup, the test would have taken 12 seconds (fill form fields, submit, wait for redirect).</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Pattern 3: Request Interception with route.fulfill() — Mock API Responses at the Network Layer</h3>
+      <p><code>page.route()</code> intercepts network requests at the browser level — before they reach the network. Combined with <code>route.fulfill()</code>, you can return mock responses without a real backend. This enables testing scenarios that are difficult or impossible to test against a real API: (1) <strong>Backend outage simulation:</strong> return 503 Service Unavailable and verify the UI shows a graceful error message, not a blank screen or a stack trace. (2) <strong>Edge-case data:</strong> return an empty product list, a list with 10,000 items (performance testing), or a response with missing fields — scenarios the real API may never return. (3) <strong>Slow network simulation:</strong> use <code>route.abort()</code> with a delay to simulate network timeouts. (4) <strong>API version mismatches:</strong> return an older API response format and verify the front-end handles the schema change gracefully. (5) <strong>Feature flag testing:</strong> mock the feature-flag API to return different flag combinations and verify the UI adapts. The interview nuance: <strong><code>route.fulfill()</code> mocks the entire response — headers, status code, body.</strong> The front-end code is tested in complete isolation from the backend. This is not integration testing — it is isolation testing. The candidate who can articulate when to use <code>route.fulfill()</code> (testing the front-end's resilience to backend failure) vs when to use real API calls (verifying end-to-end integration) demonstrates architectural judgement. <strong><code>route.fetch()</code></strong> lets you forward the request to the real server, modify the response, and then fulfill — a powerful pattern for testing response transformation without mocking the entire backend.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Pattern 4: Authentication Token Reuse via storageState — Login Once, Test Many</h3>
+      <p>This is the pattern that interviewers at senior level expect you to have implemented — because it separates candidates who run 50 tests from candidates who run 500 tests. The architecture: (1) A <strong>global setup project</strong> in <code>playwright.config.ts</code> that authenticates (via API or browser) and saves the browser state to a file. (2) All browser test projects reference that state file via <code>use: { storageState: '.auth/user.json' }</code>. (3) Every test starts authenticated — the browser opens at the target page already logged in. The <strong>API-specific variant</strong>: authenticate via <code>request.post('/api/auth/login')</code> in the setup, extract the access token, create a browser context, inject the token into localStorage via <code>context.addInitScript()</code>, navigate to any page to let the app hydrate its auth state, and save <code>storageState</code>. The interview-critical details: (a) <code>storageState</code> captures cookies AND localStorage AND sessionStorage AND IndexedDB — it is a complete browser state snapshot. If your app stores the auth token in sessionStorage, <code>storageState</code> captures it. If your app uses HttpOnly cookies, <code>storageState</code> captures those too. (b) The setup project must have <code>dependencies: ['setup']</code> on all dependent projects so the setup runs first. (c) Token expiry — tokens in <code>storageState</code> have a TTL. For long-running test suites (45+ minutes), the token may expire mid-suite. The solution: detect 401 responses in your test hooks and re-authenticate, or use a <code>beforeEach</code> that checks token freshness using the JWT <code>exp</code> claim. (d) Parallel test isolation — every parallel worker must have its own <code>storageState</code> file, or the file must be read-only after setup. Two workers writing to the same <code>storageState.json</code> corrupts the state. The solution: each worker copies the state file to a temp directory at startup. At Nationwide, this pattern reduced the mortgage application test suite runtime from 18 minutes to 11 minutes — a 40% improvement from eliminating per-test login — while maintaining complete test isolation.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Real Interview Scenarios — With Code Solutions</h2>
+
+  <p>Here are three scenarios that SDET panels use to test Playwright API testing capability. Each scenario has a specific trap — and your answer to the trap is what the interviewer is actually evaluating.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Scenario 1: "Test the User Registration Flow — Call the Register API, Verify the Response, Then Log In Through the UI with the Same Credentials"</h3>
+      <p>This scenario tests three things simultaneously: API testing capability, hybrid API + UI thinking, and test data management. The trap: candidates often focus on the happy path — register works, login works — and miss the crucial detail that this is a chained operation where the API response (the registered user's credentials) must feed directly into the UI interaction (the login form). The strong answer: (1) Generate unique credentials in the test (timestamp-based email, UUID password). (2) Call the register API — assert 201, assert the response contains a user ID. (3) Use the <em>same</em> credentials from step 1 to fill the login form — no hard-coded test account. (4) Verify the post-login UI shows the registered user's information. (5) Clean up via API — delete the registered user. Bonus: mention checking that duplicate registration with the same email returns 409 Conflict. The interviewer is evaluating whether you understand that API and UI tests share a single test data lifecycle — the data created by the API flows into the UI, and the cleanup happens through the API regardless of whether the UI test passed or failed.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Scenario 2: "Your Checkout API Is Down. Mock the API Response Using route.fulfill() So E2E Tests Can Still Run."</h3>
+      <p>This scenario tests your understanding of network-layer testing and your ability to simulate production failure modes. The trap: candidates often mock a 200 OK response with fake data — missing the point that the test is supposed to verify how the UI handles an API <em>failure</em>. The strong answer: (1) Use <code>page.route()</code> to intercept the checkout API endpoint. (2) Use <code>route.fulfill()</code> to return <strong>503 Service Unavailable</strong> with a realistic error body. (3) Verify the UI displays an appropriate error message — not a blank page, not a JavaScript stack trace, not a spinner that spins forever. (4) Verify the UI provides a recovery path — a retry button, a "save for later" option, or a customer support link. (5) Bonus: test multiple failure modes — 503 (transient failure → retry should work), 500 (server error → user should be informed), 408 (timeout → UI should handle gracefully), and 429 (rate limit → UI should show retry-after guidance). The interviewer is evaluating whether you test for resilience, not just for happy-path correctness. At BT, Mitchell's team used this exact pattern to verify that the broadband checkout page showed a "We're experiencing high demand — please try again in a few minutes" message when the payment API returned 503 — a scenario the real payment API almost never returned, making it untestable without mocking.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h3>Scenario 3: "How Would You Test That the UI Displays the Same Product Data That the API Returns?"</h3>
+      <p>This is the question that catches candidates who test APIs and UIs in isolation. The trap: separate API tests verify the API returns correct data. Separate UI tests verify the UI renders something. But nothing verifies that the UI renders the <em>specific</em> data the API returned. The strong answer describes a hybrid test: (1) Create a product with known data via API (GET is fine if the test environment has known data; POST + known payload if data must be deterministic). (2) Call the product API endpoint and capture the full response — id, name, price, description, stock, images. (3) Navigate to the product page in the browser. (4) Assert that each rendered UI element matches the corresponding API field — <code>expect(page.locator('.product-name')).toHaveText(apiProduct.name)</code>, <code>expect(page.locator('.product-price')).toContainText(apiProduct.price.toString())</code>, etc. (5) Assert on data that is frequently mismatched: currency formatting (API returns 29.99, UI shows £29.99 — does the assertion handle the currency prefix?), date formatting (API returns ISO 8601, UI shows "2 days ago"), and null handling (API returns null for optional fields, UI should show "-" or "Not available", not "null"). The interviewer is evaluating whether you understand that the most common production bug in web applications is not "the API is wrong" or "the UI is broken" — it is "the API is correct and the UI is technically working, but the UI renders different data than the API provided." At Asda, a product price formatting bug — the API returned VAT-inclusive prices but the UI displayed VAT-exclusive prices — was in production for three weeks because separate API and UI tests both passed. A hybrid test would have caught it on the first commit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Common Mistakes That Get Candidates Rejected</h2>
+
+  <p>These are the moments where interviewers stop taking notes and start waiting. They separate candidates who have built Playwright API test suites in production from those who have read the documentation.</p>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">\u26a0\ufe0f</span>
+      <div>
+        <h3>Mistake #1: "I'd Use Postman for API Tests and Playwright for UI Tests"</h3>
+        <p>This answer misses the fundamental point of the question. The interviewer is asking about Playwright API testing specifically because they want to see unified-framework thinking — one tool, one codebase, one CI pipeline, one reporting dashboard. Answering with Postman signals that you think of testing as a collection of separate tools rather than an integrated engineering system. The correct answer acknowledges Postman's role in development and exploration — "I use Postman for rapid prototyping and manual API exploration during development" — but the automated regression tests are in Playwright: "For automated API testing, I use Playwright's <code>APIRequestContext</code> because it integrates with my existing browser test suite, shares the same reporting and CI configuration, and enables hybrid tests that Postman cannot support — verifying that what the API returns is what the UI displays." At HMRC, Mitchell explicitly rejected a candidate who answered "I'd use Postman for API tests" because the role required maintaining a unified Playwright test suite, and the answer revealed the candidate did not understand that Playwright has API testing capability. Tool tribalism is not the issue. Understanding the available tool's complete capability is.</p>
+      </div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-check">\u26a0\ufe0f</span>
+      <div>
+        <h3>Mistake #2: Forgetting to Dispose APIRequestContext</h3>
+        <p>When you create a custom <code>APIRequestContext</code> via <code>request.newContext()</code>, you must dispose it. The built-in <code>request</code> fixture is auto-disposed by Playwright. But custom contexts — created for different base URLs, different auth headers, or different timeout configurations — leak memory and file handles if not explicitly disposed in <code>afterAll</code> or <code>afterEach</code>. In CI, this accumulated leak causes test suites to fail after 45 minutes with "too many open files" errors — a failure mode that never appears in local development (where test suites run shorter and the process terminates between runs, closing all file handles). The correct pattern: <code>const ctx = await request.newContext({...}); await use(ctx); await ctx.dispose();</code>. This is the number one operational mistake Mitchell sees in Playwright API test suites — and the number one reason API tests pass locally but fail in CI after prolonged execution. The candidate who mentions disposal in their interview answer demonstrates they have operated Playwright API tests in CI, not just on their laptop.</p>
+      </div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-check">\u26a0\ufe0f</span>
+      <div>
+        <h3>Mistake #3: Not Handling API Error Responses in Assertions</h3>
+        <p>API tests that only assert on the happy path (200 OK, 201 Created) test only 20% of the application's behaviour. The other 80% — 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable Entity, 429 Too Many Requests, 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable — is where bugs and security vulnerabilities live. The candidate who writes tests for every status code the API can return demonstrates production-grade testing thinking. The candidate who only tests 200 and 201 demonstrates tutorial-level thinking. Specific patterns interviewers want to hear: (a) Testing 401 vs 403 — 401 means "you are not authenticated" (missing/invalid token), 403 means "you are authenticated but not authorized" (valid token, wrong role). Testing both verifies your auth middleware is correctly implemented. (b) Testing 422 with structured error responses — the response body should contain specific field-level errors, not a generic "something went wrong." (c) Testing 429 with <code>Retry-After</code> header — verifying the rate limiter tells the client when to retry. (d) Testing 500 responses for information leakage — the error response must not contain stack traces, file paths, database queries, or internal IP addresses.</p>
+      </div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-check">\u26a0\ufe0f</span>
+      <div>
+        <h3>Mistake #4: Hardcoding Auth Tokens Instead of Using storageState or Request Fixtures</h3>
+        <p>A test that contains <code>Authorization: 'Bearer eyJhbGciOi...'</code> with a hardcoded token is a time bomb. The token expires. The test breaks. Someone has to extract a new token from Postman, paste it into the code, commit, push — and repeat every few hours. This is not automation. It is delayed manual intervention. The correct patterns: (a) <strong>Request fixture with auth in beforeAll:</strong> login via API once, store the token in a variable scoped to the <code>describe</code> block, use it across all tests. (b) <strong>Custom request fixture:</strong> extend Playwright's <code>test</code> with a pre-authenticated <code>APIRequestContext</code> fixture — every test gets a request context that already has the auth header set. (c) <strong>storageState for browser tests:</strong> authenticate once (via API or browser), save the browser state, load it in all tests. The token is never in the test code — it is generated at runtime from environment variables. The candidate who hardcodes a token in their interview answer reveals they have never maintained a test suite over time — because any suite with hardcoded tokens breaks within hours. The candidate who describes fixture-based auth reveals they have built tests that survive token rotation and CI re-runs.</p>
+      </div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-check">\u26a0\ufe0f</span>
+      <div>
+        <h3>Mistake #5: Calling response.json() Multiple Times</h3>
+        <p>This is the small technical detail that instantly signals a lack of production Playwright API testing experience. The response body is a stream. Calling <code>response.json()</code> consumes the stream. Calling it again throws an error: "Response body is already read." The fix is simple — <code>const body = await response.json()</code> — but the mistake reveals that the candidate has only tested single-assertion scenarios. In production, you assert on status code, then on headers, then on body properties — multiple assertions on the same response. If you call <code>response.json()</code> for each assertion, you will hit this error. The correct pattern: parse once, store, assert multiple times. This is the equivalent of the "missing semicolon" in JavaScript fundamentals — a small syntax detail that, when wrong, signals a candidate has not internalised the mental model of how the API works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Playwright API Testing vs Postman vs REST Assured — The Comparison Interviewers Expect</h2>
+
+  <p>When the interviewer asks "When would you use Playwright API testing over Postman or REST Assured?", they are not starting a tool war. They are testing whether you make deliberate engineering decisions based on context — or whether you simply use the tool you know. Here is the comparison framework that demonstrates judgement.</p>
+
+  <div class="comparison-grid">
+    <div class="comparison-card">
+      <h3>Playwright API Testing — The Unified Framework Choice</h3>
+      <p><strong>Strengths:</strong> (1) Single framework for API and UI tests — one language (TypeScript/JavaScript), one configuration file, one reporting system, one CI pipeline job. (2) Native integration with browser contexts — API-obtained tokens can be injected into browser contexts via <code>storageState</code>, enabling authenticated browser tests without UI login. (3) Hybrid tests — API setup → UI verification → API cleanup in a single test file. (4) Network interception — <code>page.route()</code> and <code>route.fulfill()</code> enable mocking at the browser network layer, which Postman and REST Assured cannot do. (5) Parallel execution — Playwright's worker model runs API tests in parallel with zero additional configuration. <strong>When Playwright API testing is the right choice:</strong> your application has both a UI and an API, and you want a single testing framework. Your team already uses Playwright for browser testing. You need hybrid tests that connect API and UI assertions. Your organisation values operational simplicity (one framework, one pipeline) over tool specialisation.</p>
+    </div>
+
+    <div class="comparison-card">
+      <h3>Postman/Newman — The Development-First Choice</h3>
+      <p><strong>Strengths:</strong> (1) Visual interface for API exploration — no code required for simple requests. (2) Built-in collaboration features — share collections, environments, and mock servers across teams. (3) Newman CLI for CI integration — mature, well-documented, widely supported. (4) Rich ecosystem of monitors, mock servers, and documentation generation. (5) Accessible to non-developers — QA analysts, product managers, and manual testers can contribute to API test coverage without writing code. <strong>When Postman is the right choice:</strong> your team includes non-developers who need to create and run API tests. You need API monitoring and mock servers as managed services. Your API testing culture values visual exploration and collaboration. You already have a significant investment in Postman collections and Newman CI pipelines. The interview nuance: Postman is not "worse" than Playwright — it serves a different primary use case. Playwright is for automated regression testing in CI. Postman is for development-time API exploration and team collaboration. The strongest candidates use both: Postman during development, Playwright for automated CI regression tests.</p>
+    </div>
+
+    <div class="comparison-card">
+      <h3>REST Assured — The Java Ecosystem Choice</h3>
+      <p><strong>Strengths:</strong> (1) Native Java DSL — fluent, readable API test syntax that integrates naturally with Java test frameworks (JUnit, TestNG). (2) Built-in support for XML and JSON path expressions — extract and assert on nested response data with concise syntax. (3) Mature authentication support — OAuth 1.0, OAuth 2.0, Basic, Digest, Form auth out of the box. (4) Schema validation — JSON Schema and XML Schema validation built into the DSL. (5) Deep integration with the Java ecosystem — Spring Boot, Maven, Gradle, Allure reporting. <strong>When REST Assured is the right choice:</strong> your backend is written in Java and your development team writes API tests alongside the code. Your organisation's test infrastructure is Java-based (JUnit test runners, Maven/Gradle build pipelines, Allure reporting). Your API testing involves complex XML processing or SOAP endpoints. The interview answer: "I choose REST Assured when the team is Java-native and the API tests need to live in the same Maven/Gradle module as the backend code — so backend developers can run API tests without installing Node.js. I choose Playwright when the test suite needs to cover both browser and API testing in a single framework."</p>
+    </div>
+
+    <div class="comparison-card">
+      <h3>The Decision Framework — When to Use Which</h3>
+      <p><strong>Use Playwright API testing when:</strong> (1) Your application has a browser UI that Playwright already tests — extending Playwright to test APIs eliminates the second-tool tax. (2) You need hybrid API + UI tests that verify data integrity across layers. (3) You need network interception (<code>route.fulfill()</code>) for mocking API responses at the browser level. (4) Your team standardises on TypeScript/JavaScript for test automation. <strong>Use Postman when:</strong> (1) Your testing team includes non-developers who need a visual API testing tool. (2) You need managed API monitoring and mock servers. (3) API exploration and collaboration are primary workflows. <strong>Use REST Assured when:</strong> (1) Your backend is Java and developers own API testing. (2) Your test infrastructure is Java-based. (3) XML/SOAP processing is a core testing requirement. <strong>The strongest interview answer acknowledges all three, articulates the strengths of each, and explains that the choice depends on team composition, application architecture, and organisational testing strategy — not personal preference.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What a Real Playwright API Testing Interview Round Looks Like — Timed Breakdown</h2>
+
+  <p>Drawing from panels Mitchell has conducted at HMRC, Nationwide, and Accenture, here is how Playwright API testing questions typically appear in a 60-minute SDET interview:</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-week">0–10 min</div>
+      <div class="timeline-content">
+        <h3>Experience Probe</h3>
+        <p>"Tell us about a project where you used Playwright to test APIs." They are listening for: did you use <code>APIRequestContext</code> or did you hack API calls through <code>page.evaluate()</code> with <code>fetch()</code>? Did you design standalone API tests, hybrid tests, or both? Did you integrate API tests into CI/CD? Did you handle authentication programmatically, or hard-code tokens? Be specific about what <em>you</em> built — the fixtures, the patterns, the infrastructure — not what your team did collectively.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">10–25 min</div>
+      <div class="timeline-content">
+        <h3>Technical Deep-Dive</h3>
+        <p>Expect questions on <code>APIRequestContext</code> creation and disposal, request methods (GET, POST, PUT, PATCH, DELETE), response parsing (<code>.json()</code>, <code>.text()</code>, <code>.body()</code>), status code and header assertions, authentication token management, and request options (<code>params</code>, <code>headers</code>, <code>timeout</code>, <code>failOnStatusCode</code>). You may be asked to whiteboard a hybrid test: "Write a test that creates an order via API, verifies the order appears in the UI, and cleans up via API." Focus on test structure, data flow between API and UI steps, and error handling when the API call fails.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">25–40 min</div>
+      <div class="timeline-content">
+        <h3>Architecture & Scaling</h3>
+        <p>"How would you structure Playwright API tests for an application with 50 microservices?" This is where you discuss: organising tests by domain/service, shared authentication fixtures, custom request fixtures for different base URLs, parallel execution strategy, environment-specific configuration, CI/CD pipeline design, and test data management (unique identifiers, cleanup, data isolation across parallel workers). Mention <code>storageState</code> for eliminating per-test login, and <code>route.fulfill()</code> for testing resilience to backend failures.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">40–50 min</div>
+      <div class="timeline-content">
+        <h3>Behavioural & Problem-Solving</h3>
+        <p>STAR-format questions about Playwright API testing challenges: debugging a flaky hybrid test that passes locally but fails in CI, handling token refresh in a long-running test suite, convincing a team that uses Postman to adopt Playwright API testing, managing API credentials securely across environments, and dealing with a breaking API change from an upstream team. This is where interviewers probe your operational experience — the problems that only surface when you run Playwright API tests at scale, in CI, over months.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-week">50–60 min</div>
+      <div class="timeline-content">
+        <h3>Your Questions</h3>
+        <p>Ask about their testing architecture: "Does your team use Playwright for both API and browser testing, or are they separate tools? Do you use <code>storageState</code> for authenticated browser tests? Have you adopted hybrid API + UI tests, or do you test each layer independently? What is your biggest pain point with API testing today?" Questions that probe their current Playwright API testing practices show you are thinking about solving their specific problems, not just answering their questions.</p>
+      </div>
+    </div>
+  </div>
+</section>`,
+  faqs: [
+    {
+      q: "Does Playwright support API testing, or do I need a separate tool like Postman?",
+      a: "Yes, Playwright has first-class API testing support through its APIRequestContext — built into the framework since Playwright 1.16 (October 2021). You can send GET, POST, PUT, PATCH, DELETE, and HEAD requests, parse JSON responses, validate status codes and headers, and chain API requests together — all within the same test framework you use for browser automation. No separate tool is required. The request fixture is available in every Playwright test — the same way the page fixture is available. You can write standalone API tests (no browser), hybrid tests (API + UI in the same test), and custom request fixtures with pre-configured authentication and base URLs. At HMRC, Mitchell's team used Playwright as the sole testing framework for both browser and API testing — eliminating the Postman maintenance overhead and creating a single reporting and CI pipeline."
+    },
+    {
+      q: "What is APIRequestContext and how is it different from BrowserContext?",
+      a: "APIRequestContext is Playwright's abstraction for making HTTP requests — analogous to BrowserContext but without a browser. Where BrowserContext provides an isolated browser session (cookies, localStorage, viewport), APIRequestContext provides an isolated HTTP client session (custom base URL, default headers, timeout, proxy settings). Both are created from Playwright's built-in fixtures — request for API testing, browser/page for UI testing. The critical difference: APIRequestContext instances created via request.newContext() must be manually disposed in afterAll hooks, whereas BrowserContext instances are auto-disposed by Playwright. Failing to dispose custom APIRequestContext instances causes memory leaks in CI — the number one operational mistake Mitchell sees in Playwright API test suites. The default request fixture (available as the test function parameter) is auto-disposed by Playwright — no manual cleanup required."
+    },
+    {
+      q: "How do I combine API and browser tests in Playwright — can I call an API and then verify the result in the UI?",
+      a: "Yes — this is the hybrid testing pattern and it is one of Playwright's most powerful features. The approach: (1) Call an API endpoint using the request fixture to create test data (a user, a product, an order). (2) Capture the API response — the resource ID, name, price, or any data you want to verify in the UI. (3) Use the page fixture to navigate to the relevant page in the browser. (4) Assert that the UI displays the exact same data that the API returned — using the same identifiers and values from step 2. (5) Clean up via API in afterAll — delete the test data so your test environment stays clean. The test file uses both the request and page fixtures. This pattern catches the most common production bug: the API is correct, the UI renders correctly, but the UI renders different data than the API provided. Separate API and UI tests pass — the hybrid test catches the mismatch. At Asda, Mitchell's team used this pattern to catch a VAT-inclusive vs VAT-exclusive price display bug that had been in production for three weeks without being detected by their separate API and UI test suites."
+    },
+    {
+      q: "How do I mock API responses in Playwright — what is route.fulfill() and when should I use it?",
+      a: "page.route() intercepts network requests at the browser level — before they reach the network. route.fulfill() returns a mock response without contacting the real backend. Use this pattern to test scenarios that are difficult or impossible to test against a real API: (1) Backend outage simulation — return 503 Service Unavailable and verify the UI shows a graceful error message. (2) Edge-case data — return empty lists, malformed JSON, or responses with missing fields. (3) Slow network simulation — add delays to test loading states and timeouts. (4) Feature flag testing — mock the feature flag API to return different combinations. (5) API version mismatches — return an older API response format to test front-end backwards compatibility. The crucial distinction: route.fulfill() tests the front-end in isolation from the backend. This is resilience testing, not integration testing. Use it alongside real API tests — not instead of them. The combination of both gives you complete test coverage: integration tests against the real API verify end-to-end correctness; route.fulfill() tests verify the front-end handles every possible backend response correctly, including the error responses the real backend rarely returns."
+    },
+    {
+      q: "How do I handle authentication in Playwright API tests — do I need to log in for every test?",
+      a: "No — you should authenticate once and reuse the token across all tests. There are three patterns: (1) BeforeAll authentication — call the login API in a beforeAll hook, store the token in a variable, and use it in the headers of every request. This is the simplest pattern and works well for API-only tests. (2) Custom request fixture — extend Playwright's test with a pre-authenticated APIRequestContext fixture. Every test receives a request context that already has the Authorization header set. Token refresh can be built into the fixture setup. (3) storageState for browser tests — authenticate via API in a global setup script, inject the token into a browser context, and save the complete browser state to a JSON file. Every browser test loads that state file — the browser opens already authenticated, eliminating the per-test login time. At Nationwide, Mitchell's team reduced their UI test suite runtime by 40% by switching from per-test login (8-12 seconds per test) to storageState injection (0.2 seconds per test). For token expiry in long-running suites, add a pre-request check that decodes the JWT exp claim and refreshes the token before it expires."
+    },
+    {
+      q: "Can Playwright API tests run in parallel — and how does that affect test data management?",
+      a: "Yes — Playwright API tests run in parallel by default using Playwright's worker model, and they are significantly faster to parallelise than browser tests because they don't consume browser resources. A typical CI machine can run 8-10 parallel API test workers versus 2-3 browser test workers. The challenge is test data isolation: parallel workers must not collide on shared test data (e.g., two workers trying to create a user with the same email address). The solution: generate unique identifiers in every test — timestamp-based emails (user-{Date.now()}@test.com), UUIDs, or worker-specific prefixes. For shared resources (test environments with limited data), use worker-scoped fixtures or a test data service. Configure API tests as a separate Playwright project in playwright.config.ts with higher worker counts and longer timeouts than browser tests. At Asda, Mitchell's team ran 400 standalone Playwright API tests in 12 seconds using 10 parallel workers, compared to 90 seconds for the equivalent Postman/Newman suite which executed requests sequentially."
+    },
+    {
+      q: "What are the most common mistakes in Playwright API testing that interviewers look for?",
+      a: "The top five: (1) Calling response.json() multiple times — the response body is a stream that can only be read once. Store the result: const body = await response.json(). (2) Forgetting to dispose custom APIRequestContext instances — creates memory leaks that cause CI failures after prolonged execution. (3) Hardcoding authentication tokens instead of using beforeAll auth or custom fixtures — tokens expire and break the suite. (4) Only testing the happy path — 200 and 201. Production-grade API testing means testing every status code the API can return: 400, 401, 403, 404, 409, 422, 429, 500, 502, 503. (5) Testing APIs and UIs in isolation without hybrid tests — the most common production bug (API returns correct data, UI renders different data) goes undetected. Demonstrating awareness of these mistakes — and the correct patterns to avoid them — signals that you have built and maintained Playwright API test suites in production, not just followed tutorials."
+    }
+  ],
+  relatedSlugs: [
+    "playwright-interview-questions-2026",
+    "api-testing-interview-questions-2026",
+    "postman-newman-api-testing-interview-questions-2026",
+    "rest-assured-api-testing-interview-questions-2026",
+    "playwright-vs-selenium-vs-cypress-comparison-2026",
+    "test-doubles-mocks-stubs-fakes-spies-interview-questions-2026"
+  ]
+},
+
+{
   slug: "gitlab-ci-test-automation-sdet-interview-questions-2026",
   title: "GitLab CI/CD Test Automation: SDET Interview Questions 2026",
   description: "Master GitLab CI/CD for test automation in your 2026 SDET interview. GitLab YAML pipelines, parallel test execution with matrix jobs, Docker executor configuration, test reporting (JUnit artifact reports), merging Playwright/Selenium/Cypress into Auto DevOps, GitLab vs GitHub Actions vs Jenkins comparison, and the pipeline architecture patterns that separate senior from mid-level candidates. Real-world experience from Mitchell Agoma at Asda, BT, HMRC, and Nationwide.",
