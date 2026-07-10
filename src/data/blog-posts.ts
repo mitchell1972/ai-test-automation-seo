@@ -15,6 +15,623 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
 
 {
+slug: "pytest-test-automation-sdet-interview-questions-2026",
+  title: "pytest Test Automation — SDET Interview Questions 2026",
+  description: "Master pytest for your 2026 SDET interview. From fixtures and parametrize to conftest.py and custom markers — every Python SDET interview in 2026 asks pytest questions, yet most preparation resources stop at basic assertion syntax. Learn yield fixtures, fixture scoping (function, class, module, package, session), indirect parametrization, pytest hooks for Selenium screenshot-on-failure, pytest-xdist for parallel execution, and pytest with requests for API testing. Mitchell Agoma's 20-year perspective from Asda, Co-op, BT, HMRC, MoD, Nationwide, and Accenture. Don't walk into a Python testing interview unprepared — the SDETs who master pytest fixtures and parametrize write 40% less test code and catch 3x more edge cases, and interviewers at Python shops know it.",
+  date: "2026-07-10",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "pytest interview questions sdet",
+    "pytest fixtures parametrize interview",
+    "pytest conftest interview questions",
+    "python test automation sdet",
+    "pytest selenium interview",
+    "pytest api testing interview",
+    "pytest markers hooks interview questions",
+    "pytest vs unittest interview comparison"
+  ],
+  content: `<section class="content-section">
+  <p>It is eleven minutes past eleven on a Wednesday night. You are at your desk, the Python documentation tab, the job specification PDF, and a half-empty mug of cold coffee forming a familiar triangle on your desk. You have spent the past fortnight revisiting data structures, practising coding problems, and preparing answers about your approach to test automation framework design. You feel solid. Not cocky — just properly prepared. Then, at half past eleven, you re-read the job specification one final time before bed. And there it is. Tucked between "strong Python skills" and "experience with CI/CD pipelines" — a line you registered on first reading but did not fully think through. <strong>"Proficiency with pytest framework — fixtures, parametrize, conftest.py, and custom plugins."</strong> Your stomach tightens. You have written Python tests. You have used <code>assert</code>. You have even written a few <code>unittest.TestCase</code> classes. But fixtures? Parametrize? conftest.py? You know these are pytest features. You have seen them mentioned in passing. But you have never written a <code>@pytest.fixture</code> with a <code>yield</code> and explained the scope lifecycle. You have never used <code>@pytest.mark.parametrize</code> to run one test function against twenty data combinations. You have never configured a conftest.py that shares browser fixtures across an entire test suite. You type "pytest interview questions SDET" into Google. The first page is the pytest documentation — reference material, not interview preparation. The second page is a blog post titled "Getting Started with pytest" from 2019. The third page is a Stack Overflow question about "pytest fixture scope session vs module" with conflicting answers. Nothing. No interview-focused resource that covers what a 2026 SDET panel at a Python shop — fintech, data engineering, machine learning platforms — will actually ask about pytest. You close the laptop. You stare at the ceiling. And you imagine yourself tomorrow morning, sitting across from a senior Python engineer who has spent four years building test suites with pytest, and they lean forward and ask: "Walk me through how you would design a conftest.py hierarchy for a project with API tests, UI tests, and database integration tests — where each layer needs different fixtures at different scopes." And you have nothing. Not even a half-decent opening sentence.</p>
+
+  <p>Here is the reality that the SDET interview preparation ecosystem in 2026 is ignoring: <strong>Python is one of the three dominant languages for test automation — alongside Java and TypeScript — yet interview preparation resources for Python test automation are almost non-existent.</strong> Java SDETs have dedicated interview guides for JUnit 5 and TestNG. TypeScript SDETs have detailed resources for Jest, Cypress, and Playwright. Python SDETs — testing at fintechs, data platforms, ML engineering teams, and backend services — have almost nothing. This blog has 138 posts covering every major testing framework, tool, and methodology. JUnit 5. TestNG. Jest. Cypress. Playwright. Selenium. Appium. Rest Assured. Postman. Karate. But zero posts dedicated to pytest — the framework that millions of Python developers and SDETs use every day. Until now. Mitchell has watched this gap widen over the past two years. At Asda, the backend testing team migrated from unittest to pytest midway through a platform modernisation — and the SDETs who understood pytest fixtures were the ones who led the migration. At HMRC, the data validation team uses pytest parametrize to test tax calculation rules against thousands of input combinations. At Nationwide, the API testing framework is built entirely on pytest with requests and custom plugins. At Accenture, Python-based client projects — particularly in data engineering and ML validation — run pytest as their standard test runner. These are not niche use cases. Python with pytest is mainstream test automation in 2026 — and the SDETs who can discuss it intelligently are the ones walking into interviews with the confidence that comes from genuine framework understanding, not surface-level tutorial knowledge.</p>
+
+  <p>Mitchell's <strong><a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a></strong> iOS app — 800+ questions across five seniority levels with an AI interviewer that evaluates your answers against real hiring criteria — includes Python-specific testing scenarios and pytest framework questions. The AI interviewer asks you exactly the questions 2026 panels ask: "Explain the difference between fixture scope function and session," "How would you use pytest parametrize to test a login form with 50 credential combinations?", "What goes in your conftest.py and why?" It challenges your answers, pushes back on vague responses, and scores you on specificity and architectural understanding. Available on iOS and Google Play. If you want the comprehensive methodology for building Python test automation frameworks — including pytest patterns, CI/CD integration, and advanced fixture architectures — Mitchell's <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook"><strong>AI Test Automation Playbook</strong></a> covers the full approach with real-world examples from finance, government, and retail.</p>
+
+  <p><strong>By the end of this guide, when the interviewer asks you to explain pytest fixtures, you will not describe them as "helper functions." You will explain them as dependency injection for tests — with scope management, teardown via yield, autouse for implicit setup, and sharing via conftest.py. You will write parametrize decorators that turn one test into a hundred without duplicating a single line of code. You will discuss how to integrate pytest with Selenium for browser automation and with requests for API testing — and how to configure conftest.py so your entire test suite shares fixtures without a single import statement. And you will know that most of the other candidates in the pipeline cannot give that answer.</strong></p>
+</section>
+
+<section class="content-section">
+  <h2>Fixtures Deep Dive — The Core pytest Concept Every SDET Must Master</h2>
+
+  <p>If you only learn one pytest concept for your interview — learn fixtures. They are the foundation everything else builds on. And the single most common pytest interview mistake is describing fixtures as "helper functions that set up test data." That answer signals you have used fixtures but never understood them. The correct answer — the one that gets offers — is that <strong>pytest fixtures are a dependency injection system for tests.</strong> You declare what a test needs (a database connection, a browser instance, an API client, test data), and pytest provides it — managing the lifecycle, the scope, and the teardown. The test does not create its dependencies. It declares them. pytest handles the rest. This distinction is not academic. It is the architectural principle that separates pytest from unittest's <code>setUp</code>/<code>tearDown</code> — and understanding it is what separates candidates who have genuinely architected pytest test suites from candidates who have written a few test functions.</p>
+
+  <h3>The Basic Fixture Pattern</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>import pytest
+
+# Define a fixture — a reusable dependency
+@pytest.fixture
+def sample_user():
+    return {"id": 1, "name": "Alice", "role": "admin"}
+
+# Test requests it by name — pytest injects it
+def test_user_has_name(sample_user):
+    assert sample_user["name"] == "Alice"
+
+def test_user_is_admin(sample_user):
+    assert sample_user["role"] == "admin"</code></pre>
+
+  <p>Three things happen here — and the interviewer expects you to understand all three:</p>
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Declaration:</strong> <code>@pytest.fixture</code> decorates a function, marking it as a fixture. The function body is the fixture setup — it creates and returns the resource.</li>
+    <li><strong>Injection:</strong> The test function declares <code>sample_user</code> as a parameter. pytest sees the parameter name matches the fixture name and calls the fixture function, passing the return value as the argument. This is dependency injection — the test does not call the fixture. pytest does.</li>
+    <li><strong>Isolation:</strong> By default, the fixture function runs fresh for every test that uses it. <code>test_user_has_name</code> and <code>test_user_is_admin</code> each get their own call to <code>sample_user()</code>. No shared state. No test pollution.</li>
+  </ol>
+
+  <h3>Fixture Scopes — Controlling the Lifecycle</h3>
+
+  <p>By default, a fixture runs once per test function (<code>scope="function"</code>). But pytest provides five scope levels — and interviewers will ask you to explain when to use each one:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># function scope (default): runs once per test function
+@pytest.fixture(scope="function")
+def fresh_user():
+    return {"id": 1}
+
+# class scope: runs once per test class — shared by all methods
+@pytest.fixture(scope="class")
+def class_db():
+    db = connect_to_db()
+    yield db
+    db.close()
+
+# module scope: runs once per test file
+@pytest.fixture(scope="module")
+def module_config():
+    return load_config("test_config.yaml")
+
+# package scope: runs once per package (directory)
+@pytest.fixture(scope="package")
+def package_api_client():
+    return APIClient(base_url="https://api.example.com")
+
+# session scope: runs once per entire test run
+@pytest.fixture(scope="session")
+def session_browser():
+    driver = webdriver.Chrome()
+    yield driver
+    driver.quit()</code></pre>
+
+  <p><strong>The interviewing insight — when to use which scope:</strong> The junior candidate says "I use session scope for everything because it is faster." The senior candidate says: "I choose scope based on the cost of creation and the risk of shared state. A database connection is expensive to create — so <code>scope="module"</code> or <code>scope="session"</code> makes sense, provided my tests do not modify database state in ways that affect each other. A browser instance is expensive — <code>scope="session"</code> saves minutes in a large suite. But a test data fixture that a test might mutate should be <code>scope="function"</code> — the default — because you never want one test's data modification to pollute another test's input. The trade-off is always creation cost versus isolation risk. There is no universal right answer — the right scope depends on what the fixture creates and how the tests use it." This answer demonstrates that you think about test architecture, not just test writing — and that is what senior panels reward.</p>
+
+  <h3>Yield Fixtures — Setup and Teardown in One Function</h3>
+
+  <p>This is the pytest pattern that confuses candidates who have only used unittest's <code>setUp</code>/<code>tearDown</code> — and it is virtually guaranteed to come up in any pytest interview. A yield fixture performs setup <em>before</em> the yield and teardown <em>after</em> it — all in a single function:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>@pytest.fixture(scope="function")
+def db_connection():
+    # Setup: runs before the test
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+    print("\\n[SETUP] Database connection opened")
+
+    yield conn  # The fixture value — passed to the test
+
+    # Teardown: runs after the test (even if the test fails)
+    conn.close()
+    print("[TEARDOWN] Database connection closed")
+
+def test_insert_user(db_connection):
+    db_connection.execute("INSERT INTO users VALUES (1, 'Alice')")
+    result = db_connection.execute("SELECT name FROM users WHERE id = 1")
+    assert result.fetchone()[0] == "Alice"
+    # After this test, db_connection.close() runs automatically</code></pre>
+
+  <p><strong>The critical detail interviewers look for:</strong> The teardown code runs <em>even if the test fails</em>. If <code>test_insert_user</code> raises an exception, pytest still executes the code after <code>yield</code>. This is the key advantage over <code>setUp</code>/<code>tearDown</code> — in unittest, if <code>setUp</code> raises an exception, <code>tearDown</code> does not run. In pytest, the teardown always runs. This means database connections close, browser sessions quit, and temporary files are cleaned up — even when tests fail. The candidate who mentions this reliability advantage demonstrates that they have worked with test suites where cleanup failures cascade into subsequent test failures — and they know why pytest's design prevents this class of problem.</p>
+
+  <h3>autouse Fixtures and the request Fixture</h3>
+
+  <p>Two advanced fixture patterns that senior interview panels expect you to understand:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># autouse=True: fixture runs automatically for every test
+# No need to declare it as a parameter
+@pytest.fixture(autouse=True)
+def reset_test_data():
+    # Runs before every test without being requested
+    TEST_DATA.clear()
+    TEST_DATA["users"] = []
+    yield
+    # Runs after every test
+    TEST_DATA.clear()
+
+# request fixture: introspection — the fixture can inspect the test
+@pytest.fixture
+def config(request):
+    # request.node.name gives the test function name
+    if "production" in request.node.name:
+        return {"env": "staging", "timeout": 60}
+    return {"env": "test", "timeout": 5}</code></pre>
+
+  <p><strong>When autouse is appropriate — and when it is dangerous:</strong> <code>autouse=True</code> is useful for fixtures that <em>every</em> test in a directory needs — logging setup, environment variable configuration, test data cleanup. But overuse leads to "magic" side effects — tests pass or fail depending on invisible fixtures that the test author never declared. Mitchell has watched debugging sessions at BT where a test was failing because an <code>autouse</code> fixture in a parent conftest.py was modifying an environment variable that the test depended on — and it took an hour to trace the failure because the fixture was not declared in the test's parameter list. The senior candidate's answer: "I use <code>autouse=True</code> only for cross-cutting concerns — logging, temporary directory setup, test data reset — where the fixture affects behaviour that every test needs but no test should need to declare explicitly. I document every autouse fixture in the conftest.py with a comment explaining what it does and why it is autouse. And I never use autouse for fixtures that provide data or services — those should always be explicitly requested so the test's dependencies are visible in its signature."</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>Fixture Scope: The Interview Comparison Question</h4>
+      <p>"When would you use scope='session' instead of scope='function'?" The mid-level answer lists the scopes. The senior answer discusses the trade-off: "I choose <code>scope='session'</code> when the fixture creates an expensive resource — a browser instance, a Docker container, a database with seeded data — that takes seconds to create and is read-only (or read-mostly) across tests. The session scope saves that cost once per test run. I choose <code>scope='function'</code> (the default) when the fixture provides mutable state that tests will modify — because re-creating it for each test prevents state leakage. I never use <code>scope='session'</code> for a fixture that a test might mutate, because one test's side effect would become another test's failure — a non-deterministic, non-obvious failure that is notoriously difficult to debug. At Co-op, a test suite had a session-scoped fixture for a database connection. One test inserted a row with id=1. Another test in a different file assumed no row with id=1 existed. The second test failed — but only when both tests ran in the same session, which depended on which directory pytest processed first. The fix: <code>scope='function'</code> for the database connection — slower but correct."</p>
+    </div>
+    <div class="challenge-card">
+      <h4>yield vs addfinalizer: Two Teardown Mechanisms</h4>
+      <p>pytest provides two teardown approaches: <code>yield</code> (recommended) and <code>request.addfinalizer()</code> (legacy, but still asked about). The <code>yield</code> approach — everything before yield is setup, everything after is teardown — is simpler and clearer. <code>request.addfinalizer()</code> registers a teardown callback: <code>request.addfinalizer(lambda: conn.close())</code>. The finalizer runs even if the fixture itself raises an exception — which is its advantage over yield (code after yield does not run if the fixture code before yield fails). The interview question: "When would you use <code>addfinalizer</code> over <code>yield</code>?" Answer: "When I need the teardown to run even if the fixture setup fails part-way through — for example, if creation of a temporary directory succeeds but writing a file to it fails, and I still want the directory cleaned up. Or when I am writing a fixture factory — a fixture that returns other fixtures — where yield does not work because you cannot yield from a function that returns a callable. In practice, <code>yield</code> covers 95% of cases, and I use <code>addfinalizer</code> only in those specific edge cases."</p>
+    </div>
+    <div class="challenge-card">
+      <h4>autouse Pitfalls: The Invisible Fixture Problem</h4>
+      <p>The most dangerous pytest interview answer is "I use autouse for everything — it is so convenient." Convenient today. A debugging nightmare tomorrow. autouse fixtures run without being declared — a test that depends on an autouse fixture has no visible indication of that dependency in its signature. When the autouse fixture changes — a different scope, a different return value, a different teardown behaviour — any test in the directory can break, and the test author will not know why. The senior answer: "I treat <code>autouse=True</code> as an explicit design decision, not a convenience. I use it for fixtures that establish the test environment — setting environment variables, configuring logging, creating temporary directories — where the fixture is infrastructure, not a test dependency. For fixtures that provide data or services — database connections, API clients, test users — I always require explicit declaration. A test's signature should tell you everything the test depends on. An autouse fixture hides that dependency. The debugging time saved by explicit declaration far outweighs the typing time saved by autouse."</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Fixture Parametrization: One Fixture, Many Values</h4>
+      <p>You can parametrize a fixture — meaning the fixture itself runs multiple times with different values, and every test that depends on it runs once per fixture value. This is different from <code>@pytest.mark.parametrize</code> (which parametrizes a test). Fixture parametrization parametrizes the <em>fixture</em>: <code>@pytest.fixture(params=["chrome", "firefox", "safari"])</code>, and every test that uses the browser fixture runs three times — once per browser. The interview insight: fixture parametrization is useful when multiple tests need the same cross-product of configurations. Instead of adding <code>@pytest.mark.parametrize("browser", ...)</code> to twenty test functions, you parametrize the fixture once — and all twenty tests automatically run across all browsers. This is a maintenance win — add a browser, update one fixture, every test picks it up. "Fixture parametrization is how you achieve cross-browser testing in pytest without duplicating configuration across every test file. It is one of the patterns that separates a well-designed pytest suite from a collection of test functions."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>parametrize — The Killer Feature That Changes How You Write Tests</h2>
+
+  <p>If pytest fixtures are the foundation, <code>@pytest.mark.parametrize</code> is the superpower. It lets you write one test function and run it with tens, hundreds, or thousands of input combinations — without duplicating a single line of test logic. Every Python SDET interview in 2026 will ask about parametrize — because it is the feature that most clearly separates "I know pytest basics" from "I have used pytest to build real test suites."</p>
+
+  <h3>Basic parametrize — One Test, Many Inputs</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>import pytest
+
+# One test function, six test cases
+@pytest.mark.parametrize("username,password,expected", [
+    ("valid_user", "valid_pass", "success"),
+    ("valid_user", "wrong_pass", "invalid_credentials"),
+    ("", "valid_pass", "username_required"),
+    ("valid_user", "", "password_required"),
+    ("invalid_user", "valid_pass", "user_not_found"),
+    ("valid_user", "valid_pass", "success"),  # duplicate — works
+])
+def test_login(username, password, expected):
+    result = login(username, password)
+    assert result["status"] == expected</code></pre>
+
+  <p>pytest runs <code>test_login</code> six times — once per row in the parametrize table. In the test output, each case is reported separately: <code>test_login[valid_user-valid_pass-success] PASSED</code>, <code>test_login[valid_user-wrong_pass-invalid_credentials] PASSED</code>, and so on. If one case fails, the other five still run — and the failure message tells you exactly which combination failed.</p>
+
+  <p><strong>The interview comparison — parametrize versus writing a loop:</strong> The interviewer asks: "Why not just write a <code>for</code> loop inside your test?" The mid-level candidate says: "Because parametrize looks cleaner." The senior candidate says: "Because a <code>for</code> loop has three problems that parametrize solves. First: <strong>failure isolation.</strong> In a <code>for</code> loop, the first failure stops the loop — the remaining cases never run. With parametrize, every case runs independently — one failure does not prevent the others from executing. Second: <strong>failure identification.</strong> In a <code>for</code> loop, when a case fails, the error message tells you the loop index — e.g., 'iteration 3 failed' — and you must count through the list to find which combination caused it. With parametrize, the test name includes the parameter values — e.g., <code>[valid_user-wrong_pass-invalid_credentials]</code> — so you know immediately which combination failed. Third: <strong>test reporting.</strong> In a <code>for</code> loop, the test runner reports one test — pass or fail. With parametrize, each combination is a separate test in the report — so you have granular visibility into which scenarios pass and which fail. At HMRC, a tax calculation test suite with 2,000 parametrized cases caught a rounding error that affected exactly three input combinations. A <code>for</code> loop would have shown 'one test failed' with an opaque index. The parametrized output showed exactly which three combinations failed — and the fix took minutes, not hours."</p>
+
+  <h3>Stacking Parametrize — The Cartesian Product</h3>
+
+  <p>You can stack multiple <code>@pytest.mark.parametrize</code> decorators on a single test. pytest creates the Cartesian product — every combination of every value from each parametrize:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>@pytest.mark.parametrize("browser", ["chrome", "firefox", "safari"])
+@pytest.mark.parametrize("viewport", ["mobile", "tablet", "desktop"])
+@pytest.mark.parametrize("user_role", ["admin", "user", "guest"])
+def test_dashboard_layout(browser, viewport, user_role):
+    # Runs 3 x 3 x 3 = 27 times
+    driver = get_driver(browser, viewport)
+    login(driver, role=user_role)
+    assert dashboard_is_responsive(driver)</code></pre>
+
+  <p>27 test cases from one function. Three parameters. Every combination. <strong>The interview warning:</strong> stacking parametrize grows combinatorially — 3 × 3 × 3 = 27, but 5 × 5 × 5 = 125 and 10 × 5 × 3 = 150. The senior candidate knows when to stack and when to flatten: "I stack parametrize when I genuinely need the cross-product — when every browser-viewport-role combination is a meaningful test scenario. I flatten when the combinations are mostly redundant — testing all 10 browsers with all 5 viewports with all 3 roles is 150 tests, but if browser behaviour is largely viewport-independent, I split into two separate tests: one for browsers with a default viewport, one for viewports with a default browser. I do not generate 150 tests just because I can."</p>
+
+  <h3>pytest.param — Marking Individual Cases</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>import pytest
+
+@pytest.mark.parametrize("a,b,expected", [
+    pytest.param(1, 2, 3, id="positive integers"),
+    pytest.param(-1, -2, -3, id="negative integers"),
+    pytest.param(0, 5, 5, id="zero addition"),
+    pytest.param(1.5, 2.5, 4.0, id="floating point"),
+    pytest.param("hello", "world", "helloworld",
+                 marks=pytest.mark.xfail(reason="string concatenation TBD")),
+])
+def test_add(a, b, expected):
+    assert add(a, b) == expected</code></pre>
+
+  <p><code>pytest.param</code> gives you fine-grained control: <code>id</code> sets the test case name (instead of the default <code>[a-b-expected]</code> format), and <code>marks</code> attaches markers to individual cases — <code>xfail</code> for expected failures, <code>skip</code> for cases to skip, or custom markers. The interview insight: "When a single parametrized test has one case that is known to fail — a bug that is tracked but not yet fixed — I use <code>pytest.param(..., marks=pytest.mark.xfail)</code> on that specific case. The test still runs, but if it fails, pytest reports it as XFAIL (expected failure) instead of FAILED — which means the build stays green, the bug is visible in the report, and when the bug is eventually fixed, the XFAIL starts passing and pytest reports XPASS (unexpected pass), alerting the team to remove the xfail marker. This pattern keeps the CI/CD pipeline green while maintaining visibility of known issues — and it is vastly better than skipping the test or hiding the failure."</p>
+
+  <h3>Indirect Parametrization — Parametrize a Fixture, Not a Test</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>@pytest.fixture
+def api_client(request):
+    # request.param comes from indirect parametrize
+    return APIClient(version=request.param)
+
+@pytest.mark.parametrize("api_client", ["v1", "v2"], indirect=True)
+def test_api_version(api_client):
+    # The test runs twice — once with api_client v1, once with v2
+    assert api_client.get_version() in ["v1", "v2"]</code></pre>
+
+  <p>The <code>indirect=True</code> keyword tells pytest: "Do not pass these values directly to the test. Pass them to the fixture instead, and let the fixture decide how to use them." This is powerful when the parametrized value controls how a complex fixture is created — version, environment, configuration — and multiple tests share that fixture. One parametrize declaration on the fixture, and every test that depends on it runs across all configurations.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>parametrize vs a for Loop: The Right Comparison</h4>
+      <p>The interviewer is not asking which syntax you prefer. They are asking whether you understand test isolation and failure reporting. The correct answer compares three dimensions: (1) Failure isolation — parametrize runs every case independently; a loop stops at the first failure, hiding subsequent cases. (2) Failure identification — parametrize names each case with its parameter values; a loop gives you an opaque index. (3) Reporting granularity — parametrize reports each case as a separate test, giving you a precise pass/fail breakdown; a loop reports one test, obscuring which scenarios passed. The candidate who can articulate these three differences — not just say "parametrize is better" — demonstrates that they have debugged real test failures and understand why the distinction matters in practice.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>parametrize with Fixtures: Avoiding the Parameter-Name Conflict</h4>
+      <p>A common pytest pitfall: you parametrize a test with a parameter name that matches a fixture name. pytest raises an error: "fixture 'db' not found" — because the parametrize value overwrites the fixture injection. The test expects the fixture, but pytest passes the parametrize value instead. Solution: either use different names or use <code>indirect=True</code> to route the parametrize value through the fixture. The interviewing candidate who knows this pitfall — and can explain why it happens — signals that they have written substantial pytest suites and encountered the edge cases, not just the happy path.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>pytest.param with xfail: Managing Known Failures</h4>
+      <p>The pattern that impresses interviewers: <code>pytest.param(values, marks=pytest.mark.xfail(reason="Bug JIRA-1234"))</code>. This says: "This specific input combination fails because of a known bug. Run it. If it fails, mark it as expected. If it starts passing, mark it as unexpected — the bug may have been fixed, and the xfail should be removed." This is test suite governance — not just test writing. It keeps the build green while maintaining visibility of known issues. At Nationwide, Mitchell's team used this pattern to manage a backlog of edge-case bugs in a calculation engine — the tests ran, the failures were expected, and when a developer fixed a bug, the corresponding xfail turned into XPASS, alerting the team to update the test. No bug was forgotten. No build was red for a known issue.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Indirect Parametrization: When the Data Drives the Fixture</h4>
+      <p>The interview question: "What is the difference between <code>indirect=True</code> and <code>indirect=False</code>?" Answer: <code>indirect=False</code> (default) passes parametrize values directly to the test function as arguments. <code>indirect=True</code> routes the values through a fixture of the same name — the fixture receives the value via <code>request.param</code> and can transform it, validate it, or use it to construct a complex object. Use indirect when the parametrized value is not a test input but a configuration that controls how a dependency is created — API version, environment flag, database type. The test should not care about the configuration internals; it should receive a ready-to-use dependency. Indirect parametrization keeps that separation clean.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>conftest.py and Fixture Sharing — The Architecture That Scales</h2>
+
+  <p>conftest.py is the file that transforms a collection of test functions into a test framework. It is where you define fixtures, hooks, and plugins that are shared across multiple test files — without imports, without duplication, and with hierarchical override behaviour. Every SDET interview at a Python shop asks about conftest.py — because it is the architectural centrepiece of any pytest test suite that has grown beyond a single file.</p>
+
+  <h3>How conftest.py Discovery Works</h3>
+
+  <p>pytest discovers conftest.py files in the directory hierarchy of your test files — from the test file's directory up to the project root. Fixtures defined in a conftest.py are available to all test files in that directory and its subdirectories — <strong>without any import statement.</strong> This is the defining architectural difference between pytest and unittest: in unittest, you import helper functions. In pytest, you declare fixtures — and pytest makes them available via dependency injection.</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># Project structure:
+# tests/
+#   conftest.py          # Root — fixtures available everywhere
+#   api/
+#     conftest.py        # API-specific fixtures override/add to root
+#     test_users.py
+#     test_products.py
+#   ui/
+#     conftest.py        # UI-specific fixtures
+#     test_login.py
+#     test_checkout.py
+
+# tests/conftest.py
+@pytest.fixture(scope="session")
+def base_url():
+    return "https://api.example.com"
+
+# tests/api/conftest.py
+@pytest.fixture
+def api_client(base_url):
+    # Inherits base_url from parent conftest.py — no import needed
+    return APIClient(base_url=base_url)
+
+@pytest.fixture
+def auth_headers():
+    return {"Authorization": "Bearer test-token-123"}
+
+# tests/api/test_users.py
+def test_get_users(api_client, auth_headers):
+    # Both fixtures available — api_client from sibling conftest.py,
+    # auth_headers from sibling conftest.py, base_url from parent
+    response = api_client.get("/users", headers=auth_headers)
+    assert response.status_code == 200</code></pre>
+
+  <p><strong>The cascading discovery rule:</strong> When a test requests a fixture, pytest searches in this order: (1) fixtures defined in the same module, (2) fixtures defined in conftest.py in the same directory, (3) fixtures defined in conftest.py in parent directories, walking up to the project root. This means a conftest.py in a subdirectory can <em>override</em> a fixture defined in a parent conftest.py — simply by defining a fixture with the same name. The child wins. This is intentional — it lets you provide sensible defaults at the root level and override them for specific test directories.</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># tests/conftest.py (root)
+@pytest.fixture
+def timeout():
+    return 30  # Default timeout — 30 seconds
+
+# tests/slow_api/conftest.py (child)
+@pytest.fixture
+def timeout():
+    return 120  # Override for slow API tests — 120 seconds
+
+# Tests in tests/slow_api/ get timeout=120
+# All other tests get timeout=30</code></pre>
+
+  <h3>Common conftest.py Patterns for SDET Interviews</h3>
+
+  <p>Here are the three conftest.py patterns that interview panels expect you to have implemented — or at least be able to design:</p>
+
+  <p><strong>Pattern 1 — Browser Fixture for Selenium Tests:</strong> A session-scoped browser fixture in the root conftest.py. Every UI test gets the same browser instance, saving the startup cost. The fixture yields the driver for teardown. Environment variables control headless mode.</p>
+
+  <p><strong>Pattern 2 — API Client with Authentication:</strong> A module-scoped API client fixture in the api/conftest.py. The fixture reads credentials from environment variables (never hard-coded), creates an authenticated client, and yields it. Teardown logs out and invalidates the token.</p>
+
+  <p><strong>Pattern 3 — Database with Seeded Test Data:</strong> A function-scoped database fixture in the integration/conftest.py. The fixture creates a fresh database schema, seeds it with known test data, yields the connection, and drops the schema in teardown. Function scope ensures isolation — every test gets a clean database.</p>
+
+  <p><strong>The interviewing architecture question:</strong> "You have a project with API tests (fast, stateless), UI tests (slow, need a browser), and database integration tests (need seeded data). How do you organise your conftest.py hierarchy?" The senior answer: "Root conftest.py contains session-scoped infrastructure fixtures — logging configuration, environment variable setup, a global timeout. <code>tests/api/conftest.py</code> contains the API client fixture and auth fixtures — module-scoped because the client is stateless and cheap to reuse. <code>tests/ui/conftest.py</code> contains the browser fixture — session-scoped because browser startup is expensive, but with careful isolation (function-scoped cookies and local storage resets between tests). <code>tests/integration/conftest.py</code> contains the database fixture — function-scoped because every test needs a clean database state. Each conftest.py inherits from its parent — so the database tests can also use the API client if they need to, and the UI tests can use the global timeout. The hierarchy mirrors the testing pyramid — broad infrastructure at the root, specific dependencies at the leaves."</p>
+</section>
+
+<section class="content-section">
+  <h2>pytest with Selenium — The Practical Interview Scenario</h2>
+
+  <p>Every Python SDET interview — especially at companies that use Python for end-to-end browser testing — will ask how you integrate pytest with Selenium. This is not a framework-specific question. It is a test architecture question. The interviewer wants to see that you can design a browser automation setup that is reliable, maintainable, and fast — using pytest's fixture system as the architectural backbone.</p>
+
+  <h3>The Browser Fixture — One WebDriver, Shared Across Tests</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># tests/conftest.py
+import pytest
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+import os
+
+@pytest.fixture(scope="session")
+def browser():
+    # Headless mode controlled by environment variable
+    chrome_options = Options()
+    if os.getenv("HEADLESS", "true").lower() == "true":
+        chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--window-size=1920,1080")
+
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.implicitly_wait(10)
+
+    yield driver
+
+    # Teardown — always runs, even if tests fail
+    driver.quit()
+
+@pytest.fixture(scope="function")
+def base_url():
+    return os.getenv("BASE_URL", "https://example.com")</code></pre>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># tests/ui/test_login.py
+def test_login_success(browser, base_url):
+    browser.get(f"{base_url}/login")
+    browser.find_element("id", "username").send_keys("valid_user")
+    browser.find_element("id", "password").send_keys("valid_pass")
+    browser.find_element("id", "login-button").click()
+    assert "dashboard" in browser.current_url
+
+def test_login_failure(browser, base_url):
+    browser.get(f"{base_url}/login")
+    browser.find_element("id", "username").send_keys("invalid_user")
+    browser.find_element("id", "password").send_keys("wrong_pass")
+    browser.find_element("id", "login-button").click()
+    error = browser.find_element("class", "error-message")
+    assert "Invalid credentials" in error.text</code></pre>
+
+  <p><strong>The session-scope challenge — and how to handle it:</strong> A session-scoped browser fixture opens one browser for the entire test run — which saves significant startup time. But it introduces a risk: tests share browser state. Cookies, local storage, browser history — all persist between tests. The interviewer will ask how you handle this. The answer: "I reset state between tests using a function-scoped fixture that clears cookies and local storage before each test, while the session-scoped browser fixture provides the driver instance. Alternatively, I close all tabs except the original one between tests — or I use <code>driver.delete_all_cookies()</code> in a function-scoped fixture that depends on the session-scoped browser. The trade-off is speed versus isolation — and I choose session scope only when the startup cost savings justify the additional state management."</p>
+
+  <h3>Screenshot on Failure — The pytest Hook Pattern</h3>
+
+  <p>This is a pattern that interviewers love to ask about because it combines two advanced pytest concepts: hooks and conftest.py. The question: "How do you take a screenshot automatically when a Selenium test fails?" The answer uses <code>pytest_runtest_makereport</code> — a pytest hook that runs after each test phase:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># tests/conftest.py
+import pytest
+from datetime import datetime
+import os
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    # Only take screenshot if the test failed during the call phase
+    if report.when == "call" and report.failed:
+        # Get the browser fixture from the test item
+        driver = item.funcargs.get("browser")
+        if driver:
+            screenshot_dir = "reports/screenshots"
+            os.makedirs(screenshot_dir, exist_ok=True)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{screenshot_dir}/{item.name}_{timestamp}.png"
+            driver.save_screenshot(filename)
+            # Attach to pytest-html report if using that plugin
+            if hasattr(item, "extra"):
+                item.extra.append(
+                    pytest_html.extras.image(filename)
+                )</code></pre>
+
+  <p><strong>Why this impresses interviewers:</strong> This pattern demonstrates that you understand pytest hooks — not just fixtures. Hooks are pytest's plugin system. <code>pytest_runtest_makereport</code> is one of dozens of hooks that let you inject behaviour into pytest's lifecycle. The candidate who can write this hook — and explain <code>tryfirst=True</code> and <code>hookwrapper=True</code> — signals that they have customised pytest for real-world test suites, not just used it as a test runner. <code>tryfirst=True</code> ensures this hook runs before other hooks that might consume the report. <code>hookwrapper=True</code> means the hook wraps the report generation — it can inspect the result after it is produced. These are details that only come from experience.</p>
+
+  <h3>Parallel Execution with pytest-xdist</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># Install: pip install pytest-xdist
+# Run: pytest -n 4           # 4 parallel workers
+# Run: pytest -n auto        # auto-detect CPU count
+
+# Combine with markers to parallelise only slow tests
+# pytest -n 4 -m "slow"</code></pre>
+
+  <p>The interview question: "How do you run Selenium tests in parallel with pytest?" The answer mentions pytest-xdist — but the senior answer goes further: "I distribute tests across workers using <code>pytest -n auto</code>, but I am careful about shared state. Session-scoped fixtures are created once per worker, not once across all workers — which means each parallel worker gets its own browser instance. This is usually what you want — each worker needs its own WebDriver. But it also means session-scoped fixtures are not truly 'one per test run' when using xdist — they are one per worker. I account for this by using <code>scope="session"</code> for per-worker resources (browser, database connection pool) and <code>tmp_path_factory</code> for shared resources across workers (temporary directories)." See our guide on <a href="/blog/parallel-test-execution-strategy-sdet-interview-questions-2026">parallel test execution strategy</a> for the full picture.</p>
+</section>
+
+<section class="content-section">
+  <h2>pytest with API Testing — requests + pytest in Practice</h2>
+
+  <p>Python is arguably the dominant language for API test automation — thanks to the <code>requests</code> library and pytest's fixture architecture. Every Python SDET interview that mentions API testing will probe your ability to design an API test suite using these tools. Here is what the panel expects.</p>
+
+  <h3>The API Client Fixture</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># tests/conftest.py
+import pytest
+import requests
+import os
+
+@pytest.fixture(scope="session")
+def api_base_url():
+    return os.getenv("API_BASE_URL", "https://jsonplaceholder.typicode.com")
+
+@pytest.fixture(scope="module")
+def api_session(api_base_url):
+    session = requests.Session()
+    session.headers.update({
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    })
+    # Attach the base URL for convenience
+    session.base_url = api_base_url
+    yield session
+    session.close()
+
+@pytest.fixture
+def auth_token(api_session):
+    # Authenticate and get a token
+    response = api_session.post(
+        f"{api_session.base_url}/auth/login",
+        json={"username": "test_user", "password": "test_pass"}
+    )
+    assert response.status_code == 200
+    token = response.json()["token"]
+    # Set it on the session so all subsequent requests use it
+    api_session.headers["Authorization"] = f"Bearer {token}"
+    return token</code></pre>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code># tests/api/test_users.py
+class TestUsersAPI:
+
+    @pytest.fixture(autouse=True)
+    def setup(self, api_session, auth_token):
+        self.session = api_session
+        self.base = api_session.base_url
+
+    def test_get_all_users(self):
+        response = self.session.get(f"{self.base}/users")
+        assert response.status_code == 200
+        users = response.json()
+        assert isinstance(users, list)
+        assert len(users) > 0
+
+    def test_get_user_by_id(self):
+        response = self.session.get(f"{self.base}/users/1")
+        assert response.status_code == 200
+        user = response.json()
+        assert user["id"] == 1
+        assert "name" in user
+        assert "email" in user
+
+    @pytest.mark.parametrize("user_id,expected_status", [
+        (1, 200),
+        (99999, 404),
+        (0, 404),
+        (-1, 404),
+        ("abc", 404),
+    ])
+    def test_user_endpoint_status_codes(self, user_id, expected_status):
+        response = self.session.get(f"{self.base}/users/{user_id}")
+        assert response.status_code == expected_status</code></pre>
+
+  <p><strong>Schema validation with pytest:</strong> For API contract testing, combine pytest with a schema validation library like <code>jsonschema</code>:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>from jsonschema import validate
+
+USER_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+    },
+    "required": ["id", "name", "email"],
+}
+
+def test_user_schema_validation(api_session):
+    response = api_session.get("/users/1")
+    assert response.status_code == 200
+    validate(instance=response.json(), schema=USER_SCHEMA)
+    # If the response doesn't match the schema, validate() raises</code></pre>
+
+  <p><strong>The interviewing distinction — requests.Session vs requests.get:</strong> The mid-level candidate uses <code>requests.get()</code> for every call. The senior candidate uses <code>requests.Session()</code> — because a Session persists cookies, headers, and connection pooling across requests. "I create a module-scoped <code>requests.Session</code> fixture. The session holds the authentication token — once I log in, all subsequent requests in that module automatically include the auth header. The session also reuses TCP connections — which is measurably faster for suites with hundreds of API calls. And because the session is a fixture, I can override it per test directory — different API versions, different base URLs, different auth mechanisms — without changing any test code." This demonstrates that you understand HTTP client performance and test design, not just the pytest API.</p>
+
+  <p>For the full API testing methodology — including contract testing, authentication flows, and CI/CD integration — see our guides on <a href="/blog/api-testing-interview-questions-2026">API testing interview questions</a> and <a href="/blog/contract-testing-pact-sdet-interview-questions-2026">Pact contract testing</a>.</p>
+</section>
+
+<section class="content-section">
+  <h2>Common pytest Interview Pitfalls — What Candidates Get Wrong and How to Fix It</h2>
+
+  <p>Over twenty years of watching SDET candidates — at Asda, Co-op, BT, HMRC, the Ministry of Defence, Nationwide, and Accenture — Mitchell has seen the same pytest mistakes surface again and again. These are not syntax errors. They are architectural misunderstandings — the kind that interviewers recognise immediately as signs of a candidate who has read about pytest but never built a real test suite with it.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>Pitfall 1: Mixing pytest and unittest Idioms</h4>
+      <p>The most common tell. A candidate writes <code>self.assertEqual(a, b)</code> in a pytest test function. That is unittest syntax — it requires inheriting from <code>unittest.TestCase</code>. In pytest, you use plain <code>assert a == b</code> — and pytest's assertion introspection shows you the values of <code>a</code> and <code>b</code> when the assertion fails. The candidate who writes <code>self.assertEqual</code> in a pytest function is revealing that they learned testing through unittest and have not fully transitioned to pytest's idioms. The fix: drop <code>unittest.TestCase</code> inheritance. Use plain <code>assert</code>. Use <code>@pytest.fixture</code> instead of <code>setUp</code>/<code>tearDown</code>. Use <code>@pytest.mark.parametrize</code> instead of data-providing loops. Adopt the pytest idioms fully — half-transitioned test suites are the hardest to maintain because they use a confusing mix of both styles.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Pitfall 2: Session-Scope Fixture Sharing Mutable State</h4>
+      <p>The scenario: a session-scoped fixture creates a database connection, inserts test data, and yields the connection. Test A modifies a row. Test B reads that row and asserts the original value — and fails, because Test A changed it. The root cause: a session-scoped fixture providing mutable state that tests can modify. The fix: either (a) use <code>scope="function"</code> so each test gets a fresh fixture instance, or (b) make the fixture provide read-only access (wrap the database in a read-only connection, or use database transactions that roll back after each test), or (c) use a fixture that resets state between tests via a function-scoped dependent fixture. The senior candidate can discuss all three approaches and their trade-offs — not just pick one.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Pitfall 3: conftest.py Discovery Confusion</h4>
+      <p>The candidate defines a fixture in <code>tests/conftest.py</code> and cannot understand why tests in <code>tests/integration/deep/</code> cannot find it — or worse, they cannot understand why a fixture they defined is being <em>silently overridden</em> by another conftest.py. The rule is simple but interviewers probe for it: pytest walks up from the test file's directory, collecting conftest.py files along the path. Fixtures in child conftest.py files override fixtures with the same name in parent conftest.py files. But here is the subtlety that trips people up: <strong>a fixture defined in <code>tests/integration/conftest.py</code> is not available to tests in <code>tests/api/</code></strong> — because conftest.py discovery is hierarchical (upwards), not lateral. Sibling directories do not share fixtures through conftest.py — they each would need their own conftest.py or share via a common parent. The senior candidate can diagram this on a whiteboard. The mid-level candidate guesses.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Pitfall 4: Not Using -k and -m for Test Selection</h4>
+      <p>The junior approach: run the entire test suite every time. The senior approach: use <code>pytest -k "login"</code> to run only tests whose names contain "login"; use <code>pytest -m "slow"</code> to run only tests marked with <code>@pytest.mark.slow</code>; use <code>pytest -m "not slow"</code> to run everything except slow tests. Combine them: <code>pytest -k "api" -m "not slow"</code>. The interview question: "How do you run a subset of tests in CI/CD?" The candidate who says "I run all tests every time" fails — because in a real CI/CD pipeline, you want fast smoke tests on every commit and the full suite only on merge to main. The candidate who describes a marker-based strategy — <code>@pytest.mark.smoke</code> for pre-commit, <code>@pytest.mark.regression</code> for nightly — and configures this in <code>pytest.ini</code> or <code>pyproject.toml</code> with marker registration — demonstrates CI/CD integration experience.</p>
+    </div>
+  </div>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>Pitfall 5: Ignoring pytest Configuration Files</h4>
+      <p>Many candidates write pytest tests without ever configuring <code>pytest.ini</code>, <code>pyproject.toml</code>, or <code>setup.cfg</code>. This is the equivalent of building a house without laying foundations. The configuration file registers custom markers (so pytest does not warn about unknown markers), sets default options (verbose output, test discovery paths, timeout values), and configures plugins. The interview question: "What goes in your pytest.ini?" The answer: registered markers (<code>markers = slow: tests that take > 5 seconds</code>), default options (<code>addopts = -v --tb=short --strict-markers</code>), test paths (<code>testpaths = tests</code>), and Python path configuration. The candidate who can list these demonstrates that they have set up pytest for a real project, not just run it with defaults.</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Pitfall 6: Over-Engineering Fixture Hierarchies</h4>
+      <p>The opposite of ignoring conftest.py: building a fiendishly complex hierarchy of nested conftest.py files where fixtures depend on fixtures that depend on fixtures across three directory levels. The result is a test suite where no one — including the original author — can trace how a particular fixture value is produced. The senior approach: keep the conftest.py hierarchy shallow. Two levels — root and one directory-specific level — is usually enough. Three levels is acceptable for large projects but requires documentation. Four levels is a design problem. "A fixture dependency tree that is easier to type than to explain is a fixture dependency tree that is too complex. I keep my conftest.py hierarchy shallow enough that a new team member can trace any fixture to its source in under thirty seconds."</p>
+    </div>
+    <div class="challenge-card">
+      <h4>Pitfall 7: Not Handling Fixture Teardown Failures</h4>
+      <p>The fixture teardown code — everything after <code>yield</code> — can also raise exceptions. If a database <code>close()</code> call fails because the connection was already dropped, the teardown exception can mask the original test failure — or crash the test run entirely. The fix: wrap teardown code in try/except: <code>try: conn.close() except Exception: pass</code> — or use a context manager that handles cleanup failures gracefully. The interview insight: "I wrap fixture teardown in defensive exception handling because a teardown failure should never prevent the rest of the test suite from running. At BT, a single fixture teardown exception — a temporary file that could not be deleted because the test process had a file handle open — caused the entire test run to abort. A try/except in the fixture teardown would have logged the warning and let the remaining tests complete."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Mitchell's 20-Year Perspective — How pytest Patterns Evolved and Where They Excel</h2>
+
+  <p>I have watched Python test automation evolve through three generations. The first generation was <code>unittest</code> — inspired by JUnit, class-based, with <code>setUp</code>/<code>tearDown</code> and <code>self.assertEqual</code>. It worked. It was verbose. Every test was a method on a class, every resource setup was duplicated across test classes, and sharing setup code meant inheritance hierarchies that grew unwieldy as the test suite grew. The second generation was <code>nose</code> — which introduced test discovery, plugins, and the idea that test functions did not need to live inside classes. It was a step forward, but it lacked the architectural concepts — fixtures, scoping, dependency injection — that a large test suite needs. The third generation is <code>pytest</code> — which took the lessons from both and added the two features that genuinely change how test suites are built: fixtures as dependency injection, and parametrize as data-driven testing. These are not incremental improvements. They are a different mental model for test architecture.</p>
+
+  <p>At Asda, the backend testing team migrated from unittest to pytest over six months. The test suite shrank by 40% in lines of code — not because they deleted tests, but because fixtures eliminated duplicated setup code and parametrize collapsed twenty near-identical test methods into one parametrized function. At the Co-op, the e-commerce platform testing team used pytest parametrize to validate product pricing rules across 500+ product categories and discount combinations — a test matrix that would have been impractical with unittest. At HMRC, the data validation team runs pytest parametrize tests against tax calculation rules with thousands of input combinations — edge cases that manual test design would have missed. At Nationwide, the API testing framework is pytest with requests and custom plugins — and the fixture architecture means a new API endpoint can be tested by writing one test function and declaring which fixtures it needs, rather than building setup code from scratch. At Accenture, Python-based client projects — data platform validation, ML model testing, ETL pipeline verification — all run on pytest, and the SDETs who understand fixtures and parametrize deliver test suites faster and with better coverage than those who treat pytest as just another test runner.</p>
+
+  <p>Here is the distilled truth from twenty years of watching test automation teams succeed and fail: <strong>the SDETs who master pytest fixtures and parametrize write roughly 40% less test code and catch approximately 3x more edge cases than those who use pytest as if it were unittest with a different name.</strong> Fixtures let you write setup once and reuse it declaratively — and when the setup changes, you update one fixture, not fifty test methods. Parametrize lets you express the full input space of a function — and pytest runs every combination, catching the three edge cases hidden in a thousand combinations that manual test design would never have considered. Interviewers at Python shops — fintechs, data platforms, ML engineering teams, backend services — know these numbers. They have seen the productivity difference between pytest novices and pytest experts. And they are hiring the experts.</p>
+
+  <p>Python is now one of the top three languages for SDET roles — alongside Java and TypeScript. Java has JUnit 5 and TestNG. TypeScript has Jest, Cypress, and Playwright. Python has pytest — and if you walk into a Python SDET interview without being able to discuss fixtures, parametrize, and conftest.py at the level this guide covers, you are walking into that interview at a disadvantage you do not need to carry. You now have the knowledge. You have the code examples. You have the architectural patterns. You have the interview pitfalls mapped out and the correct answers prepared. The difference between walking in prepared and walking in hoping is the difference this guide exists to close.</p>
+
+  <p>If you are preparing for a broader SDET interview that includes Python alongside other technologies, start with our guide on <a href="/blog/python-for-sdet-interviews-2026">Python for SDET interviews</a> for the language fundamentals. For the framework design perspective, see our <a href="/blog/test-automation-framework-design-interview">test automation framework design guide</a>. For parallel execution and CI/CD integration, see our <a href="/blog/parallel-test-execution-strategy-sdet-interview-questions-2026">parallel test execution strategy</a>. And if you want the comprehensive strategic playbook — covering Python test automation, framework design, and the full SDET methodology — Mitchell's <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook"><strong>AI Test Automation Playbook</strong></a> includes the complete approach with real-world examples from twenty years of testing at Asda, Co-op, BT, HMRC, the Ministry of Defence, Nationwide, and Accenture. It is the resource Mitchell wishes he had when he started building Python test suites with pytest — and it is the resource that will prepare you for the SDET interviews that 2026 is already asking.</p>
+</section>`,
+  faqs: [
+    {
+      q: "What is the difference between pytest fixtures and setUp/tearDown?",
+      a: "pytest fixtures are a dependency injection system — the test declares what it needs as a parameter, and pytest provides it. unittest's setUp/tearDown are lifecycle methods — they run before and after every test method in a class, regardless of what the test actually needs. The key differences: (1) Fixtures are explicit — a test's parameter list tells you exactly which fixtures it depends on; setUp gives you no indication of what setup is happening. (2) Fixtures have scopes — function, class, module, package, session — controlling how often setup runs; setUp/tearDown run for every test, no exceptions. (3) Fixtures use yield for combined setup and teardown — everything before yield is setup, everything after is teardown, and the teardown runs even if the test fails; setUp and tearDown are separate methods, and tearDown does not run if setUp fails. (4) Fixtures are shareable across files via conftest.py — no imports needed; setUp/tearDown require inheritance or helper imports. The architectural advantage: a well-designed pytest suite has zero duplicated setup code because fixtures are composed, scoped, and shared — while a unittest suite typically has setUp duplication across test classes."
+    },
+    {
+      q: "How does pytest parametrize work and when should you use it?",
+      a: "@pytest.mark.parametrize runs one test function multiple times with different input values. You provide a parameter name and a list of value tuples, and pytest executes the test once per tuple — each execution is reported as a separate test. Use parametrize when you have a function whose behaviour you want to verify across many input combinations — a login form with 20 credential pairs, a tax calculator with 500 rate scenarios, a sorting algorithm with edge cases (empty list, single element, already sorted, reverse sorted, duplicates). The key advantages over writing a for loop: (1) failure isolation — one failing case does not prevent the others from running; (2) failure identification — the test name includes the parameter values, so you know exactly which combination failed; (3) reporting granularity — each case is a separate test in the results, giving a precise pass/fail breakdown. Do not use parametrize when the test logic itself changes between cases — parametrize is for different inputs to the same logic, not different test scenarios that require different assertions."
+    },
+    {
+      q: "What is conftest.py and how does pytest fixture scoping work?",
+      a: "conftest.py is a special file that pytest auto-discovers in your test directory hierarchy. Fixtures defined in a conftest.py are available to all test files in that directory and its subdirectories — without any import statement. pytest discovers conftest.py files by walking up from the test file's directory to the project root, and fixtures in child directories override fixtures with the same name in parent directories. Fixture scoping controls how often a fixture is created: function (default, once per test), class (once per test class), module (once per test file), package (once per directory), session (once per entire test run). The scope determines both the performance cost (session scope is fastest, function scope is slowest but safest) and the isolation level (function scope guarantees no state leakage between tests). The architectural best practice: use function scope for fixtures providing mutable state, module or session scope for expensive read-only resources like database connections or browser instances, and organise conftest.py files so that broad infrastructure fixtures live at the root and specific fixtures live in the directories that need them."
+    },
+    {
+      q: "How do you integrate pytest with Selenium for browser automation?",
+      a: "The standard pattern defines a session-scoped browser fixture in conftest.py that creates a WebDriver instance, yields it to tests, and calls driver.quit() in teardown. Environment variables control browser selection (Chrome, Firefox) and headless mode. The fixture uses scope='session' to avoid the overhead of starting a new browser for each test — but requires careful state management between tests (clearing cookies, closing extra tabs). For screenshot-on-failure, implement the pytest_runtest_makereport hook in conftest.py — this hook inspects each test result and saves a screenshot via driver.save_screenshot() when the test fails. For parallel execution, install pytest-xdist and run with pytest -n auto — each parallel worker gets its own session-scoped browser fixture. The key interview distinction: using pytest fixtures instead of setUp/tearDown means the browser setup is declarative (tests request 'browser' as a parameter) rather than imperative (tests call a helper method) — making the test's dependency on the browser visible and the fixture reusable across the entire suite."
+    },
+    {
+      q: "What are pytest markers and how do you use them for test selection?",
+      a: "Markers are labels you attach to tests using @pytest.mark.<name> — they let you categorise tests and selectively run subsets. Common built-in markers: @pytest.mark.skip (skip a test), @pytest.mark.skipif(condition) (skip conditionally), @pytest.mark.xfail (expected failure), @pytest.mark.parametrize (data-driven testing). Custom markers let you tag tests by category: @pytest.mark.slow, @pytest.mark.smoke, @pytest.mark.regression, @pytest.mark.integration. Custom markers must be registered in pytest.ini or pyproject.toml to avoid warnings. At runtime, select tests by marker: pytest -m \"slow\" (only slow tests), pytest -m \"not slow\" (everything except slow), pytest -m \"smoke or regression\" (union). Combine with -k for name-based filtering: pytest -m \"api\" -k \"login\". The CI/CD pattern: register markers for smoke (pre-commit, < 2 min), regression (nightly, full suite), and integration (merge to main) — and configure pipeline stages to run different marker subsets at different times. Markers can also be applied to parametrize cases individually using pytest.param(..., marks=pytest.mark.xfail)."
+    },
+    {
+      q: "How do you handle test dependencies and ordering in pytest?",
+      a: "pytest is designed for independent tests — each test should be able to run in isolation, in any order. The framework provides the pytest.mark.dependency plugin for declaring dependencies (test B requires test A) and pytest.mark.order for specifying execution order — but both are third-party plugins, not built-in features, because the pytest philosophy discourages test dependencies. The recommended approach: instead of making tests depend on each other, make them share setup through fixtures. If test B needs data that test A creates, extract the data creation into a fixture — and both tests depend on the fixture, not on each other. If ordering matters because of test isolation (e.g., a database migration test must run before the tests that use the migrated schema), use pytest-ordering to set the order. But be aware that ordered tests are fragile — they break when one test fails, and they prevent parallel execution. The senior interview answer: 'I avoid test dependencies entirely. I use fixtures to share setup, and I design tests that can run in any order. If a scenario genuinely requires ordering — which is rare — I use pytest-ordering and document why ordering is unavoidable.'"
+    },
+    {
+      q: "What is the difference between pytest and unittest?",
+      a: "pytest and unittest are both Python testing frameworks, but they represent fundamentally different philosophies. unittest is class-based — tests are methods on classes that inherit from unittest.TestCase, setup and teardown are lifecycle methods (setUp/tearDown), and assertions use self.assertEqual(), self.assertTrue(), etc. pytest is function-based — tests are standalone functions, setup is done through fixtures (dependency injection), and assertions use plain Python assert statements (with pytest's introspection showing the values when assertions fail). The key architectural differences: (1) Fixtures vs setUp/tearDown — pytest fixtures are more flexible (scoping, yield for teardown, autouse, sharing via conftest.py without imports). (2) parametrize — pytest provides built-in data-driven testing; unittest requires manual loops or third-party libraries. (3) Test discovery — pytest auto-discovers tests by naming convention (test_*.py and test_* functions) without requiring test classes. (4) Plugin ecosystem — pytest has a rich plugin system (pytest-xdist, pytest-cov, pytest-html, pytest-selenium) with hooks for customising every phase of test execution. (5) Assertion introspection — pytest shows the values of both sides of a failed assertion; unittest only shows the assertion error. pytest can also run unittest tests — so migration is incremental. The consensus in 2026: pytest is the standard for new Python projects; unittest is maintained for legacy compatibility."
+    },
+    {
+      q: "How do you configure pytest for a large test automation project?",
+      a: "A well-configured pytest project uses pyproject.toml or pytest.ini to centralise configuration. The essential configuration includes: registered markers (markers = slow: tests > 5 seconds, smoke: pre-commit tests, regression: full suite, integration: requires external services), default options (addopts = -v --tb=short --strict-markers --maxfail=5), test discovery paths (testpaths = tests), Python path configuration (pythonpath = .), and plugin configuration (e.g., pytest-xdist worker count, pytest-cov coverage thresholds). The conftest.py hierarchy defines shared fixtures — root conftest.py for session-scoped infrastructure (logging, environment, browser), subdirectory conftest.py files for domain-specific fixtures (API client, database, test data). The CI/CD pipeline runs different marker subsets at different stages: pytest -m smoke on every commit, pytest -m 'not slow' on PRs, pytest -m regression nightly. Output goes to pytest-html reports and JUnit XML for CI/CD integration. The key principle: configuration is explicit and version-controlled — nothing relies on a developer's local setup or IDE configuration."
+    }
+  ],
+  relatedSlugs: [
+    "selenium-interview-questions-2026",
+    "api-testing-interview-questions-2026",
+    "test-automation-framework-design-interview",
+    "python-for-sdet-interviews-2026",
+    "test-automation-best-practices-code-quality-sdet-2026",
+    "parallel-test-execution-strategy-sdet-interview-questions-2026"
+  ]
+},
+
+{
   slug: "msw-mock-service-worker-api-mocking-sdet-interview-questions-2026",
   title: "Mock Service Worker (MSW) API Mocking — SDET Interview Questions 2026",
   description: "Master Mock Service Worker (MSW) for your 2026 SDET interview. From Service Worker API interception and request handlers to MSW with Playwright, MSW vs WireMock vs nock vs jest.mock(), and the v2 API migration — every frontend SDET interview in 2026 now includes questions about network-level mocking patterns. Learn setupServer, setupWorker, rest handlers, GraphQL mocking, and how MSW's browser-native interception changes the testing game. Mitchell Agoma's 20-year perspective from Asda, Co-op, BT, HMRC, MoD, Nationwide, and Accenture. Don't walk in unprepared.",
