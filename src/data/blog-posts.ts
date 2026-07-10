@@ -15,6 +15,391 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
 
 {
+  slug: "msw-mock-service-worker-api-mocking-sdet-interview-questions-2026",
+  title: "Mock Service Worker (MSW) API Mocking — SDET Interview Questions 2026",
+  description: "Master Mock Service Worker (MSW) for your 2026 SDET interview. From Service Worker API interception and request handlers to MSW with Playwright, MSW vs WireMock vs nock vs jest.mock(), and the v2 API migration — every frontend SDET interview in 2026 now includes questions about network-level mocking patterns. Learn setupServer, setupWorker, rest handlers, GraphQL mocking, and how MSW's browser-native interception changes the testing game. Mitchell Agoma's 20-year perspective from Asda, Co-op, BT, HMRC, MoD, Nationwide, and Accenture. Don't walk in unprepared.",
+  date: "2026-07-10",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "msw mock service worker interview questions",
+    "msw api mocking sdet",
+    "mock service worker testing interview",
+    "msw vs wiremock comparison",
+    "msw playwright integration testing",
+    "mock service worker v2 api interview",
+    "network level mocking sdet questions",
+    "msw setup server handler interview"
+  ],
+  content: `<section class="content-section">
+  <p>It is ten past eleven on a Tuesday night. You are slouched in your desk chair, the interview confirmation email open in one tab and a half-empty mug of cold tea next to your keyboard. You have spent the past three weeks drilling Playwright selectors, memorising REST Assured patterns, and practising the exact intonation you will use when the interviewer asks about your approach to flaky tests. You feel ready — not arrogant, but properly prepared. Then, at seventeen minutes past eleven, you decide to re-read the job specification one final time. And there it is. Tucked between "experience with testing React applications" and "familiarity with CI/CD pipelines" — a line you somehow missed on your first three readings. <strong>"Experience with Mock Service Worker (MSW) preferred."</strong> Your fingers freeze above the keyboard. Mock Service Worker. You have seen the name in passing — a conference talk thumbnail on YouTube, a mention in a blog post about frontend testing — but you have never written a single MSW handler. You have never run <code>npx msw init</code>. You have never thought about what makes a Service Worker different from <code>jest.mock()</code>. You type "MSW interview questions" into Google. The search results are brutal. The first page is the MSW documentation — comprehensive but written as a reference, not as interview preparation. The second is a GitHub issue titled "MSW with Playwright — is it possible?" with twenty-three comments and no clear conclusion. The third is a Reddit thread where someone asks "Is MSW commonly asked in SDET interviews?" The top reply: "Yes, increasingly — React testing roles expect it now." No further detail. No code examples. No interview scenarios. You close the laptop. You stare at the ceiling. And you imagine yourself tomorrow morning, sitting across from a frontend engineering lead who has spent eight months building a React application with MSW as the backbone of their testing strategy, and they lean forward and ask: "Walk me through how you would set up MSW handlers for a component that fetches user data, displays it in a table, and handles loading, empty, error, and success states." And you have nothing. Not even a half-formed sentence.</p>
+
+  <p>Here is the reality that nobody preparing for SDET interviews in 2026 is discussing: <strong>MSW has become the de facto standard for API mocking in frontend tests — used by Vercel, GitHub, Spotify, and Microsoft — yet most SDET preparation resources still treat API mocking as a backend concern (WireMock, REST Assured stubs, Postman mock servers).</strong> The frontend testing ecosystem has moved. An SDET who walks into a React or Next.js testing interview without being able to explain MSW is walking into the same interview as candidates who can — and the gap between "I use <code>jest.mock()</code>" and "I use MSW to intercept network requests at the Service Worker level" is the gap between a £55K and a £75K offer. Mitchell has watched this shift accelerate over the past two years. At Nationwide, the digital team migrated their entire frontend test suite from <code>jest.mock()</code> to MSW because they needed tests that could share mock handlers between unit tests, integration tests, Storybook stories, and local development — and the SDET who understood MSW's architectural advantage was the one who led the migration. At Accenture, client projects increasingly use MSW as their standard mocking layer — not as a nice-to-have but as a <em>requirement</em> in their testing strategy documents. This is not a niche framework for enthusiasts. It is the mainstream frontend mocking standard in 2026 — and the SDETs who can discuss it intelligently are the ones walking into interviews with the confidence that comes from knowing what the panel is actually looking for.</p>
+
+  <p>Mitchell's <strong><a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a></strong> iOS app — 800+ questions across five seniority levels with an AI interviewer that evaluates your answers against real hiring criteria — includes dedicated MSW and API mocking scenarios that cover request handlers, error simulation, GraphQL mocking, and Playwright integration. The AI interviewer asks you exactly the questions 2026 panels ask: "Explain the difference between MSW and jest.mock()," "How would you mock a GraphQL API with MSW?", "Can MSW be used with Playwright end-to-end tests, and if so, how?" It challenges your answers, pushes back on vague responses, and scores you on specificity and architectural understanding. Available on iOS and Google Play. If you want the comprehensive methodology for API mocking across your entire testing pyramid — including MSW patterns that work across unit tests, component tests, integration tests, and local development — Mitchell's <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook"><strong>AI Test Automation Playbook</strong></a> covers the full approach with real-world examples from finance, government, and retail.</p>
+
+  <p><strong>By the end of this guide, when the interviewer says "Show me how you would mock a REST API with MSW for a React component that handles loading, success, error, and empty states," you will not freeze. You will write the handlers. You will explain why MSW intercepts at the network level — not the module level — and why that matters for test realism. You will discuss the Service Worker architecture, the handler lifecycle, and how to integrate MSW with Playwright for end-to-end tests that use the same mock handlers as your unit tests. And you will know that most of the other candidates in the pipeline cannot give that answer.</strong></p>
+</section>
+
+<section class="content-section">
+  <h2>What Is Mock Service Worker — And Why Is It Different From Every Other Mocking Tool?</h2>
+
+  <p>The single most important concept to understand about MSW — and the one that interviewers in 2026 will probe for — is that MSW does not mock at the code level. It intercepts at the network level. This distinction is not academic. It is the architectural decision that makes MSW fundamentally different from every other mocking approach in the JavaScript ecosystem — and understanding it is what separates candidates who have used MSW from candidates who have merely read the README.</p>
+
+  <p><strong>How Traditional Mocking Works:</strong> When you use <code>jest.mock('./api-client')</code>, you are replacing a module import with a mock implementation. Your test code imports the mocked module, not the real one. The network request never happens — the mock function returns a value directly. This works for unit tests. But it has a critical limitation: <strong>you are testing your code against a mock, not against the real request-response lifecycle.</strong> Your component's <code>fetch()</code> call is replaced by a function that returns a hard-coded object. The component never goes through a real HTTP request pipeline — which means you are not testing how your code handles the actual network behaviour: response headers, status codes, network latency, request timeouts, or the differences between <code>fetch()</code> and <code>axios</code> error-handling patterns. You are testing your component against a simplified simulation of the network — and that simulation may not match reality.</p>
+
+  <p><strong>How MSW Works:</strong> MSW registers a Service Worker (in the browser) or uses Node.js request interception (in tests) to intercept <em>actual</em> network requests at the network boundary. Your component makes a real <code>fetch()</code> call. The request travels through the normal HTTP pipeline. MSW intercepts it <em>at the network level</em> — before it leaves the browser or process — and returns a mocked response. Your component receives an actual <code>Response</code> object with headers, a status code, and a body — identical in structure to what it would receive from a real server. The component's request logic, response handling, error processing, and state management all execute exactly as they would in production — because from the component's perspective, the network request <em>did</em> happen. It just happened to be intercepted and handled by MSW instead of travelling to a remote server. This is the killer feature: <strong>the same mock handlers work identically in Jest tests, in the browser during development, and in Storybook stories.</strong> You write your API mocks once, and they run everywhere — no <code>jest.mock()</code> that only works in Jest, no <code>nock</code> that only works in Node, no WireMock server that only works with a running JVM.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>MSW vs jest.mock(): Module-Level vs Network-Level</h4>
+      <p>The interview question that exposes candidates who have never used MSW: "Why not just use <code>jest.mock()</code>?" The shallow answer is "MSW is more realistic." The detailed answer — the one that gets offers — is: <strong><code>jest.mock()</code> replaces the module your code imports — it does not test how your code interacts with the network.</strong> When you mock <code>./api-client</code>, you lose: (a) any logic inside the real API client (request construction, header setting, query parameter encoding), (b) the real <code>Response</code> object (your mock returns a plain JavaScript object, not a Response with <code>.json()</code> and <code>.ok</code> and <code>.status</code>), (c) the ability to test error handling for HTTP-level failures (network errors, 5xx responses, invalid JSON), and (d) the guarantee that your mock's behaviour matches the real API's behaviour (your mock always returns the shape you expect — the real API might not). MSW preserves all four because the real <code>fetch()</code> call executes — the interception happens below it. The candidate who can articulate these four points demonstrates that they understand <em>what</em> they are testing, not just <em>how</em> to use a tool.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>MSW vs nock: In-Process vs Module Replacement</h4>
+      <p><code>nock</code> is a popular Node.js HTTP mocking library that intercepts requests at the <code>http</code> module level. It is closer to MSW in concept than <code>jest.mock()</code> — both intercept real network requests. But the differences matter for interviews: (a) <strong>nock is Node-only</strong> — it works by overriding Node's <code>http.ClientRequest</code>, which does not exist in the browser. MSW works in both Node (via <code>node-request-interceptor</code>) and the browser (via Service Worker). (b) <strong>nock does not work with MSW's handler reuse model</strong> — you cannot share nock definitions between your Jest tests and your Storybook stories, because nock has no browser runtime. (c) <strong>nock matches requests declaratively but has no handler organisation system</strong> — MSW's handler API (<code>rest.get()</code>, <code>graphql.query()</code>) provides a structured way to group, reuse, and compose handlers across tests. The senior-level answer: "I use nock for simple Node.js backend tests where I need to mock a single HTTP call — it is lighter weight than MSW for that use case. I use MSW for frontend testing because I need the same handlers to work in Jest, Storybook, and local development — and nock cannot do that."</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>MSW vs WireMock: Frontend-Native vs Backend-Native</h4>
+      <p>This is a question that senior SDET panels in 2026 increasingly ask, because they are evaluating whether you can choose the right mocking tool for the right context — not just reach for the one you know. <strong>WireMock</strong> is a JVM-based HTTP mock server. It is the correct choice when you are testing a Java or Spring Boot service that makes HTTP calls to other services — your test starts WireMock (embedded or as a Docker container), configures stubs, calls your service, and asserts on the results. <strong>MSW</strong> is the correct choice when you are testing a JavaScript/TypeScript frontend or full-stack application — your test imports MSW handlers, and they intercept requests inside the same process (Node) or browser. The key difference: WireMock is an external server; MSW is an in-process interceptor. WireMock works for any language that can make HTTP requests to a local server. MSW works for JavaScript runtimes. The senior candidate's answer: "I use WireMock when I am testing backend services — particularly Java or Spring Boot services where WireMock's JVM integration gives me stateful stubs, fault injection, and recording/playback. I use MSW when I am testing React or Next.js applications — the handlers work in Jest, in the browser during development, and in Storybook. I would not use MSW to mock APIs for a Java service test — and I would not use WireMock to mock APIs for a React component test. The tool should match the testing context, not the other way around." See our <a href="/blog/wiremock-api-mocking-service-virtualization-sdet-interview-questions-2026">WireMock & API Mocking Strategies guide</a> for the backend perspective.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>The Killer Feature: Write Once, Run Everywhere</h4>
+      <p>No other JavaScript mocking tool offers MSW's portability: the same <code>handlers.ts</code> file runs in Jest/Vitest unit tests (via <code>setupServer</code>), in the browser during development (via <code>setupWorker</code>), in Storybook stories (via the MSW Storybook addon), in Playwright tests (via browser-level Service Worker registration), and in Cypress tests (via <code>cy.intercept()</code> with MSW handlers). This is not a nice-to-have. It is the architectural property that eliminates the mock duplication problem — where your Jest tests mock the API one way, your Storybook stories mock it a different way, and your Playwright tests mock it a third way, and the three mock implementations drift out of sync. With MSW, you write your API handlers once, and they are the single source of truth for every testing and development context. The SDET who can explain this — and contrast it with the maintenance burden of maintaining three separate mock implementations — demonstrates the architectural thinking that senior panels reward. It is not about knowing the MSW API. It is about understanding why MSW's architecture eliminates a class of maintenance problems that traditional mocking tools create.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>MSW Setup, Request Handlers, and the Handler Lifecycle — Code Patterns Every SDET Must Know</h2>
+
+  <p>Knowing the theory of Service Worker interception is table stakes. The interview expects you to produce working MSW code — handler definitions, server setup, test lifecycle configuration. Here are the patterns, with full code examples, that cover what a 2026 SDET panel wants to see.</p>
+
+  <h3>Pattern 1: Basic REST Handlers and Server Setup</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// src/mocks/handlers.ts — shared handlers for all environments
+import { http, HttpResponse } from 'msw';
+
+export const handlers = [
+  // GET /api/users/:id — return a user object
+  http.get('/api/users/:id', ({ params }) => {
+    const { id } = params;
+    return HttpResponse.json({
+      id,
+      name: 'Alice Johnson',
+      email: 'alice@example.com',
+      role: 'admin',
+    });
+  }),
+
+  // GET /api/users — return a list of users
+  http.get('/api/users', () => {
+    return HttpResponse.json([
+      { id: '1', name: 'Alice Johnson', email: 'alice@example.com' },
+      { id: '2', name: 'Bob Smith', email: 'bob@example.com' },
+    ]);
+  }),
+
+  // POST /api/users — create a user and echo back
+  http.post('/api/users', async ({ request }) => {
+    const body = await request.json();
+    return HttpResponse.json(
+      { id: '3', ...body },
+      { status: 201 }
+    );
+  }),
+];</code></pre>
+
+  <h3>Pattern 2: Server Setup for Node Tests (Jest/Vitest)</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// src/mocks/server.ts — Node.js test server
+import { setupServer } from 'msw/node';
+import { handlers } from './handlers';
+
+export const server = setupServer(...handlers);</code></pre>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// jest.setup.ts — connect MSW to Jest lifecycle
+import { server } from './src/mocks/server';
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());</code></pre>
+
+  <p><strong>Why These Three Lifecycle Hooks Matter — And What Happens When Candidates Forget Them:</strong> This is the most common MSW interview pitfall — and the one that signals real experience versus documentation-level familiarity. <code>server.listen()</code> in <code>beforeAll</code> starts the MSW interception — without it, your handlers are defined but the network requests bypass them entirely. <code>server.resetHandlers()</code> in <code>afterEach</code> removes any runtime handler overrides that individual tests added — without it, a test that adds a custom handler using <code>server.use()</code> leaks that handler into subsequent tests, causing flaky failures that are maddening to debug. <code>server.close()</code> in <code>afterAll</code> cleans up the MSW server — without it, the Node.js process may hang (MSW keeps the event loop alive) or subsequent test suites that use MSW may encounter port conflicts. Mitchell has watched SDET candidates at Nationwide spend an entire afternoon debugging a test suite where one test's <code>server.use()</code> call was leaking into the next test — because they omitted <code>server.resetHandlers()</code> in their Jest setup. When the interviewer asks "What goes in your Jest setup file for MSW?", they are listening for these three lifecycle calls — and for your explanation of why each one is necessary. The candidate who can list all three and explain the consequences of omitting each one has clearly set up MSW in a real project. The candidate who says "I just call <code>server.listen()</code>" has only read the Quick Start guide.</p>
+
+  <h3>Pattern 3: Browser Worker Setup (for development and Storybook)</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// src/mocks/browser.ts — browser Service Worker setup
+import { setupWorker } from 'msw/browser';
+import { handlers } from './handlers';
+
+export const worker = setupWorker(...handlers);</code></pre>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// In your app's entry point (development only):
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = await import('./mocks/browser');
+  await worker.start({
+    onUnhandledRequest: 'bypass', // let unmatched requests through
+  });
+}</code></pre>
+
+  <p><strong>The handler-sharing architecture:</strong> Notice that both <code>server.ts</code> and <code>browser.ts</code> import the same <code>handlers</code> array. This is the architectural pattern that interviewers want to hear about: your handlers are a single source of truth, consumed by both the Node test server and the browser Service Worker. When the API changes, you update the handlers in one place — and Jest tests, Vitest tests, local development, Storybook, and Playwright tests all pick up the change. Contrast this with traditional approaches where you maintain separate mock implementations for each environment — and the SDET who can articulate this contrast demonstrates the kind of architectural awareness that commands higher offers.</p>
+
+  <h3>Pattern 4: Per-Test Handler Overrides with server.use()</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>import { http, HttpResponse } from 'msw';
+import { server } from '../mocks/server';
+
+test('shows error message when API returns 500', async () => {
+  // Override the default GET /api/users handler for this test only
+  server.use(
+    http.get('/api/users', () => {
+      return new HttpResponse(null, { status: 500 });
+    })
+  );
+
+  render(<UserList />);
+
+  // Assert the error state is rendered
+  expect(await screen.findByText('Failed to load users')).toBeInTheDocument();
+});</code></pre>
+
+  <p><strong>The interview insight:</strong> <code>server.use()</code> adds a temporary handler that takes priority over the default handlers for the duration of the current test — and <code>server.resetHandlers()</code> in <code>afterEach</code> removes it before the next test runs. This is how you test error states, empty responses, loading states, and edge cases without modifying your shared handlers. The candidate who knows this pattern — and can explain why <code>server.resetHandlers()</code> is essential to prevent test pollution — demonstrates practical MSW experience, not just documentation reading.</p>
+
+  <h3>Pattern 5: GraphQL Mocking with MSW</h3>
+
+  <p>MSW v2 includes first-class GraphQL support — and in 2026, SDET interviews at companies using Apollo Client or Relay increasingly expect candidates to demonstrate GraphQL mocking with MSW. Here is the pattern:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>import { graphql, HttpResponse } from 'msw';
+
+export const handlers = [
+  // Mock a GraphQL query
+  graphql.query('GetUser', ({ variables }) => {
+    const { userId } = variables;
+    return HttpResponse.json({
+      data: {
+        user: {
+          id: userId,
+          name: 'Alice Johnson',
+          email: 'alice@example.com',
+          posts: [
+            { id: '1', title: 'Introduction to MSW', published: true },
+            { id: '2', title: 'Advanced Testing Patterns', published: false },
+          ],
+        },
+      },
+    });
+  }),
+
+  // Mock a GraphQL mutation
+  graphql.mutation('CreatePost', async ({ variables }) => {
+    const { title, content } = variables;
+    return HttpResponse.json({
+      data: {
+        createPost: {
+          id: 'new-post-1',
+          title,
+          content,
+          published: false,
+        },
+      },
+    });
+  }),
+
+  // Mock a GraphQL error
+  graphql.query('GetUser', ({ variables }) => {
+    if (variables.userId === 'nonexistent') {
+      return HttpResponse.json({
+        errors: [{ message: 'User not found', extensions: { code: 'NOT_FOUND' } }],
+      });
+    }
+  }),
+];</code></pre>
+
+  <p><strong>Why GraphQL mocking matters in 2026 interviews:</strong> The distinction between REST mocking and GraphQL mocking in MSW is not just a different function name. GraphQL requests all use the same HTTP endpoint (typically <code>/graphql</code>) — so URL-based matching does not work. MSW matches GraphQL requests by operation name and variables, which is fundamentally different from REST's URL + method matching. The SDET who can explain this difference — and demonstrate that they can mock both REST and GraphQL with MSW — signals experience with modern frontend architectures. Most SDET candidates cannot do this. The ones who can stand out immediately.</p>
+</section>
+
+<section class="content-section">
+  <h2>MSW with Playwright — The 2026 Interview Question That Separates Senior from Mid-Level</h2>
+
+  <p>If there is one MSW interview question that Mitchell predicts every senior frontend SDET panel will ask in 2026, it is this: <strong>"How do you integrate MSW with Playwright end-to-end tests?"</strong> This question tests whether you understand MSW's browser architecture — the Service Worker that runs inside the browser context — and whether you can translate that understanding into a practical testing strategy. The mid-level candidate says "You can't — MSW is for Jest, and Playwright uses <code>page.route()</code> instead." The senior candidate explains <em>how</em> MSW works in Playwright, <em>why</em> you would want to use it (sharing handlers across your entire test suite), and <em>when</em> <code>page.route()</code> is the better choice. Here is the senior-level answer.</p>
+
+  <p><strong>The Architecture Problem:</strong> Playwright tests run in Node.js and control a browser. MSW's <code>setupServer</code> (the Node.js API) cannot intercept requests made by a browser running in a separate process — the browser's network stack is separate from Node.js's network stack. MSW's <code>setupWorker</code> (the browser API) registers a Service Worker <em>inside</em> the browser — which means it can intercept the browser's network requests. The solution: you must make MSW's Service Worker available to the Playwright browser context and start it inside the page. There are three approaches, and the senior candidate can discuss the trade-offs of each.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>Approach 1: MSW Service Worker in the Browser Context (Recommended)</h4>
+      <p>This approach runs MSW's Service Worker inside the Playwright browser, using the same <code>handlers.ts</code> file that your Jest tests use. Steps: (a) Generate the MSW Service Worker script using <code>npx msw init public/ --save</code> — this creates <code>public/mockServiceWorker.js</code>, which is the Service Worker file that MSW registers in the browser. (b) Ensure your application has an MSW initialisation path that calls <code>worker.start()</code> — typically conditionally in development mode. (c) In your Playwright test, navigate to the application and wait for the Service Worker to activate before running assertions. (d) For handler customisation, either expose a mechanism to modify handlers at runtime (e.g., a <code>window.__msw</code> API or query parameters that toggle handler behaviour) or use Playwright's <code>page.route()</code> to supplement (not replace) the MSW handlers. The advantage: you use the same MSW handlers you use for Jest and development — a single source of truth for all your API mocks. The trade-off: Service Worker registration in Playwright adds complexity and a few seconds of startup time, and dynamically changing handlers between tests requires additional infrastructure. Mitchell's recommendation for most teams: this approach provides the most value if you have invested in a comprehensive MSW handler library and want to reuse it across all test types. The consistency benefit — no more "the Playwright tests mock the API differently from the Jest tests" — outweighs the additional setup complexity.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Approach 2: page.route() with MSW-Inspired Patterns (Simpler)</h4>
+      <p>Playwright's built-in <code>page.route()</code> API intercepts network requests at the browser level — it is conceptually similar to what MSW does but natively integrated with Playwright. This approach does not use MSW in Playwright tests at all — instead, you write <code>page.route()</code> handlers that mirror your MSW handlers' behaviour. Steps: (a) In your Playwright test, call <code>await page.route('**/api/users', route => route.fulfill({ status: 200, json: mockUsers }))</code> before navigating to the page. (b) Organise these handlers in a shared module (e.g., <code>playwright-mocks.ts</code>) that mirrors the structure of your MSW <code>handlers.ts</code>. The advantage: zero additional setup — <code>page.route()</code> works out of the box with Playwright, no Service Worker registration, no MSW dependency in your Playwright tests. The trade-off: you are now maintaining two separate mock implementations — your MSW <code>handlers.ts</code> and your Playwright <code>playwright-mocks.ts</code> — and they will drift out of sync. The senior candidate acknowledges this trade-off and has a strategy for managing it: "I maintain the Playwright route handlers as a thin wrapper that imports the same response data from a shared fixtures module — so when the API response shape changes, I update the fixture once and both MSW and Playwright pick it up." See our <a href="/blog/playwright-api-testing-sdet-interview-questions-2026">Playwright API Testing guide</a> for more on <code>page.route()</code> patterns.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Approach 3: Hybrid — MSW for Development, page.route() for Playwright</h4>
+      <p>This is the approach Mitchell has seen work best in practice at Accenture and Nationwide. MSW is used for Jest tests, Storybook, and local development — where its handler-sharing architecture delivers the most value. Playwright E2E tests use <code>page.route()</code> — because E2E tests need different mock characteristics: (a) E2E tests often call real APIs for critical paths (checkout, authentication) and mock only peripheral APIs (analytics, feature flags); MSW's all-or-nothing Service Worker interception makes selective mocking harder. (b) E2E tests need per-test mock customisation — <code>page.route()</code>'s imperative API makes this simpler than MSW's declarative handler approach. (c) E2E tests benefit from Playwright's network debugging tools (HAR recording, network tab in Trace Viewer) which work natively with <code>page.route()</code>. The senior candidate's articulation: "I use MSW for the testing contexts where handler reuse is the priority — Jest, Storybook, development. I use <code>page.route()</code> for the testing context where per-test flexibility and native Playwright integration are the priorities — E2E tests. I share response fixtures between both, so the API contract is consistent even though the mocking mechanism differs." This answer demonstrates that you choose tools based on context — not that you evangelise one tool for everything.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>The Interview Curveball: "Why Not Just Use Cypress with MSW?"</h4>
+      <p>Cypress runs inside the browser — unlike Playwright, which runs in Node.js and controls the browser via the DevTools Protocol. This means Cypress has direct access to the browser's network stack, making MSW integration much simpler: your Cypress tests can <code>import</code> your MSW handlers and start the worker inside the browser context naturally. In fact, Cypress's <code>cy.intercept()</code> API provides network-level interception that is functionally similar to MSW. The interviewer who asks this question is testing whether you understand <em>why</em> Playwright + MSW is harder — and whether you can justify your tool choices. The strong answer: "Cypress's in-browser architecture makes MSW integration simpler — it is one of Cypress's genuine advantages. However, many teams choose Playwright for its multi-browser support, auto-waiting, and faster execution — and the <code>page.route()</code> API provides equivalent network interception without requiring MSW. The decision between Cypress + MSW and Playwright + <code>page.route()</code> depends on whether you need MSW's handler-sharing across your whole testing pyramid — if you do, Cypress makes that easier. If you prioritise cross-browser testing and execution speed, Playwright with <code>page.route()</code> is the pragmatic choice." This answer demonstrates balanced engineering judgement — not tool tribalism.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>MSW v1 vs v2 API — What Changed and Why It Matters in Interviews</h2>
+
+  <p>In late 2023, MSW released version 2.0 with significant API changes. In 2026, many organisations have migrated to v2 — but some legacy projects still use v1. An interviewer who mentions MSW v2 is testing whether you have kept up with the ecosystem. An interviewer who mentions MSW v1 is testing whether you can work with legacy code. Either way, you need to know the differences — not just the API surface changes but the architectural reasons behind them.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>Response Declaration: res() → HttpResponse</h4>
+      <p>The most visible change: in MSW v1, handlers returned responses using the <code>res()</code> utility. In v2, handlers return a <code>Response</code> object — either using the standard Fetch API <code>Response</code> constructor or MSW's <code>HttpResponse</code> helper. Example v1: <code>rest.get('/api/users', (req, res, ctx) => res(ctx.json([...])))</code>. Example v2: <code>http.get('/api/users', () => HttpResponse.json([...]))</code>. The architectural reason: MSW v1's <code>res()</code> was a custom abstraction that didn't match any web standard. V2's <code>HttpResponse</code> returns a standard <code>Response</code> object — the same <code>Response</code> class that <code>fetch()</code> returns natively. This means your handlers are closer to real server behaviour — and you can use standard Response features like <code>response.headers</code>, <code>response.status</code>, and <code>response.clone()</code> directly. The interview insight: the candidate who mentions that v2's alignment with the Fetch API standard is an improvement — not just a cosmetic change — demonstrates understanding of web standards and API design, which is the kind of thinking senior panels look for.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Request Access: req.body → request.json()</h4>
+      <p>In MSW v1, accessing the request body required using the callback's second argument: <code>req.body</code>. In v2, the handler receives a single <code>request</code> object that is a standard <code>Request</code> — and you call <code>await request.json()</code> (or <code>request.text()</code>, <code>request.formData()</code>) to access the body, exactly as you would with the Fetch API. The architectural reason: v2 handlers work with standard web APIs — the same <code>Request</code> and <code>Response</code> objects that browsers and Node.js 18+ provide natively. This means MSW handlers are portable across runtimes (Node, Deno, Bun, Cloudflare Workers) and can be tested independently of MSW using standard web API testing patterns. The senior candidate's observation: "V2's alignment with web standards means MSW handlers are not just test doubles — they are valid server-side request handlers that could, in principle, run in any JavaScript runtime that implements the Fetch API. This is a genuinely forward-looking architectural decision."</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>GraphQL Support: graphql → graphql (with improved API)</h4>
+      <p>MSW v1 provided <code>graphql.query()</code> and <code>graphql.mutation()</code> handlers. V2 keeps the same API surface but improves the underlying implementation with better operation name matching and variables parsing — and the response pattern now uses <code>HttpResponse.json()</code> instead of <code>res(ctx.data(...))</code>. The migration is straightforward: replace <code>res(ctx.data({ user }))</code> with <code>HttpResponse.json({ data: { user } })</code>. The interview note: if the interviewer mentions their team uses Apollo Client or Relay with MSW, mention that MSW v2's GraphQL handlers correctly handle batched queries, persisted queries, and subscription protocols — features that v1 handled inconsistently.</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>onUnhandledRequest Behaviour</h4>
+      <p>In MSW v1, unhandled requests (requests that do not match any handler) produced a warning in the console by default. In MSW v2, <code>onUnhandledRequest</code> defaults to <code>'warn'</code> but can be set to <code>'error'</code> (throw an error) or <code>'bypass'</code> (let the request through). The interview-relevant insight: setting <code>onUnhandledRequest: 'error'</code> in your Jest setup (<code>server.listen({ onUnhandledRequest: 'error' })</code>) is a powerful pattern — it fails tests that make API calls you have not mocked, preventing the "test passes because the mock was never called" problem. At Nationwide, Mitchell's team configured this globally and caught dozens of tests that were passing because API calls silently bypassed the mock layer — the components rendered loading states forever, but the test never asserted on the final state, so it passed. The <code>'error'</code> setting turns those silent passes into loud failures. Mention this in interviews and you signal that you have used MSW in a quality-conscious team — not just in a weekend side project.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Common MSW Interview Pitfalls — What Candidates Get Wrong and How to Avoid It</h2>
+
+  <p>The line between a candidate who gets the offer and one who gets the rejection is often five minutes of answering MSW questions. Here are the five most common mistakes Mitchell has seen candidates make when answering MSW questions — drawn from observing interview panels at Asda, the Co-op, BT, and Accenture — and exactly how to avoid each one.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h4>Pitfall 1: Forgetting server.close() in afterAll</h4>
+      <p>This is the most common MSW mistake — and the one that interviewers have seen so many times that they specifically ask about test cleanup. MSW's Node server keeps the event loop alive. If you call <code>server.listen()</code> in <code>beforeAll</code> but never call <code>server.close()</code> in <code>afterAll</code>, your test process will not exit cleanly after tests complete — Jest will report "Jest did not exit one second after the test run has completed" and hang. The fix is straightforward: ensure <code>afterAll(() => server.close())</code> is in your Jest setup file. But the interview question tests your understanding of <em>why</em> this is necessary — not just what the fix is. The strong answer: "MSW's Node.js request interceptor patches the native <code>http</code> module. The <code>server.close()</code> call removes those patches and releases the event loop. Without it, the patched modules keep references that prevent garbage collection, and the Node.js process cannot exit. This is a consequence of MSW working at the module level — unlike a separate mock server process, MSW runs inside your test process and must be explicitly torn down."</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Pitfall 2: Handler Priority and Ordering Confusion</h4>
+      <p>MSW handlers are matched in the order they are defined — the first handler in the array that matches a request wins. This means handler order matters. A common mistake: defining a generic handler before a specific handler. For example, if you define <code>http.get('/api/users', handlerA)</code> before <code>http.get('/api/users/me', handlerB)</code>, a request to <code>/api/users/me</code> will match <code>handlerA</code> (the <code>/api/users</code> pattern matches <code>/api/users/me</code> as a prefix) and never reach <code>handlerB</code>. The fix: define specific handlers before generic handlers — <code>/api/users/me</code> before <code>/api/users/:id</code> before <code>/api/users</code>. The interview answer: "MSW handler matching is first-match-wins, similar to Express.js route matching. I organise my handlers from most specific to least specific, and I use <code>server.use()</code> in individual tests for temporary overrides because <code>server.use()</code> handlers take priority over the base handlers."</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Pitfall 3: Not Testing the Actual Request</h4>
+      <p>MSW handlers can return any response you want — including responses that are completely unrelated to the request that triggered them. A stub that always returns <code>{ id: '123', name: 'Alice' }</code> regardless of the <code>:id</code> parameter is a stub that gives false confidence — your test passes whether you request user 123, user 456, or user 999, because the handler ignores the parameter. The fix: use the request data in the response. Extract parameters from the URL (<code>params.id</code>), read the request body (<code>await request.json()</code>), check query parameters (<code>request.url.searchParams</code>), and include that data in the response. The interview answer: "My MSW handlers validate the request and return a response that depends on the request — if the test requests user 456, the response contains user 456's data. This ensures my test is actually sending the correct request, not just receiving a hard-coded response. I also use <code>onUnhandledRequest: 'error'</code> to catch requests that bypass the mock layer entirely." This is the difference between a stub that ignores the request (low-quality test) and a handler that processes the request (high-quality test).</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Pitfall 4: Over-Mocking — Mocking Everything Including the System Under Test</h4>
+      <p>MSW intercepts <em>all</em> network requests — including requests to your own application's internal APIs, requests for static assets, and requests to analytics services. Mock them all and you might accidentally mock the very API your component is supposed to interact with — or you might mock requests you did not intend to, hiding real bugs. The fix: be intentional about what you mock. Use <code>onUnhandledRequest: 'bypass'</code> in development (let unmatched requests through to the real server) and <code>onUnhandledRequest: 'error'</code> in tests (fail on unmatched requests, forcing you to explicitly handle every API call). For static assets and third-party scripts, use the <code>quiet</code> option to suppress warnings without failing. The interview answer: "I mock only the APIs my application explicitly depends on for the behaviour I am testing. I use <code>onUnhandledRequest: 'error'</code> in tests to ensure every API call is accounted for — and if my test doesn't need to mock a particular endpoint, I use <code>server.use()</code> with a passthrough handler rather than returning arbitrary data."</p>
+    </div>
+
+    <div class="challenge-card">
+      <h4>Pitfall 5: Confusing MSW with jest.mock() Semantics</h4>
+      <p>Candidates who have used <code>jest.mock()</code> extensively sometimes carry over assumptions that do not apply to MSW. The most common: in <code>jest.mock()</code>, the mock is reset automatically between tests (when <code>jest.resetMocks</code> or <code>restoreMocks</code> is configured). In MSW, handlers persist between tests unless you explicitly call <code>server.resetHandlers()</code> in <code>afterEach</code>. A test that uses <code>server.use()</code> to add a custom handler will leak that handler into subsequent tests — and those tests will fail in ways that are incredibly difficult to debug because the failure is caused by state from a previous test. The fix: <code>afterEach(() => server.resetHandlers())</code> in your Jest setup — and never skip this line. The interview answer: "<code>jest.mock()</code> and MSW have fundamentally different state management models. <code>jest.mock()</code> can be configured to auto-reset between tests. MSW handlers are persistent — they survive between test cases. I always configure <code>server.resetHandlers()</code> in my global <code>afterEach</code> to prevent test pollution. This is not optional — it is the single most important line in an MSW + Jest setup, and omitting it is the leading cause of flaky MSW tests."</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Real-World MSW Interview Scenarios — What Senior Panels Ask and How to Answer</h2>
+
+  <p>Beyond the theory, beyond the code examples — interviewers in 2026 will present concrete testing scenarios and ask how you would use MSW to solve them. These scenarios test whether you can translate MSW knowledge into practical test design. Here are the four scenarios that Mitchell has seen appear most frequently in frontend SDET interviews — and how to answer each one convincingly, drawing on two decades of experience at Asda, Co-op, BT, HMRC, the Ministry of Defence, Nationwide, and Accenture.</p>
+
+  <h3>Scenario 1: The Loading-Empty-Error-Success Quadrant</h3>
+  <p><strong>The interviewer says:</strong> "You have a React component that fetches a list of users from <code>/api/users</code> and displays them in a table. How would you test all four states: loading, empty, error, and success?"</p>
+  <p><strong>What they are testing:</strong> Your ability to use <code>server.use()</code> for per-test handler overrides — because each state requires a different server response. This is the single most common MSW interview scenario because it covers the core MSW workflow: shared handlers for the default (success) case, and per-test overrides for the edge cases.</p>
+  <p><strong>The winning answer:</strong> "I define my default handler in <code>handlers.ts</code> to return a successful response with user data. For the loading state, I do not override the handler — I simply assert that the loading indicator is visible before the data arrives. For the empty state, I use <code>server.use(http.get('/api/users', () => HttpResponse.json([])))</code> to override with an empty array. For the error state, I use <code>server.use(http.get('/api/users', () => new HttpResponse(null, { status: 500 })))</code> to simulate a server error. For the success state, the default handler provides the data — I assert that all users are rendered in the table. Each state is a separate test — never combine them into one — because each test should verify one specific behaviour. And crucially: <code>server.resetHandlers()</code> in <code>afterEach</code> ensures each test's override does not leak into the next test." The interviewer who hears this answer recognises a candidate who has written real MSW tests — because they know that the "four-state" pattern is the standard frontend testing interview question and that <code>server.use()</code> with proper cleanup is the correct approach.</p>
+
+  <h3>Scenario 2: Mocking a Payment Flow with MSW</h3>
+  <p><strong>The interviewer says:</strong> "You are testing a checkout flow. The payment submission calls <code>POST /api/payments</code> which can return 200 (success), 402 (insufficient funds), or 503 (gateway unavailable). How would you test all three outcomes?"</p>
+  <p><strong>What they are testing:</strong> Your ability to mock the same endpoint with different responses using <code>server.use()</code> overrides — and your understanding that MSW can model real API behaviour beyond just "success" and "error."</p>
+  <p><strong>The winning answer:</strong> "I define the default handler to return a 200 with a transaction ID. For insufficient funds, I override with <code>server.use(http.post('/api/payments', () => HttpResponse.json({ error: 'INSUFFICIENT_FUNDS' }, { status: 402 })))</code> — and I assert that the UI displays the appropriate error message, not a generic 'something went wrong.' For gateway unavailable, I override with a 503 — and I assert that the UI shows a retry button and that clicking it re-attempts the payment. I also test for a network failure — <code>HttpResponse.error()</code> — which is different from a 503: a 503 means the server responded with an error; a network error means the server never responded. The distinction matters because my retry logic should handle them differently: retry immediately on network failure (transient), back off on 503 (may be overload). At Asda, Mitchell's team found that the checkout retry logic treated 503 and network failures identically — which caused unnecessary retries during a gateway outage. Testing both failure modes separately would have caught the need for different retry strategies." This answer demonstrates the kind of failure-mode thinking that separates senior SDETs from mid-level — understanding that "error" is not a single state and that different error types require different handling.</p>
+
+  <h3>Scenario 3: MSW in a Microservices Architecture</h3>
+  <p><strong>The interviewer says:</strong> "Your frontend calls three different microservices: Users, Products, and Orders. Each service has its own base URL and authentication requirements. How would you organise your MSW handlers?"</p>
+  <p><strong>What they are testing:</strong> Your ability to structure MSW handlers at scale — not just for a single endpoint but for a realistic frontend application that depends on multiple backend services.</p>
+  <p><strong>The winning answer:</strong> "I organise handlers by domain, mirroring the backend service architecture. I create separate handler modules — <code>handlers/users.ts</code>, <code>handlers/products.ts</code>, <code>handlers/orders.ts</code> — each exporting an array of handlers for that domain. My <code>handlers/index.ts</code> aggregates them: <code>export const handlers = [...userHandlers, ...productHandlers, ...orderHandlers]</code>. Each domain module contains handlers for the common success cases. For per-test overrides, I refer to the domain: <code>server.use(http.get('https://api.example.com/users', handler))</code>. For authentication, MSW handles request headers natively — I can read the <code>Authorization</code> header from the request in my handler and return a 401 if it is missing or invalid, which tests that my frontend sends the correct auth token. This mirrors how the real microservices behave — if the token is missing, the handler returns 401, and my test verifies the UI redirects to login. The key insight: my MSW handler structure reflects the real backend topology. When a new microservice is added, I add a new handler module. When an API endpoint changes, I update one handler file. The structure scales with the application."</p>
+
+  <h3>Scenario 4: Migrating from jest.mock() to MSW</h3>
+  <p><strong>The interviewer says:</strong> "Our test suite has 400 tests using <code>jest.mock()</code>. We want to migrate to MSW. How would you approach it?"</p>
+  <p><strong>What they are testing:</strong> Your understanding of real-world migration — because many organisations in 2026 are in exactly this position: they have legacy test suites using <code>jest.mock()</code> and are migrating to MSW incrementally. They want a candidate who can lead this migration, not one who insists on rewriting everything from scratch.</p>
+  <p><strong>The winning answer:</strong> "I would not rewrite 400 tests. I would migrate incrementally: (a) Set up MSW infrastructure — install the package, create the <code>handlers.ts</code> file, configure the Jest setup with <code>server.listen()</code>, <code>server.resetHandlers()</code>, and <code>server.close()</code>. The MSW server runs alongside <code>jest.mock()</code> — they do not conflict because <code>jest.mock()</code> prevents the real module from executing, so the network request never occurs, and MSW never intercepts it. (b) Identify the tests that would benefit most from migration — tests for components that make real API calls and would benefit from network-level interception (loading states, error states, response parsing). Migrate those first. (c) Write all new tests using MSW — the new standard is MSW, not <code>jest.mock()</code>. (d) Migrate legacy tests opportunistically — when a test needs to be updated for a feature change, migrate it to MSW at the same time. This keeps migration cost incremental rather than a dedicated 'migration sprint' that blocks feature work. At Nationwide, this approach migrated a 500-test suite from <code>jest.mock()</code> to MSW over six months without disrupting feature delivery. The key is not to treat migration as a separate project — it is a quality improvement that happens alongside feature work. The interviewer who hears this answer recognises a candidate who has managed real-world test suite migrations — not a candidate who has only built greenfield projects.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for MSW Interview Questions — Starting Tonight</h2>
+
+  <p>You are not going to become an MSW expert by reading one blog post at midnight. But you <em>can</em> build a structured answer that covers the Service Worker architecture, the handler lifecycle, the MSW + Playwright integration, the v1-to-v2 migration, and the common interview scenarios — and you can practise delivering it until it is fluent and confident. Here is the plan that Mitchell recommends, distilled from twenty years of helping SDETs prepare for technical interviews at Asda, Co-op, BT, HMRC, the Ministry of Defence, Nationwide, and Accenture.</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Build your mental model tonight.</strong> Re-read the "What Is MSW" section of this guide. Close your eyes. Explain to an imaginary interviewer — out loud — why MSW intercepts at the network level instead of the module level. Two sentences: "MSW registers a Service Worker in the browser that intercepts actual network requests — the <code>fetch()</code> call executes, and MSW catches it before it leaves the browser. This means the same handlers work in Jest, Storybook, and local development — because the interception is at the network boundary, not the module boundary." Two sentences. But those two sentences, delivered confidently, put you ahead of every candidate who says "MSW is like <code>jest.mock()</code> but better" and cannot explain why.</li>
+    <li><strong>Download SDET Interview Coach</strong> and complete the 2-minute onboarding assessment. Select Frontend Testing as your focus area and your target seniority level. The app surfaces MSW-specific questions calibrated to <em>your</em> interview — Junior candidates get foundational questions about handlers and setup; Senior candidates face the full architectural discussion including Playwright integration, GraphQL mocking, and test suite migration strategy. The AI interviewer evaluates your answers against real hiring criteria — it will push back on vague answers, ask follow-up questions, and score you on specificity — exactly as a real interview panel would.</li>
+    <li><strong>Run a mock interview tonight.</strong> Select the Frontend Testing / MSW topic, set a 20-minute timer, and answer the questions out loud — not in your head. Articulating answers out loud is uncomfortable, which is exactly why you must practise it. The AI feedback will show you exactly where your answers need more specificity or better examples.</li>
+    <li><strong>Use Job Match for your target role.</strong> Paste the job description from your target company into Job Match and get 50 bespoke questions tailored to their exact stack and expectations. If the JD mentions React, Next.js, MSW, or frontend testing, you will get questions specific to those technologies — including the exact interview scenarios this guide has prepared you for.</li>
+  </ol>
+
+  <p style="margin-top: 1.5rem;">The frontend SDET interview landscape in 2026 has changed. MSW — the mocking library used by Vercel, Microsoft, Spotify, and millions of React developers — appears in job descriptions not as a nice-to-have but as a <em>baseline expectation</em> for frontend testing roles. But the interview preparation ecosystem has not caught up. Most SDET candidates still prepare exclusively for backend mocking patterns — WireMock, Postman mock servers, REST Assured stubs. They walk into frontend-focused SDET panels with backend-mocking answers — and the interviewers, who have spent eighteen months building a frontend test suite on MSW, immediately recognise the gap. This guide closes that gap. You now know the Service Worker architecture, the handler lifecycle, MSW with Playwright, the v1-to-v2 migration, and the common interview scenarios — and you have the code examples to back it up.</p>
+
+  <p>If you are preparing for a broader SDET interview that includes API mocking alongside frontend testing, start with our guide on <a href="/blog/wiremock-api-mocking-service-virtualization-sdet-interview-questions-2026">WireMock & API Mocking Strategies</a> for the backend perspective. For contract testing that verifies your MSW handlers match the real API, see our <a href="/blog/contract-testing-pact-sdet-interview-questions-2026">Pact Contract Testing guide</a>. For the Playwright side, our <a href="/blog/playwright-api-testing-sdet-interview-questions-2026">Playwright API Testing guide</a> covers <code>page.route()</code> patterns. And if you want the comprehensive strategic playbook — covering frontend testing, API mocking, Playwright, and CI/CD integration — Mitchell's <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook"><strong>AI Test Automation Playbook</strong></a> includes the complete methodology with real-world examples from twenty years of testing at Asda, Co-op, BT, HMRC, the Ministry of Defence, Nationwide, and Accenture. It is the resource Mitchell wishes he had when he started testing React applications with MSW — and it is the resource that will prepare you for the frontend SDET interviews that 2026 is already asking.</p>
+</section>`,
+  faqs: [
+    {
+      q: "What is Mock Service Worker and how is it different from jest.mock()?",
+      a: "Mock Service Worker (MSW) is a library that intercepts network requests at the network level — using a Service Worker in the browser or Node.js request interception in tests. Unlike jest.mock(), which replaces module imports with mock implementations (preventing the real network call from ever occurring), MSW allows the real fetch() call to execute and intercepts it at the boundary. This means your code goes through the full request-response lifecycle — receiving real Response objects with headers, status codes, and body parsing — exactly as it would against a real server. The key difference is test realism: jest.mock() tests your code against a simplified mock module; MSW tests your code against actual HTTP responses. Additionally, MSW handlers work identically in Jest tests, the browser during development, and Storybook — a portability that jest.mock() cannot provide because it only works in the Jest runtime.",
+    },
+    {
+      q: "Can MSW be used with Playwright end-to-end tests?",
+      a: "Yes, MSW can be used with Playwright tests — but it requires registering MSW's Service Worker inside the Playwright browser context, which is architecturally more complex than using MSW in Jest (where it runs in the same Node.js process). There are three viable approaches. Approach 1: Run MSW's Service Worker in the Playwright browser — generate the mockServiceWorker.js file (using npx msw init), ensure your application starts the worker, and navigate to the app in Playwright. This gives you handler reuse across Jest, Storybook, and Playwright — a single source of truth for all your API mocks. Approach 2: Use Playwright's built-in page.route() API instead — it provides network-level interception natively, without requiring MSW's Service Worker. This is simpler but means maintaining separate mock implementations for Jest/MSW and Playwright. Approach 3 (recommended): Use MSW for Jest, Storybook, and local development where handler reuse matters most; use page.route() for Playwright where per-test flexibility and native debugging tools matter more. Share response fixtures between both to keep API contracts consistent.",
+    },
+    {
+      q: "How does MSW intercept network requests without modifying application code?",
+      a: "MSW uses two different interception mechanisms depending on the runtime. In the browser, MSW registers a Service Worker — a script that sits between the web page and the network and can intercept outgoing HTTP requests. The Service Worker is installed once (via npx msw init, which generates a mockServiceWorker.js file in your public directory) and intercepts all requests from your application without requiring any changes to your application code — the fetch() or axios calls remain unchanged. In Node.js (during tests), MSW patches the native http and https modules at the lowest level, intercepting outgoing requests before they reach the network. This means any HTTP client — fetch, axios, got, supertest — is intercepted without modification. The architectural elegance: your application code is completely unaware of MSW. It makes standard HTTP requests, and MSW intercepts them transparently. This is what enables handler reuse — the same handlers intercept the same requests regardless of the runtime (Node.js, browser, Storybook) because the interception layer abstracted away.",
+    },
+    {
+      q: "What is the difference between setupServer and setupWorker in MSW?",
+      a: "setupServer creates an MSW server for Node.js environments — it patches Node's native http/https modules to intercept requests. It is used in Jest, Vitest, and other Node.js-based test runners. setupWorker creates an MSW Service Worker for browser environments — it registers a Service Worker script that intercepts requests inside the browser. It is used during local development and in Storybook. The key architectural insight: both consume the exact same handlers array. You define your handlers once (in handlers.ts), and the same handlers are passed to both setupServer (for tests) and setupWorker (for development/Storybook). This is MSW's killer feature — write your API mocks once, and they work everywhere. The setup code differs only in the import path (import { setupServer } from 'msw/node' vs import { setupWorker } from 'msw/browser') and the lifecycle management (server.listen()/server.close() vs worker.start()/worker.stop()).",
+    },
+    {
+      q: "What are the limitations of MSW?",
+      a: "MSW has several limitations that SDETs should understand. (1) Service Worker support: in the browser, MSW requires a browser that supports Service Workers — which all modern browsers do, but it will not work in older or specialised environments that lack Service Worker support. (2) Node.js version: MSW v2 requires Node.js 18+ for the Fetch API support it depends on. (3) Playwright integration complexity: unlike Jest where MSW runs natively, Playwright requires additional setup to register the Service Worker in the browser context — there is no built-in integration. (4) WebSocket mocking: MSW does not natively support WebSocket interception — for real-time applications, you need a different mocking tool like MockServer. (5) Not suitable for production: MSW is a development and testing tool — the Service Worker should never be bundled in production builds. (6) Selective mocking difficulty: MSW intercepts all HTTP requests by default — selectively allowing some requests through to the real server while mocking others requires configuration (onUnhandledRequest: 'bypass') and careful handler design. (7) Handler ordering sensitivity: MSW matches handlers in order — the first matching handler wins — which can cause unexpected behaviour if handlers are not ordered from most specific to least specific.",
+    },
+    {
+      q: "How do I test loading, error, empty, and success states with MSW?",
+      a: "The standard pattern uses MSW's server.use() to override handlers on a per-test basis, with server.resetHandlers() in afterEach to prevent test pollution. The default handlers (in handlers.ts) return successful responses. For the loading state: render the component and assert the loading indicator is visible before the mocked response resolves — add a small delay to the handler (using a Promise with setTimeout) to ensure the loading state is visible long enough to assert on. For the error state: use server.use(http.get('/api/users', () => new HttpResponse(null, { status: 500 }))) to override the default handler for one test, and assert the error UI is rendered. For the empty state: override with HttpResponse.json([]) and assert the empty-state message appears. For the success state: the default handler provides data — assert the data is rendered correctly. Each state gets its own test case. The critical implementation detail: server.resetHandlers() in afterEach must run after every test — otherwise a server.use() override in one test will leak into the next test and cause flaky failures that are extremely difficult to debug.",
+    },
+    {
+      q: "What is the difference between MSW v1 and MSW v2?",
+      a: "MSW v2, released in late 2023, introduced significant API changes aligned with web standards. The key differences: (1) Response creation: v1 used res(ctx.json(...)); v2 uses HttpResponse.json(...) which returns a standard Response object matching the Fetch API. (2) Request access: v1 passed (req, res, ctx) as handler arguments; v2 passes a single object with the request as a property, and you call await request.json() to access the body — matching the Fetch API's Request interface. (3) GraphQL: v2 improved GraphQL operation name matching and uses HttpResponse.json({ data: {...} }) instead of res(ctx.data(...)). (4) onUnhandledRequest: v2 defaults to 'warn' with clearer options for 'error' and 'bypass'. (5) Dependencies: v2 requires Node.js 18+ and uses the Fetch API natively — eliminating the node-fetch dependency. The architectural motivation: v2 aligns MSW's API with web standards (Fetch API Request/Response), making handlers portable across runtimes (Node, Deno, Bun, Cloudflare Workers) and making them testable independently of MSW. In interviews, mention that v2 was a deliberate move towards web standards alignment, not just a cosmetic API change.",
+    },
+    {
+      q: "How does MSW handle GraphQL mocking, and how is it different from REST?",
+      a: "MSW provides first-class GraphQL support through the graphql namespace: graphql.query() and graphql.mutation(). The fundamental difference from REST mocking is matching strategy. REST handlers match on HTTP method and URL path (http.get('/api/users/:id')). GraphQL handlers must match on operation name and variables — because all GraphQL requests typically use the same HTTP endpoint (/graphql) as POST requests. MSW's graphql.query('GetUser') matches GraphQL requests where the operation name is 'GetUser', regardless of the URL. The response pattern follows GraphQL conventions: handlers return HttpResponse.json({ data: {...} }) for successful queries or HttpResponse.json({ errors: [...] }) for errors — both wrapped in a top-level JSON object with data and/or errors fields, matching the GraphQL specification. MSW v2 improved GraphQL support with better operation variable parsing, batched query handling, and subscription protocol compatibility. For interview preparation, be ready to demonstrate mocking both a query (graphql.query('GetUser')) and a mutation (graphql.mutation('CreatePost')) — and explain that GraphQL error handling is different from REST because errors are returned in the response body alongside partial data, not as HTTP status codes.",
+    },
+  ],
+  relatedSlugs: [
+    "wiremock-api-mocking-service-virtualization-sdet-interview-questions-2026",
+    "contract-testing-pact-sdet-interview-questions-2026",
+    "api-testing-interview-questions-2026",
+    "playwright-api-testing-sdet-interview-questions-2026",
+    "postman-newman-api-testing-interview-questions-2026",
+    "rest-assured-api-testing-interview-questions-2026"
+  ]
+},
+
+{
   slug: "flutter-integration-testing-sdet-interview-questions-2026",
   title: "Flutter Integration Testing — SDET Interview Questions 2026",
   description: "Master Flutter integration testing for your 2026 SDET interview. From widget tests vs integration tests vs unit tests, the integration_test package, Flutter Driver migration, golden file testing, and state management testing with Provider, Riverpod, and Bloc — every mobile SDET interview in fintech, startup, and agency environments now includes Flutter-specific testing questions. Learn Dart test setup, pumpWidget, finder patterns, network mocking, and real device CI/CD integration. Mitchell Agoma's 20-year perspective from Asda, Co-op, BT, HMRC, MoD, Nationwide, and Accenture. Don't walk in unprepared.",
