@@ -15,6 +15,467 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
 
 {
+  slug: "i18n-localization-testing-sdet-interview-questions-2026",
+  title: "i18n & Localization Testing — SDET Interview Questions 2026",
+  description: "Master i18n and localization testing for your 2026 SDET interview with Mitchell Agoma's enterprise-hardened guide. From pseudo-localization, character encoding, RTL layout testing, locale-aware date/time/currency validation, translation coverage analysis, and CI/CD integration — every enterprise SDET role at Asda, BT, HMRC, MoD, Nationwide, and Accenture expects you to understand internationalization testing strategy. Most candidates have never considered what happens when their test suite encounters Arabic text, Japanese characters, or German compound words. The ones who get hired can explain why i18n testing is not just translation verification — it is structural, architectural, and deeply connected to test automation reliability. This guide covers the exact i18n and localization testing questions 2026 interview panels ask — and the answers that demonstrate genuine globalised testing maturity.",
+  date: "2026-07-22",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "i18n localization testing interview questions 2026",
+    "internationalization testing SDET interview",
+    "l10n testing interview questions and answers",
+    "pseudo-localization testing SDET interview",
+    "RTL testing right-to-left interview questions",
+    "character encoding UTF-8 testing interview",
+    "locale format testing date time currency SDET",
+    "playwright i18n localization testing automation",
+    "translation coverage testing CI/CD interview",
+    "i18n QA interview questions 2026"
+  ],
+  content: `<section class="content-section">
+  <p>It is half past midnight on a Wednesday. You are lying in bed, phone screen illuminating the ceiling, replaying the interview from earlier today. It went well — genuinely well. You handled the Playwright architecture question confidently. You walked through your Page Object Model design with the precision of someone who has built frameworks at scale. You nailed the CI/CD pipeline discussion, explaining how you reduced test suite execution time by forty percent through parallel execution and intelligent test selection. You even impressed the panel when they asked about flaky tests, and you explained your root cause analysis methodology with specific examples from your last role at a fintech company. You were feeling good. Until the final question. The one that came casually, almost as an afterthought. The lead SDET leaned back in her chair and said: "We ship to forty-two countries. Our app supports twenty-three languages, including Arabic, Hebrew, Japanese, and Welsh. Tell me — how would you test internationalization?" And your mind went blank. You mumbled something about locale settings and translation files. You mentioned "checking that the language looks right." You watched the interviewer's expression shift — the subtle eyebrow raise that says "that is not the answer I was hoping for." She nodded politely. Moved on. The interview ended. You shook hands. Walked to the tube station. And now, lying in bed, you are replaying that moment — the moment you knew you had given a junior-level answer to a senior-level question. You type "i18n testing interview questions" into Google. The first result is a Wikipedia article on internationalization and localization. The second is a testing blog from 2017 about "how to verify translations exist." The third is a Stack Overflow question about character encoding in Selenium with four conflicting answers. Nothing. No resource that addresses the i18n testing questions a 2026 SDET panel actually asks — the questions about pseudo-localization, RTL layout testing, Unicode normalization, locale-aware date parsing, and automated translation coverage validation. You close your phone. You stare at the ceiling. And you imagine sitting across from that same lead SDET tomorrow, and she asks: "Walk me through how you would build an automated i18n testing strategy that catches layout breaks, encoding corruption, locale format errors, and untranslated strings — in CI, before they ever reach production." And you have nothing. Not even the faintest idea where to start.</p>
+
+  <p>Here is the uncomfortable truth that the SDET interview preparation market in 2026 is ignoring: <strong>this blog has over 140 posts covering virtually every testing tool, framework, and methodology — Playwright, Selenium, Cypress, Appium, Detox, Maestro, Flutter testing, API testing, performance testing, security testing, CI/CD, contract testing, accessibility testing — yet zero posts dedicated to i18n and localization testing.</strong> Zero. Not one. There are posts on cross-browser testing, cross-device testing, and testing in regulated industries — but nothing on testing for international users. Nothing on what happens when a German compound word overflows a button designed for English text. Nothing on how to verify that an Arabic page renders right-to-left without breaking the navigation layout. Nothing on pseudo-localization — the technique that catches 80% of i18n bugs without requiring a single translator. And interview panels — particularly at organisations with global user bases — are asking these questions with increasing frequency. Mitchell has watched this gap grow across every enterprise he has worked at. At <strong>Asda</strong>, the shopping app expanded into international markets through the Walmart ecosystem, and suddenly test suites that passed in English were breaking when product descriptions appeared in French and Spanish. At <strong>BT</strong>, the My BT portal served customers across multiple time zones, and date format inconsistencies between the UK (DD/MM/YYYY) and the US (MM/DD/YYYY) caused booking tests to fail in American English environments. At <strong>HMRC</strong>, tax self-assessment had to be available in Welsh (Cymraeg) under the Welsh Language Act, and untranslated strings in the Welsh version were not just bugs — they were legal non-compliance. At <strong>Nationwide</strong>, the banking app served expatriate customers in the EU, and currency formatting differences between GBP (£1,234.56) and EUR (1.234,56 €) caused calculation display errors that the existing test suite did not catch. At <strong>the Ministry of Defence</strong>, secure communications systems had to support NATO phonetic alphabet encoding and multinational character sets — and character encoding corruption in message transmission was not just a display bug, it was an operational failure. At <strong>Accenture</strong>, client engagements in retail, telecoms, and government routinely included internationalization requirements — and SDETs who could not demonstrate i18n testing competency were assigned to domestic-only projects, missing the higher-value global engagements. This is not niche knowledge. This is enterprise-standard SDET competency for any organisation serving users across languages and locales in 2026. And this post is going to fix the gap — comprehensively, definitively, with the depth that interview panels expect and the practical patterns that Mitchell has refined across two decades of enterprise test automation.</p>
+
+  <p>Mitchell's <strong><a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a></strong> iOS and Android app — 800+ questions across five seniority levels with a Claude-powered AI interviewer that evaluates your answers against real hiring criteria — includes i18n and localization testing scenarios. The AI interviewer asks you exactly the questions 2026 panels ask: "Explain the difference between internationalization and localization," "How do you automate testing for RTL languages?", "What is pseudo-localization and why is it more efficient than translation-based testing?" It challenges vague answers, pushes back on hand-wavy explanations, and scores you on specificity and genuine i18n testing understanding. Available on iOS and Google Play. If you want the comprehensive methodology for building internationalized test automation — including locale-aware selectors, encoding validation, and CI/CD integration for i18n — Mitchell's <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook"><strong>AI Test Automation Playbook</strong></a> at £9.99 covers the full approach with real-world patterns from finance, government, and retail.</p>
+
+  <p><strong>By the end of this guide, when the interviewer asks you about i18n testing, you will not describe it as "checking translations." You will explain it as a multi-layered testing discipline that validates structural internationalization readiness (can the application handle any character set, any text direction, any locale format without code changes?), localization correctness (does the translated, formatted, culturally adapted version behave identically to the source locale?), and regression safety (does a change to one locale's content break another locale's layout or functionality?). You will describe pseudo-localization — the technique of replacing source strings with algorithmically transformed pseudo-translations that expose encoding errors, truncation, concatenation bugs, and hard-coded strings without requiring actual translators. You will walk through RTL testing — verifying that bidirectional text renders correctly, that layout mirrors horizontally, that navigation flows remain logical, and that mixed LTR/RTL content does not corrupt the visual hierarchy. You will explain locale-aware format testing — validating that dates, times, numbers, and currencies render according to the user's locale, and that calculations remain accurate regardless of display format. You will compare automated i18n testing approaches — pseudo-localization in CI, screenshot comparison across locales, translation memory coverage analysis — with the clarity of someone who has implemented them. And you will know that most of the other candidates in the pipeline cannot give that answer.</strong></p>
+</section>
+
+<section class="content-section">
+  <h2>What Interviewers Actually Assess When They Ask About i18n Testing</h2>
+
+  <p>The i18n interview question is never "Do you know about internationalization?" It is always a probe into deeper competencies — and interviewers are listening for very specific signals. Here is what they are genuinely assessing:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>i18n vs l10n — Do You Know the Difference?</h3>
+      <p>This is the opening probe. Most candidates use "i18n" and "l10n" interchangeably. Interviewers notice immediately. <strong>Internationalization (i18n)</strong> is the engineering work that makes an application capable of supporting multiple locales without code changes — externalized strings, Unicode encoding, locale-aware formatting, RTL-ready layouts. <strong>Localization (l10n)</strong> is the adaptation of that internationalized application for a specific locale — translated strings, locale-specific date formats, culturally appropriate imagery, local regulatory compliance. i18n is done once. l10n is done per locale. The senior SDET explains both — and understands that testing i18n (is the architecture ready for any locale?) is fundamentally different from testing l10n (does this specific locale render correctly?). If you cannot distinguish between them, the panel knows your i18n understanding is surface-level.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Character Encoding Depth</h3>
+      <p>When an interviewer asks "What encoding issues have you encountered in testing?", they are not looking for "sometimes characters look wrong." They are testing whether you understand UTF-8, UTF-16, character normalization, combining characters, bidirectional markers, zero-width joiners, and the specific failure modes that occur when encoding assumptions break. Do you know that a single emoji can be 1-14 bytes in UTF-8? That the German ß has an uppercase form (ẞ) that did not exist in Unicode before 2017? That some Arabic characters change shape based on their position in a word (initial, medial, final, isolated forms)? The candidate who mentions Unicode normalization forms (NFC vs NFD) and explains how they affect string comparison in automated tests — that is the candidate who has debugged encoding issues at 2am in a CI pipeline.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Pseudo-Localization as a First-Class Testing Strategy</h3>
+      <p>This is the concept that separates candidates who have read about i18n from candidates who have built i18n testing infrastructure. <strong>Pseudo-localization</strong> replaces source strings with algorithmically transformed versions that simulate translation — typically by adding diacritical marks (àççéñtéd téxt), expanding string length by 30-40% (to simulate German or Finnish text expansion), wrapping strings in visible brackets ([ !!! ]), or reversing text (to simulate RTL). The critical insight: pseudo-localization catches 80% of i18n bugs — hard-coded strings, truncation, overflow, encoding errors, concatenation issues — without requiring a single translator or a translation memory system. It runs in CI on every commit. It is fast, deterministic, and free. The candidate who explains pseudo-localization as a CI gate — not just a manual sanity check — is the candidate who understands i18n testing economics.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>RTL and Bidirectional Text Testing</h3>
+      <p>Arabic, Hebrew, Farsi, Urdu — right-to-left languages that require the entire UI layout to mirror horizontally. Navigation that was left-to-right becomes right-to-left. Icons that pointed forward now point backward. Tables reverse column order. Mixed content (Arabic product names with English brand names) creates bidirectional rendering challenges. The interview answer that gets the offer: "RTL testing is not just visual — it is structural. You need to verify that the CSS logical properties (margin-inline-start, padding-inline-end) are used instead of physical properties (margin-left, padding-right), that the dir attribute is set correctly on the html element, that focus order follows the RTL reading direction, that screen readers announce content in the correct order, and that mixed LTR/RTL text does not corrupt the visual hierarchy. Playwright can validate this by running the same functional tests with the browser locale set to ar-SA and comparing screenshots — but screenshot comparison alone is not enough. You need structural assertions on CSS direction, computed styles, and element bounding boxes."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Locale-Aware Format Validation</h3>
+      <p>Dates, times, numbers, and currencies are the silent killers of internationalized applications. The US writes MM/DD/YYYY. The UK writes DD/MM/YYYY. Germany writes DD.MM.YYYY. Japan writes YYYY年MM月DD日. If your automated tests hard-code "12/01/2026" as an expected date, they will pass in the US locale (December 1st) but fail in the UK locale (January 12th) — not because the application is broken, but because the test is locale-blind. The senior SDET answer: "I always write locale-independent assertions. Instead of asserting that a date string equals '12/01/2026', I parse the rendered string using the expected locale and assert that the parsed date object matches the expected date. I use Intl.DateTimeFormat with explicit locale options in my test assertions, so the test validates that the displayed format matches the locale's convention — not that it matches a hard-coded string. For currencies, I use Intl.NumberFormat with currency code options and verify that the symbol, decimal separator, and grouping separator all match the locale's standard."</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">If your i18n interview prep has not touched any of these five assessment areas, you are walking into the room with a gap that global-enterprise interview panels will expose within the first i18n question. <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a> has a dedicated Quality & Strategy category that covers internationalization testing with the depth and follow-up rigour you would face in a real panel.</p>
+</section>
+
+<section class="content-section">
+  <h2>The i18n Testing Framework — Seven Layers Every SDET Must Know</h2>
+
+  <p>If you learn only one section of this guide for your interview, learn this one. i18n testing is not a single test type — it is a layered testing discipline. Interviewers expect you to articulate the layers with the precision of someone who has built i18n testing suites, not skimmed an article.</p>
+
+  <h3>The Seven Layers of i18n Testing</h3>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;">
+    <thead>
+      <tr style="background: #1a1a2e; color: white;">
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #333;">Layer</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #333;">What It Validates</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #333;">Key Techniques</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>1. String Externalization</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">All user-facing strings are externalized to resource files (i18n JSON, .properties, .resx) — no hard-coded text in source code.</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Static analysis (ESLint i18n plugin, i18next-scanner), pseudo-localization (missing strings remain in source language and stand out visually).</td>
+      </tr>
+      <tr style="background: #f9f9f9;">
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>2. Character Encoding</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Application correctly handles UTF-8, UTF-16, multi-byte characters, emoji, combining characters, and CJK (Chinese, Japanese, Korean) character sets.</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Encoding test vectors (strings containing ñ, ü, ß, 漢字, عربي, 🎉), Unicode normalization tests (NFC vs NFD comparison), database round-trip tests.</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>3. Text Expansion & Contraction</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">UI elements accommodate translated text without truncation, overflow, or layout break. German text is 30-35% longer than English. Japanese can be shorter but wider.</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Pseudo-localization with 40% expansion, CSS flexible layouts (flex-wrap, min-width), responsive breakpoint testing with expanded text.</td>
+      </tr>
+      <tr style="background: #f9f9f9;">
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>4. Locale-Aware Formatting</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Dates, times, numbers, currencies, and units render according to the active locale. No hard-coded format assumptions.</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Locale-specific format assertions using Intl API, locale parameterization in test fixtures, date/time round-trip parsing tests.</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>5. RTL & Bidirectional Text</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Right-to-left languages render with correct layout mirroring, text direction, icon orientation, and navigation flow.</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">CSS logical properties verification, computed dir attribute checks, screenshot comparison with RTL baseline, mixed LTR/RTL rendering validation.</td>
+      </tr>
+      <tr style="background: #f9f9f9;">
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>6. Translation Coverage</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">All required strings have translations in all supported locales. No untranslated strings (English fallbacks) in production.</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Translation memory key analysis, missing key detection in CI, pseudo-localization fallback highlighting, locale coverage ratio metrics.</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.75rem; border: 1px solid #333;"><strong>7. Cultural & Regulatory Compliance</strong></td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Content is culturally appropriate — no offensive imagery, correct regional conventions (address formats, phone numbers), compliance with local regulations (Welsh Language Act, EU accessibility directives).</td>
+        <td style="padding: 0.75rem; border: 1px solid #333;">Manual review for cultural sensitivity (automated tools cannot assess cultural nuance), address/phone format validation per locale, regulatory requirement coverage matrices.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>The interviewing insight:</strong> When you describe these seven layers, you demonstrate that i18n testing is not "check that translations exist" — it is a systematic, layered discipline with automated techniques at each layer. The candidate who can name all seven layers and explain which are automatable and which require human review is the candidate the panel marks as "understands global software delivery."</p>
+
+  <h3>String Concatenation — The Number One i18n Bug</h3>
+
+  <p>If there is one i18n bug that appears more than any other in enterprise applications — and therefore more than any other in i18n interview discussions — it is <strong>string concatenation</strong>. Developers write code like:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// BROKEN — String concatenation that does not translate
+const message = "You have " + count + " items in your " + containerType;
+// English: "You have 3 items in your basket"
+
+// In German, the sentence structure is different:
+// "Sie haben 3 Artikel in Ihrem Warenkorb"
+// The word order changes — you cannot just translate each fragment</code></pre>
+
+  <p>The correct approach uses parameterized message formats — ICU MessageFormat, i18next interpolation, or similar:</p>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// CORRECT — Parameterized message with pluralization
+// en.json: { "cart.items": "You have {count, plural, one {# item} other {# items}} in your {container}" }
+// de.json: { "cart.items": "Sie haben {count} {count, plural, one {Artikel} other {Artikel}} in Ihrem {container}" }
+
+const message = intl.formatMessage({ id: 'cart.items' }, { count: 3, container: 'basket' });</code></pre>
+
+  <p>The SDET's role: write tests that detect concatenation anti-patterns. Run pseudo-localization — concatenated fragments will break because each fragment is pseudo-localized independently, producing garbled output. Add a static analysis rule that flags string concatenation with variables in UI-rendering code. This is the answer that demonstrates you understand i18n testing from the code level up, not just the UI level down.</p>
+</section>
+
+<section class="content-section">
+  <h2>Pseudo-Localization — The i18n Testing Strategy Most Candidates Have Never Heard Of</h2>
+
+  <p>This is the section that will give you the biggest advantage in an i18n interview. Pseudo-localization is the single most efficient i18n testing technique — yet the vast majority of SDET candidates have never implemented it. Here is the complete picture.</p>
+
+  <h3>What Pseudo-Localization Does</h3>
+
+  <p>Pseudo-localization replaces your source strings with algorithmically transformed versions that simulate the characteristics of translated text — without requiring actual translators. The four standard transformations:</p>
+
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Accent transformation:</strong> "Submit" becomes "Šûbmîţ" — proves that character encoding is correct throughout the pipeline (database, API, rendering). If any system in the chain does not support multi-byte characters, the accented text will show as mojibake (garbled characters like "ÅÃ¼bmÃ®Å£").</li>
+    <li><strong>Expansion:</strong> "Submit" becomes "[~~ Šûbmîţ ~~~~~~]" — adds 30-40% padding characters to simulate text expansion in languages like German and Finnish. Exposes UI elements with fixed widths, hardcoded truncation, and overflow:hidden CSS that will break with real translations.</li>
+    <li><strong>Mirroring:</strong> "Submit" becomes "ţimbûŠ" — reverses string order to simulate RTL rendering. Exposes hard-coded left-to-right assumptions in CSS, icon placement, and navigation order.</li>
+    <li><strong>Bracket wrapping:</strong> "Submit" becomes "[!!! Šûbmîţ !!!]" — adds visible markers around every translatable string. Any text on screen WITHOUT brackets is a hard-coded string that has not been externalized — immediately visible to QA and developers.</li>
+  </ul>
+
+  <h3>How to Implement Pseudo-Localization in CI</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// Node.js — Pseudo-localization transformer for i18next
+const pseudoLocalize = (str) => {
+  const accentMap = {
+    'a': 'à', 'b': 'ƀ', 'c': 'ç', 'd': 'd', 'e': 'é',
+    'f': 'ƒ', 'g': 'ĝ', 'h': 'ĥ', 'i': 'î', 'j': 'ĵ',
+    'k': 'ƙ', 'l': 'ĺ', 'm': 'ɱ', 'n': 'ñ', 'o': 'ö',
+    'p': 'þ', 'q': 'q', 'r': 'ř', 's': 'š', 't': 'ţ',
+    'u': 'û', 'v': 'ṽ', 'w': 'ŵ', 'x': 'x', 'y': 'ý',
+    'z': 'ž'
+  };
+  
+  // Apply accent transformation
+  let result = str.split('').map(char => 
+    accentMap[char.toLowerCase()] || char
+  ).join('');
+  
+  // Expand by 40% with tilde padding
+  const padding = Math.ceil(result.length * 0.4);
+  result = '[~~ ' + result + ' ' + '~'.repeat(padding) + ']';
+  
+  return result;
+};
+
+// In your CI pipeline:
+// 1. Run pseudo-localization transform on all i18n keys
+// 2. Generate pseudo-locale bundle (en-x-pseudo)
+// 3. Run Playwright/Cypress test suite against pseudo-locale
+// 4. Screenshot comparison against en baseline
+// 5. Any text without brackets = hard-coded string = CI failure</code></pre>
+
+  <p><strong>The interview answer that demonstrates seniority:</strong> "I implement pseudo-localization as a CI gate, not a manual exercise. On every pull request, the CI pipeline generates a pseudo-locale build, runs the full functional test suite against it, and compares screenshots with the English baseline. This catches three categories of bugs automatically: encoding corruption (accented characters render as mojibake), text overflow (expanded strings break the layout), and hard-coded strings (un-bracketed text is immediately visible in screenshots). Pseudo-localization costs nothing — no translators, no translation management system, no waiting for translation turnaround. It runs in minutes, not days. And it catches 80% of i18n bugs before a single real translation is requested. The remaining 20% — cultural appropriateness, grammatical correctness, context-sensitive translation — requires human review. But automating the 80% first means the human reviewers focus on the nuances that actually need human judgement, not on catching encoding errors that a machine should have caught."</p>
+</section>
+
+<section class="content-section">
+  <h2>Automating i18n Tests With Playwright and Selenium — Real Implementation Patterns</h2>
+
+  <p>The interviewer will ask: "How do you actually write automated tests for internationalization?" This is where most candidates falter — they describe the concept but cannot show the code. Here are the implementation patterns Mitchell has used across enterprise projects.</p>
+
+  <h3>Playwright Multi-Locale Test Configuration</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// playwright.config.ts — Multi-locale test matrix
+const locales = ['en-GB', 'de-DE', 'ar-SA', 'ja-JP', 'cy-GB'];
+
+export default defineConfig({
+  projects: locales.map(locale => ({
+    name: \`chromium-\${locale}\`,
+    use: {
+      ...devices['Desktop Chrome'],
+      locale: locale,
+      timezoneId: getTimezoneForLocale(locale),
+      // Set Accept-Language header for server-side locale negotiation
+      extraHTTPHeaders: {
+        'Accept-Language': locale,
+      },
+    },
+  })),
+});
+
+// The same test suite runs five times — once per locale
+// Playwright automatically sets navigator.language, Intl locale,
+// and browser Accept-Language header based on the locale config</code></pre>
+
+  <h3>Locale-Aware Assertion Patterns</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// NEVER hard-code expected strings in assertions
+// BAD — Breaks immediately in non-English locales
+await expect(page.locator('.total')).toHaveText('Total: £1,234.56');
+
+// GOOD — Parse the displayed value and validate structure
+const totalText = await page.locator('.total').textContent();
+const locale = page.context().options().locale || 'en-GB';
+
+// Use Intl.NumberFormat to generate the expected format
+const expectedFormat = new Intl.NumberFormat(locale, {
+  style: 'currency',
+  currency: 'GBP',
+}).format(1234.56);
+
+await expect(page.locator('.total')).toHaveText(\`Total: \${expectedFormat}\`);
+
+// For dates — parse using locale and validate the date object
+const dateText = await page.locator('.event-date').textContent();
+const parsedDate = new Date(dateText); // or use date-fns parse with locale
+expect(parsedDate.getFullYear()).toBe(2026);
+expect(parsedDate.getMonth()).toBe(6); // July
+expect(parsedDate.getDate()).toBe(22);</code></pre>
+
+  <h3>Screenshot Comparison Across Locales</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// Playwright — Screenshot comparison with locale-specific baselines
+test('checkout page renders correctly in all locales', async ({ page }) => {
+  const locale = page.context().options().locale;
+  
+  await page.goto('/checkout');
+  
+  // Screenshot with locale-specific baseline
+  // Each locale has its own expected screenshot
+  await expect(page).toHaveScreenshot(\`checkout-\${locale}.png\`, {
+    maxDiffPixelRatio: 0.05, // Allow 5% difference for font rendering variation
+    threshold: 0.2,
+  });
+  
+  // Structural RTL validation for Arabic/Hebrew
+  if (locale === 'ar-SA' || locale === 'he-IL') {
+    const htmlDir = await page.locator('html').getAttribute('dir');
+    expect(htmlDir).toBe('rtl');
+    
+    // Verify navigation menu is right-aligned
+    const navBox = await page.locator('nav').boundingBox();
+    const viewportWidth = page.viewportSize().width;
+    // In RTL, the nav should start from the right edge
+    expect(navBox.x + navBox.width).toBeGreaterThan(viewportWidth * 0.7);
+  }
+});</code></pre>
+
+  <h3>Translation Key Coverage Validation</h3>
+
+  <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; margin: 1.5rem 0;"><code>// CI script — Validate translation key coverage
+import { readFileSync, readdirSync } from 'fs';
+import { join } from 'path';
+
+const localeDir = './src/i18n/locales';
+const baseLocale = 'en.json';
+const locales = readdirSync(localeDir).filter(f => f.endsWith('.json'));
+
+const baseKeys = Object.keys(JSON.parse(
+  readFileSync(join(localeDir, baseLocale), 'utf8')
+));
+
+const coverageReport = {};
+
+for (const localeFile of locales) {
+  const localeKeys = Object.keys(JSON.parse(
+    readFileSync(join(localeDir, localeFile), 'utf8')
+  ));
+  
+  const missingKeys = baseKeys.filter(k => !localeKeys.includes(k));
+  const extraKeys = localeKeys.filter(k => !baseKeys.includes(k));
+  
+  coverageReport[localeFile] = {
+    total: baseKeys.length,
+    translated: localeKeys.length,
+    coverage: (localeKeys.length / baseKeys.length * 100).toFixed(1) + '%',
+    missingKeys,
+    extraKeys,
+  };
+}
+
+// Fail CI if any locale has less than 100% coverage
+const failingLocales = Object.entries(coverageReport)
+  .filter(([_, report]) => report.coverage !== '100.0%');
+
+if (failingLocales.length > 0) {
+  console.error('Translation coverage gaps found:');
+  failingLocales.forEach(([locale, report]) => {
+    console.error(\`  \${locale}: \${report.coverage} — \${report.missingKeys.length} missing keys\`);
+  });
+  process.exit(1); // Block the PR
+}</code></pre>
+
+  <p><strong>The interviewing insight:</strong> When you show these code patterns, you are demonstrating that i18n testing is not a vague concept — it is concrete, automatable, and integrates into the same CI/CD pipeline you already use for functional testing. The candidate who can write these patterns is the candidate the panel trusts to build i18n testing infrastructure, not just discuss it.</p>
+</section>
+
+<section class="content-section">
+  <h2>Common i18n Interview Questions — With Answer Frameworks That Demonstrate Depth</h2>
+
+  <p>Here are the specific i18n questions that recur across SDET interview panels in 2026:</p>
+
+  <h3>1. "What is the difference between internationalization testing and localization testing?"</h3>
+
+  <p><strong>The surface answer:</strong> "Internationalization is making the app work in different languages, and localization is translating it." Correct-ish, but shallow.</p>
+
+  <p><strong>The depth answer:</strong> "Internationalization (i18n) testing validates the structural readiness of the application — can it support any locale without code changes? This includes verifying string externalization (no hard-coded text), encoding support (UTF-8 throughout the stack), locale-aware formatting (dates, numbers, currencies via ICU/Intl APIs rather than hard-coded patterns), bidirectional text readiness (CSS using logical properties), and UI flexibility (flexible layouts that accommodate text expansion). i18n testing is done once against a pseudo-locale — it is locale-independent. Localization (l10n) testing validates a specific locale adaptation — do the German strings render without truncation? Does the Japanese date format display correctly? Does the Arabic layout mirror properly? l10n testing is done per locale against real translations. The critical distinction: an i18n bug (hard-coded English string in source code) affects ALL locales. An l10n bug (German translation truncation) affects only German. Therefore, i18n testing should be a CI gate (catching structural issues early), while l10n testing should be a per-locale validation step (catching locale-specific display issues)."</p>
+
+  <h3>2. "How do you test for right-to-left languages?"</h3>
+
+  <p><strong>The depth answer:</strong> "RTL testing operates at three levels. <strong>Visual level:</strong> Run the application in an RTL locale (ar-SA, he-IL), take screenshots, and verify that the layout mirrors correctly — navigation starts from the right, content flows right-to-left, icons that indicate direction (arrows, chevrons) are mirrored. <strong>Structural level:</strong> Verify that the HTML element has <code>dir='rtl'</code>, that CSS uses logical properties (margin-inline-start instead of margin-left), that JavaScript does not hard-code directional constants (element.offsetLeft assumptions break in RTL), and that focus order follows the RTL reading direction. <strong>Functional level:</strong> Run the complete functional test suite in RTL locale — clicking elements, filling forms, navigating between pages — to verify that all interactions work identically regardless of text direction. The specific pitfalls I look for: CSS that uses physical properties (left/right) instead of logical properties (inline-start/inline-end), absolute-positioned overlays that hard-code left:0 instead of inline-start:0, JavaScript that calculates scroll positions assuming LTR, and SVG icons that need horizontal mirroring (a back arrow pointing left in LTR should point right in RTL). The automated test I always write: verify that every element's bounding box in RTL mode mirrors its LTR counterpart — element.x in LTR should approximately equal (viewport.width - element.x - element.width) in RTL."</p>
+
+  <h3>3. "What is pseudo-localization and how does it work?"</h3>
+
+  <p><strong>The depth answer:</strong> "Pseudo-localization is a technique that replaces source strings with algorithmically transformed versions that simulate the characteristics of real translations. The four standard transformations are: character accentuation (replacing ASCII characters with accented Unicode equivalents to test encoding), text expansion (adding 30-40% padding to test layout flexibility), bracket wrapping (adding visible markers to identify translated vs hard-coded strings), and text mirroring (reversing text to test RTL readiness). The power of pseudo-localization is that it runs in CI without requiring translators, translation management systems, or locale-specific test data. It catches five categories of i18n bugs: encoding corruption (accented characters render as mojibake), text overflow (expanded text breaks layouts), hard-coded strings (un-wrapped text indicates non-externalized strings), concatenation issues (pseudo-localized fragments produce garbled combined text), and LTR assumptions (mirrored text exposes directional hard-coding). It catches roughly 80% of i18n bugs at near-zero cost. The remaining 20% — cultural appropriateness, grammatical accuracy, context-sensitive translation — requires human review. At HMRC, pseudo-localization was the first CI gate before Welsh (Cymraeg) translation review — it ensured that translators focused on linguistic quality, not on catching encoding errors."</p>
+
+  <h3>4. "How do you handle locale-specific date and currency formats in automated tests?"</h3>
+
+  <p><strong>The depth answer:</strong> "The fundamental rule: never hard-code locale-specific format strings in test assertions. I use three approaches. First, <strong>format-generating assertions:</strong> use the Intl API in the test code to generate the expected format dynamically. Instead of asserting that a price element contains '£1,234.56', I generate the expected string using <code>new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(1234.56)</code> and compare. When the same test runs in de-DE locale, the expected format auto-generates as '1.234,56 £'. Second, <strong>parse-and-validate assertions:</strong> extract the text content, parse it using the known locale, and validate the underlying value. For dates, I extract the displayed text, parse it with the locale-specific formatter, and assert the parsed Date object matches the expected date — this validates that the displayed format is correct AND the underlying data is accurate. Third, <strong>structural validation:</strong> for currencies, assert the presence of the correct currency symbol (€, £, ¥), the correct decimal separator (. or ,), and the correct grouping separator — without asserting the exact string. This is more resilient to minor formatting variations while still catching the critical locale-format errors."</p>
+
+  <h3>5. "What are the most common i18n bugs you've found in production?"</h3>
+
+  <p><strong>The depth answer:</strong> "In twenty years of enterprise testing, the top five i18n bugs I encounter are: (1) <strong>String concatenation</strong> — developers building sentences by concatenating translated fragments, which breaks because word order differs between languages. English 'You have 3 items' cannot be built by translating 'You have', '3', and 'items' separately — German needs 'Sie haben 3 Artikel' with different word order. (2) <strong>Hard-coded date formats</strong> — MM/DD/YYYY in source code that breaks in every non-US locale. The classic: a booking system that parsed '12/01/2026' as December 1st in the US and January 12th in the UK. (3) <strong>Character encoding mismatches</strong> — the frontend sends UTF-8, the backend expects ISO-8859-1, the database stores Windows-1252. Accented characters survive in testing (because the test data only uses ASCII) but corrupt in production when users enter real names with diacritical marks. (4) <strong>Truncation in fixed-width elements</strong> — buttons, labels, and navigation items with CSS width:200px that look fine with English text but overflow with German 'Warenkorb' or Finnish 'Ostoskori'. (5) <strong>Missing pluralization rules</strong> — English has two plural forms (1 item, 2 items). Arabic has six (zero, one, two, few, many, other). Applications that hard-code an if/else for singular/plural break in Arabic, Russian, and Polish, which have complex pluralization rules defined in the Unicode CLDR plural rules."</p>
+</section>
+
+<section class="content-section">
+  <h2>Common Mistakes Candidates Make With i18n Testing — And How to Avoid Them</h2>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>1. Treating i18n as "Translation Checking"</h3>
+      <p>This is the most common mistake — and the one that immediately signals a junior-level understanding. "I check that the translations look correct" is not an i18n testing strategy. i18n testing is structural validation: is the architecture ready to support any locale? Does the code use parameterized messages instead of concatenation? Are all strings externalized? Does the CSS use logical properties? The candidate who describes i18n testing as "translation verification" is revealing that they have never built i18n testing infrastructure — only consumed translated content.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>2. Hard-Coding Locale-Specific Strings in Test Assertions</h3>
+      <p>This is the ironic mistake — writing i18n tests that are themselves not internationalized. <code>expect(element.text).toBe('Submit')</code> breaks the moment the test runs in a French locale. The test code must be as locale-aware as the application code. Use translation key lookups in test assertions, Intl API for format generation, or data attributes for element identification instead of text content. Candidates who write locale-blind i18n tests reveal that their understanding of internationalization has not reached the testing layer.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>3. Ignoring Text Direction in CSS Assertions</h3>
+      <p>Candidates who test RTL only by "looking at the page in Arabic" are testing visually but not structurally. The correct approach verifies CSS computed styles — that direction is 'rtl', that writing-mode is correct, that margins and paddings use logical properties. Visual inspection catches obvious layout breaks but misses the subtle CSS bugs that appear only on specific screen sizes or with specific content lengths. Automated CSS property assertions catch the bugs that visual review misses.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>4. Not Testing With Real-Length Translations</h3>
+      <p>Pseudo-localization expands text by 40%, which simulates German and Finnish expansion. But some real translations expand by 100% or more. "In" (English) becomes "In der Zwischenablage" (German) — a 250% expansion. If your test data only uses short English strings, your layout tests will pass — and the German version will break in production. The fix: maintain a "long translation" test fixture that includes the longest known translation for each key, and run layout tests against it.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>5. Skipping i18n Tests in CI to Save Time</h3>
+      <p>This is the organizational mistake that SDETs at senior level are expected to push back on. "The i18n tests double our CI time because we run in five locales" — so the team disables i18n tests in the fast-feedback pipeline and runs them only nightly. The consequence: i18n regression accumulates unnoticed for 24 hours, and when the nightly run fails, the developer who introduced the bug has already context-switched to a different task. The fix: run pseudo-localization tests on every PR (they are fast and deterministic), run real-locale tests on a sampling strategy (two representative locales on PR, full locale matrix nightly), and run screenshot comparison on the full matrix before release. The senior SDET designs a tiered i18n testing strategy that balances speed and coverage — not a binary "all locales or no locales" decision.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>i18n Testing at Enterprise Scale — Mitchell's Experience Across Organisations</h2>
+
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>Asda:</strong> The shopping app's international expansion through the Walmart ecosystem required testing product descriptions, promotional banners, and checkout flows in English, French, Spanish, and Portuguese. The key challenge: product names from different suppliers arrived in various encodings (some suppliers sent ISO-8859-1, others UTF-8), and the display layer expected UTF-8. Encoding mismatches caused mojibake on product names — "Café" became "CafÃ©" on the product page. Mitchell's team implemented encoding validation in the product data ingestion pipeline — automated tests that verified UTF-8 integrity on every incoming product feed.</li>
+    <li><strong>BT:</strong> The My BT portal served customers globally, and date format inconsistencies between UK English (DD/MM/YYYY), US English (MM/DD/YYYY), and ISO format (YYYY-MM-DD) caused appointment booking tests to fail when the locale switched. A test that passed in en-GB ("Book appointment for 12/01/2026" meant December 1st) failed in en-US (the same string meant January 12th). The fix was locale-independent date assertions — parsing displayed dates with the locale's Intl.DateTimeFormat and comparing Date objects, not strings.</li>
+    <li><strong>HMRC:</strong> The Welsh Language Act mandates that Welsh public bodies provide services in Welsh (Cymraeg). HMRC's self-assessment tax portal had to be fully available in Welsh — and "fully available" meant not just translated, but functionally identical. Pseudo-localization was the first CI gate, catching hard-coded English strings before they reached the Welsh translation team. The team measured "untranslatable string density" — the number of hard-coded English strings per 1,000 lines of UI code — as an i18n quality metric. When that density exceeded the threshold, the PR was blocked.</li>
+    <li><strong>Nationwide:</strong> The banking app served EU expatriate customers, and currency formatting was critical. A balance displayed as "£1,234.56" in en-GB had to render as "1 234,56 £" in fr-FR — same value, different format. The calculation engine used decimal.js for precision, and the display layer used Intl.NumberFormat. Testing verified that the parsed numeric value was identical regardless of display locale — a critical distinction for banking applications where a format error could cause a customer to misread their balance.</li>
+    <li><strong>Ministry of Defence:</strong> Secure communications systems supported NATO interoperability, which required handling multinational character sets in message transmission. Character encoding corruption in transmitted messages was not a display bug — it was an operational failure. Mitchell's team implemented round-trip encoding tests: messages containing every Unicode block relevant to NATO operations were transmitted, received, and verified for byte-exact integrity. The tests ran on every build — encoding corruption was treated with the same severity as a security vulnerability.</li>
+    <li><strong>Accenture:</strong> Client engagements with global retail and telecom companies routinely required i18n testing strategies. The common thread: every client underestimated the effort required for i18n testing, and every client had at least one production incident caused by untranslated strings or encoding corruption. The SDETs who could build automated i18n testing infrastructure — pseudo-localization in CI, translation coverage gates, locale-parameterized test suites — were assigned to the highest-value global engagements. The SDETs who could not were limited to domestic-only projects.</li>
+  </ul>
+</section>
+
+<section class="content-section">
+  <h2>How to Prepare for Your i18n Testing SDET Interview</h2>
+
+  <div class="benefit-grid">
+    <div class="benefit-card">
+      <span class="benefit-check">📖</span>
+      <div>
+        <h3>Day 1: Core Concepts</h3>
+        <p>Understand the i18n/l10n distinction, the seven layers of i18n testing, and pseudo-localization. Read the Unicode CLDR (Common Locale Data Repository) documentation for your target locales — know what pluralization rules, date formats, and currency formats each locale uses. Understand the difference between locale (en-GB), language (en), and region (GB). If you cannot explain why "en" is not a valid locale for format-sensitive testing, you are not ready.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Day 2: Hands-On Implementation</h3>
+        <p>Build a pseudo-localization script for a sample i18next or react-intl project. Generate a pseudo-locale. Run your existing test suite against it. Watch what breaks — hard-coded strings, overflow, encoding issues. Then add locale parameterization to your Playwright config and run the same suite in three locales. The act of building this infrastructure teaches you more than reading ten articles.</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🗣️</span>
+      <div>
+        <h3>Day 3: Out-Loud Practice</h3>
+        <p>Use the SDET Interview Coach app's Quality & Strategy category to practise i18n questions out loud. Record yourself. Listen back. If you say "umm" or "let me think" when asked about pseudo-localization, you are not ready. The words need to flow — because in the interview, confidence delivery signals genuine expertise. Write down your three enterprise i18n examples. Know the company name, the problem, and what you did. Not "I've done some internationalization testing." But "At HMRC, we implemented pseudo-localization as a CI gate to catch hard-coded English strings before they reached the Welsh translation pipeline — reducing the translation team's bug-fix rework by 60%."</p>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-check">🎯</span>
+      <div>
+        <h3>Night Before: Review & Rest</h3>
+        <p>Read your three enterprise examples out loud. Review the seven layers of i18n testing. Skim your pseudo-localization code. Then close your laptop and sleep. A rested mind retrieves faster than a crammed one. You have done the preparation. Trust it.</p>
+      </div>
+    </div>
+  </div>
+</section>`,
+  faqs: [
+    {
+      "q": "What is the difference between i18n testing and l10n testing?",
+      "a": "Internationalization (i18n) testing validates that the application's architecture can support any locale without code changes — string externalization, encoding support, locale-aware formatting, and flexible layouts. Localization (l10n) testing validates a specific locale's adaptation — translated content, locale-specific formats, and cultural appropriateness. i18n is tested once (usually with pseudo-localization); l10n is tested per locale with real translations."
+    },
+    {
+      "q": "What is pseudo-localization and why is it important for SDET interviews?",
+      "a": "Pseudo-localization replaces source strings with algorithmically transformed versions (accented characters, 40% text expansion, bracket wrapping) that simulate translation characteristics without requiring real translators. It is important for SDET interviews because it demonstrates you understand efficient i18n testing — catching 80% of i18n bugs (encoding errors, layout breaks, hard-coded strings) in CI at zero translation cost. Most candidates have never implemented it; those who can describe it confidently stand out immediately."
+    },
+    {
+      "q": "How do you test right-to-left (RTL) languages like Arabic and Hebrew?",
+      "a": "RTL testing operates at three levels: visual (screenshot comparison with RTL baseline), structural (verifying HTML dir attribute, CSS logical properties, and computed styles), and functional (running the full test suite in RTL locale to verify all interactions work). Common pitfalls include CSS using physical properties (margin-left) instead of logical properties (margin-inline-start), hard-coded directional JavaScript calculations, and SVG icons that need horizontal mirroring."
+    },
+    {
+      "q": "How do you handle locale-specific date and currency formats in automated tests?",
+      "a": "Never hard-code locale-specific format strings in assertions. Instead, use three approaches: (1) format-generating assertions using the Intl API to dynamically generate the expected string for the current locale, (2) parse-and-validate assertions that extract displayed text, parse it with the locale's formatter, and compare the underlying Date or number object, (3) structural validation that checks for the correct currency symbol, decimal separator, and grouping separator without asserting the exact string."
+    },
+    {
+      "q": "What are the most common i18n bugs that SDET interviewers ask about?",
+      "a": "The top five are: (1) string concatenation — building sentences by joining translated fragments, which breaks because word order differs between languages, (2) hard-coded date formats — MM/DD/YYYY assumptions that break in non-US locales, (3) character encoding mismatches — UTF-8/ISO-8859-1 conflicts causing mojibake on accented characters, (4) truncation in fixed-width UI elements — English text fits but German and Finnish overflow, (5) missing pluralization rules — English has 2 forms but Arabic has 6, Russian has 4, and Polish has 3."
+    },
+    {
+      "q": "How do you integrate i18n testing into CI/CD pipelines?",
+      "a": "Use a tiered approach: run pseudo-localization tests on every PR (fast, deterministic, catches encoding and layout issues), run real-locale tests on a sampling strategy (two representative locales on PR, full locale matrix nightly), and run screenshot comparison on the full locale matrix before release. Add a translation key coverage gate that blocks PRs with missing translations. Measure untranslatable string density as a code quality metric. The goal: i18n regression is caught within the PR feedback loop, not 24 hours later in a nightly run."
+    },
+    {
+      "q": "Which tools are best for automating i18n testing in 2026?",
+      "a": "For functional i18n testing: Playwright (built-in locale parameterization, automatic Accept-Language headers, Intl API support), Cypress (custom locale configuration), Selenium with locale-specific WebDriver capabilities. For static analysis: ESLint i18n plugins, i18next-scanner for key extraction, react-intl extraction tools. For pseudo-localization: custom transformers in Node.js, react-intl pseudo-localization, or i18next pseudo-localization plugins. For screenshot comparison: Playwright's toHaveScreenshot with locale-specific baselines, Percy, or Applitools Eyes."
+    }
+  ],
+  relatedSlugs: [
+    "sdet-interview-coach-app-guide",
+    "accessibility-testing-interview-questions-2026",
+    "cross-browser-device-cloud-testing-strategy-sdet-interview-questions-2026",
+    "test-automation-framework-design-interview",
+    "playwright-interview-questions-2026",
+    "cypress-interview-questions-2026"
+  ]
+},
+
+{
   slug: "sdet-mock-interview-practice-technical-interview-preparation-2026",
   title: "SDET Mock Interview Practice — How to Simulate Real Technical Interviews and Get Honest Feedback 2026",
   description: "The gap between knowing SDET interview answers and delivering them under pressure is wider than most candidates realise. Mitchell Agoma's 2026 guide to mock interview practice covers how to simulate real technical interview conditions — pair programming with a timer, whiteboard system design under observation, behavioural questions with STAR-format pressure — and why passive studying (reading blog posts, watching videos, memorising answers) creates a dangerous illusion of readiness. Drawing from 20 years of enterprise test automation at HMRC, MoD, Nationwide, and Accenture, this guide explains why candidates who practice out loud under simulated interview conditions consistently outperform candidates with deeper technical knowledge who only study silently. Includes specific mock interview scenarios for SDET roles, how to find honest feedback partners, and how Mitchell's SDET Interview Coach app — with 800+ questions and a Claude-powered AI interviewer that pushes back on vague answers — bridges the practice gap when a human mock interviewer isn't available.",
