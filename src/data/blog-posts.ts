@@ -15,6 +15,230 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
 
 {
+  slug: "sdet-first-90-days-build-credibility-new-role-2026",
+  title: "SDET First 90 Days — How to Build Credibility, Earn Trust, and Make a Lasting Impact in Your New Role",
+  description: "Starting a new SDET role and terrified you won't measure up? You are not alone. Mitchell Agoma's enterprise-tested 30-60-90 day plan shows you exactly how to build credibility from day one, earn developer trust, and deliver measurable impact before your probation review. From auditing the test suite in week one to shipping your first framework improvement by day 60 to leading a quality initiative by day 90 — this is the roadmap that turned anxious new hires into indispensable SDETs at HMRC, MoD, Nationwide, Asda, Co-op, BT, and Accenture. Stop hoping you'll figure it out on the fly. Walk into day one with a plan.",
+  date: "2026-07-23",
+  author: SITE_CONFIG.author,
+  keywords: [
+    "SDET first 90 days plan 2026",
+    "new SDET build credibility at work",
+    "first 90 days software development engineer in test",
+    "SDET probation period success tips",
+    "new SDET role imposter syndrome first month",
+    "SDET onboarding plan checklist 2026",
+    "how to make impact as new SDET",
+    "SDET 30 60 90 day plan",
+    "new SDET first week what to do",
+    "building trust with developers as new SDET",
+    "SDET probation review preparation tips",
+    "new SDET inherited messy test suite what to do"
+  ],
+  content: `<section class="content-section">
+  <p>It is 7:47am. You are standing outside a glass office building holding a Pret coffee you cannot taste, staring at your reflection in the revolving door. Your badge says "SDET." It is your first day. You have wanted this title for three years — through the late-night LeetCode sessions, the rejected applications, the "we went with someone who has more development experience" emails, the weekend Playwright tutorials while your friends were at brunch. You earned this. But right now, standing in the cold with a coffee going lukewarm in your hand, none of that matters. What matters is the thought looping in your head: <em>What if they realise they made a mistake? What if I sit down at my desk and someone asks me to review a test framework architecture and I freeze? What if the developers look at my first pull request and think "this is the person they hired?" What if I do not belong here?</em> You type "SDET first 90 days" into Google on your phone while pretending to read an email. The results are generic onboarding advice — "introduce yourself to the team," "set up your development environment," "ask questions." Nothing that answers the real question: <strong>How do I prove, in 90 days, that hiring me was the best decision this team made all year?</strong></p>
+
+  <p>The first 90 days of any new role are the difference between being indispensable and being expendable. But for an SDET — a role that sits at the intersection of development, testing, and operations, a role that many teams still do not fully understand, a role where your output is measured not in features shipped but in bugs prevented, confidence enabled, and quality embedded — those 90 days are uniquely challenging. You are not just learning a codebase. You are learning a test suite that may or may not exist. You are learning a team culture that may or may not value testing. You are proving yourself to developers who have been burned by QA people who could not code, and to QA people who have been burned by developers who could not test. <strong>And you have 90 days to earn the credibility that turns "the new SDET" into "our SDET."</strong></p>
+
+  <p>Mitchell has onboarded SDETs at <strong>HMRC</strong> during the Making Tax Digital programme — where a new SDET who spent their first week auditing an inherited test suite discovered that 40% of the "passing" tests were actually false positives due to over-broad assertions. That discovery, made in week one, prevented a tax calculation defect from reaching production that would have affected 800,000 taxpayers. At <strong>Nationwide</strong>, a newly hired SDET spent their first month building relationships with mortgage application developers by attending their stand-ups and asking one question every day: "What is the scariest part of this feature to deploy?" By day 90, developers were proactively requesting that SDET's input on architecture decisions — because they trusted the quality perspective. At <strong>BT</strong>, an SDET in their second month identified that the network provisioning test suite had a 60% flaky test rate — not because of bad tests, but because of shared mutable state in the test data setup. The fix took two days. The reduction in CI pipeline noise saved the team an estimated six hours of investigation time per week. At <strong>Accenture</strong>, a new SDET on a client engagement used their first 90 days to build a test impact analysis tool that reduced regression suite execution time by 70% — not because anyone asked for it, but because they noticed the pipeline was slow and decided to fix it. That SDET was promoted within eighteen months.</p>
+
+  <p><strong>By the end of this guide, you will have a concrete 30-60-90 day plan — not generic career advice, but specific actions, specific deliverables, and specific conversation scripts — that transforms your first 90 days from a period of anxious uncertainty into a deliberate campaign to become the most valuable person on your engineering team.</strong> Mitchell's <strong><a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach</a></strong> iOS and Android app — 800+ questions across five mock interview levels with a Claude-powered AI interviewer — also includes behavioural scenarios specific to onboarding and probation periods, so you can practise articulating your 90-day impact plan before your review meeting. For the complete blueprint — including the risk-based testing strategies, framework architecture patterns, and quality advocacy techniques that senior SDETs use to lead from day one — Mitchell's <strong><a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook">AI Test Automation Playbook</a></strong> at £9.99 covers every technique you need to accelerate your SDET career trajectory.</p>
+</section>
+
+<section class="content-section">
+  <h2>The Three Phases of Your First 90 Days: Listen, Contribute, Lead</h2>
+
+  <p>Most new SDETs make the same mistake: they try to prove themselves on day one by immediately rewriting the test framework, introducing new tools, or pointing out everything wrong with the current approach. This is the fastest way to alienate the team that hired you. <strong>The developers who built the existing test suite — however imperfect — are emotionally invested in it. Telling them it is wrong in your first week is not leadership. It is arrogance dressed as enthusiasm.</strong> The SDETs who earn genuine credibility follow a different rhythm — one that respects the existing team, demonstrates competence through contribution before seeking authority, and only leads once trust has been earned. Here is the three-phase framework:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Phase 1: Days 1–30 — Listen, Learn, Audit</h3>
+      <p>Your only job in the first month is to understand. Understand the application architecture — not just the UI surface, but the service boundaries, the data flows, the integration points, the failure modes. Understand the test suite — what exists, what is missing, what is flaky, what is slow. Understand the team — who cares about testing, who resents it, who has tried and failed before you arrived. Understand the business — what features make money, what failures cost the company, what the product manager loses sleep over. <strong>Do not propose changes in month one. Document everything you find. Ask questions that demonstrate you are listening, not judging.</strong> By day 30, you should be able to draw the system architecture from memory, identify the top five quality risks, and name which developer on the team will be your strongest testing ally.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Phase 2: Days 31–60 — Contribute, Automate, Build Trust</h3>
+      <p>Now you start delivering. But not big, flashy deliverables — small, high-impact contributions that earn trust incrementally. Fix the flaky test that has been annoying everyone for six months. Write the API test for the endpoint that has zero coverage. Add the test data factory that eliminates the manual setup step everyone complains about. <strong>Each contribution should solve a problem the team already knows it has. You are not introducing new problems for them to think about. You are removing existing pain.</strong> By day 60, you should have shipped at least three concrete improvements — each one discussed with the team before you built it, each one reviewed with humility, each one accompanied by documentation so the next person understands it. Developers should be noticing that something is different in a good way. Your name on a pull request should stop being a curiosity and start being a signal of quality.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Phase 3: Days 61–90 — Lead, Advocate, Ship</h3>
+      <p>Trust has been earned. Pain has been removed. Now you can lead. Propose the test strategy improvement you have been thinking about since day one — but now you can ground it in the credibility of someone who has already made the team's life better. Advocate for quality in sprint planning, architecture reviews, and release decisions — not as an outsider demanding change, but as an insider who has demonstrated value. Ship something that changes how the team thinks about testing — a test impact analysis tool, a quality dashboard, a shift-left testing workflow that catches defects in pull requests instead of in staging. <strong>By day 90, you are no longer "the new SDET." You are the person developers ask for input on testability before they write code. You are the person the product manager consults about release risk. You are the person whose probation review is a formality because nobody can imagine the team without you.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>Phase 1 Deep Dive: Your First 30 Days — The Audit That Proves Your Value</h2>
+
+  <p>Your first month is the most important 30 days of your tenure at this company. Get it right, and you have built a foundation of understanding and trust that everything else rests on. Get it wrong — by being too aggressive, too passive, or too focused on the wrong things — and you spend the next six months trying to recover. Here is exactly what to do, week by week:</p>
+
+  <h3>Week 1: The Observational Sprint</h3>
+  <p><strong>Goal: Understand the landscape without trying to change it.</strong> Day one: set up your development environment and run the test suite end to end. Note how long it takes. Note how many tests pass and fail. Note whether the failures are consistent or random. Do not fix anything yet. Just observe. Days two and three: attend every stand-up, sprint planning, and retrospective you can. Listen more than you speak. Take notes. Map the team dynamics — who advocates for testing, who is sceptical, who is overloaded. Days four and five: pair with one developer per day. Ask to watch them work. Ask: "What is the scariest part of this codebase to change?" and "When was the last time a bug reached production and how did you find out?" These two questions will tell you more about the team's quality culture than any documentation ever could. <strong>End of week one deliverable: a private document titled "Test Suite Health Audit — Initial Observations" with raw findings only. No recommendations. No judgments. Just facts.</strong></p>
+
+  <h3>Week 2: The Architecture Deep Dive</h3>
+  <p><strong>Goal: Understand the application well enough to identify risk.</strong> Draw the system architecture. Do not copy an existing diagram — draw it yourself, from documentation, from code exploration, from asking developers. Every time you cannot explain how two services communicate, you have found a testing gap. Map the data flow. Where does data enter the system? Where does it change? Where does it persist? Every data mutation point is a testing requirement that may or may not be covered. Map the user journeys. What are the five most critical paths through the application? Which ones have automated tests? Which ones are tested manually? Which ones are not tested at all? <strong>End of week two deliverable: a system map with annotations showing test coverage gaps. Share it with your manager in a one-to-one. Ask: "Is my understanding accurate? What am I missing?"</strong></p>
+
+  <h3>Week 3: The Test Suite Audit</h3>
+  <p><strong>Goal: Quantify the state of the test suite.</strong> Run the full suite five times. Record the pass rate, the flaky test rate, and the execution time for each run. Categorise every test by type: unit, integration, API, UI, end-to-end. Note the coverage distribution — are you top-heavy on slow UI tests and light on fast unit tests? Identify the top ten slowest tests. Identify the top ten flakiest tests. Check whether tests have clear names that describe what they verify. Check whether failures produce actionable error messages. Look at the test data strategy — is test data created fresh for each run, shared across tests, or dependent on a specific database state? <strong>End of week three deliverable: a Test Suite Health Report card with quantitative metrics, not opinions. Numbers, not judgments. This document is the evidence you will use in phase two to justify improvements — and the baseline you will reference in your probation review to demonstrate what you improved.</strong></p>
+
+  <h3>Week 4: The Relationship Sprint</h3>
+  <p><strong>Goal: Build the alliances you need for the next 60 days.</strong> Schedule a thirty-minute coffee with every developer on the team. Ask about their testing pain points. Ask what would make their lives easier. Ask about the last time testing caught a bug that saved them embarrassment. Ask about the last time testing failed to catch a bug that caused a production incident. <strong>Listen without defending testing. Listen without proposing solutions. Just listen.</strong> Schedule a meeting with the product manager. Ask: "What is the feature you are most nervous about shipping this quarter?" and "If you could wave a magic wand and know one thing about quality before every release, what would it be?" Schedule a meeting with your manager. Present your test suite health findings — not as a list of failures, but as a baseline for improvement. Ask: "What would success look like to you at the end of my first 90 days?" <strong>End of week four deliverable: a prioritised list of three improvements you will tackle in phase two, each one validated with at least one developer who confirmed it is a real problem they want solved.</strong></p>
+</section>
+
+<section class="content-section">
+  <h2>Phase 2 Deep Dive: Days 31–60 — Shipping Trust, One Pull Request at a Time</h2>
+
+  <p>Phase two is where you stop being an observer and start being a contributor. But contribution alone is not enough — you need to contribute in a way that builds trust, demonstrates competence, and sets up phase three for success. Here is how the best SDETs do it:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Fix the Flaky Test Everyone Hates</h3>
+      <p>Every team has one. The test that fails 30% of the time, that everyone reruns, that developers have learned to ignore. Fixing it is the highest-impact single contribution you can make in month two. <strong>Why this works:</strong> It immediately demonstrates that you can debug complex failures — the exact skill that distinguishes SDETs from test script writers. It removes a source of daily friction for every developer on the team. It signals that you are here to solve their problems, not create new ones. The flaky test fix is the equivalent of a developer fixing the build — it earns instant credibility. Document the root cause and the fix in a way that helps the team prevent similar flaky tests in the future. <strong>Pro tip:</strong> Present the fix at the next team meeting. Explain why the test was flaky (race condition, shared state, timing assumption, environment inconsistency) and what pattern you used to fix it. This educates the team while demonstrating your debugging methodology.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Add Test Coverage to the Scariest Untested Code</h3>
+      <p>In week one, you asked developers: "What is the scariest part of this codebase to change?" Now you target that exact code. Add tests for it. Start with characterisation tests — tests that capture current behaviour before you attempt to improve anything. This is safe. It is non-controversial. It provides value immediately by documenting the behaviour of code that everyone is afraid to touch. <strong>Why this works:</strong> You are not telling anyone their code is bad. You are adding safety to code everyone already knows is risky. You are demonstrating that you can read complex production code and write meaningful tests against it — the core SDET competency that separates you from QA testers who only test through the UI.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Ship a Developer Experience Improvement</h3>
+      <p>Testing infrastructure is the plumbing of the SDET world — unglamorous but essential. In month two, identify one thing about the test setup that annoys developers and fix it. Examples: A test data factory that eliminates the manual database setup. A local test runner script that replaces the twenty-line command everyone copy-pastes from a wiki. A test utility that generates realistic mock data instead of the "testUser123" placeholder. A pre-commit hook that runs fast unit tests before code is pushed. <strong>Why this works:</strong> You are not asking developers to do anything differently. You are making something they already do easier, faster, or less painful. This is how you build developer allies — not by demanding they write more tests, but by making testing feel effortless.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">Mitchell has watched new SDETs at <strong>Asda</strong> transform developer-testing relationships in a single sprint by fixing the one thing developers complained about most. One SDET spent three days building a test data reset script that allowed developers to run integration tests locally without corrupting their development database. Before the fix, developers avoided running integration tests locally — which meant problems were discovered in CI, hours after the code was written. After the fix, developers ran integration tests before every push. Defects caught in CI dropped by 60%. The SDET did not ask anyone to change their behaviour. They removed the friction that was preventing good behaviour. That is the difference between advocating for quality and enabling quality — and it is the latter that builds lasting credibility.</p>
+</section>
+
+<section class="content-section">
+  <h2>Phase 3 Deep Dive: Days 61–90 — Leading Quality Without Authority</h2>
+
+  <p>By day 60, you have earned the right to lead. You have fixed real problems. You have earned developer trust. You know the architecture, the test suite, and the team dynamics. Now you transition from contributor to quality leader — not because a title says you can, but because the team wants you to. Here is how:</p>
+
+  <h3>Propose One Strategic Improvement</h3>
+  <p>You have been sitting on ideas since week one. Now you have the credibility to propose them. Choose one strategic improvement — not a small fix, but something that changes how the team approaches quality. Examples: introducing contract testing between services that currently have no integration tests; implementing a risk-based test execution strategy that runs the most important tests first in CI; building a quality dashboard that shows test coverage, flaky test trends, and defect escape rates; introducing shift-left testing where automated tests run against feature branches before merge, not after. <strong>Present it as a proposal, not a demand.</strong> Explain the problem (grounded in your audit from phase one). Explain the solution (grounded in the credibility you have built in phase two). Explain the impact (framed in terms the team cares about — faster CI, fewer production incidents, less weekend on-call stress). Ask for feedback. Be willing to adapt the proposal based on developer input. Ship a small version first — a proof of concept, not a complete overhaul.</p>
+
+  <h3>Advocate in the Rooms Where Decisions Are Made</h3>
+  <p>Show up to architecture reviews. When a developer proposes a new microservice, ask: "How will we test this in isolation? What are the test data dependencies? How will contract testing work between this service and its consumers?" You are not blocking progress — you are preventing future testing debt. Show up to sprint planning. When a story is estimated, ask: "What does 'done' look like for testing? Are there automated tests for the acceptance criteria?" Show up to retrospectives. When the team discusses what went wrong in the last sprint, connect quality issues to root causes. Not to blame, but to improve. <strong>Every time you speak in one of these rooms, you are teaching the team that quality is not an afterthought — it is part of the conversation from the beginning. That is what senior SDETs do.</strong></p>
+
+  <h3>Ship Your Signature Contribution</h3>
+  <p>By day 90, you need one thing you can point to and say: "I built that. It made a measurable difference." It could be the test impact analysis tool that cut CI time by 40%. It could be the contract testing framework that prevented three integration bugs from reaching staging. It could be the quality dashboard that gave the product manager visibility into release readiness for the first time. <strong>Whatever it is, it must be concrete, measurable, and valuable — something that would not exist if you had not been hired. This is your answer to the probation review question: "What have you accomplished in your first 90 days?"</strong> And when you answer that question, you will not be nervous. You will have data. You will have developer testimonials. You will have a track record of contribution that speaks louder than any CV ever could.</p>
+</section>
+
+<section class="content-section">
+  <h2>Five Mistakes New SDETs Make in Their First 90 Days (and How to Avoid Them)</h2>
+
+  <p>Interview panels consistently observe the same patterns in SDETs who struggle in their first three months. These are not competence issues — they are strategy issues. Learn them now so you do not learn them the hard way:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Mistake 1: The Framework Rewrite Obsession</h3>
+      <p>You join the team, look at the test framework, and think: "I could build a better one." You probably could. But rewriting the test framework in your first 90 days is the fastest way to burn credibility you have not yet earned. The existing framework — however flawed — is running in production. It catches bugs. It provides value. Replacing it before you understand why it was built the way it was, before you have earned the team's trust, before you can articulate what specific business problems the rewrite will solve — that is not engineering. That is ego. <strong>The fix: Spend phase one documenting the framework's limitations. In phase two, make targeted improvements to the existing framework. In phase three, if a rewrite is genuinely needed, propose it with data, not opinion — and be prepared to be told no.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 2: Testing in Isolation</h3>
+      <p>You spend your first 90 days heads-down, writing tests, not talking to anyone. You produce a comprehensive test suite, but nobody reviewed it, nobody understands it, and nobody trusts it. When a test fails six months later, nobody knows what it tests or how to fix it — because you were the only person involved in creating it. <strong>The fix: Involve developers in every test you write from week two onward. Ask for code reviews on test code the same way they ask for code reviews on production code. Pair-program tests with developers. The goal is not just test coverage — it is test ownership shared across the team.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 3: Over-Promising to Impress</h3>
+      <p>In the anxiety of a new role, it is tempting to promise big things — "I will have the entire API test suite automated by the end of the month" or "I will reduce flaky tests to zero in my first sprint." These promises feel good in the moment. They signal ambition. But when you fail to deliver — and you will fail to deliver, because you do not yet understand the codebase, the team, or the constraints — you lose credibility faster than you gained it. <strong>The fix: Under-promise and over-deliver. In phase one, make no promises at all — you are still learning. In phase two, commit only to things you are 90% confident you can deliver, and deliver 110%. Reliability builds trust. Over-promising destroys it.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 4: Avoiding the Hard Conversations</h3>
+      <p>You notice that the team's code review process is weak. You notice that the deployment pipeline has no automated testing gate. You notice that the product manager defines "done" without any quality criteria. But you are new, so you stay quiet. You do not want to rock the boat. You tell yourself you will address it later — after you have been here longer, after you have more credibility. <strong>The problem: later never comes. By staying silent, you are signalling that you accept the status quo. And once you accept the status quo, changing it becomes progressively harder.</strong> The fix: You do not need to demand change in week one. But you should document what you observe and discuss it with your manager in your one-to-ones. "I have noticed X. Here is what I am seeing. I would like to address this in phase three — does that timeline make sense to you?" This is not rocking the boat. This is doing your job.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 5: Forgetting to Document Your Impact</h3>
+      <p>You fix flaky tests. You add coverage to critical paths. You build a test data factory. You advocate for quality in architecture reviews. You do all the right things. Then your probation review arrives, and your manager asks: "So, what have you accomplished?" And you freeze — because you were so busy doing the work that you never documented the work. <strong>This is the most preventable mistake on this list, and the most common.</strong> The fix: From day one, keep a running document called "90-Day Impact Log." Every week, add one bullet: what you did, why it mattered, and who benefited. By day 90, you have twelve pages of concrete evidence that hiring you was the best decision the team made all year. Your probation review is not a defence — it is a celebration.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>What If You Inherit a Mess? The "Broken Test Suite" Survival Guide</h2>
+
+  <p>Not every SDET walks into a well-maintained test suite with clear documentation and a team that values testing. Many walk into the opposite: a test suite that has not passed in months, zero documentation, developers who have learned to ignore test results, and a manager who says "we hired you to fix this." If that is your situation, your first 90 days look different — but the same principles apply. Here is the survival playbook:</p>
+
+  <p><strong>Week 1-2: Triage, do not fix.</strong> Run the test suite. Categorise every failure: environment issue, flaky test, genuine regression, test that was never updated when the feature changed. <strong>You cannot fix what you cannot categorise.</strong> Create a dashboard — even a simple spreadsheet — that tracks these categories. Share it with your manager and the team: "Here is the current state. Here is what I am seeing. My plan is to tackle environment issues first, then flaky tests, then regressions. Does that priority make sense to you?"</p>
+
+  <p><strong>Week 3-4: Fix the environment.</strong> Most "broken" test suites are actually broken test environments. The database is in the wrong state. The API is pointing to the wrong endpoint. The authentication tokens have expired. Fix the environment first. Get the test suite to a state where it can run consistently — even if it produces failures. A consistently-failing test suite is infinitely better than an intermittently-failing one, because you can debug it. <strong>This alone — getting the test suite to run reliably — will earn you more credibility in your first 30 days than any number of new tests you could write.</strong></p>
+
+  <p><strong>Week 5-8: Fix the flaky tests, one at a time.</strong> Start with the flaky test that fails most frequently. Root-cause it. Fix it. Document the pattern. Move to the next one. Each flaky test you fix removes a source of noise from the CI pipeline. Developers who had learned to ignore test results will start noticing when tests actually pass. <strong>This is how you rebuild trust in the test suite — not by announcing it is fixed, but by making it quietly, demonstrably, more reliable every week.</strong></p>
+
+  <p><strong>Week 9-12: Add safety nets, not coverage.</strong> Coverage metrics are vanity if the tests are unreliable. Instead of writing new tests for uncovered code, add tests around the areas that scare the team most — the modules developers are afraid to change, the integration points that have caused production incidents in the past. <strong>Safety nets over spreadsheets. Value over vanity metrics.</strong> By the end of your first 90 days, the test suite should be running consistently, the flakiest tests should be fixed, and the scariest code should have basic coverage. That is a transformation — and it is one you can credibly claim at your probation review.</p>
+</section>
+
+<section class="content-section">
+  <h2>How to Measure Your Success: The 90-Day Impact Framework</h2>
+
+  <p>Your probation review is not a test you hope to pass. It is a presentation you have been preparing since day one. Here are the metrics that matter — and how to collect them from your first week:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Quantitative Metrics (The Numbers)</h3>
+      <p>Flaky test rate reduction: If you started at 40% and reduced it to 5%, that is a number that impresses engineering managers. Test suite execution time: If you reduced it from three hours to forty-five minutes through parallelisation and test impact analysis, that is a number that impresses VPs. Test coverage on critical paths: If you added coverage to the top five user journeys that previously had none, that is a number that impresses product managers. CI pipeline reliability: If you reduced the number of pipeline failures caused by test issues, that is a number that impresses DevOps. <strong>Collect your baseline in week one. Measure against it weekly. Your 90-day impact is the delta between your starting baseline and your ending measurement.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Qualitative Metrics (The Stories)</h3>
+      <p>A developer says in a retrospective: "The new test data factory saved me hours this sprint." Write it down. A product manager says in a planning meeting: "I feel more confident about this release because of the quality dashboard." Write it down. Your manager says in a one-to-one: "Developers have told me they value your input on testability." Write it down. <strong>Numbers prove competence. Stories prove impact. You need both at your probation review.</strong> Collect testimonials the way a salesperson collects references — proactively, consistently, and without embarrassment. When someone says something positive about your contribution, ask: "Would you mind if I included that in my impact log?" Most people are happy to have their feedback recorded.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Relationship Metrics (The Network)</h3>
+      <p>By day 90, you should have: at least three developers who proactively seek your testing input before writing code; at least one product manager who consults you about release risk; at least one senior engineer who has publicly acknowledged your contribution to quality; and a manager who can articulate your impact to their manager. <strong>If you have these relationships, your probation review is a formality. If you do not, no amount of test coverage will compensate — because SDET is a role that succeeds or fails on collaboration, not solo output.</strong></p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">For a structured way to prepare for your probation review — including the exact conversation scripts and evidence frameworks — Mitchell's <a href="/blog/sdet-interview-coach-app-guide"><strong>SDET Interview Coach</strong></a> app includes behavioural scenarios for onboarding and probation conversations. The AI interviewer evaluates your responses against real hiring and performance review criteria, helping you articulate your 90-day impact with clarity and confidence. Available on iOS and Google Play.</p>
+</section>
+
+<section class="content-section">
+  <h2>Day 91 and Beyond: From New SDET to Senior SDET</h2>
+
+  <p>Your first 90 days are the foundation. What you build on that foundation determines whether you become a senior SDET in two years or remain at the same level for five. Here is what the next phase looks like for <strong>SDETs who accelerate their careers</strong>:</p>
+
+  <p><strong>Own a quality domain.</strong> By month six, you should be the person everyone thinks of when a specific quality topic comes up. Performance testing. Security testing. Test data strategy. Framework architecture. It does not matter which domain — what matters is that you are the go-to person for it. This is how you transition from executing other people's quality strategies to defining your own.</p>
+
+  <p><strong>Mentor the next new SDET.</strong> When the team hires another SDET, volunteer to help onboard them. Teaching forces you to articulate the knowledge you have absorbed — and nothing signals senior-level capability faster than being trusted to bring up the next hire. It also demonstrates to your manager that you are ready for leadership responsibility.</p>
+
+  <p><strong>Speak externally.</strong> Write a blog post about the flaky test reduction strategy you implemented. Give a lightning talk at a team meetup about the test impact analysis tool you built. Present at an internal engineering forum about the quality dashboard you created. <strong>External visibility — even within your own company — accelerates career progression because it multiplies the number of people who know about your impact.</strong></p>
+
+  <p><strong>Build something reusable.</strong> The test data factory you built for your team? Generalise it, document it, and offer it to other teams. The CI pipeline improvement you made? Package it as a template and share it with the engineering organisation. <strong>Impact that scales beyond your immediate team is the single fastest path to promotion — because it demonstrates the kind of organisational thinking that senior roles require.</strong></p>
+
+  <p>Your first 90 days are not the finish line. They are the launchpad. <strong>Don't walk into your new SDET role hoping you will figure it out. Walk in with a plan — a 30-60-90 day plan that transforms uncertainty into deliberate action, anxiety into earned confidence, and a new job into the beginning of a career-defining trajectory.</strong> Start your audit on day one. Ship your first fix by day thirty. Lead your first quality initiative by day ninety. And when your probation review arrives, do not defend your value — demonstrate it with data, stories, and relationships that prove, beyond any doubt, that hiring you was the best decision this team made all year.</p>
+</section>`,
+  faqs: [
+    {
+      q: "What should an SDET accomplish in their first 90 days?",
+      a: "A new SDET should accomplish three things in their first 90 days: understand the application architecture, test suite, and team dynamics (days 1-30); ship at least three concrete improvements that solve known problems — such as fixing flaky tests, adding coverage to critical paths, or improving developer testing experience (days 31-60); and lead one strategic quality initiative — such as introducing contract testing, building a quality dashboard, or implementing a risk-based test execution strategy (days 61-90). The goal is to transition from observer to contributor to quality leader, with measurable impact at each stage."
+    },
+    {
+      q: "How do I build credibility as a new SDET when I am the only tester on the team?",
+      a: "When you are the only SDET, credibility comes from solving problems developers already know they have — not from introducing new problems. In your first month, audit the test suite and identify the single most painful testing issue (flaky tests, slow CI, missing coverage on critical paths). Fix it in month two. Make developers' lives easier before you ask them to change their behaviour. Pair with developers on tests — let them see your methodology. Document your impact weekly so your manager has clear evidence of your value. Being the only SDET means you have no competition for quality ownership — use that to your advantage by becoming the undisputed expert on testing within your team."
+    },
+    {
+      q: "What technical skills should I demonstrate in my first 90 days as an SDET?",
+      a: "Focus on demonstrating debugging skill — root-causing a flaky test impresses developers more than writing fifty new tests. Demonstrate framework understanding — show that you can navigate the existing test architecture, not just write new tests within it. Demonstrate code review quality — submit test code that is as clean and well-structured as production code. Demonstrate automation judgement — knowing what to automate, what to test manually, and what to skip entirely. These four skills signal senior-level capability more effectively than any specific tool or language proficiency."
+    },
+    {
+      q: "What should I do if I inherited a broken test suite as a new SDET?",
+      a: "Do not try to fix everything at once. Triage first: categorise every test failure as environment issue, flaky test, genuine regression, or outdated test. Fix the test environment first — a consistently-failing test suite is infinitely better than an intermittently-failing one. Then fix flaky tests one at a time, documenting each pattern. Only then add new test coverage — and target the scariest, most-risk-heavy code first, not the easiest. Share your progress weekly with the team. Rebuilding trust in a broken test suite is a process, not an event — and demonstrating steady, visible progress is how you earn credibility while doing it."
+    },
+    {
+      q: "How do I handle imposter syndrome in my first month as a new SDET?",
+      a: "Imposter syndrome in a new SDET role is almost universal — even senior SDETs with years of experience feel it when joining a new team. The antidote is not trying to feel confident. It is focusing on concrete, small wins that accumulate into genuine evidence of competence. Ship one thing in your first week — even if it is just a bug report that helps a developer. Ship one thing in your second week — even if it is just a documentation improvement. Each small win is evidence that contradicts the imposter narrative. By day 30, you will have a body of work that makes imposter syndrome harder to sustain — not because you talked yourself out of it, but because you accumulated proof that you belong. Mitchell's <a href='/blog/qa-imposter-syndrome-sdet-confidence-interview-tips-2026'>QA imposter syndrome guide</a> covers this in depth."
+    },
+    {
+      q: "How do I build relationships with developers as a new SDET?",
+      a: "Do not lead with testing demands. Lead with curiosity. Ask developers: 'What is the scariest part of this codebase to change?' and 'What is the most annoying thing about testing right now?' Listen without defending. Fix the thing they complain about most — even if it seems small. Pair with developers on their code — let them teach you the codebase, and in return, show them how you think about testing it. Attend their stand-ups. Review their pull requests for testability, not just correctness. Relationships are built through consistent, low-ego collaboration — not through grand gestures. By day 90, developers should feel that your presence makes their work easier, not harder."
+    }
+  ],
+  relatedSlugs: [
+    "sdet-interview-preparation-plan-2026",
+    "sdet-behavioural-interview-questions-2026",
+    "qa-imposter-syndrome-sdet-confidence-interview-tips-2026",
+    "self-taught-sdet-career-path-no-cs-degree-2026",
+    "sdet-salary-negotiation-career-progression-2026",
+    "manual-qa-to-sdet-career-change"
+  ]
+},
+
+{
   slug: "manual-testing-experience-sdet-interview-questions-2026",
   title: "Manual Testing Experience in SDET Interviews — How to Frame Your QA Background as a Strength",
   description: "Worried your manual testing background will be dismissed in your 2026 SDET interview? Stop apologising. Mitchell Agoma's enterprise-hardened guide shows you exactly how to reframe manual QA experience as a competitive advantage — with STAR method examples, specific interview answers, and the psychology that turns perceived weakness into hiring strength. From exploratory testing instincts that catch bugs automation misses, to requirement analysis skills that prevent defects before code is written, to user empathy that detects UX issues engineers overlook — your manual testing experience is your superpower. Learn the exact framing techniques that impressed panels at HMRC, MoD, Nationwide, Asda, Co-op, BT, and Accenture.",
