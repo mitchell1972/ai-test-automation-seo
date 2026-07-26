@@ -1,0 +1,13 @@
+✅ SDET SEO: ai-coding-assistants-test-automation-sdet-interview-questions-2026
+
+Post: AI Coding Assistants for Test Automation — SDET Interview Questions 2026
+
+Keywords: ai coding assistants test automation, claude code testing interview, github copilot test automation, ai pair programming sdet, playwright mcp interview questions, cursor ai testing, ai-assisted test automation interview
+
+Live: https://www.aitestplaybook.com/blog/ai-coding-assistants-test-automation-sdet-interview-questions-2026
+
+Build: passed
+Push: succeeded
+Total posts: 137 (existing 136 + 1 new)
+
+Content: 8 sections covering Claude Code + Playwright MCP deep dive, GitHub Copilot/Cursor/Playwright MCP toolchain, AI vs human test review framework, prompt engineering patterns, interview answers at every seniority level, and Mitchell's 20-year perspective. 7 FAQs in {q, a} format. 6 relatedSlugs. SDET Interview Coach app and AI Test Automation Playbook both referenced naturally. British spelling throughout. First-mover keyword for AI coding assistants as an SDET interview topic.
