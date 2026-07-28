@@ -72,7 +72,7 @@ export default async function BlogPostPage({
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: post.faqs.map((faq) => ({
+    mainEntity: post.faqs.map((faq: { q: string; a: string }) => ({
       "@type": "Question",
       name: faq.q,
       acceptedAnswer: { "@type": "Answer", text: faq.a },
