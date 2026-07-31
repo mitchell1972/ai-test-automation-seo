@@ -15,6 +15,267 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
 
 {
+    slug: 'tell-me-about-yourself-sdet-interview-answer-framework-2026',
+    title: "How to Answer 'Tell Me About Yourself' in an SDET Interview — Framework + 3 Examples",
+    description: "The definitive framework for answering 'tell me about yourself' in an SDET interview. 4-part structure (Present → Past → Bridge → Future) with 3 answer examples for career-changers, experienced SDETs, and new grads. Stop rambling. Start winning.",
+    date: '2026-07-31',
+    author: SITE_CONFIG.author,
+    keywords: [
+      'tell me about yourself SDET interview',
+      'SDET self introduction',
+      'QA interview introduction',
+      'SDET interview answer examples',
+      'tell me about yourself framework',
+    ],
+    content: `
+<section class="content-section">
+  <p>It is 11:08pm. Your SDET interview is at 9am tomorrow. You have prepared for weeks — Playwright architecture, CI/CD pipelines, test strategy, behavioural questions. Your technical answers are solid. But then, in the silence of your kitchen with a cold cup of tea, your brain decides to simulate the worst possible scenario: <em>The interview begins. The panel looks up from their notes. And the very first thing they say — before you have warmed up, before you have shown them any technical skill, before you have earned a single point — is "So, tell me about yourself."</em></p>
+  <p>Your mouth goes dry. Where do you start? University? First job? Last week's project? Do you list your tech stack? Do you explain why you left your last role? How long should this answer even be? The panic is real because the question is so open-ended that your brain — in the absence of structure — will default to rambling. And rambling, in an SDET interview, is the fastest way to lose the room before you have said a single technical thing.</p>
+  <p>You are not imagining this. Mitchell Agoma has sat on both sides of the SDET interview table for 20 years — hiring testers at Asda, the Co-op, BT, HMRC, the Ministry of Defence, Nationwide, and Accenture. And the single most consistent failure pattern he has seen — across hundreds of candidates, from junior to principal level — is a weak answer to the first question. <strong>A weak "tell me about yourself" loses the interviewer's attention in the first 90 seconds. A strong one sets up the entire conversation so that the panel is already rooting for you before you answer a single technical question.</strong> This guide gives you the framework, the examples, and the psychological understanding to walk into your interview knowing exactly what you will say — and knowing that what you say will make the panel lean forward, not check their phones.</p>
+  <p>For structured practice delivering your introduction under interview pressure, the <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes mock interviews with Claude-graded feedback on your delivery, structure, and impact — so you can practise your self-introduction until it sounds natural, not scripted. And the <a href="https://stan.store/mitchellagoma/p/ai-test-automation-playbook">AI Test Automation Playbook</a> (£9.99) includes a chapter on interview psychology covering exactly the communication patterns that separate candidates who get offers from candidates who get ghosted.</p>
+</section>
+
+<section class="content-section">
+  <h2>Why "Tell Me About Yourself" Hits SDETs Harder Than Developers</h2>
+  <p>Most interview advice treats this question as a generic opener. It is not generic — and for SDETs specifically, it carries a unique set of traps that generic advice does not address.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>The SDET Identity Problem</h3>
+      <p>Developers answer "tell me about yourself" by describing what they build. Back-end engineers describe APIs and databases. Front-end engineers describe user interfaces. Their identity is clean: "I build X." SDETs test what other people build. And if your introduction makes it sound like you are <em>just</em> a tester — someone who finds bugs rather than someone who designs quality into systems — you have already positioned yourself below the engineering bar. <strong>The fix:</strong> Your introduction must communicate that you are a quality engineer, not a bug finder. You do not "test software" — you design testability into architecture, build automation frameworks that scale across teams, and create the quality gates that give engineering organisations the confidence to ship. Lead with engineering identity, not testing activity.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The Breadth Trap</h3>
+      <p>An SDET's skill set spans testing, programming, DevOps, and product thinking. This breadth is your competitive advantage — but it also makes a "tell me about yourself" answer collapse into a shopping list: "I know Playwright, Selenium, Cypress, TypeScript, Python, Java, Docker, Kubernetes, CI/CD, performance testing, API testing..." The panel hears a curriculum vitae, not a person. They stop listening at item six. <strong>The fix:</strong> Pick two anchors — the two dimensions of your experience that are most relevant to <em>this</em> role — and build your introduction around them. Everything else goes into the follow-up conversation. An introduction is a highlight reel, not a feature list.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>The "Not Technical Enough" Assumption</h3>
+      <p>Many interviewers — especially those from pure-development backgrounds — unconsciously assume that SDETs are "testers who can code a bit" rather than "engineers who specialise in quality." If your introduction sounds apologetic ("I started as a manual tester and I have been learning automation..."), you are confirming their bias. If your introduction sounds like an engineer describing a specialism ("I build test automation infrastructure that gives engineering teams sub-five-minute feedback on every commit"), you are reframing the entire conversation. <strong>The panel starts grading your technical answers from the baseline you establish in your introduction. Set the baseline high.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The 4-Part Framework: Present → Past → Bridge → Future</h2>
+  <p>This is the structure Mitchell has taught to candidates who went on to receive offers at HMRC, Nationwide, Accenture, and the MoD. It is deceptively simple — four parts, roughly thirty seconds each, total duration two minutes. The power is not in the structure itself. The power is that <strong>a structure prevents rambling, and not rambling is the single most important thing you can do in your first two minutes.</strong></p>
+
+  <p>The human brain under interview stress will default to chronological autobiography: "I studied X at university, then I got a job at Y, then I moved to Z..." This is the ramble pattern. The interviewer is asking "who are you as an engineer?" and you are answering "here is my LinkedIn profile read aloud." The four-part framework breaks this pattern by giving every sentence a job:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Part 1 — Present (30 seconds)</h3>
+      <p><strong>What you do now, specifically.</strong> Not "I work in QA." Be specific: "I am a Senior SDET at Barclays, where I lead the test automation strategy for the digital banking platform — a Playwright/TypeScript suite of 1,400 tests that runs across three browsers in under eight minutes through parallel execution on GitHub Actions." This gives the interviewer an anchor. They know what you do, where you do it, and at what scale. If you are not currently employed as an SDET, describe the closest thing: "I am a manual QA at Tesco, transitioning into automation — I have spent the last six months building a Playwright framework that now covers 60% of the checkout regression suite." <strong>Number + scale + specificity = credibility.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Part 2 — Past (30 seconds)</h3>
+      <p><strong>The one or two previous experiences that built the skills most relevant to this role.</strong> Do not list every job. Pick the roles that produced the skills the job specification asks for. "Before Barclays, I spent three years at the Ministry of Defence, where I built accessibility testing frameworks against WCAG 2.1 — which is why your mention of inclusive design in the job description caught my attention." The past section is not a history lesson. It is evidence that you have already done the things this role needs. <strong>Connect your past directly to their present.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Part 3 — Bridge (45 seconds)</h3>
+      <p><strong>Why this role, this company, right now.</strong> This is the section most candidates skip — and it is the section that separates "I need a job" from "I want <em>this</em> job." Reference something specific about the company: their tech stack, their engineering blog, a recent product launch, their testing approach mentioned in the job description. "When I read your engineering blog post about migrating from Selenium Grid to Playwright and the challenges you described with cross-browser CI execution — that is exactly the problem I have spent the last two years solving." <strong>Doing five minutes of research on the company and referencing it in your introduction signals that you are not spraying applications — you chose them.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Part 4 — Future (15 seconds)</h3>
+      <p><strong>One sentence that opens the conversation.</strong> "I am particularly interested in how your team approaches test environment management at scale — but I would rather hear what is most important to you. What area would you like me to go deeper on?" This does two things: it shows you have thought about their context (you name-dropped a real SDET challenge), and it hands control back to the interviewer — which makes you look confident, not nervous. <strong>The person who controls the conversation does not need to fill every silence.</strong></p>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem;">The total duration is roughly two minutes. If you go over two and a half, you are rambling. If you are under one minute, you are being too vague. Record yourself delivering the full framework. If it sounds scripted, you have not rehearsed enough — the goal is to sound <em>structured</em> without sounding <em>rehearsed</em>, and that only comes from saying it out loud enough times that the structure becomes automatic.</p>
+</section>
+
+<section class="content-section">
+  <h2>Example 1 — Manual Tester Transitioning to SDET</h2>
+  <p>This is the most common scenario Mitchell sees: a manual QA with strong testing instincts who has been learning automation but worries their CV does not scream "engineer." The trap is leading with "I am currently a manual tester" — which immediately positions you below the technical bar. The fix is leading with what you <em>build</em>, not what you <em>are</em>.</p>
+  <p><strong>The answer:</strong></p>
+  <p>"I build automated test frameworks that catch regressions before they reach production. Currently, I am a QA Analyst at a retail company where I have spent the last eight months transitioning our checkout regression suite from manual execution to automated Playwright tests — I have built a framework from scratch that now covers 60% of checkout scenarios and runs in CI, giving the team feedback in six minutes instead of the two hours manual regression was taking. Before this, I spent four years as a manual tester on the same team, which gave me deep product knowledge and an instinct for where bugs cluster — I know this application's failure patterns better than anyone on the engineering team, and that product intuition is now baked into my test design. The reason I am interested in this role specifically is that your job description mentions you are in the middle of shifting from Selenium to Playwright — I have just done exactly that migration, and I understand the challenges of maintaining test stability during a framework transition. I am happy to go deeper on any of these areas — what would be most useful for you to hear about first?"</p>
+  <p><strong>Why this works:</strong> It never uses the phrase "manual tester" as an identity — it uses it as a source of unique value (product knowledge). It leads with engineering output ("I build automated test frameworks"). It has a number (60%, six minutes, two hours). It connects past experience directly to the interviewer's current problem (framework migration). And it ends by handing control back — which is the confident move.</p>
+</section>
+
+<section class="content-section">
+  <h2>Example 2 — Experienced SDET Applying for a Senior Role</h2>
+  <p>The trap here is overconfidence — listing every framework you know because you think breadth signals seniority. It signals the opposite: an inability to prioritise what matters. The fix is depth over breadth, with a clear arc that shows progression.</p>
+  <p><strong>The answer:</strong></p>
+  <p>"I design test architecture that scales across engineering organisations. I am currently a Senior SDET at a fintech company, where I own the test automation strategy for a platform processing £2 million in daily transactions — a Playwright/TypeScript suite of 2,300 tests across Chromium and Firefox, running in parallel on GitHub Actions with a median execution time of seven minutes. I also built the test data management system that generates isolated, production-like test data on demand — which eliminated the test data contamination that was causing 30% of our CI flakiness. Before this, I spent four years at the Home Office, where I led a team of six SDETs building accessibility testing frameworks against WCAG 2.2 for public-facing government services — that experience taught me how to design tests that satisfy both engineering requirements and regulatory compliance, which I noticed is relevant to the financial services domain you operate in. What drew me to this role is your team's public commitment to shift-left quality — I read your engineering blog post about embedding SDETs in product teams, and it is exactly the model I have been advocating for and implementing for the last three years. What area would you like me to expand on?"</p>
+  <p><strong>Why this works:</strong> It leads with architectural thinking ("I design test architecture"), not tool names. It includes specific, quantified impact (30% flakiness reduction, seven-minute execution, £2M transaction volume). It shows progression — from team lead to enterprise-scale strategy. It references the company's own content, which proves research. And it demonstrates that the candidate understands the business context (financial services, regulatory compliance), not just the testing context.</p>
+</section>
+
+<section class="content-section">
+  <h2>Example 3 — New Graduate or Career-Shifter Without a CS Degree</h2>
+  <p>This is the hardest position to write an introduction from: you have no SDET work experience, possibly no computer science degree, and you are competing against candidates who do. The trap is apologising for what you do not have ("I know I do not have a CS degree, but..."). Never apologise in an introduction. Lead with what makes you different.</p>
+  <p><strong>The answer:</strong></p>
+  <p>"I bring a combination of systematic analytical thinking from a non-traditional background and hands-on test automation skills I have built through deliberate practice. I recently completed an intensive six-month self-directed learning programme where I built a portfolio of test automation projects — including a Playwright/TypeScript framework for an e-commerce checkout flow with 85% code coverage, a contract testing suite using Pact for a microservices API, and a CI/CD pipeline that runs the full suite on every commit. Before pivoting into software testing, I spent three years as an operations analyst at a logistics company, where my job was finding the root cause of process failures in systems that moved 50,000 packages a day — that is fundamentally the same skill as debugging a flaky test: trace the failure back through the system until you find the originating condition. I chose to apply to your company specifically because your job description mentions you are looking for someone who can investigate test failures rather than just report them — that is exactly the skill my operations background built, and it is the skill I have been developing in my automation projects. I would love to walk you through my portfolio and hear which areas matter most to your team."</p>
+  <p><strong>Why this works:</strong> It reframes the non-traditional background as a strength (root-cause analysis from operations = debugging skill), not a gap. It demonstrates technical capability through specific, named projects with numbers (85% coverage, portfolio with concrete examples). It connects past experience to the employer's stated need (failure investigation). It does not apologise. And it offers to show evidence (the portfolio) rather than just describe it.</p>
+</section>
+
+<section class="content-section">
+  <h2>The Five Most Common Mistakes — and How to Fix Each One</h2>
+  <p>Mitchell has seen these five patterns consistently across hundreds of interviews. Every one of them is fixable — but only if you know you are making it.</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Mistake 1 — The CV Recitation</h3>
+      <p>"I studied Computer Science at Manchester, graduated in 2018, then worked at Company A for two years doing manual testing, then moved to Company B where I learned Selenium..." The interviewer has your CV. They have already read it. Repeating it aloud signals that you cannot synthesise information — you can only list it. <strong>The fix:</strong> Your CV is the <em>what</em>. Your introduction is the <em>so what</em>. Every sentence in your introduction should answer: "And why does that matter for <em>this</em> role?"</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 2 — The Tech Stack Dump</h3>
+      <p>"I know Playwright, Selenium, Cypress, Appium, TypeScript, JavaScript, Python, Java, Docker, Kubernetes, Jenkins, GitHub Actions, REST Assured, Postman, JMeter, Gatling..." The panel stops listening. No one is impressed by a list of tool names — they are impressed by evidence that you understand <em>when and why</em> to use them. <strong>The fix:</strong> Mention two tools maximum, each in the context of a problem they solved. "I use Playwright for browser automation because its network interception API lets me mock API responses at the protocol level, which eliminated the flakiness we were getting from our Selenium-based approach that relied on third-party stubs."</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 3 — Too Short (Under One Minute)</h3>
+      <p>"I am a QA engineer with five years of experience in test automation, mostly using Selenium and Java. I am looking for a new challenge." That is it. The interviewer has learned nothing they could not have read from a one-line LinkedIn summary. They now have to work to extract information from you — and the more work they have to do, the less positive their impression. <strong>The fix:</strong> Two minutes. No less. If your answer is under one minute, you have not provided evidence. You have made claims without backing them up.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 4 — Too Long (Over Three Minutes)</h3>
+      <p>The candidate who talks for four minutes about their career journey, including the internship they did in 2012, the project that got cancelled, and what their manager said in a performance review. The interviewer has mentally checked out at the two-minute mark. The rest is noise. <strong>The fix:</strong> If you cannot fit your career story into two minutes, you are including things the interviewer does not need to know. Cut everything that does not directly support why you are the right person for <em>this</em> role.</p>
+    </div>
+    <div class="challenge-card">
+      <h3>Mistake 5 — Ending on a Weak Note</h3>
+      <p>"...and yeah, that is basically me." Or "I hope that gives you a sense of my background." Or — worst of all — trailing off into silence, leaving the interviewer to rescue the conversation. Your introduction ends, and the room is quiet. You look nervous. They look uncertain. <strong>The fix:</strong> End with a question that hands control back. "What area would you like me to go deeper on?" or "I noticed your team uses microservices — I would love to hear more about how testing is structured across services. But what is most useful for you to explore right now?"</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Practice Technique That Actually Works</h2>
+  <p>Reading a framework is not the same as being able to deliver it. Under interview pressure, your brain reverts to whatever you have practised. If you have only practised reading the words silently, your brain will reach for the default pattern — chronological rambling — and you will not even notice you are doing it.</p>
+  <p>Here is the practice protocol Mitchell's most successful candidates use:</p>
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Write your answer out fully.</strong> Not bullet points — full sentences. Writing forces you to choose every word deliberately. Bullet points let your brain fill in the gaps with rambling under stress.</li>
+    <li><strong>Read it aloud five times.</strong> Not in your head. Out loud, to an empty room. You will hear which sentences sound natural and which sound like you are reading a script. Rewrite the scripted-sounding ones.</li>
+    <li><strong>Record yourself on your phone.</strong> Watch it back. You will notice filler words ("um," "like," "you know") and nervous habits you were not conscious of. Fix them.</li>
+    <li><strong>Time yourself.</strong> Target: two minutes. If you are over, cut. If you are under, add specificity. Do not guess the timing — the actual duration in your head is always shorter than the real duration when you speak.</li>
+    <li><strong>Practise with the SDET Interview Coach app.</strong> The mock interview feature gives you an AI interviewer that asks "tell me about yourself" — and then grades your answer on structure, specificity, confidence, and time. You can run it ten times in an evening and watch your score improve. By the time you walk into the real interview, your introduction has been battle-tested, not just memorised.</li>
+  </ol>
+  <p>The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> (£4.99/month) includes a dedicated behavioural interview module where "tell me about yourself" is one of the core questions — with AI-graded feedback across Junior, Mid, Senior, and Lead levels, so you can see exactly how your introduction measures up against the standard for the role you are targeting.</p>
+</section>
+
+<section class="content-section">
+  <h2>What the Interviewer Is Really Measuring</h2>
+  <p>It is tempting to think of "tell me about yourself" as a warm-up question — a chance for the interviewer to read your CV while you talk. It is not. It is the most information-dense 120 seconds of the interview. Here is what Mitchell is actually assessing when he asks this question:</p>
+
+  <div class="challenge-grid">
+    <div class="challenge-card">
+      <h3>Communication Under Pressure</h3>
+      <p>Testing is communication. Bug reports are communication. Test plans presented to stakeholders are communication. If you cannot articulate who you are and what you do in two structured minutes, how are you going to explain a complex test failure to a developer who is already defensive about their code? Or present a quality-risk assessment to a product manager who wants to ship tomorrow? <strong>The interviewer is not testing your CV knowledge — they are testing whether you can communicate clearly about technical work.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Self-Awareness and Prioritisation</h3>
+      <p>A candidate who talks for three minutes about their university dissertation from eight years ago and thirty seconds about their current role does not understand what is relevant. An SDET who cannot prioritise the most important information about themselves is an SDET who cannot prioritise which test failures need immediate investigation vs which can wait. <strong>The structure of your answer reveals your engineering judgement.</strong></p>
+    </div>
+    <div class="challenge-card">
+      <h3>Cultural Fit Signal</h3>
+      <p>Every answer to "tell me about yourself" contains a cultural signal — whether you intend it or not. "I find bugs that developers miss" signals adversarial mindset. "I help teams ship with confidence" signals collaborative mindset. "I enforce quality standards" signals gatekeeping mindset. "I build quality into the development process" signals enablement mindset. <strong>Mitchell has seen technically strong candidates rejected because their introduction signalled they would be difficult to work with — and technically adequate candidates hired because their introduction signalled they would make the team better.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Psychology of the First 90 Seconds</h2>
+  <p>Interviewers make a provisional judgement about a candidate within the first 90 seconds. This is not a myth — it is a well-documented cognitive bias called the <em>primacy effect</em>. The first information we receive about a person disproportionately shapes our interpretation of everything that follows. If your introduction is confident, structured, and specific, the interviewer interprets your subsequent technical answers through a lens of competence — small mistakes get attributed to interview nerves rather than knowledge gaps. If your introduction is rambling, vague, or apologetic, the interviewer interprets everything that follows through a lens of doubt — a correct technical answer sounds like luck, a hesitation sounds like ignorance.</p>
+  <p>This is not about manipulating interviewers. It is about <strong>not losing the interview before you have shown what you know.</strong> A weak answer to "tell me about yourself" is like walking onto a football pitch and spending the first five minutes kicking the ball in the wrong direction. You might be an excellent player — but the coach has already formed an impression that will take the rest of the match to undo. In an interview lasting 45-60 minutes, you do not have time to undo a bad first impression. You need to start strong and stay strong.</p>
+  <p>Mitchell's panel training at HMRC, Nationwide, and Accenture explicitly taught interviewers to be aware of the primacy effect — and most interviewers try to compensate for it. But the reality is that no interviewer fully compensates. The candidate who walks in and delivers a crisp, confident, two-minute introduction is playing on easy mode. The candidate who rambles for four minutes is playing on hard mode — and hard mode means the interviewer has to work to find reasons to hire you, rather than effortlessly noticing them.</p>
+</section>
+
+<section class="content-section">
+  <h2>Before the Interview — What Mitchell Looks For When He Interviews SDETs</h2>
+  <p>After twenty years of hiring SDETs — from Asda in the early 2000s to Accenture's enterprise testing practice today — Mitchell has developed a mental checklist that runs in the first two minutes of every interview. Here is exactly what is going through his head while you introduce yourself:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+    <li><strong>"Can they structure their thoughts?"</strong> — Am I hearing a framework, or am I hearing a stream of consciousness? The candidate who has a structure is the candidate who will write maintainable test code, design coherent test plans, and communicate clearly with developers and product managers.</li>
+    <li><strong>"Do they understand their own value?"</strong> — Can this person articulate what they bring to a team, or do they just list skills and hope I connect the dots? The SDET who understands their own value is the SDET who will advocate for quality, push back on unrealistic deadlines, and influence engineering culture.</li>
+    <li><strong>"Do numbers appear naturally?"</strong> — "I reduced flaky tests by 40%" vs "I worked on reducing flaky tests." The difference is enormous. Numbers signal that you measure your impact. If you do not measure your impact, how do you know your testing is actually improving anything?</li>
+    <li><strong>"Have they researched us?"</strong> — The candidate who references something specific about the company — their tech stack, their blog, their product — has demonstrated that this is not a mass application. They chose us. That matters.</li>
+    <li><strong>"Would I want to work with this person?"</strong> — The single most important question at every company Mitchell has worked at. Technical skill gets you onto the shortlist. Likability, communication, and cultural fit get you the offer. If you are technically excellent but your introduction makes Mitchell think "this person will be exhausting to work with," you are not getting hired.</li>
+  </ul>
+  <p>These are not abstract principles. They are the actual criteria running through an interviewer's head while you talk. Design your introduction to answer each one directly.</p>
+</section>
+
+<section class="content-section">
+  <h2>Your 11pm Checklist — Tonight, Before Your Interview</h2>
+  <p>You have read the framework. You have seen the examples. You understand the psychology. Here is what you actually do tonight — the concrete actions that separate preparation from anxiety:</p>
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li><strong>Write your answer using the four-part framework.</strong> Present → Past → Bridge → Future. Full sentences. Two minutes.</li>
+    <li><strong>Read it aloud five times.</strong> Not four. Not "I will do it in the morning." Five times, tonight. Your mouth needs to learn the words, not just your brain.</li>
+    <li><strong>Record it on your phone and watch it back.</strong> You will cringe. Good. That means you are seeing what the interviewer will see. Fix what makes you cringe.</li>
+    <li><strong>Open the SDET Interview Coach app, run the "Tell Me About Yourself" mock interview.</strong> Get AI-graded feedback on your structure, specificity, and delivery. If it scores below 7/10, rewrite and repeat.</li>
+    <li><strong>Research the company.</strong> Find one thing — their tech blog, a recent product launch, their engineering Twitter account — that you can reference in your Bridge section. This takes ten minutes and it is the single highest-ROI activity you can do tonight.</li>
+    <li><strong>Go to sleep knowing your first two minutes are already won.</strong> Most candidates walk into their interview hoping their introduction goes well. You will walk in knowing it will — because you have practised it until the structure is automatic. That confidence will carry through every question that follows.</li>
+  </ol>
+  <p>The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> includes mock interviews with Claude-graded feedback — perfect for practising your self-introduction before the real thing. Download it tonight. Run the "Tell Me About Yourself" scenario. Watch your score improve across five attempts. Then walk into your interview knowing that the first question — the one that trips up most candidates — is the one you have prepared for better than anyone else in the pipeline.</p>
+</section>
+
+<section class="content-section">
+  <h2>Frequently Asked Questions</h2>
+  <p>Questions Mitchell has been asked by SDET candidates preparing their self-introduction — and the answers that actually help:</p>
+
+  <div class="faq-list" style="margin-top: 1.5rem;">
+    <div class="faq-item" style="margin-bottom: 2rem;">
+      <h3>Q: How long should my "tell me about yourself" answer be?</h3>
+      <p><strong>A:</strong> Two minutes. Under one minute is too vague — the interviewer has learned nothing they could not read from your CV. Over three minutes is rambling — the interviewer has mentally checked out. Two minutes is the sweet spot: long enough to present a structured narrative with evidence, short enough to hold attention. Time yourself when you rehearse. The actual spoken duration is almost always longer than what it feels like in your head.</p>
+    </div>
+    <div class="faq-item" style="margin-bottom: 2rem;">
+      <h3>Q: Should I mention my education if I do not have a CS degree?</h3>
+      <p><strong>A:</strong> Only if it directly supports the skills the role requires. If you studied history and there is no connection to testing, skip it — the interviewer does not need your full academic biography. If you studied something analytical (mathematics, physics, economics, linguistics), mention it briefly as evidence of systematic thinking. The key principle: every sentence in your introduction must earn its place by supporting why you are the right person for <em>this</em> role. If a detail does not do that, cut it. Mitchell has hired outstanding SDETs with degrees in philosophy, music, and geography. Your degree does not define your engineering potential — your introduction should not make it seem like it does.</p>
+    </div>
+    <div class="faq-item" style="margin-bottom: 2rem;">
+      <h3>Q: What if I have been at the same company for ten years? I do not have a "past" section.</h3>
+      <p><strong>A:</strong> You do — but your "past" is the progression <em>within</em> that company, not previous employers. Structure it as: "I started as a manual tester on the payments team, built my first Selenium framework within 18 months, moved to the platform team where I designed the test architecture that now supports 40 engineers, and for the last three years I have been leading the quality engineering practice." Ten years at one company is a strength — it shows loyalty, deep domain knowledge, and the ability to grow within an organisation. Frame it that way.</p>
+    </div>
+    <div class="faq-item" style="margin-bottom: 2rem;">
+      <h3>Q: Should I memorise my introduction word for word?</h3>
+      <p><strong>A:</strong> No — memorise the structure, not the words. If you memorise exact sentences, you will sound robotic, and if you forget one word, your brain will freeze. Instead, memorise the four-part structure (Present → Past → Bridge → Future) and the key points you want to hit in each section. When you rehearse, the specific words will vary slightly each time — that is good. It means the structure is internalised and the delivery will sound natural. The goal is to sound like someone who has thought carefully about their answer, not someone who is reciting a script they wrote at midnight.</p>
+    </div>
+    <div class="faq-item" style="margin-bottom: 2rem;">
+      <h3>Q: What if the interviewer interrupts me partway through?</h3>
+      <p><strong>A:</strong> Let them. An interviewer who interrupts is engaged — they heard something interesting and want to follow it. This is a positive signal, not a failure. The framework is a safety net, not a script. If the conversation naturally flows into a deeper discussion after your Present section, that means your introduction did its job: it gave the interviewer something worth exploring. The worst-case scenario is not being interrupted — it is the interviewer letting you talk for five minutes because they have stopped listening.</p>
+    </div>
+    <div class="faq-item" style="margin-bottom: 2rem;">
+      <h3>Q: Does the SDET Interview Coach app help with this specific question?</h3>
+      <p><strong>A:</strong> Yes. The <a href="/blog/sdet-interview-coach-app-guide">SDET Interview Coach iOS app</a> (£4.99/month) includes a dedicated behavioural interview module where "tell me about yourself" is a core question. You speak or type your answer, and Claude grades it on structure, specificity, confidence, and time management. The feedback is calibrated to your target seniority level — so a Junior SDET candidate gets different guidance than a Lead candidate. You can practise this specific question ten times in one evening and watch your score improve with each attempt. It is the closest thing to a real interview without the stakes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <h2>The Bottom Line</h2>
+  <p>"Tell me about yourself" is not a warm-up question. It is the question that determines whether the interviewer listens to the rest of your answers through a lens of confidence or a lens of doubt. A structured, two-minute answer built on the Present → Past → Bridge → Future framework — delivered with specificity, numbers, and research — sets the tone for the entire interview. A rambling, vague, or apologetic answer forces you to spend the remaining 45 minutes digging out of a hole you created in the first 90 seconds.</p>
+  <p>You have the framework. You have three examples covering the most common SDET career profiles. You have the practice protocol. The only thing between you and a confident introduction is the decision to rehearse it tonight — out loud, recorded, and reviewed — rather than hoping it goes well in the morning.</p>
+  <p>For more behavioural interview strategies, see our guide on <a href="/blog/sdet-behavioural-interview-questions-2026">SDET Behavioural Interview Questions 2026</a>. For communication techniques that complement your introduction, see our guide on <a href="/blog/sdet-interview-body-language-communication-tips-2026">SDET Interview Body Language and Communication Tips 2026</a>. And for the complete interview preparation roadmap — including the technical knowledge that backs up the confidence your introduction projects — see our <a href="/blog/sdet-interview-preparation-plan-2026">SDET Interview Preparation Plan 2026</a>.</p>
+</section>
+`,
+    faqs: [
+      {
+        q: "How long should my 'tell me about yourself' answer be in an SDET interview?",
+        a: "Two minutes. Under one minute is too vague — the interviewer has learned nothing they could not read from your CV. Over three minutes is rambling — the interviewer has mentally checked out. Two minutes is the sweet spot: long enough to present a structured narrative with evidence, short enough to hold attention. Time yourself when you rehearse — the actual spoken duration is almost always longer than what it feels like in your head.",
+      },
+      {
+        q: "Should I mention my education if I do not have a computer science degree?",
+        a: "Only if it directly supports the skills the role requires. If you studied something analytical (mathematics, physics, economics), mention it briefly as evidence of systematic thinking. If there is no connection, skip it — the interviewer does not need your full academic biography. Mitchell has hired outstanding SDETs with degrees in philosophy, music, and geography. Your degree does not define your engineering potential — your introduction should not make it seem like it does.",
+      },
+      {
+        q: "What if I have been at the same company for ten years? I do not have a 'past' section.",
+        a: "Your 'past' is the progression within that company, not previous employers. Structure it as internal growth: where you started, what you built, and how you advanced. Ten years at one company shows loyalty, deep domain knowledge, and the ability to grow — frame it as a strength, not a limitation.",
+      },
+      {
+        q: "Should I memorise my introduction word for word?",
+        a: "No — memorise the structure, not the words. Memorise the four-part framework (Present → Past → Bridge → Future) and the key points for each section. When you rehearse aloud, the specific words will vary slightly each time — that is good. It means the structure is internalised and the delivery will sound natural. The goal is to sound like someone who has thought carefully about their answer, not someone reciting a script.",
+      },
+      {
+        q: "What if the interviewer interrupts me partway through?",
+        a: "Let them. An interviewer who interrupts is engaged — they heard something interesting and want to explore it. This is a positive signal. The framework is a safety net, not a script. If the conversation flows into deeper discussion after your Present section, your introduction did its job: it gave the interviewer something worth exploring. The worst case is not being interrupted — it is the interviewer letting you talk for five minutes because they have stopped listening.",
+      },
+      {
+        q: "Does the SDET Interview Coach app help with the 'tell me about yourself' question?",
+        a: "Yes. The SDET Interview Coach iOS app includes a dedicated behavioural interview module where 'tell me about yourself' is a core question. You speak or type your answer, and Claude grades it on structure, specificity, confidence, and time management — calibrated to your target seniority level. You can practise this question ten times in one evening and watch your score improve with each attempt.",
+      },
+    ],
+    relatedSlugs: [
+      'sdet-behavioural-interview-questions-2026',
+      'sdet-interview-body-language-communication-tips-2026',
+      'sdet-interview-preparation-plan-2026',
+    ],
+  },
+
+{
   slug: 'how-to-answer-test-this-feature-sdet-interview-2026',
   title: 'How to Answer "How Would You Test This Feature?" in an SDET Interview — Complete Framework',
   description: 'Master the "test this feature" SDET interview question with a step-by-step framework. Learn the structured approach, common mistakes, and how to demonstrate senior-level testing thinking in 2026.',
