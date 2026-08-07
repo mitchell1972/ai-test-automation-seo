@@ -1,0 +1,27 @@
+{
+  "slug": "selenium-interview-questions-2026",
+  "title": "Selenium Interview Questions 2026 — WebDriver, Locators, Waits, Page Object Model, Selenium Grid, and Every Automation Question SDET Panels Ask About Browser Testing",
+  "description": "Your SDET interview is tomorrow and 'Selenium experience required' is in the job spec. Master every Selenium interview question — WebDriver architecture, XPath vs CSS selector strategy, implicit vs explicit vs fluent waits, Page Object Model design, Selenium Grid 4 distributed testing, handling iframes/alerts/dynamic elements, Selenium vs Playwright vs Cypress trade-offs, and the framework design decisions that demonstrate senior-level thinking. Mitchell Agoma's guide from HMRC, MoD, Nationwide, and Accenture.",
+  "date": "2026-08-05",
+  "author": "Mitchell Agoma",
+  "keywords": [
+    "Selenium interview questions SDET 2026",
+    "Selenium WebDriver architecture interview questions",
+    "Page Object Model design interview questions",
+    "implicit vs explicit wait Selenium interview",
+    "XPath vs CSS selector Selenium interview",
+    "Selenium Grid 4 interview questions distributed testing",
+    "Selenium framework design interview SDET",
+    "handling dynamic elements Selenium interview",
+    "Selenium vs Playwright interview comparison 2026",
+    "Selenium 4 new features interview questions",
+    "SDET Interview Coach app"
+  ],
+  "relatedSlugs": [
+    "cypress-interview-questions-2026",
+    "sdet-vs-qa-automation-engineer-differences-interview-2026",
+    "api-testing-interview-questions-2026",
+    "cicd-pipeline-testing-interview-questions",
+    "tell-me-about-yourself-sdet-interview-answer-framework-2026"
+  ]
+}
